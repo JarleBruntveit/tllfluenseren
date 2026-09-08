@@ -3,54 +3,122 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TLLfluenseren.no</title>
-<meta name="description" content="Interaktiv undervisning i transport, logistikk og løfteoperasjoner – med litt livsvisdom på kjøpet.">
+<title>TLLfluenseren.no – lær, øv, tenk, voks</title>
+<meta name="description" content="Praktisk og interaktiv læring for VG2 Transport, logistikk og løfteoperasjoner – med verktøy, trening og litt livsvisdom på kjøpet.">
 <link rel="stylesheet" href="assets/styles.css">
 </head>
-<body>
+<body class="homePage">
 <div class="wrap">
-  <header class="topbar">
-    <a class="brand" href="./">
+  <header class="topbar homeTopbar">
+    <a class="brand" href="./" aria-label="TLLfluenseren forside">
       <span class="brandmark">TLL</span>
       <span>TLLfluenseren <small>Transport · Logistikk · Løfteoperasjoner · Livet</small></span>
     </a>
-    <span class="tag">Første versjon</span>
+    <nav class="homeNav" aria-label="Hovedmeny">
+      <a href="#plattform">Utforsk</a>
+      <a href="truck/">Truckprøven</a>
+      <a href="#om">Om</a>
+    </nav>
   </header>
 
   <main>
-    <section class="hero">
-      <div class="kicker">Lær · Øv · Tenk · Voks</div>
-      <h1>Mer enn truck og logistikk.</h1>
-      <p>Interaktiv undervisning for elever på TLL. Praktisk, tydelig og laget for å fungere i hverdagen – med litt livsvisdom på kjøpet.</p>
-      <div class="ctaRow">
-        <a class="btn primary" href="truck/">Start truckprøven</a>
-        <a class="btn ghost" href="#prosjekter">Se prosjekter</a>
+    <section class="homeHero">
+      <div class="heroCopy">
+        <div class="kicker">Lær · Øv · Tenk · Voks</div>
+        <h1>Fag som sitter.<br><span>Læring som virker.</span></h1>
+        <p>En praktisk læringsplattform for VG2 Transport, logistikk og løfteoperasjoner. Her skal det være enkelt å øve, forstå og bli tryggere – både i faget og på vei inn i arbeidslivet.</p>
+        <div class="ctaRow">
+          <a class="btn primary homePrimary" href="truck/">Start truckprøven <span aria-hidden="true">→</span></a>
+          <a class="btn ghost" href="#plattform">Utforsk TLLfluenseren</a>
+        </div>
+        <div class="heroNote"><span class="statusDot"></span> Første verktøy er klart – flere er på vei</div>
+      </div>
+      <div class="heroVisual" aria-hidden="true">
+        <div class="roadCard">
+          <div class="roadLabel">TLL</div>
+          <div class="roadLine"></div>
+          <div class="roadWords"><span>TRANSPORT</span><span>LOGISTIKK</span><span>LØFT</span></div>
+          <div class="forkliftIcon">▰<span>▯</span><i></i></div>
+        </div>
       </div>
     </section>
 
-    <section class="section" id="prosjekter">
-      <h2>Prosjekter</h2>
-      <div class="grid">
-        <article class="card full">
-          <span class="tag">Prosjekt 001</span>
-          <h3>Truckførerprøve – opplesning</h3>
-          <p>Et selvbetjent opplesningsverktøy. Eleven velger prøve, får ett spørsmål av gangen og kan høre hele spørsmålet eller enkeltalternativer på nytt. Ingen fasit, hint eller vurdering.</p>
-          <a class="btn primary" href="truck/">Åpne verktøyet</a>
+    <section class="platformSection" id="plattform">
+      <div class="sectionIntro">
+        <div>
+          <div class="kicker">TLLfluenseren</div>
+          <h2>Fire måter å bli bedre på.</h2>
+        </div>
+        <p>Ikke en digital lærebok. Et sted for korte, nyttige aktiviteter som kan brukes i undervisningen, til repetisjon eller på egen hånd.</p>
+      </div>
+
+      <div class="pillarGrid">
+        <article class="pillarCard learn">
+          <span class="pillarNumber">01</span><span class="pillarIcon">↗</span>
+          <h3>LÆR</h3>
+          <p>Få tak på det viktigste. Tydelige forklaringer, eksempler og fagstoff fra TLL.</p>
+          <span class="comingLabel">Innhold kommer</span>
         </article>
-        <article class="card">
-          <span class="tag">Kommer</span>
-          <h3>Interaktiv teoritrening</h3>
-          <p>Quiz, situasjoner, lastdiagram og faglig repetisjon – med forklaring når eleven øver, men aldri i prøvemodus.</p>
+        <article class="pillarCard practice featured">
+          <span class="pillarNumber">02</span><span class="pillarIcon">✓</span>
+          <h3>ØV</h3>
+          <p>Tren på det du skal mestre. Repetisjon, prøver og interaktive oppgaver.</p>
+          <a href="truck/">Åpne truckprøven →</a>
         </article>
-        <article class="card">
-          <span class="tag">Kommer</span>
-          <h3>60 sekunder livsvisdom</h3>
-          <p>Korte refleksjoner om ansvar, arbeidsliv, samarbeid, vaner og det å bli litt bedre rustet for livet.</p>
+        <article class="pillarCard think">
+          <span class="pillarNumber">03</span><span class="pillarIcon">?</span>
+          <h3>TENK</h3>
+          <p>Stopp opp og vurder. Situasjoner fra arbeidslivet som utfordrer faglig skjønn.</p>
+          <span class="comingLabel">Innhold kommer</span>
+        </article>
+        <article class="pillarCard grow">
+          <span class="pillarNumber">04</span><span class="pillarIcon">+</span>
+          <h3>VOKS</h3>
+          <p>Korte perspektiver på ansvar, samarbeid, vaner og det å fungere godt i arbeidslivet.</p>
+          <span class="comingLabel">60 sekunder livsvisdom kommer</span>
         </article>
       </div>
     </section>
+
+    <section class="toolSpotlight">
+      <div class="toolText">
+        <span class="eyebrow">Prosjekt 001 · tilgjengelig nå</span>
+        <h2>Truckførerprøven,<br>lest høyt.</h2>
+        <p>Et enkelt opplesningsverktøy for elever som har nytte av å høre spørsmålene. Ett spørsmål om gangen, rolig opplesning og mulighet til å høre hvert svaralternativ på nytt.</p>
+        <ul class="featureList">
+          <li>Ingen fasit eller hint</li>
+          <li>Ingen registrering av svar</li>
+          <li>Eleven styrer opplesningen selv</li>
+        </ul>
+        <a class="btn primary homePrimary" href="truck/">Gå til truckprøven →</a>
+      </div>
+      <div class="toolMockup" aria-hidden="true">
+        <div class="mockTop"><span></span><span></span><span></span><b>TEORIPRØVE</b></div>
+        <div class="mockBody">
+          <small>SPØRSMÅL 12 AV 40</small>
+          <div class="mockProgress"><i></i></div>
+          <h3>Hva må du kontrollere før trucken tas i bruk?</h3>
+          <div class="mockSpeak">🔊 &nbsp; Les hele spørsmålet</div>
+          <div class="mockOption"><b>A</b><span>Kontrollpunkt og svaralternativ</span><i>🔊</i></div>
+          <div class="mockOption"><b>B</b><span>Kontrollpunkt og svaralternativ</span><i>🔊</i></div>
+          <div class="mockOption"><b>C</b><span>Kontrollpunkt og svaralternativ</span><i>🔊</i></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="manifesto" id="om">
+      <div class="manifestoMark">“</div>
+      <div>
+        <p class="manifestoText">Målet er ikke å gjøre læring enklest mulig. Målet er å gjøre det <strong>enklere å lære.</strong></p>
+        <p class="manifestoSub">TLLfluenseren bygges for elever og undervisning på Transport, logistikk og løfteoperasjoner – ett nyttig verktøy om gangen.</p>
+      </div>
+    </section>
   </main>
-  <footer>© TLLfluenseren.no · laget for undervisning</footer>
+
+  <footer class="homeFooter">
+    <div class="brand footerBrand"><span class="brandmark">TLL</span><span>TLLfluenseren <small>Mer enn truck og logistikk.</small></span></div>
+    <div>© TLLfluenseren.no · laget for undervisning</div>
+  </footer>
 </div>
 </body>
 </html>
