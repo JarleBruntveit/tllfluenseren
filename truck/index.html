@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Truckførerprøve – TLLfluenseren</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body class="playerPage">
+<header class="playerHeader">
+  <div class="wrap topbar" style="padding:0">
+    <a class="brand" href="../">
+      <span class="brandmark">TLL</span>
+      <span>TLLfluenseren <small>Truckførerprøve – opplesning</small></span>
+    </a>
+    <a class="btn ghost" href="../">Forside</a>
+  </div>
+</header>
+
+<main class="playerShell">
+  <section id="picker">
+    <div class="kicker">Prosjekt 001</div>
+    <h1 style="font-size:clamp(38px,7vw,64px)">Truckførerprøve</h1>
+    <p class="notice">Dette verktøyet leser kun opp spørsmål og svaralternativer. Teksten markeres mens den leses. Det gis ingen fasit, hint, forklaringer eller vurdering av svar. Svar på det ordinære prøvearket.</p>
+    <div class="testPicker" style="margin-top:18px">
+      <button class="testCard" data-test="1"><span class="tag">40 spørsmål</span><h2>Teoriprøve 1</h2><p>Trykk for å starte opplesningen.</p></button>
+      <button class="testCard" data-test="2"><span class="tag">40 spørsmål</span><h2>Teoriprøve 2</h2><p>Trykk for å starte opplesningen.</p></button>
+    </div>
+  </section>
+
+  <section id="player" class="hidden">
+    <div class="progressMeta">
+      <span id="testTitle">Teoriprøve</span>
+      <span id="counter">1 av 40</span>
+    </div>
+    <div class="progress" aria-hidden="true"><div id="bar"></div></div>
+
+    <article class="questionPanel" id="questionPanel">
+      <div class="qnum" id="qnum">Spørsmål 1</div>
+      <div class="questionText" id="questionText"></div>
+      <img id="qimg" class="qimg hidden" alt="">
+      <button class="speakAll" id="speakAll">🔊 Les hele spørsmålet</button>
+      <div class="options" id="options"></div>
+    </article>
+
+    <div class="tools">
+      <label>Hastighet
+        <select id="rate">
+          <option value="0.75">0,75×</option>
+          <option value="0.9" selected>0,90×</option>
+          <option value="1">1,00×</option>
+          <option value="1.15">1,15×</option>
+          <option value="1.3">1,30×</option>
+        </select>
+      </label>
+      <label>Stemme
+        <select id="voice"></select>
+      </label>
+      <label class="modeToggle"><input type="checkbox" id="hideText"> Skjul tekst visuelt</label>
+      <button class="btn" id="stop">■ Stopp lyd</button>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="prev">← Forrige</button>
+      <button class="btn ghost" id="backToPicker">Bytt prøve</button>
+      <button class="btn primary" id="next">Neste →</button>
+    </div>
+    <p class="small">Tips: Du kan også bruke piltastene for forrige/neste. Opplesningen går aldri videre automatisk.</p>
+  </section>
+
+  <section id="finished" class="questionPanel endPanel hidden">
+    <div class="kicker">Ferdig</div>
+    <h2>Det var siste spørsmål. Prøven er ferdig opplest.</h2>
+    <button class="btn primary" id="restart">Tilbake til valg av prøve</button>
+  </section>
+</main>
+
+<script src="../assets/questions.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>
