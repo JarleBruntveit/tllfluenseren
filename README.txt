@@ -5,7 +5,9 @@ Dette er en statisk nettside som kan publiseres uten database eller serverkode.
 
 INNHOLD
 - index.html: forside
-- truck/index.html: opplesningsverktøy
+- truck/index.html: Truck-seksjonen (oversikt)
+- truck/prove/index.html: opplesningsverktøy for truckførerprøven
+- truck/nivaer/index.html: truckopplæring i tre nivåer (egenvurdering med bilde/video)
 - assets/questions.js: begge truckprøvene, uten fasit
 - assets/app.js: opplesning og navigasjon
 - assets/styles.css: design
@@ -36,3 +38,10 @@ VERSJON 1.2
 - Hele tekstfeltet markeres mens det leses.
 - Ordmarkering følger talen når nettleseren støtter ordgrenser.
 - Norske/naturlige Microsoft-stemmer prioriteres automatisk dersom de finnes på enheten.
+
+
+VERSJON 2.0
+- Ny Truck-seksjon på /truck/ med to verktøy.
+- Truckprøven er flyttet til /truck/prove/.
+- Nytt verktøy: Truckopplæring i tre nivåer (/truck/nivaer/). Eleven vurderer 27 punkter,
+  legger ved bilder/video og laster ned én innleveringsfil. Alt lagres lokalt i elevens nettleser.

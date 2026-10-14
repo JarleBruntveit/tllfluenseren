@@ -34,7 +34,7 @@ window.TLL_TESTS = {
           "T4 – motvektstruck",
           "T3 – høytløftende plukktruck"
         ],
-        "image": "../assets/truck-t4.png",
+        "image": "../../assets/truck-t4.png",
         "alt": "Illustrasjon av en motvektstruck"
       },
       {
@@ -179,7 +179,7 @@ window.TLL_TESTS = {
           "2700 kg",
           "2300 kg"
         ],
-        "image": "../assets/lastdiagram.png",
+        "image": "../../assets/lastdiagram.png",
         "alt": "Lastdiagram med løftekapasitet i kilogram og tyngdepunktsavstand i millimeter"
       },
       {
@@ -372,7 +372,7 @@ window.TLL_TESTS = {
           "T4 – motvektstruck",
           "T3 – høytløftende plukktruck"
         ],
-        "image": "../assets/truck-t2.png",
+        "image": "../../assets/truck-t2.png",
         "alt": "Illustrasjon av en skyvemasttruck"
       },
       {
@@ -535,7 +535,7 @@ window.TLL_TESTS = {
           "2700 kg",
           "2300 kg"
         ],
-        "image": "../assets/lastdiagram.png",
+        "image": "../../assets/lastdiagram.png",
         "alt": "Lastdiagram med løftekapasitet i kilogram og tyngdepunktsavstand i millimeter"
       },
       {

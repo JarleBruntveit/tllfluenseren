@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Truckopplæring i tre nivåer – TLLfluenseren</title>
+<meta name="description" content="Egenvurdering i truckopplæring: Nybegynner, Trygg og Ekspert. Legg ved bilder og video som dokumentasjon og lever én samlet fil.">
+<link rel="stylesheet" href="../../assets/styles.css">
+<style>
+.nivaPage{--amber:#f0a95a;--amber-bg:rgba(240,169,90,.14);--green:var(--ok);--green-bg:rgba(140,214,174,.13);--red:#f28b82;
+  padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))}
+.nivaPage :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.nivaPage button,.nivaPage input,.nivaPage textarea{font:inherit;color:inherit}
+.nShell{width:min(900px,calc(100% - 32px));margin:0 auto}
+
+/* Hero */
+.nHero{padding:34px 0 6px;display:grid;grid-template-columns:1fr auto;gap:28px;align-items:end}
+.nHero h1{font-size:clamp(40px,7vw,68px);margin:10px 0 16px}
+.nHero p{color:var(--muted);font-size:17px;line-height:1.6;margin:0;max-width:58ch}
+.crumb{color:var(--muted);text-decoration:none;font-weight:750;font-size:14px}
+.crumb:hover{color:var(--text)}
+.mast{width:96px;text-align:center;color:#3a4c5c}
+.mast svg{display:block;margin:0 auto}
+.mast .num{font-size:32px;font-weight:950;line-height:1;color:var(--text)}
+.mast .cap{font-size:13px;color:var(--muted)}
+#carriage{transition:transform .7s cubic-bezier(.3,.9,.3,1)}
+@media (prefers-reduced-motion:reduce){#carriage{transition:none}}
+
+.student{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;margin:26px 0 0}
+.field label{display:block;font-size:14px;font-weight:800;margin-bottom:6px;color:var(--muted)}
+.field input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color-scheme:dark}
+.field input:focus{border-color:var(--accent);outline:none}
+
+/* Level tabs */
+.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:30px 0 0}
+.levels button{appearance:none;border:1px solid var(--line);background:var(--panel);border-radius:16px;padding:14px 16px 16px;text-align:left;cursor:pointer;position:relative;overflow:hidden}
+.levels button:hover{border-color:#4d6579}
+.levels .step{font-size:12px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#657584}
+.levels .lname{display:block;font-weight:950;font-size:clamp(20px,3.6vw,26px);letter-spacing:-.02em;margin:4px 0 2px}
+.levels .lcount{font-size:13px;color:var(--muted)}
+.levels .bar{position:absolute;left:0;bottom:0;height:4px;background:var(--ok);transition:width .4s}
+.levels button[aria-selected="true"]{border-color:var(--accent);box-shadow:inset 0 3px 0 var(--accent);background:linear-gradient(180deg,#17232e,var(--panel))}
+.levels button[aria-selected="true"] .step{color:var(--accent)}
+
+/* Items */
+.level-intro{margin:22px 0 12px;color:var(--muted)}
+ol.items{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+li.item{background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--line);border-radius:16px}
+li.item[data-status="1"]{border-left-color:var(--amber)}
+li.item[data-status="2"]{border-left-color:var(--green)}
+.row{display:grid;gap:12px;padding:16px 16px 14px}
+.row .text{font-weight:800;font-size:18px;line-height:1.35}
+.row .meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0f1820}
+.seg button{appearance:none;border:0;background:transparent;padding:8px 13px;font-size:15px;font-weight:700;cursor:pointer;color:var(--muted);border-right:1px solid var(--line)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"][data-v="0"]{background:#223241;color:var(--text)}
+.seg button[aria-pressed="true"][data-v="1"]{background:var(--amber-bg);color:var(--amber)}
+.seg button[aria-pressed="true"][data-v="2"]{background:var(--green-bg);color:var(--green)}
+.toggle{appearance:none;border:0;background:none;padding:6px 2px;cursor:pointer;font-size:15px;font-weight:750;color:var(--muted);text-decoration:underline;text-underline-offset:4px}
+.toggle:hover{color:var(--text)}
+.toggle .badge{display:inline-block;min-width:22px;padding:0 6px;margin-left:6px;border-radius:11px;background:var(--accent);color:#111820;font-size:13px;text-align:center;text-decoration:none}
+.toggle .badge.none{background:transparent;color:#657584;border:1px solid var(--line)}
+.doc{padding:0 16px 18px;display:none;border-top:1px solid var(--line);margin-top:2px}
+li.item.open .doc{display:block}
+.doc label.lbl{display:block;font-size:14px;font-weight:800;margin:14px 0 6px;color:var(--muted)}
+.doc textarea{width:100%;min-height:86px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#0f1820;resize:vertical;line-height:1.5}
+.doc textarea:focus{border-color:var(--accent);outline:none}
+.addmedia{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.nivaPage .btn{display:inline-flex;align-items:center;gap:8px}
+.nivaPage .btn svg{width:18px;height:18px}
+.nivaPage .btn[disabled]{opacity:.5;cursor:progress}
+.hint{font-size:14px;color:var(--muted);margin:10px 0 0}
+.err{font-size:14px;color:var(--red);margin:8px 0 0}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin-top:12px}
+.thumb{position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;background:#0b1117;border:1px solid var(--line)}
+.thumb img,.thumb video{width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in}
+.thumb .kind{position:absolute;left:6px;bottom:6px;background:rgba(11,17,23,.85);color:#fff;font-size:12px;padding:1px 7px;border-radius:6px}
+.thumb .rm{position:absolute;top:5px;right:5px;width:30px;height:30px;border-radius:50%;border:0;background:rgba(245,247,249,.92);color:#111820;cursor:pointer;font-size:18px;line-height:30px;padding:0}
+
+/* Dock */
+.dock{position:fixed;left:0;right:0;bottom:0;background:rgba(11,17,23,.94);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+.dock .nShell{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+.dock .sum{font-size:15px;color:var(--muted)}
+.dock .sum strong{font-size:22px;color:var(--text);margin-right:4px}
+
+/* Dialogs */
+.nivaPage dialog{border:1px solid var(--line);border-radius:20px;padding:0;max-width:min(560px,94vw);background:var(--panel);color:var(--text);box-shadow:var(--shadow)}
+.nivaPage dialog::backdrop{background:rgba(5,8,11,.7)}
+.dlg{padding:26px}
+.dlg h2{font-size:30px;letter-spacing:-.03em;margin:0 0 10px;line-height:1.05}
+.dlg p,.dlg li{color:var(--muted);line-height:1.55}
+.dlg b{color:var(--text)}
+.dlg ul{padding-left:20px;margin:10px 0}
+.dlg .row-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+#viewer{max-width:96vw;background:#000;border-color:#000}
+#viewer .v{display:flex;flex-direction:column}
+#viewer img,#viewer video{max-width:94vw;max-height:80vh;display:block;margin:0 auto}
+#viewer .close{align-self:flex-end;margin:8px}
+.foot{margin:34px 0 0;font-size:14px;color:var(--muted);line-height:1.6}
+.foot .toggle{font-size:14px}
+
+@media (max-width:620px){
+  .nHero{grid-template-columns:1fr}
+  .mast{display:none}
+  .student{grid-template-columns:1fr 1fr}
+  .student .field:first-child{grid-column:1/-1}
+  .levels{gap:6px;grid-template-columns:1.3fr 1fr 1fr}
+  .levels button{padding:12px 8px 14px}
+  .levels .lname{font-size:clamp(13px,4vw,17px);letter-spacing:-.01em;white-space:nowrap}
+  .levels .lcount{font-size:12px}
+  .dock .sum .long{display:none}
+  .seg button{padding:8px 10px;font-size:14px}
+  .nivaPage .homeNav{display:none}
+}
+</style>
+</head>
+<body class="homePage nivaPage">
+<div class="wrap">
+  <header class="topbar homeTopbar">
+    <a class="brand" href="../../" aria-label="TLLfluenseren forside">
+      <span class="brandmark">TLL</span>
+      <span>TLLfluenseren <small>Truck · Opplæring i tre nivåer</small></span>
+    </a>
+    <a class="btn ghost" href="../">Til Truck</a>
+  </header>
+</div>
+
+<main class="nShell">
+  <header class="nHero">
+    <div>
+      <a class="crumb" href="../">← Truck</a>
+      <h1>Truckopplæring<br>i tre nivåer</h1>
+      <p>Vurder deg selv på hvert punkt, og legg ved bilder eller video som viser at du kan det. Når du er ferdig, lager du en innleveringsfil og leverer den til læreren.</p>
+    </div>
+    <div class="mast" aria-hidden="true">
+      <svg width="70" height="130" viewBox="0 0 70 130">
+        <rect x="14" y="4" width="6" height="118" fill="currentColor"/>
+        <rect x="30" y="4" width="6" height="118" fill="currentColor"/>
+        <rect x="8" y="122" width="56" height="5" fill="currentColor"/>
+        <g id="carriage" style="transform:translateY(0px)">
+          <rect x="10" y="98" width="30" height="12" fill="#f2b84b"/>
+          <rect x="36" y="108" width="30" height="4" fill="#f2b84b"/>
+          <rect x="38" y="96" width="26" height="4" fill="#B98A4E"/>
+          <rect x="38" y="104" width="26" height="4" fill="#B98A4E"/>
+          <rect x="40" y="100" width="4" height="4" fill="#B98A4E"/>
+          <rect x="49" y="100" width="4" height="4" fill="#B98A4E"/>
+          <rect x="58" y="100" width="4" height="4" fill="#B98A4E"/>
+        </g>
+      </svg>
+      <div class="num" id="gaugeNum">0</div>
+      <div class="cap" id="gaugeCap">av 27 mestret</div>
+    </div>
+  </header>
+
+  <div class="student">
+    <div class="field"><label for="navn">Navn</label><input id="navn" autocomplete="name" placeholder="Fornavn Etternavn"></div>
+    <div class="field"><label for="klasse">Klasse</label><input id="klasse" placeholder="2TLLB"></div>
+    <div class="field"><label for="dato">Dato</label><input id="dato" type="date"></div>
+  </div>
+
+  <nav class="levels" role="tablist" aria-label="Nivåer" id="tabs"></nav>
+  <p class="level-intro" id="levelIntro"></p>
+  <ol class="items" id="items"></ol>
+
+  <p class="foot">Arbeidet ditt lagres automatisk i denne nettleseren på denne enheten. Bruk samme enhet og nettleser hver gang. Ingenting lastes opp til nettstedet.
+    <button class="toggle" id="resetBtn" type="button">Slett alt og start på nytt</button></p>
+</main>
+
+<div class="dock"><div class="nShell">
+  <div class="sum" aria-live="polite"><strong id="dockNum">0 / 27</strong> <span class="long">punkter mestret</span> <span id="dockMedia"></span></div>
+  <button class="btn primary" id="submitBtn" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 3v12M6 9l6-6 6 6M4 17v4h16v-4"/></svg>
+    Lag innleveringsfil
+  </button>
+</div></div>
+
+<dialog id="submitDlg"><div class="dlg">
+  <h2>Lag innleveringsfil</h2>
+  <div id="submitBody"></div>
+  <div class="row-btns" id="submitBtns"></div>
+</div></dialog>
+
+<dialog id="viewer"><div class="v">
+  <button class="btn close" type="button" id="viewerClose">Lukk</button>
+  <div id="viewerBody"></div>
+</div></dialog>
+
+<input type="file" id="filePick" accept="image/*,video/*" multiple hidden>
+
+<script>
+const LOGO = "data:image/png;base64,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";
+const LEVELS = [
+  { id:"n", name:"Nybegynner", intro:"Grunnleggende betjening. Her viser du at du kan kjøre trucken trygt.", items:[
+    "Kunne gjennomføre en daglig kontroll",
+    "Betjener trucken på en trygg måte uten hinder",
+    "Klarer å plassere drivhjulene korrekt i forhold til hindringer som skal forseres",
+    "Klarer å bruke tårnet både når lasten skal plasseres og hentes"
+  ]},
+  { id:"t", name:"Trygg", intro:"Du kjører sikkert i ulike situasjoner og forstår hvorfor.", items:[
+    "Har grunnleggende kunnskap om truckens lastediagram",
+    "Forklare truckens hovedkomponenter",
+    "Beskrive truckens sikkerhetsfunksjoner",
+    "Betjener trucken trygt gjennom forskjellige hinder",
+    "Klarer å vurdere om det skal rygges eller kjøre fremover, basert på lasten og omgivelsen",
+    "Skjønner de mest brukte lastsikringssymbolene",
+    "Klarer å stable paller i truckens høyde på en trygg og sikker måte",
+    "Kan vise og forstå alle grunnleggende signaler",
+    "Kan sette truckene på lading",
+    "Kan fylle drivstoff på truckene",
+    "Kan bruke ekstrautstyr på en trygg og sikker måte",
+    "Kan forklare enkel sikring av last på trucken"
+  ]},
+  { id:"e", name:"Ekspert", intro:"Du kan forklare, vedlikeholde og lære bort.", items:[
+    "I en daglig kontroll kunne forklare virkemåten til alle komponentene",
+    "Vite hvor hver enkelt av bryterne er og hva som skjer når de brukes den ene eller andre veien",
+    "Skjønner truckens lastediagram og kan lære det videre",
+    "Kunne utføre enkelt vedlikehold og service",
+    "Klarer å stable paller over truckens høyde på en trygg og sikker måte",
+    "Betjener trucken raskt og trygt gjennom forskjellige hinder",
+    "Skjønner alle lasthåndteringssymbolene",
+    "Kan sette truckene på lading og identifisere faremomenter",
+    "Kan fylle drivstoff på truckene og identifisere faremomenter",
+    "Kan bruke ekstrautstyr på en trygg og sikker måte og kjenne til godkjenninger som er nødvendig",
+    "Klarer å sikre alle typer last på trucken"
+  ]}
+];
+LEVELS.forEach(l => l.items = l.items.map((text,i) => ({ id:l.id+(i+1), text })));
+const ALL = LEVELS.flatMap(l => l.items);
+const STATUS = ["Ikke startet","Øver","Mestrer"];
+const KEY = "truck-nivaa-v1";
+const MAX_VIDEO_MB = 150;
+
+/* ---------- storage ---------- */
+let state = { student:{navn:"",klasse:"",dato:new Date().toISOString().slice(0,10)}, items:{}, level:"n" };
+try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.items) state = Object.assign(state, s); } catch(e){}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){} }
+function st(id){ return state.items[id] || (state.items[id] = { status:0, note:"", media:[] }); }
+
+const mem = new Map();
+let dbP = null;
+function db(){
+  if (dbP) return dbP;
+  dbP = new Promise(res => {
+    try {
+      const r = indexedDB.open("truck-nivaa-media", 1);
+      r.onupgradeneeded = () => r.result.createObjectStore("m");
+      r.onsuccess = () => res(r.result);
+      r.onerror = () => res(null);
+    } catch(e){ res(null); }
+  });
+  return dbP;
+}
+async function putBlob(id, blob){
+  mem.set(id, blob);
+  const d = await db(); if (!d) return;
+  await new Promise(res => { try { const t = d.transaction("m","readwrite"); t.objectStore("m").put(blob,id); t.oncomplete = res; t.onerror = res; } catch(e){ res(); } });
+}
+async function getBlob(id){
+  if (mem.has(id)) return mem.get(id);
+  const d = await db(); if (!d) return null;
+  const b = await new Promise(res => { try { const q = d.transaction("m").objectStore("m").get(id); q.onsuccess = () => res(q.result||null); q.onerror = () => res(null); } catch(e){ res(null); } });
+  if (b) mem.set(id, b);
+  return b;
+}
+async function delBlob(id){
+  mem.delete(id);
+  const d = await db(); if (!d) return;
+  try { d.transaction("m","readwrite").objectStore("m").delete(id); } catch(e){}
+}
+async function clearBlobs(){
+  mem.clear();
+  const d = await db(); if (!d) return;
+  try { d.transaction("m","readwrite").objectStore("m").clear(); } catch(e){}
+}
+const urls = new Map();
+async function urlFor(id){
+  if (urls.has(id)) return urls.get(id);
+  const b = await getBlob(id); if (!b) return null;
+  const u = URL.createObjectURL(b); urls.set(id,u); return u;
+}
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const mb = n => (n/1048576).toFixed(n > 10485760 ? 0 : 1).replace(".",",") + " MB";
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+
+function compressImage(file){
+  return new Promise(resolve => {
+    if (!/^image\/(jpeg|png|webp)$/.test(file.type)) return resolve(file);
+    const img = new Image(), u = URL.createObjectURL(file);
+    img.onload = () => {
+      const max = 1600, s = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement("canvas");
+      c.width = Math.round(img.width*s); c.height = Math.round(img.height*s);
+      c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+      URL.revokeObjectURL(u);
+      c.toBlob(b => resolve(b && b.size < file.size ? b : file), "image/jpeg", .82);
+    };
+    img.onerror = () => { URL.revokeObjectURL(u); resolve(file); };
+    img.src = u;
+  });
+}
+
+/* ---------- counters ---------- */
+function counts(){
+  let m=0, media=0, size=0;
+  ALL.forEach(it => { const s = state.items[it.id]; if (!s) return; if (s.status===2) m++; media += s.media.length; s.media.forEach(x => size += x.size||0); });
+  return { m, media, size };
+}
+function updateCounters(){
+  const c = counts();
+  $("#gaugeNum").textContent = c.m;
+  $("#gaugeCap").textContent = "av " + ALL.length + " mestret";
+  $("#carriage").style.transform = "translateY(" + (-(c.m/ALL.length)*92) + "px)";
+  $("#dockNum").textContent = c.m + " / " + ALL.length;
+  $("#dockMedia").textContent = c.media ? "· " + c.media + (c.media===1?" vedlegg":" vedlegg") : "";
+  LEVELS.forEach(l => {
+    const b = document.querySelector('[data-level="'+l.id+'"]'); if (!b) return;
+    const done = l.items.filter(it => (state.items[it.id]||{}).status===2).length;
+    b.querySelector(".lcount").textContent = done + " av " + l.items.length + " mestret";
+    b.querySelector(".bar").style.width = (done/l.items.length*100) + "%";
+  });
+}
+
+/* ---------- render ---------- */
+const open = new Set();
+function renderTabs(){
+  const nav = $("#tabs"); nav.innerHTML = "";
+  LEVELS.forEach((l,i) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.setAttribute("role","tab"); b.dataset.level = l.id;
+    b.setAttribute("aria-selected", state.level===l.id);
+    b.innerHTML = '<span class="step">Nivå '+(i+1)+'</span><span class="lname">'+l.name+'</span><span class="lcount"></span><span class="bar"></span>';
+    b.onclick = () => { state.level = l.id; save(); renderTabs(); renderList(); updateCounters(); };
+    nav.appendChild(b);
+  });
+}
+function renderList(){
+  const l = LEVELS.find(x => x.id===state.level) || LEVELS[0];
+  $("#levelIntro").textContent = l.intro;
+  const ol = $("#items"); ol.innerHTML = "";
+  l.items.forEach(it => ol.appendChild(renderItem(it)));
+}
+function renderItem(it){
+  const s = st(it.id);
+  const li = document.createElement("li");
+  li.className = "item" + (open.has(it.id) ? " open" : "");
+  li.dataset.status = s.status; li.id = "it-"+it.id;
+  const n = s.media.length;
+  li.innerHTML =
+    '<div class="row"><div class="text">'+esc(it.text)+'</div>'+
+    '<div class="meta"><div class="seg" role="group" aria-label="Status">'+
+      STATUS.map((t,v) => '<button type="button" data-v="'+v+'" aria-pressed="'+(s.status===v)+'">'+t+'</button>').join("")+
+    '</div><button class="toggle" type="button" aria-expanded="'+open.has(it.id)+'">Dokumentasjon<span class="badge'+(n?"":" none")+'">'+n+'</span></button></div></div>'+
+    '<div class="doc">'+
+      '<label class="lbl" for="note-'+it.id+'">Hva gjorde du, og hva lærte du?</label>'+
+      '<textarea id="note-'+it.id+'" placeholder="Skriv kort hva bildet eller videoen viser.">'+esc(s.note)+'</textarea>'+
+      '<div class="addmedia">'+
+        '<button class="btn" type="button" data-add><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg>Legg til bilde eller video</button>'+
+      '</div>'+
+      '<p class="hint">Du kan ta bilde/filme direkte med mobilen, eller velge fra galleriet. Hold videoer korte (under 1 minutt).</p>'+
+      '<p class="err" hidden></p>'+
+      '<div class="thumbs"></div>'+
+    '</div>';
+
+  li.querySelectorAll(".seg button").forEach(b => b.onclick = () => {
+    s.status = +b.dataset.v; save();
+    if (s.status>0 && !open.has(it.id)) open.add(it.id);
+    li.replaceWith(renderItem(it)); updateCounters();
+  });
+  li.querySelector(".toggle").onclick = () => {
+    open.has(it.id) ? open.delete(it.id) : open.add(it.id);
+    li.classList.toggle("open"); li.querySelector(".toggle").setAttribute("aria-expanded", open.has(it.id));
+  };
+  const ta = li.querySelector("textarea");
+  ta.oninput = () => { s.note = ta.value; save(); };
+  li.querySelector("[data-add]").onclick = () => pickFor(it, li);
+  fillThumbs(it, li);
+  return li;
+}
+async function fillThumbs(it, li){
+  const s = st(it.id), box = li.querySelector(".thumbs");
+  for (const m of s.media){
+    const u = await urlFor(m.id);
+    const d = document.createElement("div"); d.className = "thumb";
+    const isV = m.type.startsWith("video");
+    if (!u){ d.innerHTML = '<span class="kind">Mangler fil</span>'; }
+    else if (isV){ d.innerHTML = '<video src="'+u+'#t=0.1" muted playsinline preload="metadata"></video><span class="kind">Video · '+mb(m.size)+'</span>'; }
+    else { d.innerHTML = '<img src="'+u+'" alt="Bilde: '+esc(m.name)+'"><span class="kind">Bilde</span>'; }
+    const rm = document.createElement("button"); rm.className="rm"; rm.type="button"; rm.textContent="×"; rm.setAttribute("aria-label","Fjern "+m.name);
+    rm.onclick = async () => {
+      if (!confirm("Fjerne dette vedlegget?")) return;
+      s.media = s.media.filter(x => x.id!==m.id); save(); await delBlob(m.id);
+      if (urls.has(m.id)){ URL.revokeObjectURL(urls.get(m.id)); urls.delete(m.id); }
+      li.replaceWith(renderItem(it)); updateCounters();
+    };
+    const media = d.querySelector("img,video");
+    if (media) media.onclick = () => showViewer(u, isV);
+    d.appendChild(rm); box.appendChild(d);
+  }
+}
+function pickFor(it, li){
+  const inp = $("#filePick"); inp.value = "";
+  inp.onchange = async () => {
+    const files = [...inp.files]; if (!files.length) return;
+    const s = st(it.id), err = li.querySelector(".err"), btn = li.querySelector("[data-add]");
+    const problems = [];
+    btn.disabled = true; btn.lastChild.textContent = "Lagrer …";
+    for (const f of files){
+      if (!/^(image|video)\//.test(f.type)){ problems.push(f.name+" er ikke et bilde eller en video."); continue; }
+      if (f.type.startsWith("video") && f.size > MAX_VIDEO_MB*1048576){ problems.push(f.name+" er "+mb(f.size)+". Maks er "+MAX_VIDEO_MB+" MB – film et kortere klipp."); continue; }
+      const blob = f.type.startsWith("image") ? await compressImage(f) : f;
+      const id = uid();
+      await putBlob(id, blob);
+      s.media.push({ id, name:f.name, type: blob.type || f.type, size: blob.size });
+    }
+    save();
+    open.add(it.id);
+    const fresh = renderItem(it); li.replaceWith(fresh); updateCounters();
+    if (problems.length){ const e = fresh.querySelector(".err"); e.textContent = problems.join(" "); e.hidden = false; }
+  };
+  inp.click();
+}
+function showViewer(u, isV){
+  $("#viewerBody").innerHTML = isV ? '<video src="'+u+'" controls autoplay playsinline></video>' : '<img src="'+u+'" alt="">';
+  $("#viewer").showModal();
+}
+$("#viewerClose").onclick = () => { $("#viewerBody").innerHTML = ""; $("#viewer").close(); };
+$("#viewer").addEventListener("close", () => $("#viewerBody").innerHTML = "");
+
+/* ---------- student fields ---------- */
+["navn","klasse","dato"].forEach(k => {
+  const el = $("#"+k); el.value = state.student[k] || "";
+  el.oninput = () => { state.student[k] = el.value; save(); };
+});
+
+/* ---------- report ---------- */
+function blobToDataURL(b){ return new Promise((res,rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(b); }); }
+async function buildReport(){
+  const S = state.student, c = counts();
+  const parts = [];
+  parts.push('<!DOCTYPE html><html lang="no"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'+
+  '<title>Truck – '+esc(S.navn)+'</title><style>'+
+  'body{font-family:Verdana,"Segoe UI",sans-serif;color:#23303A;background:#fff;margin:0;line-height:1.5}'+
+  '.w{max-width:860px;margin:0 auto;padding:20px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}'+
+  '.top img{height:34px}.hz{height:10px;background:repeating-linear-gradient(-45deg,#F2C200 0 14px,#23303A 14px 28px);margin:14px 0 20px}'+
+  'h1{font-family:"Arial Narrow",Arial,sans-serif;font-size:36px;margin:0 0 4px;line-height:1}h2{font-family:"Arial Narrow",Arial,sans-serif;font-size:26px;margin:32px 0 6px;border-bottom:3px solid #23303A;padding-bottom:4px}'+
+  'table.info td{padding:2px 16px 2px 0}.it{border-left:6px solid #C8CCC3;padding:10px 14px;margin:0 0 10px;background:#F4F5F1;break-inside:avoid}'+
+  '.it.s1{border-left-color:#A85A08}.it.s2{border-left-color:#2E7A4C}.t{font-weight:bold}.st{font-size:14px;font-weight:bold}'+
+  '.s1 .st{color:#A85A08}.s2 .st{color:#2E7A4C}.s0 .st{color:#5C6770}.note{white-space:pre-wrap;margin:6px 0 0}'+
+  '.m{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:10px}.m img,.m video{width:100%;border-radius:4px;display:block;background:#000}'+
+  '.m figcaption{font-size:12px;color:#5C6770}.tb{margin:14px 0 0}.tb label{margin-right:16px;font-size:14px}'+
+  '@media print{.np{display:none}.m video{display:none}}</style></head><body><div class="w">'+
+  '<div class="top"><img src="'+LOGO+'" alt="Haugaland videregående skole"><button class="np" onclick="print()">Skriv ut</button></div><div class="hz"></div>'+
+  '<h1>Truckopplæring – innlevering</h1>'+
+  '<table class="info"><tr><td>Navn</td><td><b>'+esc(S.navn)+'</b></td></tr><tr><td>Klasse</td><td>'+esc(S.klasse)+'</td></tr>'+
+  '<tr><td>Dato</td><td>'+esc(S.dato)+'</td></tr><tr><td>Mestret</td><td><b>'+c.m+' av '+ALL.length+'</b> punkter</td></tr>'+
+  '<tr><td>Vedlegg</td><td>'+c.media+'</td></tr><tr><td>Laget</td><td>'+new Date().toLocaleString("nb-NO")+'</td></tr></table>');
+  for (const l of LEVELS){
+    const done = l.items.filter(it => (state.items[it.id]||{}).status===2).length;
+    parts.push('<h2>'+l.name+' <small style="font-size:16px;font-weight:normal">('+done+' av '+l.items.length+' mestret)</small></h2>');
+    for (const it of l.items){
+      const s = state.items[it.id] || {status:0,note:"",media:[]};
+      parts.push('<div class="it s'+s.status+'"><div class="t">'+esc(it.text)+'</div><div class="st">Elevens vurdering: '+STATUS[s.status]+'</div>');
+      if (s.note) parts.push('<p class="note">'+esc(s.note)+'</p>');
+      if (s.media.length){
+        parts.push('<div class="m">');
+        for (const m of s.media){
+          const b = await getBlob(m.id); if (!b) continue;
+          const du = await blobToDataURL(b);
+          parts.push('<figure style="margin:0">'+(m.type.startsWith("video") ? '<video controls preload="metadata" src="'+du+'"></video>' : '<img src="'+du+'" alt="">')+'<figcaption>'+esc(m.name)+'</figcaption></figure>');
+        }
+        parts.push('</div>');
+      }
+      parts.push('<div class="tb">Lærer: <label><input type="checkbox"> Godkjent</label><label><input type="checkbox"> Må øve mer</label></div></div>');
+    }
+  }
+  parts.push('</div></body></html>');
+  return new Blob(parts, { type:"text/html" });
+}
+function fileName(){
+  const n = (state.student.navn || "elev").trim().replace(/\s+/g,"_").replace(/[^\wæøåÆØÅ\-]/g,"");
+  return "Truck_innlevering_" + n + "_" + (state.student.dato || new Date().toISOString().slice(0,10)) + ".html";
+}
+
+$("#submitBtn").onclick = () => {
+  const c = counts(), body = $("#submitBody"), btns = $("#submitBtns");
+  const noDoc = ALL.filter(it => { const s = state.items[it.id]; return s && s.status===2 && !s.media.length; }).length;
+  const notes = [];
+  if (!state.student.navn.trim()) notes.push("<li>Skriv inn navnet ditt øverst før du leverer.</li>");
+  if (noDoc) notes.push("<li>"+noDoc+" punkt"+(noDoc===1?"":"er")+" står som «Mestrer» uten bilde eller video.</li>");
+  if (c.size > 200*1048576) notes.push("<li>Filen blir stor (ca. "+mb(c.size*1.37)+"). Det kan ta tid å laste opp.</li>");
+  body.innerHTML =
+    '<p>Du har <b>'+c.m+' av '+ALL.length+'</b> punkter på «Mestrer» og <b>'+c.media+'</b> vedlegg. Filen blir omtrent <b>'+mb(c.size*1.37+60000)+'</b>.</p>'+
+    (notes.length ? '<ul>'+notes.join("")+'</ul>' : '')+
+    '<p>Filen samler alt – tekst, bilder og video – i én fil. Last den opp der læreren har sagt (for eksempel i itslearning eller Teams).</p>';
+  btns.innerHTML = "";
+  const close = document.createElement("button"); close.className="btn ghost"; close.type="button"; close.textContent="Avbryt"; close.onclick = () => $("#submitDlg").close();
+  const dl = document.createElement("button"); dl.className="btn primary"; dl.type="button"; dl.textContent="Last ned innleveringsfil";
+  if (!state.student.navn.trim()) dl.disabled = true;
+  dl.onclick = async () => {
+    dl.disabled = true; dl.textContent = "Lager fil …";
+    try {
+      const blob = await buildReport();
+      const file = new File([blob], fileName(), { type:"text/html" });
+      const a = document.createElement("a"); a.href = URL.createObjectURL(file); a.download = file.name;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 60000);
+      dl.textContent = "Lastet ned";
+      body.insertAdjacentHTML("beforeend", '<p><b>Filen er lastet ned</b> som «'+esc(file.name)+'». Finn den i Nedlastinger og lever den.</p>');
+      if (navigator.canShare && navigator.canShare({ files:[file] })){
+        const sh = document.createElement("button"); sh.className="btn"; sh.type="button"; sh.textContent="Del filen direkte";
+        sh.onclick = () => navigator.share({ files:[file], title:"Truck – innlevering" }).catch(()=>{});
+        btns.appendChild(sh);
+      }
+    } catch(e){
+      dl.disabled = false; dl.textContent = "Prøv igjen";
+      body.insertAdjacentHTML("beforeend", '<p class="err">Filen kunne ikke lages. Prøv å fjerne noen store videoer og prøv igjen.</p>');
+    }
+  };
+  btns.append(dl, close);
+  $("#submitDlg").showModal();
+};
+
+$("#resetBtn").onclick = async () => {
+  if (!confirm("Dette sletter alle vurderinger, notater, bilder og videoer i denne nettleseren. Vil du fortsette?")) return;
+  await clearBlobs(); urls.forEach(u => URL.revokeObjectURL(u)); urls.clear();
+  try { localStorage.removeItem(KEY); } catch(e){}
+  location.reload();
+};
+
+renderTabs(); renderList(); updateCounters();
+</script>
+</body>
+</html>

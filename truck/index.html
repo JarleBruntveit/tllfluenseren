@@ -3,79 +3,81 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Truckførerprøve – TLLfluenseren</title>
+<title>Truck – TLLfluenseren</title>
+<meta name="description" content="Truckopplæring på TLLfluenseren: truckførerprøven lest høyt, og egenvurdering i tre nivåer med bilde- og videodokumentasjon.">
 <link rel="stylesheet" href="../assets/styles.css">
+<style>
+  .truckHero{padding:64px 0 40px;max-width:760px}
+  .truckHero h1{font-size:clamp(46px,7vw,78px);margin:12px 0 20px}
+  .truckHero p{color:var(--muted);font-size:clamp(17px,2vw,20px);line-height:1.6;margin:0}
+  .truckTools{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:10px 0 90px}
+  .toolCard{position:relative;display:flex;flex-direction:column;min-height:340px;padding:28px;border:1px solid var(--line);border-radius:22px;
+    background:linear-gradient(180deg,var(--panel),#0e171f);text-decoration:none;color:var(--text);transition:border-color .2s}
+  .toolCard:hover{border-color:rgba(242,184,75,.6)}
+  .toolCard:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+  .toolCard .pillarIcon{position:absolute;right:24px;top:24px}
+  .toolCard h2{font-size:clamp(30px,3.4vw,40px);line-height:1.02;letter-spacing:-.03em;margin:54px 0 12px}
+  .toolCard p{color:var(--muted);line-height:1.6;margin:0 0 18px}
+  .toolCard ul{list-style:none;padding:0;margin:0 0 24px;display:grid;gap:8px;color:var(--muted);font-size:15px}
+  .toolCard li:before{content:"✓";color:var(--ok);font-weight:900;margin-right:10px}
+  .toolCard .go{margin-top:auto;color:var(--accent);font-weight:850}
+  .crumb{color:var(--muted);text-decoration:none;font-weight:750;font-size:14px}
+  .crumb:hover{color:var(--text)}
+  @media(max-width:760px){.truckTools{grid-template-columns:1fr}.toolCard{min-height:0}}
+</style>
 </head>
-<body class="playerPage">
-<header class="playerHeader">
-  <div class="wrap topbar" style="padding:0">
-    <a class="brand" href="../">
+<body class="homePage">
+<div class="wrap">
+  <header class="topbar homeTopbar">
+    <a class="brand" href="../" aria-label="TLLfluenseren forside">
       <span class="brandmark">TLL</span>
-      <span>TLLfluenseren <small>Truckførerprøve – opplesning</small></span>
+      <span>TLLfluenseren <small>Transport · Logistikk · Løfteoperasjoner · Livet</small></span>
     </a>
-    <a class="btn ghost" href="../">Forside</a>
-  </div>
-</header>
+    <nav class="homeNav" aria-label="Hovedmeny">
+      <a href="../#plattform">Utforsk</a>
+      <a href="./" aria-current="page" style="color:var(--text)">Truck</a>
+      <a href="../#om">Om</a>
+    </nav>
+  </header>
 
-<main class="playerShell">
-  <section id="picker">
-    <div class="kicker">Prosjekt 001</div>
-    <h1 style="font-size:clamp(38px,7vw,64px)">Truckførerprøve</h1>
-    <p class="notice">Dette verktøyet leser kun opp spørsmål og svaralternativer. Teksten markeres mens den leses. Det gis ingen fasit, hint, forklaringer eller vurdering av svar. Svar på det ordinære prøvearket.</p>
-    <div class="testPicker" style="margin-top:18px">
-      <button class="testCard" data-test="1"><span class="tag">40 spørsmål</span><h2>Teoriprøve 1</h2><p>Trykk for å starte opplesningen.</p></button>
-      <button class="testCard" data-test="2"><span class="tag">40 spørsmål</span><h2>Teoriprøve 2</h2><p>Trykk for å starte opplesningen.</p></button>
-    </div>
-  </section>
+  <main>
+    <section class="truckHero">
+      <a class="crumb" href="../">← Forsiden</a>
+      <h1>Truck</h1>
+      <p>Alt du trenger for truckopplæringen på ett sted. Øv til teoriprøven, og vis hva du mestrer i praksis – med bilder og video.</p>
+    </section>
 
-  <section id="player" class="hidden">
-    <div class="progressMeta">
-      <span id="testTitle">Teoriprøve</span>
-      <span id="counter">1 av 40</span>
-    </div>
-    <div class="progress" aria-hidden="true"><div id="bar"></div></div>
+    <section class="truckTools" aria-label="Truckverktøy">
+      <a class="toolCard" href="prove/">
+        <span class="pillarNumber">ØV</span><span class="pillarIcon" aria-hidden="true">🔊</span>
+        <h2>Truckførerprøven, lest høyt</h2>
+        <p>To teoriprøver med 40 spørsmål. Spørsmål og svaralternativer leses høyt, ett om gangen.</p>
+        <ul>
+          <li>Ingen fasit eller hint</li>
+          <li>Ingen registrering av svar</li>
+          <li>Eleven styrer opplesningen selv</li>
+        </ul>
+        <span class="go">Åpne truckprøven →</span>
+      </a>
 
-    <article class="questionPanel" id="questionPanel">
-      <div class="qnum" id="qnum">Spørsmål 1</div>
-      <div class="questionText" id="questionText"></div>
-      <img id="qimg" class="qimg hidden" alt="">
-      <button class="speakAll" id="speakAll">🔊 Les hele spørsmålet</button>
-      <div class="options" id="options"></div>
-    </article>
+      <a class="toolCard" href="nivaer/">
+        <span class="pillarNumber">VIS</span><span class="pillarIcon" aria-hidden="true">▲</span>
+        <h2>Truckopplæring i tre nivåer</h2>
+        <p>Nybegynner, Trygg og Ekspert – 27 punkter. Vurder deg selv og legg ved bilder eller video som dokumentasjon.</p>
+        <ul>
+          <li>Ta bilde eller film rett fra mobilen</li>
+          <li>Lagres bare på elevens egen enhet</li>
+          <li>Lever én samlet fil til læreren</li>
+        </ul>
+        <span class="go">Start egenvurderingen →</span>
+      </a>
+    </section>
+  </main>
 
-    <div class="tools">
-      <label>Hastighet
-        <select id="rate">
-          <option value="0.75">0,75×</option>
-          <option value="0.9" selected>0,90×</option>
-          <option value="1">1,00×</option>
-          <option value="1.15">1,15×</option>
-          <option value="1.3">1,30×</option>
-        </select>
-      </label>
-      <label>Stemme
-        <select id="voice"></select>
-      </label>
-      <label class="modeToggle"><input type="checkbox" id="hideText"> Skjul tekst visuelt</label>
-      <button class="btn" id="stop">■ Stopp lyd</button>
-    </div>
-
-    <div class="controls">
-      <button class="btn" id="prev">← Forrige</button>
-      <button class="btn ghost" id="backToPicker">Bytt prøve</button>
-      <button class="btn primary" id="next">Neste →</button>
-    </div>
-    <p class="small">Tips: Du kan også bruke piltastene for forrige/neste. Opplesningen går aldri videre automatisk.</p>
-  </section>
-
-  <section id="finished" class="questionPanel endPanel hidden">
-    <div class="kicker">Ferdig</div>
-    <h2>Det var siste spørsmål. Prøven er ferdig opplest.</h2>
-    <button class="btn primary" id="restart">Tilbake til valg av prøve</button>
-  </section>
-</main>
-
-<script src="../assets/questions.js"></script>
-<script src="../assets/app.js"></script>
+  <footer class="homeFooter">
+    <div class="brand footerBrand"><span class="brandmark">TLL</span><span>TLLfluenseren <small>Mer enn truck og logistikk.</small></span></div>
+    <div>© TLLfluenseren.no · laget for undervisning</div>
+  </footer>
+</div>
 </body>
 </html>
