@@ -1,0 +1,1267 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kap 1 Lager og terminal – TLLfluenseren</title>
+<meta name="description" content="Interaktive oppgaver til kapittel 1: Grunnleggende prinsipper ved lager- og terminalarbeid (Vg2 TLL)">
+<style>
+:root{
+  --bg:#0b1117; --panel:#111a23; --ink:#f5f7f9; --muted:#aab7c4; --line:#2b3a48;
+  --asphalt:#17232e; --yellow:#f2b84b; --yellow-ink:#111820;
+  --ok:#8cd6ae; --ok-bg:#12301f; --bad:#ff8a7a; --bad-bg:#3a1d1a;
+  --n1:#8cd6ae; --n2:#7db8f0; --n3:#f2955b;
+  --shadow:0 16px 50px rgba(0,0,0,.25);
+  --r:16px;
+}
+:root[data-theme="light"]{
+  --bg:#f3f1ec; --panel:#ffffff; --ink:#1b2128; --muted:#5c6670; --line:#d9d5cc;
+  --asphalt:#1f262e; --yellow:#f2b84b; --yellow-ink:#111820;
+  --ok:#1f8a4c; --ok-bg:#e3f4ea; --bad:#c0392b; --bad-bg:#fbe7e4;
+  --n1:#1f8a4c; --n2:#1d6fb8; --n3:#c4501b;
+  --shadow:0 4px 14px rgba(20,25,30,.06);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:radial-gradient(circle at 20% 0%,rgba(23,40,56,.9) 0,transparent 35%),var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:17px;line-height:1.5}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px}
+h1,h2,h3{font-family:inherit;font-weight:900;letter-spacing:-.02em;line-height:1.1;margin:0}
+
+/* Topp */
+header.top{background:var(--asphalt);color:#fff;border-bottom:6px solid var(--yellow);position:relative}
+header.top::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:6px;
+  background:repeating-linear-gradient(-45deg,var(--yellow) 0 14px,#1b2128 14px 28px);opacity:.9}
+.top .wrap{padding-top:22px;padding-bottom:26px}
+.crumbs{font-size:14px;color:#c9d0d6;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.crumbs a{color:#fff;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.35)}
+.top h1{font-size:clamp(30px,6vw,46px);margin-top:8px;letter-spacing:.2px}
+.top .sub{color:#c9d0d6;margin-top:6px;max-width:60ch}
+.km{margin-top:14px;display:inline-flex;gap:10px;align-items:flex-start;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);padding:10px 12px;border-radius:8px;font-size:15px;max-width:100%}
+.km b{color:var(--yellow);white-space:nowrap}
+
+/* Nivåvelger */
+.levelbar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.levelbar .wrap{display:flex;gap:10px;align-items:center;padding-top:10px;padding-bottom:10px;flex-wrap:wrap}
+.levelbar .lbl{font-weight:600;font-size:14px;color:var(--muted);margin-right:2px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{border:2px solid var(--line);background:var(--panel);padding:5px 12px;border-radius:999px;font-weight:600;font-size:15px}
+.seg button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.seg button .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:1px}
+.tools{margin-left:auto;display:flex;gap:6px}
+.iconbtn{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:5px 10px;font-size:16px}
+@media (max-width:560px){
+  .levelbar .wrap{flex-wrap:nowrap;gap:6px}
+  .levelbar .lbl{display:none}
+  .seg{flex:1;min-width:0;flex-wrap:nowrap;overflow-x:auto;gap:4px;scrollbar-width:none}
+  .seg button{padding:4px 8px;font-size:13.5px;white-space:nowrap;border-width:1.5px}
+  .seg button .dot{width:7px;height:7px;margin-right:3px}
+  .tools{flex:none}
+}
+
+main{padding:22px 0 60px}
+.section-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:26px 0 12px}
+.section-h h2{font-size:26px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+
+/* Tema-kort (lokasjonsetiketter) */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.tcard{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);text-decoration:none;box-shadow:var(--shadow);overflow:hidden;transition:transform .12s}
+.tcard:hover{transform:translateY(-2px)}
+.tcard .lab{display:flex;align-items:stretch;border-bottom:1px solid var(--line)}
+.tcard .lok{background:var(--yellow);color:var(--yellow-ink);font-family:inherit;font-weight:800;font-size:22px;padding:8px 12px;letter-spacing:1px}
+.tcard .bars{flex:1;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 4px,var(--ink) 4px 5px,transparent 5px 9px,var(--ink) 9px 12px,transparent 12px 14px);opacity:.14;margin:8px 10px}
+.tcard .body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.tcard h3{font-size:22px}
+.tcard p{margin:0;color:var(--muted);font-size:15px}
+.prog{height:7px;background:var(--line);border-radius:4px;overflow:hidden;margin-top:auto}
+.prog i{display:block;height:100%;background:var(--ok);width:0}
+.progtxt{font-size:13px;color:var(--muted)}
+
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow)}
+.two{display:grid;grid-template-columns:1.4fr 1fr;gap:14px}
+@media (max-width:760px){.two{grid-template-columns:1fr}}
+.kort ul{margin:8px 0 0;padding-left:20px}
+.kort li{margin:4px 0}
+.reslist{list-style:none;margin:8px 0 0;padding:0}
+.reslist li{padding:7px 0;border-top:1px solid var(--line);display:flex;gap:8px;align-items:baseline}
+.reslist li:first-child{border-top:0}
+.tag{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 7px;border-radius:5px;background:var(--line);color:var(--ink);white-space:nowrap}
+.tag.ndla{background:#2b6cb0;color:#fff}
+.brandlink{display:inline-flex;gap:8px;align-items:center;text-decoration:none;font-weight:900;color:#fff;margin-bottom:10px}
+.brandlink .bm{width:30px;height:30px;border-radius:9px;background:var(--yellow);color:#111820;display:grid;place-items:center;font-size:11px}
+
+/* Aktivitetskort */
+.acts{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.act{display:flex;flex-direction:column;gap:8px;text-align:left;background:var(--panel);border:1px solid var(--line);border-left:6px solid var(--line);border-radius:var(--r);padding:12px 14px;box-shadow:var(--shadow);text-decoration:none}
+.act:hover{border-color:var(--ink)}
+.act[data-n="1"]{border-left-color:var(--n1)} .act[data-n="2"]{border-left-color:var(--n2)} .act[data-n="3"]{border-left-color:var(--n3)} .act[data-n="0"]{border-left-color:var(--yellow)}
+.act .kind{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;display:flex;justify-content:space-between;gap:6px}
+.act h4{margin:0;font-size:18px;font-weight:600;line-height:1.25}
+.act .done{color:var(--ok);font-weight:700}
+.lvl{font-size:12px;font-weight:700;padding:1px 8px;border-radius:999px;color:#111820;white-space:nowrap}
+.lvl.n1{background:var(--n1)} .lvl.n2{background:var(--n2)} .lvl.n3{background:var(--n3)} .lvl.n0{background:var(--yellow);color:var(--yellow-ink)}
+
+/* Aktivitetsvisning */
+.stage{max-width:760px;margin:0 auto}
+.stage-h{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px}
+.stage-h h2{font-size:28px}
+.instr{margin:0 0 14px;color:var(--muted)}
+.btn{border:2px solid var(--ink);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:8px;font-weight:700}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.yellow{background:var(--yellow);border-color:var(--yellow);color:var(--yellow-ink)}
+.btn:disabled{opacity:.4;cursor:default}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.spacer{flex:1}
+.counter{font-weight:600;color:var(--muted);font-size:15px}
+.say{border:1px solid var(--line);background:var(--panel);border-radius:999px;width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.say svg{width:18px;height:18px}
+
+/* Flashkort */
+.flash{perspective:1200px;height:260px;margin:6px 0 14px}
+.flash .inner{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d;cursor:pointer}
+.flash.flipped .inner{transform:rotateY(180deg)}
+.flash .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;border:1px solid var(--line)}
+.flash .front{background:var(--asphalt);color:#f5f7f9;font-family:inherit;font-size:clamp(28px,6vw,40px);font-weight:700}
+.flash .back{background:var(--panel);transform:rotateY(180deg);font-size:19px}
+.flash .hint{position:absolute;bottom:10px;left:0;right:0;font-size:13px;color:#aab3bb;font-weight:500}
+
+/* Quiz */
+.q{font-size:21px;font-weight:600;margin:4px 0 14px;display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;border:2px solid var(--line);background:var(--panel);border-radius:10px;padding:11px 14px;font-size:17px;display:flex;gap:10px;align-items:flex-start}
+.opt .k{font-weight:700;color:var(--muted);min-width:1.2em}
+.opt:hover:not(:disabled){border-color:var(--ink)}
+.opt.ok{border-color:var(--ok);background:var(--ok-bg)}
+.opt.bad{border-color:var(--bad);background:var(--bad-bg)}
+.opt:disabled{cursor:default}
+.fb{margin-top:12px;padding:12px 14px;border-radius:10px;border-left:5px solid var(--ok);background:var(--ok-bg)}
+.fb.bad{border-left-color:var(--bad);background:var(--bad-bg)}
+.meter{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin:6px 0 16px}
+.meter i{display:block;height:100%;background:var(--yellow);transition:width .3s}
+
+/* Koble */
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.match .col{display:grid;gap:8px;align-content:start}
+.mi{border:2px solid var(--line);background:var(--panel);border-radius:10px;padding:10px 12px;text-align:left;font-size:16px;min-height:48px}
+.mi.sel{border-color:var(--yellow);box-shadow:0 0 0 3px rgba(245,179,1,.35)}
+.mi.done{border-color:var(--ok);background:var(--ok-bg);cursor:default}
+.mi.wrong{animation:shake .35s;border-color:var(--bad)}
+.mi.left{font-weight:600}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+/* Rekkefølge */
+.olist{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.oi{display:flex;align-items:center;gap:10px;border:2px solid var(--line);background:var(--panel);border-radius:10px;padding:8px 10px}
+.oi .n{font-family:inherit;font-weight:800;font-size:22px;width:28px;text-align:center;color:var(--muted)}
+.oi .t{flex:1}
+.oi .mv{display:flex;flex-direction:column;gap:3px}
+.oi .mv button{border:1px solid var(--line);background:var(--bg);border-radius:6px;width:34px;height:26px;line-height:1;font-size:14px}
+.oi.ok{border-color:var(--ok);background:var(--ok-bg)}
+.oi.bad{border-color:var(--bad);background:var(--bad-bg)}
+
+/* Sortering */
+.sitems{display:grid;gap:10px}
+.si{border:2px solid var(--line);background:var(--panel);border-radius:10px;padding:10px 12px}
+.si .t{font-weight:600;margin-bottom:8px}
+.si .cats{display:flex;gap:6px;flex-wrap:wrap}
+.si .cats button{border:2px solid var(--line);background:var(--bg);border-radius:999px;padding:4px 12px;font-size:15px;font-weight:600}
+.si .cats button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.si.ok{border-color:var(--ok);background:var(--ok-bg)}
+.si.bad{border-color:var(--bad);background:var(--bad-bg)}
+.si .why{font-size:14px;margin-top:6px;color:var(--muted)}
+
+/* Regning */
+.calc .task{font-size:19px;margin-bottom:12px}
+.calc input{font:inherit;font-size:22px;width:150px;padding:8px 10px;border:2px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink)}
+.calc .unit{font-weight:600;color:var(--muted)}
+.steps{margin:8px 0 0;padding-left:20px}
+
+/* Refleksjon */
+textarea{width:100%;min-height:150px;font:inherit;padding:10px 12px;border:2px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);resize:vertical}
+.checks{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:6px}
+.checks label{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
+.checks input{width:20px;height:20px;margin-top:3px;flex:none}
+
+/* Sim */
+.simgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}
+@media (max-width:560px){.simgrid{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.stat .v{font-family:inherit;font-size:30px;font-weight:800;line-height:1}
+.stat .l{font-size:13px;color:var(--muted)}
+.chart{width:100%;height:170px;display:block;background:var(--bg);border:1px solid var(--line);border-radius:10px}
+.log{font-size:14px;color:var(--muted);max-height:120px;overflow:auto;margin-top:8px;padding-left:18px}
+
+.result{text-align:center;padding:26px 10px}
+.result .big{font-family:inherit;font-size:64px;font-weight:800;line-height:1}
+.result .msg{font-size:19px;margin:6px 0 16px}
+
+footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:14px;color:var(--muted)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap" id="hdr"></div></header>
+<div class="levelbar"><div class="wrap">
+  <span class="lbl">Nivå:</span>
+  <div class="seg" id="levels" role="group" aria-label="Velg nivå"></div>
+  <div class="tools">
+    <button class="iconbtn" id="themeBtn" title="Bytt mellom lyst og mørkt">Lys / mørk</button>
+  </div>
+</div></div>
+<main class="wrap" id="app" tabindex="-1"></main>
+<footer><div class="wrap" id="ftr"></div></footer>
+
+<script>
+/* =====================================================================
+   KAPITTELDATA – bytt ut denne blokken for å lage et nytt kapittel.
+   Motoren nedenfor (etter "MOTOR") trenger ingen endringer.
+   ===================================================================== */
+const NDLA = 'https://ndla.no/nb/r/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/';
+const KAPITTEL = {
+  id: 'kap1',
+  fag: 'Transport, logistikk og løfteoperasjoner · Vg2',
+  nr: 1,
+  tittel: 'Grunnleggende prinsipper ved lager- og terminalarbeid',
+  ingress: 'Hvordan varer og gods flyter fra fabrikk til kunde – og hva du gjør på lageret og terminalen for at det skal gå effektivt og riktig.',
+  kompetansemal: { kode: 'TOL02-01 · KV427', tekst: 'gjøre rede for grunnleggende prinsipper for effektiv drift av lager og terminal' },
+  ressurser: {
+    // KUN egenprodusert materiell her (f.eks. egne lysark). IKKE last opp forlagets presentasjon/PDF – den er opphavsrettsbeskyttet.
+    // Tom = lenken skjules.
+    presentasjon: '',
+    arbeidsbok: 'Arbeidsboka, kapittel 1 (oppgave 1.1–1.33)',
+    ndlaEmne: 'https://ndla.no/nb/e/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/drift-pa-terminal-og-lager/3e3d0bf6c9',
+    ordliste: NDLA + 'ordliste-for-lager-og-logistikk/0924071fc5'
+  },
+  temaer: [
+  /* ---------------------------------------------------------------- T1 */
+  {
+    id: 't1', lok: 'A-01', tittel: 'Lager og terminaler i samfunnet',
+    kort: 'Hvorfor vi trenger varelagre, godsterminaler og passasjerterminaler – og hvordan sentrallager, regionlager og butikk henger sammen.',
+    punkter: [
+      'Varer produseres i spesialiserte fabrikker over hele verden. For å få dem fram til kundene trenger vi <b>varelagre, godsterminaler, transportmidler</b> og folk som kan drive dem.',
+      'Et <b>varelager</b> oppbevarer varer en periode mellom produsenten og kjøperen – til noen bestiller dem.',
+      'På en <b>godsterminal</b> står godset bare kort tid: det blir tatt imot, sortert og sendt videre.',
+      'En <b>passasjerterminal</b> er stedet der reisende bytter fra ett transportmiddel til et annet.',
+      'En bransje har gjerne <b>ett sentrallager</b>, <b>noen regionlagre</b> (grossistlagre) og <b>mange butikker</b>. Sentrallageret kjøper inn store volum og får volumrabatter.',
+      '<b>Slow-movers</b> er varer med lav omløpshastighet. Mange samler dem på sentrallageret, som dekker hele landet.'
+    ],
+    ndla: [
+      ['Hva er en terminal?', 'hva-er-en-terminal/04f1384e9b', 'Fagstoff'],
+      ['Terminaler', 'terminaler/6a8f025da7', 'Fagstoff'],
+      ['Innkjøp og distribusjon av varer', 'innkjop-og-distribusjon-av-varer/2638662d26', 'Fagstoff']
+    ],
+    arbeidsbok: '1.1, 1.2, 1.3, 1.10, 1.11, 1.12, 1.24',
+    aktiviteter: [
+      { type:'flash', id:'t1-flash', tittel:'Begrepskort: lager og terminal', kort:[
+        ['Varelager','Oppbevarer varer en periode mellom produsent og kjøper, til de blir bestilt.'],
+        ['Godsterminal','Knutepunkt der gods blir tatt imot, sortert og sendt videre uten unødig venting.'],
+        ['Passasjerterminal','Sted der passasjerer går på, går av eller bytter transportmiddel.'],
+        ['Sentrallager','Kjeden sitt hovedlager. Kjøper inn fra fabrikker i inn- og utland og forsyner regionlagrene.'],
+        ['Regionlager (grossistlager)','Bestiller fra sentrallageret og forsyner butikkene i sin region.'],
+        ['Butikklager (detaljistlager)','Lageret i butikken. Kunden plukker ofte selv (selvplukk).'],
+        ['Volumrabatt','Lavere pris per enhet fordi man kjøper inn store mengder samtidig.'],
+        ['Omløpshastighet','Hvor raskt en vare selges og byttes ut på lageret.'],
+        ['Slow-movers','Varer med lav omløpshastighet – de selges sjelden.'],
+        ['Forsyningskjede','Hele kjeden fra produsent via lagre og terminaler fram til sluttbrukeren.']
+      ]},
+      { type:'quiz', id:'t1-q1', nivaa:1, tittel:'Hva gjør lageret og terminalen?', sp:[
+        { q:'Hva er hovedoppgaven til et varelager?', a:['Å mellomlagre varer på vei fra produsent til kjøper','Å produsere nye varer','Å sortere passasjerer etter reisemål','Å reparere lastebiler'], r:0, f:'Varelageret er et mellomlager i forsyningskjeden: varene ligger der til noen bestiller dem.' },
+        { q:'Hva kjennetegner en godsterminal?', a:['Godset blir liggende i flere måneder','Godset tas imot, sorteres og sendes videre så raskt som mulig','Den selger varer direkte til forbrukere','Den brukes bare til containere'], r:1, f:'På en terminal er målet at godset skal stå stille kortest mulig – det skal sorteres og videre.' },
+        { q:'Hva er en passasjerterminal?', a:['Et lager for bagasje','Et kontor for billettsalg','Et sted der reisende går på, av eller bytter transportmiddel','En parkeringsplass for busser'], r:2, f:'På passasjerterminaler bytter vi f.eks. fra tog til buss eller fra båt til fly.' },
+        { q:'Hvilken rekkefølge er riktig for varene i en dagligvarekjede?', a:['Butikk → regionlager → sentrallager','Sentrallager → regionlager → butikk','Regionlager → butikk → sentrallager','Butikk → sentrallager → regionlager'], r:1, f:'Sentrallageret kjøper inn, regionlagrene forsyner butikkene.' },
+        { q:'Hva betyr «slow-movers»?', a:['Varer som er tunge å flytte','Varer som må kjøres forsiktig fordi de er skjøre','Varer som selges sjelden (lav omløpshastighet)','Varer som venter på tollklarering'], r:2, f:'Slow-movers er varer med lav omløpshastighet.' }
+      ]},
+      { type:'order', id:'t1-o1', nivaa:1, tittel:'Varens vei fra fabrikk til kunde', instr:'Sett leddene i forsyningskjeden i riktig rekkefølge.', steg:[
+        'Fabrikk (produsent)','Sentrallager','Regionlager (grossistlager)','Butikk (detaljist)','Forbruker'
+      ]},
+      { type:'sort', id:'t1-s1', nivaa:2, tittel:'Lager eller terminal?', instr:'Hvilken type anlegg passer beskrivelsen best?', kat:['Varelager','Godsterminal','Passasjerterminal'], items:[
+        ['Varene ligger på en fast lokasjon til de blir bestilt',0,'Mellomlagring på lokasjon er typisk for varelager.'],
+        ['Har plukklager og volumlager',0,'Plukklager og volumlager finner du på varelagre.'],
+        ['Pakker sorteres på et sorteringsbånd og sendes ut samme natt',1,'Rask sortering og videresending = godsterminal.'],
+        ['Gods fra hele landet losses og lastes om til nye biler',1,'Omlasting av gods skjer på godsterminalen.'],
+        ['Bagasje sorteres og lastes på fly',2,'Bagasjehåndtering er en logistikkoppgave på passasjerterminaler (flyplass).'],
+        ['Reisende bytter fra tog til buss',2,'Omstigning mellom transportmidler = passasjerterminal.'],
+        ['Krav om universell utforming for de reisende',2,'Passasjerterminaler skal være universelt utformet.'],
+        ['Kjøper inn varer fra fabrikker i utlandet',0,'Det er sentrallageret (et varelager) som kjøper inn.']
+      ]},
+      { type:'quiz', id:'t1-q2', nivaa:2, tittel:'Sentrallager, regionlager og butikk', sp:[
+        { q:'Hvem bestiller varer fra fabrikker i inn- og utland?', a:['Butikkene','Regionlagrene','Sentrallageret','Kundene'], r:2, f:'Sentrallageret kjøper inn for hele kjeden.' },
+        { q:'Hvor bestiller en kjedebutikk nye varer fra?', a:['Direkte fra fabrikken','Fra kjedens regionale grossistlager','Fra en godsterminal','Fra en annen butikk'], r:1, f:'Butikkene etterfylles fra regionlageret, som igjen bestiller fra sentrallageret.' },
+        { q:'Hvorfor kjøper kjeden inn sentralt i stedet for at hver butikk bestiller selv?', a:['Det gir volumrabatter og mindre transport','Det gir flere små leveranser','Butikkene slipper å selge varene','Det er påbudt ved lov'], r:0, f:'Store innkjøp gir lavere pris per enhet, og man unngår mange små transporter.' },
+        { q:'Ved netthandel – hvem kan plukke varene?', a:['Bare sentrallageret','Bare butikken','Butikk, regionlager eller sentrallager','Bare transportøren'], r:2, f:'Ved netthandel kan plukket skje på alle nivåer i kjeden.' },
+        { q:'Hvorfor har sentrallageret ofte lengre ledetid enn regionlageret?', a:['Fordi det ligger lenger fra butikkene','Fordi det kjøper fra fabrikker, ofte i utlandet – f.eks. båt fra Asia','Fordi det har færre ansatte','Fordi det bare bruker tog'], r:1, f:'Regionlageret bestiller fra sentrallageret (kort ledetid). Sentrallageret bestiller fra industrien – en del varer kommer med båt fra Asia med rundt to måneders ledetid.' }
+      ]},
+      { type:'quiz', id:'t1-q3', nivaa:3, tittel:'Tenk som en logistikkplanlegger', sp:[
+        { q:'Mange kjeder flytter slow-movers fra regionlagrene til sentrallageret. Hva oppnår de?', a:['Høyere omløpshastighet, fordi sentrallageret dekker etterspørselen fra hele landet','Lavere omløpshastighet','At varene blir billigere å produsere','At butikkene slipper å bestille'], r:0, f:'Når ett lager dekker hele landet, går varen oftere ut fra det lageret – og man slipper å binde opp lagerplass mange steder.' },
+        { q:'En sportskjede har 120 butikker over hele landet. Hva er den største fordelen med ett sentrallager?', a:['Hver butikk kan velge egen leverandør','Store innkjøpsordrer gir volumrabatter og færre transporter','Det trengs ingen regionlagre eller transport','Butikkene kan ha mindre åpningstid'], r:1, f:'Kjeden samler bestillingene fra alle butikkene til store innkjøp.' },
+        { q:'Hva skjer i forsyningskjeden hvis sentrallageret går tomt for en vare?', a:['Bare sentrallageret merker det','Regionlagrene og butikkene kan også gå tomme etter hvert','Butikkene får varen direkte fra fabrikken','Ingenting – butikkene har alltid nok'], r:1, f:'Leddene henger sammen: tomt øverst i kjeden smitter nedover.' },
+        { q:'Hvorfor trengs det både varelagre OG godsterminaler i et moderne samfunn?', a:['Lagrene sorterer gods, terminalene produserer varer','Lagrene mellomlagrer varer til de bestilles, terminalene sorterer og sender gods raskt videre','De gjør akkurat det samme','Terminalene er bare for passasjerer'], r:1, f:'To ulike oppgaver: lagre i påvente av bestilling – og sortere for rask videre transport.' }
+      ]},
+      { type:'reflect', id:'t1-r1', nivaa:3, tittel:'Forklar: Hvorfor sentrallager?', q:'En kjede med mange butikker vurderer å legge ned sentrallageret og la hver butikk bestille direkte fra fabrikkene. Skriv et kort svar til ledelsen: Hva taper de på det?', punkter:[
+        'Mister volumrabatter (små innkjøp i stedet for store)',
+        'Mange flere og mindre transporter – dyrere og mer miljøbelastning',
+        'Butikkene får lengre ledetid (direkte fra fabrikk, ofte utlandet)',
+        'Vanskeligere å holde oversikt og styre varestrømmen i hele kjeden',
+        'Slow-movers må lagres mange steder i stedet for ett sted'
+      ]}
+    ]
+  },
+  /* ---------------------------------------------------------------- T2 */
+  {
+    id: 't2', lok: 'A-02', tittel: 'Lagerstyring og datasystemer',
+    kort: 'ERP, OLFI og WMS – og hvordan datasystemet vet når det er på tide å bestille nye varer.',
+    punkter: [
+      '<b>Lagerstyring</b> gir oversikt over varelageret og lar oss følge hvert produkt fra innkjøp til salg.',
+      'Hovedprosessene et lager må styre: <b>innkjøp og etterfylling av volumlager</b>, <b>etterfylling av plukklager</b>, <b>mottak av kundeordrer</b> og <b>ordreplukk</b>.',
+      'De første lagerstyringssystemene het <b>OLFI</b>: Ordremodul, Lagermodul, Faktureringsmodul og Innkjøpsmodul. I dag er de moduler i <b>ERP</b>-systemer. <b>WMS</b> er spesialiserte lagersystemer.',
+      'Hver artikkel har sin <b>lokasjon</b> (lageradresse). Skanning ved hvert uttak og påfyll holder <b>lagersaldoen</b> oppdatert.',
+      '<b>Ledetid</b> = tida fra bestilling til leveranse. <b>Bestillingspunktet</b> er saldoen der systemet foreslår ny bestilling.',
+      '<b>Sikkerhetslager</b> er en buffer hvis ledetida blir lengre eller salget større enn normalt. Innkjøperen gjør <b>avrop</b> på jevne varer og justerer for sesongvarer.'
+    ],
+    ndla: [
+      ['Hva er lagerstyring?', 'hva-er-lagerstyring/e0fce0eef4', 'Fagstoff'],
+      ['Elektroniske lagerstyringssystemer', 'elektroniske-lagerstyringssystemer/ede16cebac', 'Fagstoff'],
+      ['Klargjøring av lager for innkjøp', 'klargjoring-av-lager-for-innkjop/3178234cd7', 'Fagstoff'],
+      ['Bestillingspunkt og sikkerhetslager', 'bestillingspunkt-og-sikkerhetslager/9dd06bee36', 'Fagstoff']
+    ],
+    arbeidsbok: '1.7, 1.8, 1.13, 1.14, 1.15, 1.16, 1.25, 1.29',
+    aktiviteter: [
+      { type:'flash', id:'t2-flash', tittel:'Begrepskort: lagerstyring', kort:[
+        ['ERP','Enterprise Resource Planning – ressursforvaltningssystem. En database med mange programmoduler.'],
+        ['OLFI','De første lagerstyringssystemene: Ordre-, Lager-, Fakturerings- og Innkjøpsmodul.'],
+        ['WMS','Warehouse Management System – spesialisert datasystem for lager og vareformidling.'],
+        ['Lokasjon','Lageradressen til en artikkel – hver plass i reolen har sin egen adresse.'],
+        ['Lagersaldo','Hvor mange enheter som står på en lokasjon akkurat nå.'],
+        ['Varelinje','Én unik artikkel i sortimentet.'],
+        ['Ledetid','Tida fra en vare blir bestilt til den er levert.'],
+        ['Bestillingspunkt','Saldoen der systemet foreslår å bestille nye varer.'],
+        ['Sikkerhetslager','Et lite reservelager – buffer mot forsinkelser og ekstra stort salg.'],
+        ['Avrop','Innkjøperen godtar bestillingsforslaget fra systemet uten endringer.']
+      ]},
+      { type:'match', id:'t2-m1', nivaa:1, tittel:'Koble bokstaven i OLFI', instr:'Trykk på en bokstav og deretter på riktig modul.', par:[
+        ['O','Ordremodul'],['L','Lagermodul'],['F','Faktureringsmodul'],['I','Innkjøpsmodul']
+      ]},
+      { type:'quiz', id:'t2-q1', nivaa:1, tittel:'Grunnbegreper i lagerstyring', sp:[
+        { q:'OLFI-systemene hadde fire moduler. Hvilken av disse var IKKE en av dem?', a:['Ordremodul','Lagermodul','Transportmodul','Innkjøpsmodul'], r:2, f:'OLFI = Ordre, Lager, Fakturering, Innkjøp. Transport var ikke en egen modul.' },
+        { q:'Hva er en lokasjon?', a:['Et kontor på lageret','Lageradressen til en artikkel','En lastebilrute','En type pall'], r:1, f:'Hver artikkel får sin egen lageradresse – en lokasjon.' },
+        { q:'Hva skjer med lagersaldoen når en vare plukkes og skannes?', a:['Den går opp','Den går ned','Den blir null','Ingenting'], r:1, f:'Hvert uttak trekkes fra saldoen. Hvert påfyll legges til.' },
+        { q:'Hva er ledetid?', a:['Tida det tar å plukke en ordre','Tida fra bestilling til leveranse','Arbeidstida til lederen','Tida en vare er holdbar'], r:1, f:'Ledetid = tida fra bestilling til leveranse.' },
+        { q:'Hva betyr WMS?', a:['Warehouse Management System','World Mail Service','Weight Measure Standard','Work Monitoring Software'], r:0, f:'WMS er et spesialisert system for lagerstyring.' }
+      ]},
+      { type:'calc', id:'t2-c1', nivaa:1, gen:'saldo', tittel:'Regn ut lagersaldoen', antall:5 },
+      { type:'match', id:'t2-m2', nivaa:2, tittel:'Begrep og forklaring', instr:'Koble hvert begrep med riktig forklaring.', par:[
+        ['Bestillingspunkt','Saldoen der systemet foreslår ny bestilling'],
+        ['Sikkerhetslager','Buffer mot forsinkelse og ekstra salg'],
+        ['Avrop','Innkjøperen godtar systemets forslag'],
+        ['ERP','Databasesystem med mange programmoduler'],
+        ['Ledetid','Tid fra bestilling til leveranse'],
+        ['Varelinje','Én unik artikkel i sortimentet']
+      ]},
+      { type:'calc', id:'t2-c2', nivaa:2, gen:'bp', tittel:'Finn bestillingspunktet', antall:5 },
+      { type:'quiz', id:'t2-q2', nivaa:2, tittel:'Hovedprosesser og bestilling', sp:[
+        { q:'Hvilket av disse er IKKE en av hovedprosessene et lager må styre?', a:['Innkjøp og etterfylling av volumlager','Etterfylling av plukklager fra volumlager','Mottak av kundeordrer','Reparasjon av trucker'], r:3, f:'De fire hovedprosessene er innkjøp/etterfylling av volumlager, etterfylling av plukklager, mottak av kundeordrer og ordreplukk.' },
+        { q:'Et lager selger i snitt 1 kartong per dag, og ledetida er 5 dager. Hvor bør bestillingspunktet ligge (uten sikkerhetslager)?', a:['1 kartong','5 kartonger','10 kartonger','0 kartonger'], r:1, f:'1 kartong/dag × 5 dager = 5 kartonger. Da kommer nye varer akkurat når lageret er tomt.' },
+        { q:'Toalettpapir selger jevnt hele året. Hva gjør innkjøperen med bestillingsforslaget?', a:['Gjør avrop – godtar forslaget','Halverer det alltid','Ignorerer det','Ringer kundene'], r:0, f:'For varer med jevnt salg godtar innkjøperen som regel forslaget (avrop).' },
+        { q:'Utendørs husmaling selger mest om våren. Hva må innkjøperen gjøre?', a:['Gjøre avrop som vanlig','Justere bestillingsforslaget for sesongsvingninger','Slutte å selge maling','Bestille like mye hele året'], r:1, f:'Datasystemet gjør bare det det er programmert til – sesongvarer må innkjøperen justere.' },
+        { q:'Hvorfor har lageret et sikkerhetslager?', a:['For å ha noe å selge på salg','Som buffer hvis ledetida blir lengre eller etterspørselen større enn normalt','For å slippe å telle varer','Fordi det er påbudt'], r:1, f:'Sikkerhetslageret hindrer at lageret går tomt ved forsinkelser eller ekstra salg.' }
+      ]},
+      { type:'calc', id:'t2-c3', nivaa:3, gen:'bpsl', tittel:'Bestillingspunkt med sikkerhetslager', antall:5 },
+      { type:'sim', id:'t2-sim', nivaa:3, tittel:'Simulering: Ikke gå tom!' },
+      { type:'reflect', id:'t2-r1', nivaa:3, tittel:'Forklar: Når skal grossisten bestille?', q:'Du har sommerjobb i innkjøpsavdelingen på et regionlager. En ny kollega spør: «Hvordan vet vi egentlig når vi må bestille mer av en vare?» Forklar det for kollegaen – og bruk fagbegrepene.', punkter:[
+        'Hver artikkel har sin lokasjon (lageradresse)',
+        'Skanning ved hvert uttak og påfyll holder lagersaldoen oppdatert',
+        'Hver varelinje har et bestillingspunkt basert på forbruk og ledetid',
+        'Systemet lager bestillingsforslag når saldoen når bestillingspunktet',
+        'Innkjøperen vurderer forslaget: avrop på jevne varer, justering for sesongvarer',
+        'Et sikkerhetslager gir buffer mot forsinkelser og ekstra salg'
+      ]}
+    ]
+  },
+  /* ---------------------------------------------------------------- T3 */
+  {
+    id: 't3', lok: 'B-01', tittel: 'Varemottak og kontroll',
+    kort: 'Kontroll av kjøpsavtale og transportavtale, merknader i fraktbrevet, skjulte skader og paller.',
+    punkter: [
+      'Ved mottak kontrollerer vi at vi har fått <b>det vi har bestilt</b>, at varene <b>ikke er transportskadet</b> og at <b>pallene er hele</b>.',
+      '<b>Kjøpsavtalen</b> er mellom selger og kjøper. Vi krysser varene mot <b>pakkseddelen</b> kolli for kolli, og senere pakkseddelen mot <b>fakturaen</b>. Med EDI eller skanning kan det gjøres i én kontroll.',
+      '<b>Transportavtalen</b> inngås mellom avsender og fraktfører og avsluttes mellom mottaker og fraktfører. Det er mottakeren som kontrollerer at den er oppfylt.',
+      'Erstatning fra transportøren avhenger av <b>vekta</b> på godset. Noter vekta på skadd eller manglende gods i <b>merknadsrubrikken</b> i fraktbrevet – og la sjåføren signere.',
+      'Ved <b>tidsgaranti</b> noterer du ankomsttidspunktet i merknadsrubrikken.',
+      '<b>Skjulte skader</b> som oppdages når emballasjen åpnes: skriv straks en <b>besiktigelsesrapport</b> til transportøren. Ifølge læreboka mister du retten til erstatning ved nasjonale kjøp etter første virkedag, og ved internasjonale kjøp etter sju dager.',
+      '<b>Europaller</b> har verdi (litt over 100 kr ny) og blir ofte fakturert i tillegg til varene.'
+    ],
+    ndla: [
+      ['Kontroll av kjøpsavtale', 'kontroll-av-kjopsavtale/f0d37941ee', 'Fagstoff'],
+      ['Kontroll av transportavtale', 'kontroll-av-transportavtale/43f859d552', 'Fagstoff']
+    ],
+    arbeidsbok: '1.5, 1.17, 1.21, 1.32',
+    aktiviteter: [
+      { type:'flash', id:'t3-flash', tittel:'Begrepskort: varemottak', kort:[
+        ['Pakkseddel','Liste som følger varene og viser alle artiklene i ordren.'],
+        ['Faktura','Regningen fra selgeren. Krysses mot pakkseddel eller varer.'],
+        ['Kjøpsavtale','Avtale mellom selger og kjøper om hva som skal leveres og til hvilken pris.'],
+        ['Transportavtale (fraktavtale)','Inngås mellom avsender og fraktfører, avsluttes mellom mottaker og fraktfører.'],
+        ['Fraktfører','Den som påtar seg å transportere godset (transportøren).'],
+        ['Fraktbrev','Dokumentet som følger sendingen og beviser fraktavtalen.'],
+        ['Merknadsrubrikk','Feltet i fraktbrevet der du skriver skader, manko, vekt og ankomsttid.'],
+        ['Manko','Noe mangler i leveransen.'],
+        ['Tidsgaranti','Avtale om at godset skal leveres innen et bestemt tidspunkt.'],
+        ['Besiktigelsesrapport','Rapport om skjult skade, sendes straks til transportøren.'],
+        ['EDI','Elektronisk utveksling av data mellom bedrifter – varer kan krysses direkte mot faktura.']
+      ]},
+      { type:'quiz', id:'t3-q1', nivaa:1, tittel:'Hva sjekker du i varemottaket?', sp:[
+        { q:'Hvilke tre ting kontrollerer du når varer kommer inn?', a:['Farge, pris og merke','At vi får det vi har bestilt, at det ikke er transportskadet, og at pallene er hele','Bare at sjåføren har førerkort','Bare antall paller'], r:1, f:'Det er de tre kontrollene i varemottaket.' },
+        { q:'Hvem er partene i en kjøpsavtale?', a:['Selger og kjøper','Avsender og fraktfører','Sjåfør og lagerarbeider','Bank og kunde'], r:0, f:'Kjøpsavtalen gjelder mellom selger og kjøper.' },
+        { q:'Hva bruker du som grunnlag når du krysser av varene?', a:['Rutekartet','Pakkseddelen','Timelisten','Truckførerbeviset'], r:1, f:'Pakkseddelen viser alle artiklene i ordren.' },
+        { q:'Hvor skriver du at et kolli er skadet?', a:['På pallen med tusj','I merknadsrubrikken i fraktbrevet','I en SMS til sjefen','Ingen steder'], r:1, f:'Merknaden skal i fraktbrevet – helst signert av sjåføren også.' },
+        { q:'Hva er en europall verdt ny, ifølge læreboka?', a:['Ca. 10 kr','Litt over 100 kr','Ca. 1 000 kr','Ingenting'], r:1, f:'Pallene har verdi og blir ofte fakturert i tillegg til varene.' }
+      ]},
+      { type:'order', id:'t3-o1', nivaa:1, tittel:'Kontroll mot pakkseddel', instr:'Sett stegene i kontrollen av kjøpsavtalen i riktig rekkefølge.', steg:[
+        'Varene ankommer sammen med pakkseddelen',
+        'Kryss av kolli for kolli mot pakkseddelen',
+        'Fakturaen kommer fra leverandøren',
+        'Kryss pakkseddelen mot fakturaen'
+      ]},
+      { type:'sort', id:'t3-s1', nivaa:2, tittel:'Kjøpsavtale eller transportavtale?', instr:'Hvilken avtale kontrollerer du når du gjør dette?', kat:['Kjøpsavtalen','Transportavtalen'], items:[
+        ['Sjekker at riktig antall av hver artikkel er levert',0,'Antall og artikler handler om kjøpet mellom selger og kjøper.'],
+        ['Sjekker at fakturaen stemmer med bestillingen',0,'Faktura og bestilling = kjøpsavtalen.'],
+        ['Oppdager at det er levert feil farge på varen',0,'Feil vare er et brudd på kjøpsavtalen.'],
+        ['Ser at et kolli er knust',1,'Transportskade er transportørens ansvar.'],
+        ['Noterer ankomsttidspunkt ved tidsgaranti',1,'Tidsgarantien er en del av transportavtalen.'],
+        ['Noterer vekta på skadd gods',1,'Transportørens erstatning beregnes etter vekt.'],
+        ['Ber sjåføren signere i merknadsrubrikken',1,'Sjåføren bekrefter at skaden var der ved levering.'],
+        ['Krysser varenumre elektronisk mot ordren (EDI)',0,'EDI-kryssing kontrollerer kjøpsavtalen.']
+      ]},
+      { type:'calc', id:'t3-c1', nivaa:2, gen:'pall', tittel:'Hva er pallene verdt?', antall:4 },
+      { type:'quiz', id:'t3-q2', nivaa:2, tittel:'Fraktbrev og erstatning', sp:[
+        { q:'Hvem inngår transportavtalen, og hvem avslutter den?', a:['Selger og kjøper inngår, banken avslutter','Avsender og fraktfører inngår, mottaker og fraktfører avslutter','Mottaker og selger inngår, sjåføren avslutter','Fraktfører alene'], r:1, f:'Derfor er det mottakeren som må kontrollere at transportavtalen er oppfylt.' },
+        { q:'Hvorfor må du skrive vekta på skadd gods i fraktbrevet?', a:['Fordi transportørens erstatning avhenger av vekta','Fordi lastebilen kan bli for tung','For statistikk','Det trenger du ikke'], r:0, f:'Erstatningen avhenger av vekta – ikke av varens verdi.' },
+        { q:'En sending har tidsgaranti. Hva noterer du?', a:['Navnet på sjåføren','Ankomsttidspunktet i merknadsrubrikken','Været','Bilens registreringsnummer'], r:1, f:'Ankomsttida viser om tidsgarantien ble holdt.' },
+        { q:'Hvorfor bør sjåføren signere merknaden om skade?', a:['For å bekrefte at skaden var der ved levering','For å få betalt','Fordi det er hyggelig','Fordi sjåføren eier varene'], r:0, f:'Signaturen er bevis på at skaden skjedde før du tok imot godset.' },
+        { q:'Hva er fordelen med å krysse varene direkte mot fakturaen (eller via EDI)?', a:['Man slipper én av to kontroller','Varene blir billigere','Man trenger ikke telle','Transportøren betaler'], r:0, f:'Pakkseddel → varer og pakkseddel → faktura er to kontroller. Direkte mot faktura er én.' }
+      ]},
+      { type:'case', id:'t3-case', nivaa:3, tittel:'Case: Sjåføren har dårlig tid', intro:'Du jobber i varemottaket. En lastebil leverer 12 paller. Én pall er tydelig klemt, og to esker er våte.', steg:[
+        { q:'Sjåføren sier: «Bare kvitter, jeg har dårlig tid. Det går sikkert bra.» Hva gjør du?', valg:[
+          { t:'Kvitterer uten merknad – det er jo bare én pall', ok:false, f:'Uten merknad har du ingen bevis for at skaden skjedde under transport. Da kan dere miste retten til erstatning.' },
+          { t:'Skriver skaden og vekta på det skadde godset i merknadsrubrikken, og ber sjåføren signere', ok:true, f:'Riktig. Vekta trengs fordi erstatningen beregnes etter vekt, og signaturen bekrefter skaden.' },
+          { t:'Nekter å ta imot hele leveransen', ok:false, f:'De andre 11 pallene er ok. Ta imot og anmerk skaden – å nekte alt skaper bare nye problemer.' }
+        ]},
+        { q:'Sjåføren nekter å signere merknaden. Hva gjør du nå?', valg:[
+          { t:'Stryker merknaden så sjåføren blir fornøyd', ok:false, f:'Da forsvinner dokumentasjonen av skaden.' },
+          { t:'Lar merknaden stå, noterer at sjåføren nektet å signere, og tar bilder av skaden', ok:true, f:'Bra. Dokumentasjonen står, og bildene styrker saken.' },
+          { t:'Lar sjåføren kjøre og glemmer saken', ok:false, f:'Skaden må dokumenteres nå – ellers blir det vanskelig å kreve erstatning.' }
+        ]},
+        { q:'Neste dag åpner dere en eske som så hel ut. Innholdet er knust. Hva gjør du?', valg:[
+          { t:'Skriver straks en besiktigelsesrapport og sender den til transportøren', ok:true, f:'Riktig. Skjulte skader må meldes umiddelbart. Rapporten går videre til transportørens forsikringsselskap.' },
+          { t:'Kaster varene og sier ingenting', ok:false, f:'Da mister dere både varene og retten til erstatning.' },
+          { t:'Venter til fakturaen kommer og trekker det fra der', ok:false, f:'Fristene er korte. Skjulte skader skal meldes til transportøren straks.' }
+        ]}
+      ]},
+      { type:'reflect', id:'t3-r1', nivaa:3, tittel:'Lag en sjekkliste for varemottaket', q:'Du skal lære opp en ny lærling i varemottaket. Skriv en sjekkliste med korte forklaringer: Hva skal lærlingen gjøre når en lastebil kommer med varer?', punkter:[
+        'Sjekker at antall kolli stemmer med fraktbrevet',
+        'Ser etter synlige skader på kolli og emballasje',
+        'Kontrollerer at pallene er hele og uskadde',
+        'Noterer skade/manko med vekt i merknadsrubrikken, og sjåføren signerer',
+        'Noterer ankomsttid hvis sendingen har tidsgaranti',
+        'Krysser varene mot pakkseddel (og senere faktura) – eller direkte mot faktura/EDI',
+        'Skriver besiktigelsesrapport straks ved skjulte skader'
+      ]}
+    ]
+  },
+  /* ---------------------------------------------------------------- T4 */
+  {
+    id: 't4', lok: 'B-02', tittel: 'Vareplassering og innrydding',
+    kort: 'Lagersoner, F-, D- og T-pak, plukklager og volumlager, A- og C-varer, FIFO, LIFO og crossdocking.',
+    punkter: [
+      'Datasystemet tildeler <b>lokasjon</b> etter faste regler: lagersone (frys, kjøl, sval, tørr) → mangler lageret varen? → lagernivå → ledig adresse → tildel lokasjon.',
+      '<b>F-pak</b> = forbrukerforpakning, <b>D-pak</b> = detaljistforpakning, <b>T-pak</b> = transportforpakning.',
+      'Dagligvarelagre har et <b>plukklager</b> med D-pak i golvhøyde og et <b>volumlager</b> med T-pak høyere opp (kalles også mengdelager, støt-, høydelager eller overstock).',
+      '<b>A-varer</b> (plukkes oftest) plasseres nærmest oppstillingsområdet, <b>C-varer</b> lengst unna. Da blir det mange korte turer og få lange.',
+      'Varer med <b>holdbarhetsdato</b> ryddes inn og plukkes etter dato. Varer uten dato: <b>FIFO</b> (first in – first out).',
+      'Svært høyfrekvente varer (f.eks. toalettpapir) <b>crossdockes</b>: de får ingen lokasjon, men går rett videre etter <b>LIFO</b> (last in – first out).'
+    ],
+    ndla: [
+      ['Plassering av varer', 'plassering-av-varer/0d2fb4ec5d', 'Fagstoff'],
+      ['Innrydding av varer på lokasjon', 'innrydding-av-varer-pa-lokasjon/dba26dc4b2', 'Fagstoff'],
+      ['Ulike begreper som betyr det samme', 'ulike-begreper-som-betyr-det-samme/9a4df73cf1', 'Fagstoff']
+    ],
+    arbeidsbok: '1.4, 1.10, 1.27, 1.30',
+    aktiviteter: [
+      { type:'flash', id:'t4-flash', tittel:'Begrepskort: plassering og innrydding', kort:[
+        ['F-pak','Forbrukerforpakning – den enkeltvaren kunden kjøper.'],
+        ['D-pak','Detaljistforpakning – pakningen butikken bestiller.'],
+        ['T-pak','Transportforpakning – f.eks. en hel pall.'],
+        ['Plukklager','Lagernivå i golvhøyde med D-pak, der det plukkes.'],
+        ['Volumlager','Lagernivå høyt oppe med T-pak. Også kalt mengdelager, støtlager, høydelager eller overstock.'],
+        ['Lagersone','Del av lageret med egne krav, f.eks. frys, kjøl, sval eller tørr.'],
+        ['A-varer','Varer som plukkes oftest – plasseres nærmest oppstillingsområdet.'],
+        ['C-varer','Varer som plukkes sjeldent – plasseres lengst unna.'],
+        ['FIFO','First in – first out: varene plukkes i samme rekkefølge som de kom inn.'],
+        ['LIFO','Last in – first out: det som kom sist, går ut først.'],
+        ['Crossdocking (kryssdokking)','Varen går rett videre uten å få en lokasjon på lageret.']
+      ]},
+      { type:'match', id:'t4-m1', nivaa:1, tittel:'F-, D- og T-pak', instr:'Koble forkortelsen med riktig betydning og eksempel.', par:[
+        ['F-pak','Forbrukerforpakning – én boks yoghurt'],
+        ['D-pak','Detaljistforpakning – en kartong med 12 bokser'],
+        ['T-pak','Transportforpakning – en hel pall med kartonger']
+      ]},
+      { type:'quiz', id:'t4-q1', nivaa:1, tittel:'Plassering på lageret', sp:[
+        { q:'Hvor ligger plukklageret på et typisk dagligvarelager?', a:['Høyt oppe i reolene','I golvhøyde','I et eget bygg','På en terminal'], r:1, f:'Plukklageret ligger lavt så det er lett å plukke. Volumlageret ligger høyere.' },
+        { q:'Hva betyr FIFO?', a:['First in – first out','Fast in – fast out','Full inventory – full order','Frys i – frys ut'], r:0, f:'Det som kom først inn, går først ut.' },
+        { q:'Hvilken lagersone passer for iskrem?', a:['Tørr','Sval','Kjøl','Frys'], r:3, f:'Iskrem krever frysesone.' },
+        { q:'Hva er «støtlager» et annet ord for?', a:['Plukklager','Volumlager','Varemottak','Kontor'], r:1, f:'Støt, høydelager, mengdelager og overstock betyr alle volumlager.' },
+        { q:'Hvor plasseres A-varene (de som plukkes oftest)?', a:['Lengst unna','Nærmest oppstillingsområdet for transport','I volumlageret','Utenfor lageret'], r:1, f:'Da blir det mange korte turer – og mindre interntransport.' }
+      ]},
+      { type:'sort', id:'t4-s1', nivaa:2, tittel:'Hvilket plukkprinsipp?', instr:'Velg prinsippet som skal brukes ved innrydding og plukk.', kat:['Holdbarhetsdato','FIFO','LIFO / crossdock'], items:[
+        ['Lettmelk',0,'Melk har kort holdbarhet – plukkes etter dato.'],
+        ['Kjøttdeig',0,'Ferskvare med holdbarhetsdato.'],
+        ['Yoghurt',0,'Har holdbarhetsdato.'],
+        ['Skruer i esker',1,'Ingen holdbarhetsdato – FIFO.'],
+        ['Arbeidshansker',1,'Ingen holdbarhetsdato – FIFO.'],
+        ['Kopipapir',1,'Ingen holdbarhetsdato – FIFO.'],
+        ['Toalettpapir som kommer fra fabrikken flere ganger om dagen',2,'Svært høyfrekvent – crossdockes etter LIFO.'],
+        ['Paller som lastes direkte over i biler til regionlagrene samme dag',2,'Ingen lokasjon, rett videre = crossdocking.']
+      ]},
+      { type:'sort', id:'t4-s2', nivaa:2, tittel:'Plasser varene etter plukkfrekvens', instr:'Hvor bør varen stå i forhold til oppstillingsområdet for transport?', kat:['Nærmest (A)','I midten (B)','Lengst unna (C)'], items:[
+        ['Lettmelk – plukkes ca. 400 ganger per dag',0,'Plukkes svært ofte → A-vare nær utlasting.'],
+        ['Brød – plukkes ca. 300 ganger per dag',0,'Plukkes svært ofte → A-vare.'],
+        ['Kaffe – plukkes ca. 60 ganger per dag',1,'Middels ofte → B.'],
+        ['Oppvaskmiddel – plukkes ca. 40 ganger per dag',1,'Middels ofte → B.'],
+        ['Spesialkrydder – plukkes 2 ganger per uke',2,'Sjelden → C-vare lengst unna.'],
+        ['Fondueolje – plukkes 1 gang per uke',2,'Slow-mover → C-vare lengst unna.']
+      ]},
+      { type:'order', id:'t4-o1', nivaa:3, tittel:'Slik tildeler systemet en lokasjon', instr:'Sett reglene for tildeling av lageradresse i riktig rekkefølge.', steg:[
+        'Finn riktig lagersone for varen (frys, kjøl, sval eller tørr)',
+        'Er varen utsolgt på lageret? Da går den rett til plukksonen',
+        'Avgjør hvilket lagernivå varen hører til (F-, D- eller T-pak)',
+        'Let etter en ledig lageradresse i sonen på dette nivået',
+        'Gi varen den ledige lokasjonen'
+      ]},
+      { type:'quiz', id:'t4-q2', nivaa:3, tittel:'Velg riktig prinsipp – og begrunn', sp:[
+        { q:'Du skal laste en distribusjonsbil med ferdigplukkede ordrer til fem butikker. Butikk 1 får varene først. Hvilket prinsipp bruker du ved innlasting?', a:['FIFO – butikk 1 lastes først','LIFO – butikk 5 lastes først, butikk 1 sist','Holdbarhetsdato','Tilfeldig rekkefølge'], r:1, f:'Det som lastes inn sist, må ut først. Butikk 1 sin ordre skal stå nærmest døra.' },
+        { q:'Hvorfor gir det mindre interntransport å plassere A-varer nær oppstillingsområdet?', a:['De varene du plukker oftest, får kortest tur – mange korte turer og få lange','Fordi A-varer er tyngst','Fordi C-varer ikke skal selges','Det gir ikke mindre interntransport'], r:0, f:'Turene ganges med antall plukk. Korte turer på de hyppigste varene sparer mest.' },
+        { q:'Hvorfor får toalettpapir som crossdockes ingen lokasjon?', a:['Det tar for stor plass','Det skal ut igjen nesten med en gang – det er bare innom for å samlastes','Det er for billig','Det er ulovlig å lagre'], r:1, f:'Varene går rett videre til bilene – å rydde dem inn på lokasjon ville vært unødvendig arbeid.' },
+        { q:'Noen butikker har flere lokasjoner for samme melk. Hvorfor?', a:['For å skille melk med ulik holdbarhetsdato, f.eks. selge kort dato med rabatt','Fordi de har for mye plass','For å forvirre kundene','Fordi melk må stå i frys'], r:0, f:'Melk med kort holdbarhet kan selges billigere på en egen plass.' }
+      ]},
+      { type:'reflect', id:'t4-r1', nivaa:3, tittel:'Forklar: Ny pall med yoghurt', q:'Det kommer inn en ny pall med yoghurt, men det står fortsatt yoghurt med tidligere dato på lokasjonen. Forklar hvordan du rydder inn den nye pallen – og hvorfor du gjør det slik.', punkter:[
+        'Plasserer varen i riktig lagersone (f.eks. kjøl eller frys)',
+        'Sjekker holdbarhetsdatoen ved innrydding',
+        'Varene med kortest holdbarhet skal stå fremst og plukkes først',
+        'Setter ikke nye varer foran eldre varer på lokasjonen',
+        'Kan bruke flere lokasjoner for samme vare med ulik dato'
+      ]}
+    ]
+  },
+  /* ---------------------------------------------------------------- T5 */
+  {
+    id: 't5', lok: 'C-01', tittel: 'Ordre, plukk og klargjøring',
+    kort: 'Fra kundeordre til ferdig pall: ordrebekreftelse, plukklister, talestyrt plukk, sammenstilling, emballering og etterfylling.',
+    punkter: [
+      'De fleste ordrer kommer elektronisk. Kunden får en <b>ordrebekreftelse</b> – da er kjøpsavtalen bindende for begge parter.',
+      'Systemet splitter ordren i <b>plukklister per plukksone</b>, sortert i varenummer-rekkefølge, så plukket følger <b>korteste vei</b>.',
+      'Plukkinformasjon kommer på papir, på skjerm på plukktrucken eller i hodesettet (<b>talestyrt plukk</b> – begge hender fri).',
+      'Delordrene <b>sammenstilles</b> til én kundepall: <b>tunge varer nederst</b>, lette som topplast.',
+      'Pallen <b>emballeres</b> med strekkfilm (stabilitet og mindre svinn), <b>merkes</b> med kundens navn og adresse og settes på <b>oppstillingsområdet</b>.',
+      'Kjøl- og frysevarer skal ha <b>ubrutt temperaturkjede</b> og står i plukksonen til bilen lastes.',
+      'Når en plukklokasjon blir tom, lager systemet en <b>etterfyllingsordre</b>: pall flyttes fra volumlager til plukkplass.'
+    ],
+    ndla: [
+      ['Mottak av kundeordrer, bekreftelse og klargjøring for plukk', 'mottak-av-kundeordrer-bekreftelse-og-klargjoring-for-plukk/92fe8ade29', 'Fagstoff'],
+      ['Plukk, sammenstilling, emballering og oppstilling for transport', 'plukk-sammenstilling-emballering-og-oppstilling-for-transport/a5e684dcfc', 'Fagstoff'],
+      ['Etterfyllingsordrer og etterfylling av plukklager', 'etterfyllingsordrer-og-etterfylling-av-plukklager/2dde0bf25a', 'Fagstoff'],
+      ['Lagerstyring – hva har du lært?', 'lagerstyring---hva-har-du-lart/e271beaffa', 'Interaktiv'],
+      ['Lagerstyring (besøk et lager)', 'lagerstyring/e7f05060c4', 'Oppgave']
+    ],
+    arbeidsbok: '1.8, 1.26',
+    aktiviteter: [
+      { type:'flash', id:'t5-flash', tittel:'Begrepskort: ordre og plukk', kort:[
+        ['Ordrebekreftelse','Bekreftelse til kunden på at ordren er mottatt. Fra da er kjøpsavtalen bindende.'],
+        ['Plukkliste','Liste over varene som skal plukkes i én plukksone, sortert for korteste vei.'],
+        ['Delordre','Den delen av en kundeordre som plukkes i én bestemt plukksone.'],
+        ['Talestyrt plukk','Plukkinformasjon kommer i hodesettet («voicepick») – begge hender er fri.'],
+        ['Sammenstilling','Delordrene fra ulike plukksoner samles til én ferdig kundeordre.'],
+        ['Strekkfilm','Plast rundt pallen – stabiliserer lasten og forebygger svinn.'],
+        ['Svinn','Varer som forsvinner, f.eks. ved tyveri eller skade.'],
+        ['Oppstillingsområde','Der ferdige paller står klare for transport.'],
+        ['Etterfylling','Varer flyttes fra volumlager til en tom plukklokasjon.'],
+        ['Temperaturkjede','Kjøl- og frysevarer skal holde riktig temperatur hele veien – ubrutt.']
+      ]},
+      { type:'quiz', id:'t5-q1', nivaa:1, tittel:'Plukk og pakking', sp:[
+        { q:'Hva er den store fordelen med talestyrt plukk?', a:['Det er gratis','Plukkeren har begge hendene fri','Man slipper å gå','Varene blir lettere'], r:1, f:'Informasjonen kommer i hodesettet, så hendene er fri til å plukke.' },
+        { q:'Hvorfor pakkes pallen inn i strekkfilm?', a:['For at den skal se fin ut','For å stabilisere pallen under transport og forebygge svinn','For å holde varene varme','For å skjule innholdet for sjåføren'], r:1, f:'Strekkfilm holder lasten sammen og gjør det vanskeligere å stjele fra pallen.' },
+        { q:'Hvor skal de tunge varene stå på kundepallen?', a:['Øverst','Nederst','I midten','Det spiller ingen rolle'], r:1, f:'Tunge varer nederst, lette varer som topplast.' },
+        { q:'Hva står på merkelappen på en ferdig kundepall?', a:['Kundens navn og mottakeradresse','Plukkerens navn','Prisen på varene','Ingenting'], r:0, f:'Merkingen sørger for at pallen kommer til riktig kunde.' },
+        { q:'Hva skjer når en plukklokasjon blir tom?', a:['Varen slettes fra sortimentet','Systemet lager en etterfyllingsordre fra volumlageret','Kunden må vente en uke','Plukkeren kjøper nye varer i butikken'], r:1, f:'En pall flyttes fra volumlageret ned til plukkplassen.' }
+      ]},
+      { type:'order', id:'t5-o1', nivaa:1, tittel:'Fra ordre til ferdig pall', instr:'Sett stegene i ordreprosessen i riktig rekkefølge.', steg:[
+        'Butikken sender en ordre',
+        'Kunden får ordrebekreftelse',
+        'Systemet splitter ordren i plukklister per plukksone',
+        'Varene plukkes i plukksonene',
+        'Delordrene sammenstilles på en kundepall',
+        'Pallen emballeres med strekkfilm',
+        'Pallen merkes med kundens navn og adresse',
+        'Pallen settes på oppstillingsområdet for transport'
+      ]},
+      { type:'sort', id:'t5-s1', nivaa:2, tittel:'Bygg en stabil kundepall', instr:'Hvor på pallen hører varen hjemme?', kat:['Nederst','Øverst (topplast)'], items:[
+        ['Brett med brusflasker (1,5 l)',0,'Tungt – nederst.'],
+        ['Kartonger med hermetikk',0,'Tungt og tåler trykk – nederst.'],
+        ['Vaskemiddel i 5-liters kanner',0,'Tungt – nederst.'],
+        ['Chipsposer',1,'Lett og knuses lett – topplast.'],
+        ['Eggekartonger',1,'Skjørt – øverst.'],
+        ['Toalettpapir',1,'Lett og tar stor plass – topplast.']
+      ]},
+      { type:'quiz', id:'t5-q2', nivaa:2, tittel:'Ordre og plukklister', sp:[
+        { q:'Når er en kjøpsavtale inngått og bindende?', a:['Når kunden ringer','Når kjøperen har mottatt en ordrebekreftelse','Når varene er levert','Når fakturaen er betalt'], r:1, f:'Begge parter må ha bekreftet vilkårene. Fra ordrebekreftelsen er begge bundet.' },
+        { q:'Hvorfor sorteres plukklisten i varenummer-rekkefølge?', a:['For at plukket skal følge korteste vei','Fordi det ser ryddig ut','For at dyre varer skal plukkes først','For at kunden skal forstå den'], r:0, f:'Varenumrene følger lokasjonene, så plukkeren går en effektiv rute.' },
+        { q:'Hvorfor kommer plukklistene opp samtidig i alle plukksonene?', a:['Så delordrene plukkes samtidig og kan sammenstilles til ferdig ordre','For å stresse plukkerne','Fordi skriveren er treg','Det gjør de ikke'], r:0, f:'Da blir alle delene av ordren ferdige omtrent samtidig.' },
+        { q:'Hvorfor blir kjøl- og frysevarer stående i plukksonen til bilen lastes?', a:['Fordi de er tunge','For å holde temperaturkjeden ubrutt','Fordi de ikke skal sammenstilles','For å spare strekkfilm'], r:1, f:'Temperaturkjeden må ikke brytes. Mange biler har skillevegger for flere temperatursoner.' },
+        { q:'Ved talestyrt plukk sier operatøren «klar». Hva skjer da?', a:['Plukket avsluttes','Systemet gir informasjon om neste artikkel','Ordren slettes','Trucken stopper'], r:1, f:'«Klar» betyr at artikkelen er plukket. Med «gjenta» får man høre siste beskjed på nytt.' }
+      ]},
+      { type:'order', id:'t5-o2', nivaa:3, tittel:'Etterfylling med skanner', instr:'Sett skannestegene ved etterfylling av en plukkplass i riktig rekkefølge.', steg:[
+        'Skann strekkoden på volumlokasjonen (der pallen står)',
+        'Skann strekkoden på pallen som skal flyttes',
+        'Flytt pallen ned til plukkplassen',
+        'Skann strekkoden på den nye plukkplassen',
+        'Lagersaldoene oppdateres elektronisk'
+      ]},
+      { type:'reflect', id:'t5-r1', nivaa:3, tittel:'Følg en ordre gjennom lageret', q:'En butikksjef trykker «send» på en bestilling. Beskriv hva som skjer med ordren på lageret – helt til pallen står klar ved porten.', punkter:[
+        'Ordren kommer inn (oftest elektronisk) og kunden får ordrebekreftelse',
+        'Systemet splitter ordren i plukklister per plukksone, sortert for korteste vei',
+        'Plukk med papirliste, skjerm på trucken eller talestyrt plukk',
+        'Delordrene sammenstilles på kundepall – tunge varer nederst',
+        'Pallen emballeres med strekkfilm og merkes med navn og adresse',
+        'Pallen settes på oppstillingsområdet; kjøl/frys venter i sin sone',
+        'Tomme plukkplasser etterfylles fra volumlageret'
+      ]}
+    ]
+  },
+  /* ---------------------------------------------------------------- T6 */
+  {
+    id: 't6', lok: 'C-02', tittel: 'Godsterminaler og sortering',
+    kort: 'Terminalnettet, avsender-, sentral- og mottakerterminal, fraktbrev og CMR, undersøkelsesplikt, farlig gods og sorteringsanlegg.',
+    punkter: [
+      'Vi håndterer gods på <b>samlastterminaler, havneterminaler, flyfraktterminaler og jernbaneterminaler</b>. Hver transportform har sitt nettverk.',
+      'De fleste kolli er innom <b>tre terminaler</b>: avsenderterminal → sentralterminal → mottakerterminal. <b>Lokalgods</b> er innom bare én.',
+      'Etter mottak, undersøkelse og fraktberegning skannes kolliet. Så sorteres det i gods som skal <b>videre lokalt</b> (nærdistribusjonssoner og regionale ruter) og gods til <b>andre regioner</b> (samles i konteinere og skapbiler).',
+      'Spesielle produkter: <b>termogods</b> skal ha ubrutt temperaturkjede, <b>farlig gods</b> skal emballeres og merkes korrekt, sendinger med <b>tidsgaranti</b> prioriteres.',
+      'Nasjonale sendinger: innenlands fraktbrev. Internasjonale: <b>CMR-fraktbrev</b>.',
+      'Fraktføreren har <b>undersøkelsesplikt</b> etter vegfraktloven og bør ta skriftlig <b>forbehold</b>, f.eks. ved dårlig emballering. Avsender av farlig gods må gi nødvendige opplysninger (vegfraktloven § 15) – ellers bør du vurdere å nekte.',
+      'Postpakker følger <b>postloven</b>, samlastgods følger <b>vegfraktloven</b>.'
+    ],
+    ndla: [
+      ['Logistikkløsninger (film fra Postens terminal)', 'logistikklosninger/a12f0becba', 'Film'],
+      ['Hva skjer på en pakketerminal?', 'hva-skjer-pa-en-pakketerminal/d57c6a6094', 'Oppgave'],
+      ['Terminaler', 'terminaler/6a8f025da7', 'Fagstoff'],
+      ['Hva er en terminal?', 'hva-er-en-terminal/04f1384e9b', 'Fagstoff']
+    ],
+    arbeidsbok: '1.2, 1.6, 1.9, 1.18, 1.20, 1.22, 1.23, 1.28, 1.31, 1.32, 1.33',
+    aktiviteter: [
+      { type:'flash', id:'t6-flash', tittel:'Begrepskort: godsterminal', kort:[
+        ['Kolli','Én enhet gods – en pakke, en eske eller en pall.'],
+        ['Samlastterminal','Terminal der gods fra mange avsendere samles og sorteres.'],
+        ['Avsenderterminal','Første terminal – der godset leveres inn.'],
+        ['Sentralterminal','Sorterer gods fra hele landet videre til riktig mottakerterminal.'],
+        ['Mottakerterminal','Siste terminal – godset distribueres derfra til mottakeren.'],
+        ['Lokalgods','Gods som skal innenfor samme region – er bare innom én terminal.'],
+        ['CMR-fraktbrev','Fraktbrevet som brukes ved internasjonale vegtransporter.'],
+        ['Undersøkelsesplikt','Fraktføreren skal undersøke godset og opplysningene i fraktbrevet ved overtakelse.'],
+        ['Forbehold','Skriftlig merknad fra fraktføreren, f.eks. om dårlig emballasje.'],
+        ['Vegfraktloven','Loven som gjelder for samlastgods og vegtransport.'],
+        ['Postloven','Loven som gjelder for postsendinger.'],
+        ['Avkast / nedkast','Stedet på sorteringsbåndet der kolliet sklir ned til riktig avgangsport.']
+      ]},
+      { type:'quiz', id:'t6-q1', nivaa:1, tittel:'Terminalene i transportnettet', sp:[
+        { q:'Hvor mange terminaler er de fleste kolli innom fra avsender til mottaker?', a:['Én','To','Tre','Fem'], r:2, f:'Avsenderterminal, sentralterminal og mottakerterminal.' },
+        { q:'Hvor mange terminaler er lokalgods innom?', a:['Ingen','Én','Tre','Fire'], r:1, f:'Lokalgods skal innenfor samme region og er bare innom én terminal.' },
+        { q:'Hvilken av disse er IKKE en godsterminaltype i læreboka?', a:['Havneterminal','Flyfraktterminal','Jernbaneterminal','Bensinstasjon'], r:3, f:'Typene er samlast-, havne-, flyfrakt- og jernbaneterminaler.' },
+        { q:'Hvilket fraktbrev brukes ved internasjonale sendinger på vei?', a:['Innenlands fraktbrev','CMR-fraktbrev','Pakkseddel','Kvittering'], r:1, f:'CMR brukes internasjonalt.' },
+        { q:'Hva skal du gjøre med kolliet rett etter at det er mottatt, undersøkt og fraktberegnet?', a:['Skanne fraktbrevnummeret eller sendingsnummeret','Åpne det','Veie sjåføren','Sende det tilbake'], r:0, f:'Deretter sorteres det i lokalt gods og gods til andre regioner.' }
+      ]},
+      { type:'order', id:'t6-o1', nivaa:1, tittel:'Kolliets reise mellom regioner', instr:'Et kolli skal fra Stavanger til Trondheim. Sett stegene i riktig rekkefølge.', steg:[
+        'Avsenderen leverer kolliet til transportøren',
+        'Kolliet mottas og skannes på avsenderterminalen',
+        'Kolliet lastes i konteiner eller skapbil til sentralterminalen',
+        'Sorteringsanlegget på sentralterminalen sender det til riktig avgangsport',
+        'Kolliet ankommer mottakerterminalen',
+        'Distribusjonsbilen leverer kolliet til mottakeren'
+      ]},
+      { type:'sort', id:'t6-s1', nivaa:2, tittel:'Sorter på terminalen i Stavanger', instr:'Du jobber på en samlastterminal i Stavanger. Skal kolliet videre lokalt eller til en annen region?', kat:['Videre lokalt','Til andre regioner'], items:[
+        ['Kolli til Sandnes',0,'Innenfor regionen – nærdistribusjon.'],
+        ['Kolli til Sola',0,'Innenfor regionen – nærdistribusjon.'],
+        ['Kolli til Egersund',0,'Innenfor regionen – regional distribusjonsrute.'],
+        ['Kolli til Randaberg',0,'Innenfor regionen – nærdistribusjon.'],
+        ['Kolli til Bergen',1,'Annen region – samles i konteiner/skapbil.'],
+        ['Kolli til Oslo',1,'Annen region – via sentralterminalen.'],
+        ['Kolli til Trondheim',1,'Annen region – via sentralterminalen.'],
+        ['Kolli til Kristiansand',1,'Annen region.']
+      ]},
+      { type:'quiz', id:'t6-q2', nivaa:2, tittel:'Sortering og spesialgods', sp:[
+        { q:'Gods som skal videre lokalt sorteres på …', a:['… nærdistribusjonssoner og regionale distribusjonsruter','… flyfraktterminaler','… volumlageret','… sentrallageret'], r:0, f:'Lokalt gods fordeles på soner og ruter i regionen.' },
+        { q:'Hva skjer med gods som skal til andre regioner?', a:['Det leveres direkte til mottakeren','Det lastes samlet i konteinere og skapbiler til sentralterminalen','Det lagres i en måned','Det sendes alltid med fly'], r:1, f:'Det går med bil, båt eller bane til sentralterminalen.' },
+        { q:'Hva gjelder for termotransportprodukter?', a:['De skal ha ubrutt temperaturkjede','De skal alltid sendes sist','De kan stå ute','De trenger ikke fraktbrev'], r:0, f:'Temperaturen må holdes hele veien.' },
+        { q:'Hvordan behandles sendinger med tidsgaranti?', a:['De prioriteres ved sortering og transport','De sendes neste uke','Som alt annet gods','De returneres'], r:0, f:'Tidsgaranti betyr at leveringstida er lovet – de må prioriteres.' },
+        { q:'Hvilken lov gjelder for samlastgods?', a:['Postloven','Vegfraktloven','Arbeidsmiljøloven','Vegtrafikkloven'], r:1, f:'Postsendinger følger postloven, samlastgods følger vegfraktloven.' }
+      ]},
+      { type:'order', id:'t6-o2', nivaa:3, tittel:'Det automatiske sorteringsanlegget', instr:'Sett stegene i et automatisk pakkesorteringsanlegg i riktig rekkefølge.', steg:[
+        'Kolliet legges på innmatingen nede på golvet, med strekkoden opp',
+        'Skanneren registrerer hvilket postnummer kolliet skal til',
+        'Et transportbånd løfter kolliet opp til sorteringsbåndet i etasjen over',
+        'Kolliet havner på et eget brett, og systemet kobler postnummeret til brettets adresse',
+        'Ved riktig utkast vippes brettet, og kolliet sklir ned en rutsjebane',
+        'Kolliene samles ved avgangsporten og lastes for transport til mottakerterminalen'
+      ]},
+      { type:'case', id:'t6-case', nivaa:3, tittel:'Case: Ved skranken på terminalen', intro:'Du tar imot gods fra kunder på en samlastterminal. Som fraktfører har du undersøkelsesplikt.', steg:[
+        { q:'En kunde leverer fire kanner med fareseddel, men kan ikke si hva som er i dem og har ingen papirer. Hva gjør du?', valg:[
+          { t:'Tar imot – fareseddelen holder', ok:false, f:'Avsenderen har plikt til å gi nødvendige opplysninger om farlig gods (vegfraktloven § 15).' },
+          { t:'Ber om de nødvendige opplysningene, og vurderer å nekte å ta imot godset hvis kunden ikke kan gi dem', ok:true, f:'Riktig. Loven sier ikke hva du skal gjøre, men læreboka anbefaler å vurdere å nekte.' },
+          { t:'Tar imot, men setter kannene bakerst i bilen', ok:false, f:'Plasseringen løser ikke problemet: du vet ikke hva godset er eller hvordan det skal håndteres.' }
+        ]},
+        { q:'Neste kunde leverer en tynn papp-eske med glassvarer, uten fyll inni. Kunden vil sende den likevel. Hva gjør du?', valg:[
+          { t:'Tar imot uten kommentar', ok:false, f:'Hvis eska knuses, kan det bli tvist om hvem som har ansvaret.' },
+          { t:'Tar skriftlig forbehold i fraktbrevet om dårlig emballering', ok:true, f:'Riktig. Fraktbrevet er bevis for fraktavtalen – forbeholdet beskytter deg ved en tvist.' },
+          { t:'Pakker om eska selv uten å si fra', ok:false, f:'Du endrer kundens sending uten avtale. Ta heller forbehold.' }
+        ]},
+        { q:'Den tredje kunden sender en pall til Tyskland. Hvilket fraktbrev fyller du ut?', valg:[
+          { t:'Innenlands fraktbrev', ok:false, f:'Det brukes bare ved nasjonale sendinger.' },
+          { t:'CMR-fraktbrev', ok:true, f:'Riktig. Internasjonale vegsendinger bruker CMR.' },
+          { t:'Ingen fraktbrev, bare pakkseddel', ok:false, f:'Pakkseddelen hører til kjøpsavtalen. Transporten trenger fraktbrev.' }
+        ]}
+      ]},
+      { type:'reflect', id:'t6-r1', nivaa:3, tittel:'Forklar: Hvorfor går pakken via flere terminaler?', q:'En kunde i Egersund lurer på hvorfor pakken hennes til Tromsø går innom flere terminaler. Forklar hvordan et landsdekkende terminalnett er bygd opp, og hvilken vei pakken tar.', punkter:[
+        'Landet er delt i regioner med en eller flere terminaler',
+        'Kolli går vanligvis via avsender-, sentral- og mottakerterminal',
+        'Lokalgods er bare innom én terminal',
+        'Gods til andre regioner samles i konteinere/skapbiler og sendes med bil, båt eller bane',
+        'Sentralterminalen har automatisk sorteringsanlegg og avgangsporter per mottakerterminal',
+        'Fra mottakerterminalen distribueres godset på soner og ruter'
+      ]},
+      { type:'reflect', id:'t6-r2', nivaa:3, tittel:'Par-oppgave: Forbehold i fraktbrevet', q:'Jobb i par. Dere er fraktførere og tar imot gods ved terminalen. Lag en liste over situasjoner der dere ville skrevet et forbehold i fraktbrevet før dere tok imot godset – og forklar kort hvorfor for hver situasjon.', punkter:[
+        'Dårlig eller mangelfull emballering',
+        'Synlige skader på godset allerede ved mottak',
+        'Antall kolli eller merking stemmer ikke med fraktbrevet',
+        'Fraktføreren kan ikke kontrollere opplysningene (innhold, vekt)',
+        'Manglende opplysninger om farlig gods'
+      ]}
+    ]
+  },
+  /* ---------------------------------------------------------------- T7 */
+  {
+    id: 't7', lok: 'D-01', tittel: 'Passasjerterminaler',
+    kort: 'Omstigning mellom transportmidler, arbeidsoppgaver på passasjerterminaler og universell utforming.',
+    punkter: [
+      'En <b>passasjerterminal</b> er et anlegg der passasjerer går på, går av eller bytter transportmiddel (båt, tog, buss, fly).',
+      'Logistikkoperatører på store terminaler jobber med <b>bagasjehåndtering</b> (sortering, lasting og lossing) og med å betjene passasjerer.',
+      'Ved korte reiser betjener passasjerene seg stort sett selv.',
+      'Passasjerterminaler skal ha <b>universell utforming</b>: de skal være laget slik at flest mulig kan bruke dem på samme måte, uten egne spesialløsninger.',
+      'Andre ord for det samme: <b>design for alle, universell design, inkluderende design, tilgjengelighet for alle</b>.'
+    ],
+    ndla: [
+      ['Hva er en terminal?', 'hva-er-en-terminal/04f1384e9b', 'Fagstoff'],
+      ['Terminaler', 'terminaler/6a8f025da7', 'Fagstoff']
+    ],
+    arbeidsbok: '1.3, 1.19',
+    aktiviteter: [
+      { type:'flash', id:'t7-flash', tittel:'Begrepskort: passasjerterminal', kort:[
+        ['Passasjerterminal','Anlegg der passasjerer går på, går av eller bytter transportmiddel.'],
+        ['Omstigning','Å bytte fra ett transportmiddel til et annet underveis på reisen.'],
+        ['Bagasjehåndtering','Sortering, lasting og lossing av bagasje, f.eks. på flyplass.'],
+        ['Universell utforming','Utforming slik at alle kan bruke produkter og omgivelser, uten behov for tilpasning.'],
+        ['Design for alle','Et annet ord for universell utforming.']
+      ]},
+      { type:'quiz', id:'t7-q1', nivaa:1, tittel:'Passasjerterminaler', sp:[
+        { q:'Hva er den viktigste oppgaven til en passasjerterminal?', a:['At reisende kan bytte fra ett transportmiddel til et annet','Å selge mat og kaffe','Å lagre gods','Å reparere busser'], r:0, f:'Reisende bytter transportmiddel på vei mot reisemålet.' },
+        { q:'Hvilken arbeidsoppgave har logistikkoperatører på en flyplassterminal?', a:['Fly flyet','Bagasjehåndtering – sortering, lasting og lossing','Selge flybilletter på nett','Bygge rullebaner'], r:1, f:'Bagasjehåndtering er logistikkarbeid på passasjerterminaler.' },
+        { q:'Hva er universell utforming?', a:['At alle terminaler ser like ut','At omgivelsene kan brukes av alle mennesker uten behov for spesiell tilpasning','At det finnes en egen inngang for rullestolbrukere bak bygget','At det er gratis å reise'], r:1, f:'Løsningen skal fungere for alle – ikke være en spesialløsning ved siden av.' },
+        { q:'Hvilket ord betyr IKKE det samme som universell utforming?', a:['Design for alle','Inkluderende design','Tilgjengelighet for alle','Spesialtilpasning'], r:3, f:'Poenget med universell utforming er nettopp at man ikke skal trenge spesialtilpasning.' }
+      ]},
+      { type:'sort', id:'t7-s1', nivaa:2, tittel:'Universelt utformet – eller ikke?', instr:'Er dette et eksempel på universell utforming?', kat:['Universell utforming','Ikke universell utforming'], items:[
+        ['Trinnfri adkomst fra gata og helt ut på perrongen',0,'Alle kan bruke samme vei.'],
+        ['Ledelinjer i gulvet for blinde og svaksynte',0,'Hjelper flere å orientere seg på samme måte.'],
+        ['Avgangsinformasjon både på skjerm og med lyd',0,'Fungerer for både hørselshemmede og synshemmede.'],
+        ['Billettautomat med god kontrast og knapper i passe høyde',0,'Kan brukes stående og sittende.'],
+        ['Eneste vei til bussterminalen er en trapp',1,'Utelukker rullestolbrukere, barnevogner og folk med tung bagasje.'],
+        ['Rampe som må bestilles og legges ut av personalet dagen før',1,'Det er en spesialtilpasning, ikke universell utforming.'],
+        ['Informasjon bare på små skilt med liten skrift',1,'Vanskelig for mange å lese.']
+      ]},
+      { type:'reflect', id:'t7-r1', nivaa:2, tittel:'Utforsk: Universell utforming rundt deg', q:'Tenk på en terminal du kjenner (busstasjon, kai, flyplass – eller skolen). Skriv tre eksempler på universell utforming du har sett, og ett sted der det mangler.', punkter:[
+        'Jeg har beskrevet tre konkrete eksempler',
+        'Jeg har forklart hvem eksemplene hjelper',
+        'Jeg har beskrevet ett sted der universell utforming mangler',
+        'Jeg har foreslått en forbedring'
+      ]}
+    ]
+  }
+  ]
+};
+
+/* =====================================================================
+   MOTOR – felles for alle kapitler
+   ===================================================================== */
+(function(){
+'use strict';
+const K = KAPITTEL;
+const NIVA = {0:'Alle nivåer',1:'Nybegynner',2:'Trygg',3:'Ekspert'};
+const NIVA_KORT = {1:'Nybegynner',2:'Trygg',3:'Ekspert'};
+const TYPE = {flash:'Begrepskort',quiz:'Quiz',match:'Koble sammen',order:'Rekkefølge',sort:'Sorter',calc:'Regneoppgaver',case:'Case',reflect:'Skriveoppgave',sim:'Simulering'};
+const $ = s => document.querySelector(s);
+const app = $('#app');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const strip = s => String(s).replace(/<[^>]+>/g,'');
+const shuffle = a => { a = a.slice(); for (let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+const rnd = (a,b) => a + Math.floor(Math.random()*(b-a+1));
+
+/* --- lagring (bare i denne nettleseren) --- */
+const KEY = 'tll-' + K.id;
+let store = {lvl:0, best:{}};
+try { const s = JSON.parse(localStorage.getItem(KEY)); if (s) store = Object.assign(store, s); } catch(e){}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e){} };
+const setBest = (id, pct) => { pct = Math.round(pct); if (!(store.best[id] >= pct)) { store.best[id] = pct; save(); } };
+
+/* --- tema --- */
+try { const t = localStorage.getItem('tll-theme'); if (t) document.documentElement.dataset.theme = t; } catch(e){}
+$('#themeBtn').onclick = () => {
+  const cur = document.documentElement.dataset.theme || 'dark';
+  const nxt = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = nxt;
+  try { localStorage.setItem('tll-theme', nxt); } catch(e){}
+};
+
+/* --- opplesning --- */
+const SPK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg>';
+const canSpeak = 'speechSynthesis' in window;
+function speak(text){
+  if (!canSpeak) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(strip(text));
+  u.lang = 'nb-NO'; u.rate = 0.95;
+  const v = speechSynthesis.getVoices().find(v => /^(nb|no|nn)/i.test(v.lang));
+  if (v) u.voice = v;
+  speechSynthesis.speak(u);
+}
+const sayBtn = txt => canSpeak ? `<button class="say" data-say="${esc(strip(txt))}" title="Les opp" aria-label="Les opp">${SPK}</button>` : '';
+document.addEventListener('click', e => { const b = e.target.closest('[data-say]'); if (b){ e.stopPropagation(); speak(b.dataset.say); } });
+
+/* --- nivåvelger --- */
+function renderLevels(){
+  const cols = {0:'var(--yellow)',1:'var(--n1)',2:'var(--n2)',3:'var(--n3)'};
+  $('#levels').innerHTML = [1,2,3,0].map(n =>
+    `<button data-lvl="${n}" aria-pressed="${store.lvl===n}"><span class="dot" style="background:${cols[n]}"></span>${n===0?'Alle':NIVA[n]}</button>`).join('');
+  $('#levels').querySelectorAll('button').forEach(b => b.onclick = () => { store.lvl = +b.dataset.lvl; save(); renderLevels(); route(); });
+}
+const visible = a => !a.nivaa || store.lvl === 0 || a.nivaa === store.lvl;
+
+/* --- header/footer --- */
+function header(crumbs, title, sub, showKm){
+  $('#hdr').innerHTML = `
+    <a class="brandlink" href="../../"><span class="bm">TLL</span>TLLfluenseren</a>
+    <div class="crumbs"><a href="../">Transport, logistikk og løfteoperasjoner</a> <span>›</span> ${crumbs}</div>
+    <h1>${title}</h1>
+    ${sub ? `<div class="sub">${sub}</div>` : ''}
+    ${showKm ? `<div class="km"><b>Kompetansemål</b><span>${esc(K.kompetansemal.tekst)} <span style="opacity:.7">(${esc(K.kompetansemal.kode)})</span></span></div>` : ''}`;
+}
+$('#ftr').innerHTML = `${esc(K.fag)} · Kapittel ${K.nr}. Tekster og oppgaver er egenprodusert. Fagstoff fra <a href="${K.ressurser.ndlaEmne}" target="_blank" rel="noopener">NDLA</a> er lenket til, ikke kopiert. Kompetansemål fra Utdanningsdirektoratet (NLOD). Henvisninger til arbeidsboka gjelder oppgavenummer i elevens egen bok. Resultatene lagres bare i denne nettleseren.`;
+
+/* --- fremdrift --- */
+function temaProg(t){
+  const acts = t.aktiviteter.filter(visible);
+  const done = acts.filter(a => store.best[a.id] != null).length;
+  return {done, total: acts.length};
+}
+
+/* =================== SIDER =================== */
+function pageHome(){
+  header(`<span>Kapittel ${K.nr}</span>`, `Kap ${K.nr} · ${esc(K.tittel)}`, esc(K.ingress), true);
+  const r = K.ressurser;
+  app.innerHTML = `
+    <div class="section-h"><h2>Velg tema</h2><span class="muted small">Velg nivå øverst – Nybegynner, Trygg eller Ekspert</span></div>
+    <div class="grid">${K.temaer.map(t => { const p = temaProg(t); return `
+      <a class="tcard" href="#/${t.id}">
+        <div class="lab"><span class="lok">${t.lok}</span><span class="bars"></span></div>
+        <div class="body"><h3>${esc(t.tittel)}</h3><p>${esc(t.kort)}</p>
+          <div class="progtxt">${p.done} av ${p.total} aktiviteter gjort</div>
+          <div class="prog"><i style="width:${p.total?100*p.done/p.total:0}%"></i></div></div>
+      </a>`; }).join('')}
+      <a class="tcard" href="#/prove">
+        <div class="lab"><span class="lok" style="background:var(--asphalt);color:var(--yellow)">TEST</span><span class="bars"></span></div>
+        <div class="body"><h3>Kapittelprøve</h3><p>15 tilfeldige spørsmål fra hele kapitlet på nivået du har valgt. Se hvilke tema du må øve mer på.</p>
+          <div class="progtxt">${store.best['prove'] != null ? 'Beste resultat: ' + store.best['prove'] + ' %' : 'Ikke tatt ennå'}</div></div>
+      </a>
+    </div>
+    <div class="section-h"><h2>Ressurser</h2></div>
+    <div class="panel"><ul class="reslist">
+      ${r.presentasjon ? `<li><span class="tag">Lysark</span><a href="${esc(r.presentasjon)}" target="_blank" rel="noopener">Lysark til kapittel ${K.nr}</a></li>` : ''}
+      <li><span class="tag">Bok</span><span>${esc(r.arbeidsbok)}</span></li>
+      <li><span class="tag ndla">NDLA</span><a href="${r.ndlaEmne}" target="_blank" rel="noopener">Emnet «Drift på terminal og lager» på NDLA</a></li>
+      ${r.ordliste ? `<li><span class="tag ndla">NDLA</span><a href="${r.ordliste}" target="_blank" rel="noopener">Ordliste for lager og logistikk</a></li>` : ''}
+    </ul></div>`;
+}
+
+function pageTema(t){
+  header(`<a href="#/">Kap ${K.nr}</a> <span>›</span> <span>${t.lok}</span>`, esc(t.tittel), esc(t.kort), false);
+  const acts = t.aktiviteter.filter(visible);
+  app.innerHTML = `
+    <div class="two">
+      <div class="panel kort"><h3 style="font-size:22px">Kort fortalt</h3><ul>${t.punkter.map(p => `<li>${p}</li>`).join('')}</ul></div>
+      <div class="panel"><h3 style="font-size:22px">Les og se mer</h3>
+        <ul class="reslist">${t.ndla.map(([tt,u,ty]) => `<li><span class="tag ndla">${esc(ty)}</span><a href="${NDLA+u}" target="_blank" rel="noopener">${esc(tt)}</a></li>`).join('')}
+        <li><span class="tag">Bok</span><span>Arbeidsboka: oppgave ${esc(t.arbeidsbok)}</span></li></ul></div>
+    </div>
+    <div class="section-h"><h2>Aktiviteter</h2><span class="muted small">${NIVA[store.lvl]} · ${acts.length} aktiviteter</span></div>
+    ${acts.length ? `<div class="acts">${acts.map(a => actCard(t,a)).join('')}</div>` : `<p class="muted">Ingen aktiviteter på dette nivået. Velg et annet nivå øverst.</p>`}
+    <p style="margin-top:22px"><a href="#/">← Tilbake til alle tema</a></p>`;
+}
+function actCard(t,a){
+  const n = a.nivaa || 0;
+  const b = store.best[a.id];
+  return `<a class="act" data-n="${n}" href="#/${t.id}/${a.id}">
+    <div class="kind"><span>${TYPE[a.type]}</span><span class="lvl n${n}">${n ? NIVA_KORT[n] : 'Alle'}</span></div>
+    <h4>${esc(a.tittel)}</h4>
+    <div class="small">${b != null ? `<span class="done">✓ Beste: ${b} %</span>` : '<span class="muted">Ikke gjort</span>'}</div></a>`;
+}
+
+function pageAct(t,a){
+  header(`<a href="#/">Kap ${K.nr}</a> <span>›</span> <a href="#/${t.id}">${esc(t.tittel)}</a>`, esc(a.tittel), `${TYPE[a.type]}${a.nivaa ? ' · ' + NIVA_KORT[a.nivaa] : ''}`, false);
+  app.innerHTML = `<div class="stage" id="stage"></div><p class="stage" style="margin-top:22px"><a href="#/${t.id}">← Tilbake til ${esc(t.tittel)}</a></p>`;
+  const st = $('#stage');
+  const done = pct => setBest(a.id, pct);
+  ({flash:runFlash, quiz:runQuiz, match:runMatch, order:runOrder, sort:runSort, calc:runCalc, case:runCase, reflect:runReflect, sim:runSim})[a.type](st, a, done, t);
+}
+
+function resultBox(pct, again, extra){
+  const msg = pct >= 90 ? 'Råsterkt! Du har god kontroll på dette.' : pct >= 70 ? 'Bra jobbet! Se over det du bommet på.' : pct >= 50 ? 'Godt i gang. Les «Kort fortalt» og prøv igjen.' : 'Les fagstoffet en gang til, og prøv på nytt.';
+  return `<div class="panel result"><div class="big">${Math.round(pct)} %</div><div class="msg">${msg}</div>${extra||''}
+    <div class="row" style="justify-content:center"><button class="btn" id="again">Prøv igjen</button></div></div>`;
+}
+
+/* =================== AKTIVITETER =================== */
+function runFlash(st, a, done){
+  let order = a.kort.map((_,i)=>i), i = 0, seen = new Set();
+  const draw = () => {
+    const [f,b] = a.kort[order[i]];
+    st.innerHTML = `<p class="instr">Trykk på kortet for å snu det. Bruk pilene for å bla.</p>
+      <div class="flash" id="fc"><div class="inner">
+        <div class="face front">${esc(f)}<div class="hint">Trykk for å snu</div></div>
+        <div class="face back">${esc(b)}</div></div></div>
+      <div class="row"><button class="btn ghost" id="prev" aria-label="Forrige">←</button>
+        <span class="counter">${i+1} / ${a.kort.length}</span>
+        <button class="btn ghost" id="next" aria-label="Neste">→</button>
+        <span class="spacer"></span>${sayBtn(f + '. ' + b)}
+        <button class="btn ghost" id="mix">Bland</button></div>`;
+    const fc = $('#fc');
+    fc.onclick = () => { fc.classList.toggle('flipped'); seen.add(order[i]); if (seen.size === a.kort.length) done(100); };
+    $('#prev').onclick = () => { i = (i - 1 + a.kort.length) % a.kort.length; draw(); };
+    $('#next').onclick = () => { i = (i + 1) % a.kort.length; draw(); };
+    $('#mix').onclick = () => { order = shuffle(order); i = 0; draw(); };
+  };
+  draw();
+}
+
+function runQuiz(st, a, done, t, opts){
+  opts = opts || {};
+  const qs = opts.questions || shuffle(a.sp);
+  let i = 0, score = 0; const wrong = [];
+  const draw = () => {
+    const q = qs[i];
+    const ord = shuffle(q.a.map((_,k)=>k));
+    st.innerHTML = `<div class="row"><span class="counter">Spørsmål ${i+1} av ${qs.length}</span><span class="spacer"></span><span class="counter">${score} riktige</span></div>
+      <div class="meter"><i style="width:${100*i/qs.length}%"></i></div>
+      ${q._tema ? `<div class="small muted">${esc(q._tema)}</div>` : ''}
+      <div class="q"><span>${esc(q.q)}</span>${sayBtn(q.q + '. ' + ord.map((k,n)=>'ABCD'[n] + ': ' + q.a[k]).join('. '))}</div>
+      <div class="opts">${ord.map((k,n) => `<button class="opt" data-k="${k}"><span class="k">${'ABCD'[n]}</span><span>${esc(q.a[k])}</span></button>`).join('')}</div>
+      <div id="fb"></div>`;
+    st.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+      const k = +b.dataset.k, ok = k === q.r;
+      if (ok) score++; else wrong.push(q);
+      st.querySelectorAll('.opt').forEach(x => { x.disabled = true; if (+x.dataset.k === q.r) x.classList.add('ok'); });
+      if (!ok) b.classList.add('bad');
+      $('#fb').innerHTML = `<div class="fb ${ok?'':'bad'}"><b>${ok ? 'Riktig!' : 'Ikke helt.'}</b> ${esc(q.f||'')}</div>
+        <div class="row" style="margin-top:12px"><span class="spacer"></span><button class="btn yellow" id="nx">${i+1<qs.length ? 'Neste →' : 'Se resultat'}</button></div>`;
+      $('#nx').focus();
+      $('#nx').onclick = () => { i++; i < qs.length ? draw() : finish(); };
+    });
+  };
+  const finish = () => {
+    const pct = 100*score/qs.length; done(pct);
+    let extra = '';
+    if (opts.perTema){
+      const m = {}; qs.forEach(q => { m[q._tema] = m[q._tema] || {r:0,n:0}; m[q._tema].n++; if (!wrong.includes(q)) m[q._tema].r++; });
+      extra = `<div style="text-align:left;max-width:440px;margin:0 auto 16px">${Object.entries(m).map(([k,v]) =>
+        `<div class="row small" style="padding:4px 0;border-top:1px solid var(--line)"><span>${esc(k)}</span><span class="spacer"></span><b style="color:${v.r===v.n?'var(--ok)':'var(--bad)'}">${v.r}/${v.n}</b></div>`).join('')}</div>`;
+    }
+    st.innerHTML = resultBox(pct, true, `<p class="muted">${score} av ${qs.length} riktige</p>${extra}`);
+    $('#again').onclick = () => opts.restart ? opts.restart() : runQuiz(st, a, done, t);
+  };
+  draw();
+}
+
+function runMatch(st, a, done){
+  const L = shuffle(a.par.map((p,i)=>({t:p[0],i}))), R = shuffle(a.par.map((p,i)=>({t:p[1],i})));
+  let sel = null, errors = 0, matched = 0;
+  st.innerHTML = `<p class="instr">${esc(a.instr||'Koble sammen.')}</p>
+    <div class="match"><div class="col">${L.map(x=>`<button class="mi left" data-s="L" data-i="${x.i}">${esc(x.t)}</button>`).join('')}</div>
+    <div class="col">${R.map(x=>`<button class="mi" data-s="R" data-i="${x.i}">${esc(x.t)}</button>`).join('')}</div></div>
+    <p class="counter" id="mc" style="margin-top:12px">0 av ${a.par.length} koblet · 0 feil</p><div id="mr"></div>`;
+  st.querySelectorAll('.mi').forEach(b => b.onclick = () => {
+    if (b.classList.contains('done')) return;
+    if (!sel || sel.dataset.s === b.dataset.s){ if (sel) sel.classList.remove('sel'); sel = b; b.classList.add('sel'); return; }
+    if (sel.dataset.i === b.dataset.i){
+      [sel,b].forEach(x => { x.classList.remove('sel'); x.classList.add('done'); x.disabled = true; }); matched++;
+    } else {
+      errors++; const s = sel; [s,b].forEach(x => { x.classList.remove('wrong'); void x.offsetWidth; x.classList.add('wrong'); });
+      s.classList.remove('sel');
+    }
+    sel = null;
+    $('#mc').textContent = `${matched} av ${a.par.length} koblet · ${errors} feil`;
+    if (matched === a.par.length){
+      const pct = 100*a.par.length/(a.par.length+errors); done(pct);
+      $('#mr').innerHTML = resultBox(pct); $('#again').onclick = () => runMatch(st,a,done);
+    }
+  });
+}
+
+function runOrder(st, a, done){
+  let cur = shuffle(a.steg.map((s,i)=>i));
+  while (a.steg.length > 1 && cur.every((v,i)=>v===i)) cur = shuffle(cur);
+  let tries = 0;
+  const draw = (checked) => {
+    st.innerHTML = `<p class="instr">${esc(a.instr)} Flytt med pilene.</p>
+      <ol class="olist">${cur.map((k,p) => `<li class="oi ${checked ? (k===p?'ok':'bad') : ''}">
+        <span class="n">${p+1}</span><span class="t">${esc(a.steg[k])}</span>
+        <span class="mv"><button data-up="${p}" aria-label="Flytt opp" ${p===0?'disabled':''}>▲</button><button data-dn="${p}" aria-label="Flytt ned" ${p===cur.length-1?'disabled':''}>▼</button></span></li>`).join('')}</ol>
+      <div class="row" style="margin-top:14px"><span class="counter">Forsøk: ${tries}</span><span class="spacer"></span><button class="btn yellow" id="chk">Sjekk rekkefølgen</button></div><div id="or"></div>`;
+    st.querySelectorAll('[data-up]').forEach(b => b.onclick = () => { const p=+b.dataset.up; [cur[p-1],cur[p]]=[cur[p],cur[p-1]]; draw(); });
+    st.querySelectorAll('[data-dn]').forEach(b => b.onclick = () => { const p=+b.dataset.dn; [cur[p+1],cur[p]]=[cur[p],cur[p+1]]; draw(); });
+    $('#chk').onclick = () => {
+      tries++;
+      const right = cur.filter((k,p)=>k===p).length;
+      draw(true);
+      if (right === cur.length){
+        const pct = Math.max(40, 100 - (tries-1)*20); done(pct);
+        $('#or').innerHTML = `<div class="fb"><b>Helt riktig!</b> ${tries===1?'På første forsøk.':`Du brukte ${tries} forsøk.`}</div>` + resultBox(pct);
+        $('#again').onclick = () => runOrder(st,a,done);
+        st.querySelectorAll('.mv button,#chk').forEach(b=>b.disabled=true);
+      } else {
+        $('#or').innerHTML = `<div class="fb bad"><b>${right} av ${cur.length} står riktig.</b> De grønne står på riktig plass. Flytt de røde og sjekk igjen.</div>`;
+      }
+    };
+  };
+  draw();
+}
+
+function runSort(st, a, done){
+  const items = shuffle(a.items.map((x,i)=>({t:x[0],k:x[1],why:x[2]||'',i})));
+  const ans = {};
+  st.innerHTML = `<p class="instr">${esc(a.instr)}</p>
+    <div class="sitems">${items.map(x => `<div class="si" data-i="${x.i}"><div class="t">${esc(x.t)}</div>
+      <div class="cats">${a.kat.map((c,ci)=>`<button data-c="${ci}" aria-pressed="false">${esc(c)}</button>`).join('')}</div><div class="why" hidden></div></div>`).join('')}</div>
+    <div class="row" style="margin-top:14px"><span class="counter" id="sc">0 av ${items.length} plassert</span><span class="spacer"></span><button class="btn yellow" id="chk" disabled>Sjekk svarene</button></div><div id="sr"></div>`;
+  st.querySelectorAll('.si').forEach(el => {
+    el.querySelectorAll('button').forEach(b => b.onclick = () => {
+      ans[el.dataset.i] = +b.dataset.c;
+      el.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x===b));
+      const n = Object.keys(ans).length; $('#sc').textContent = `${n} av ${items.length} plassert`; $('#chk').disabled = n < items.length;
+    });
+  });
+  $('#chk').onclick = () => {
+    let r = 0;
+    items.forEach(x => {
+      const el = st.querySelector(`.si[data-i="${x.i}"]`), ok = ans[x.i] === x.k; if (ok) r++;
+      el.classList.remove('ok','bad'); el.classList.add(ok?'ok':'bad');
+      const w = el.querySelector('.why'); w.hidden = false; w.innerHTML = ok ? esc(x.why) : `<b>Riktig: ${esc(a.kat[x.k])}.</b> ${esc(x.why)}`;
+      el.querySelectorAll('button').forEach(b => b.disabled = true);
+    });
+    const pct = 100*r/items.length; done(pct);
+    $('#chk').hidden = true;
+    $('#sr').innerHTML = resultBox(pct, true, `<p class="muted">${r} av ${items.length} riktige</p>`);
+    $('#again').onclick = () => runSort(st,a,done);
+  };
+}
+
+/* Regneoppgaver: generatorer */
+const VARER = ['vaskemiddel','kaffe','hermetikk','toalettpapir','kopipapir','hundefôr','oppvasktabletter','brus'];
+const GEN = {
+  saldo(){ const s=rnd(8,40), inn=rnd(0,1)?rnd(5,24):0, p=rnd(2,Math.min(30,s+inn)); const v=VARER[rnd(0,VARER.length-1)];
+    return { task:`En lokasjon med ${v} har <b>${s}</b> kartonger når dagen starter. I løpet av dagen ryddes <b>${inn}</b> nye kartonger inn, og det plukkes <b>${p}</b> kartonger. Hva er lagersaldoen ved slutten av dagen?`,
+      ans:s+inn-p, unit:'kartonger', steps:[`Saldo = start + inn − plukket`,`${s} + ${inn} − ${p} = <b>${s+inn-p}</b> kartonger`] }; },
+  bp(){ const f=rnd(1,8), l=rnd(2,10); const v=VARER[rnd(0,VARER.length-1)];
+    return { task:`Regionlageret selger i gjennomsnitt <b>${f}</b> kartonger ${v} per dag. Ledetida fra bestilling til leveranse er <b>${l}</b> dager. Hvor mange kartonger skal saldoen vise når systemet foreslår ny bestilling (bestillingspunktet)? Regn uten sikkerhetslager.`,
+      ans:f*l, unit:'kartonger', steps:[`Bestillingspunkt = forbruk per dag × ledetid`,`${f} × ${l} = <b>${f*l}</b> kartonger`,`Da kommer de nye varene omtrent når lageret er tomt.`] }; },
+  bpsl(){ const f=rnd(2,12), l=rnd(3,12), sl=rnd(1,4)*f; const v=VARER[rnd(0,VARER.length-1)];
+    return { task:`Et lager selger <b>${f}</b> kartonger ${v} per dag. Ledetida er <b>${l}</b> dager. Lageret vil ha et sikkerhetslager på <b>${sl}</b> kartonger. Hvor ligger bestillingspunktet?`,
+      ans:f*l+sl, unit:'kartonger', steps:[`Forbruk i ledetida = ${f} × ${l} = ${f*l}`,`Bestillingspunkt = forbruk i ledetida + sikkerhetslager`,`${f*l} + ${sl} = <b>${f*l+sl}</b> kartonger`] }; },
+  pall(){ const n=rnd(1,3)===1?33:rnd(12,66), pr=[90,100,110,120,125,130][rnd(0,5)];
+    return { task:`En leveranse kommer med <b>${n}</b> europaller. Leverandøren belaster <b>${pr} kr</b> per pall i tillegg til varene. Hva er samlet pallverdi?`,
+      ans:n*pr, unit:'kr', steps:[`Pallverdi = antall paller × pris per pall`,`${n} × ${pr} = <b>${(n*pr).toLocaleString('nb-NO')}</b> kr`, n===33?'(En fullastet semitrailer har plass til 33 paller i ett plan.)':''] }; }
+};
+function runCalc(st, a, done){
+  const n = a.antall || 5; let i = 0, score = 0, tryN = 0, cur;
+  const draw = () => {
+    cur = GEN[a.gen](); tryN = 0;
+    st.innerHTML = `<div class="row"><span class="counter">Oppgave ${i+1} av ${n}</span><span class="spacer"></span><span class="counter">${score} riktige</span></div>
+      <div class="meter"><i style="width:${100*i/n}%"></i></div>
+      <div class="calc panel"><div class="task">${cur.task}</div>
+      <div class="row"><input id="in" type="number" inputmode="numeric" aria-label="Svar"><span class="unit">${cur.unit}</span>
+      <button class="btn yellow" id="chk">Sjekk</button><span class="spacer"></span>${sayBtn(cur.task)}</div><div id="cf"></div></div>`;
+    const inp = $('#in'); inp.focus();
+    inp.onkeydown = e => { if (e.key === 'Enter') $('#chk').click(); };
+    $('#chk').onclick = () => {
+      if (inp.value === '') return;
+      const v = Number(inp.value), ok = v === cur.ans; tryN++;
+      if (ok || tryN >= 2){
+        if (ok && tryN === 1) score++; else if (ok) score += 0.5;
+        inp.disabled = true; $('#chk').disabled = true;
+        $('#cf').innerHTML = `<div class="fb ${ok?'':'bad'}"><b>${ok ? 'Riktig!' : 'Riktig svar er ' + cur.ans.toLocaleString('nb-NO') + ' ' + cur.unit + '.'}</b>
+          <ul class="steps">${cur.steps.filter(Boolean).map(s=>`<li>${s}</li>`).join('')}</ul></div>
+          <div class="row" style="margin-top:12px"><span class="spacer"></span><button class="btn yellow" id="nx">${i+1<n?'Neste →':'Se resultat'}</button></div>`;
+        $('#nx').focus(); $('#nx').onclick = () => { i++; i<n ? draw() : fin(); };
+      } else {
+        $('#cf').innerHTML = `<div class="fb bad"><b>Ikke riktig – prøv én gang til.</b> Tips: ${cur.steps[0]}</div>`;
+        inp.select();
+      }
+    };
+  };
+  const fin = () => { const pct = 100*score/n; done(pct); st.innerHTML = resultBox(pct,true,`<p class="muted">Nye tall hver gang du prøver.</p>`); $('#again').onclick = () => runCalc(st,a,done); };
+  draw();
+}
+
+function runCase(st, a, done){
+  let i = 0, pts = 0; const N = a.steg.length;
+  const draw = () => {
+    const s = a.steg[i]; let first = true;
+    st.innerHTML = `${i===0 ? `<div class="panel" style="margin-bottom:14px"><b>Situasjon:</b> ${esc(a.intro)}</div>` : ''}
+      <div class="row"><span class="counter">Steg ${i+1} av ${N}</span></div>
+      <div class="meter"><i style="width:${100*i/N}%"></i></div>
+      <div class="q"><span>${esc(s.q)}</span>${sayBtn(s.q)}</div>
+      <div class="opts">${shuffle(s.valg.map((v,k)=>({...v,k}))).map((v,n)=>`<button class="opt" data-k="${v.k}"><span class="k">${'ABC'[n]}</span><span>${esc(v.t)}</span></button>`).join('')}</div><div id="fb"></div>`;
+    st.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+      const v = s.valg[+b.dataset.k];
+      b.disabled = true; b.classList.add(v.ok?'ok':'bad');
+      if (v.ok){
+        if (first) pts++;
+        st.querySelectorAll('.opt').forEach(x=>x.disabled=true);
+        $('#fb').innerHTML = `<div class="fb"><b>Godt valg.</b> ${esc(v.f)}</div><div class="row" style="margin-top:12px"><span class="spacer"></span><button class="btn yellow" id="nx">${i+1<N?'Neste steg →':'Se resultat'}</button></div>`;
+        $('#nx').onclick = () => { i++; i<N ? draw() : fin(); };
+      } else {
+        $('#fb').innerHTML = `<div class="fb bad"><b>Tenk en gang til.</b> ${esc(v.f)}</div>`;
+      }
+      first = false;
+    });
+  };
+  const fin = () => { const pct = 100*pts/N; done(pct); st.innerHTML = resultBox(pct,true,`<p class="muted">Riktig på første forsøk i ${pts} av ${N} steg.</p>`); $('#again').onclick = () => runCase(st,a,done); };
+  draw();
+}
+
+function runReflect(st, a, done){
+  const dk = KEY + '-txt-' + a.id; let txt = '';
+  try { txt = localStorage.getItem(dk) || ''; } catch(e){}
+  st.innerHTML = `<div class="q"><span>${esc(a.q)}</span>${sayBtn(a.q)}</div>
+    <p class="instr">Skriv svaret ditt med egne ord. Når du er ferdig, trykker du «Sjekk svaret mitt» og krysser av for punktene du har fått med.</p>
+    <textarea id="ta" placeholder="Skriv her …">${esc(txt)}</textarea>
+    <div class="row" style="margin-top:10px"><span class="counter" id="wc"></span><span class="spacer"></span>
+    <button class="btn ghost" id="cp">Kopier tekst</button><button class="btn yellow" id="chk">Sjekk svaret mitt</button></div><div id="rf"></div>`;
+  const ta = $('#ta'), wc = () => $('#wc').textContent = (ta.value.trim() ? ta.value.trim().split(/\s+/).length : 0) + ' ord';
+  wc(); ta.oninput = () => { wc(); try { localStorage.setItem(dk, ta.value); } catch(e){} };
+  $('#cp').onclick = () => { ta.select(); try { navigator.clipboard.writeText(ta.value); } catch(e){ document.execCommand('copy'); } $('#cp').textContent = 'Kopiert ✓'; };
+  $('#chk').onclick = () => {
+    $('#rf').innerHTML = `<div class="panel" style="margin-top:14px"><b>Dette bør et godt svar inneholde.</b> Kryss av for det du har med:
+      <ul class="checks">${a.punkter.map((p,i)=>`<li><label><input type="checkbox" data-i="${i}"><span>${esc(p)}</span></label></li>`).join('')}</ul>
+      <div class="row" style="margin-top:12px"><span class="counter" id="rc">0 av ${a.punkter.length}</span><span class="spacer"></span><button class="btn" id="reg">Registrer</button></div><div id="rr"></div></div>`;
+    const boxes = st.querySelectorAll('.checks input');
+    boxes.forEach(b => b.onchange = () => $('#rc').textContent = `${[...boxes].filter(x=>x.checked).length} av ${a.punkter.length}`);
+    $('#reg').onclick = () => {
+      const n = [...boxes].filter(x=>x.checked).length, pct = 100*n/a.punkter.length; done(pct);
+      $('#rr').innerHTML = `<div class="fb ${pct>=60?'':'bad'}" style="margin-top:12px"><b>${n} av ${a.punkter.length} punkter.</b> ${pct>=80?'Et grundig svar!':'Legg til punktene du mangler i teksten din, så har du et komplett svar.'}</div>`;
+    };
+  };
+}
+
+function runSim(st, a, done){
+  const DAYS = 20, LEAD = 3, QTY = 12, SALE = [1,2,3];
+  let day, stock, pending, empties, lost, hist, log;
+  const reset = () => { day=1; stock=10; pending=[]; empties=0; lost=0; hist=[10]; log=[]; draw(); };
+  const draw = () => {
+    const onOrder = pending.length > 0;
+    st.innerHTML = `<p class="instr">Du styrer lageret for én vare i ${DAYS} dager. Butikkene kjøper 1–3 kartonger per dag (snitt 2). Ledetida er ${LEAD} dager, og du bestiller ${QTY} kartonger om gangen. Målet er å <b>aldri gå tom</b> – men uten å fylle lageret for mye.</p>
+      <div class="simgrid">
+        <div class="stat"><div class="v">${Math.min(day,DAYS)}</div><div class="l">Dag av ${DAYS}</div></div>
+        <div class="stat"><div class="v">${stock}</div><div class="l">Lagersaldo</div></div>
+        <div class="stat"><div class="v">${onOrder ? 'Dag ' + pending[0] : '–'}</div><div class="l">Bestilling kommer</div></div>
+        <div class="stat"><div class="v" style="color:${lost?'var(--bad)':'inherit'}">${lost}</div><div class="l">Tapt salg (kartonger)</div></div>
+      </div>
+      <svg class="chart" viewBox="0 0 400 170" preserveAspectRatio="none" aria-label="Lagersaldo per dag">${chart()}</svg>
+      <div class="row" style="margin-top:12px">
+        <button class="btn ghost" id="ord" ${onOrder||day>DAYS?'disabled':''}>Bestill ${QTY} kartonger</button>
+        <span class="spacer"></span><button class="btn yellow" id="nx" ${day>DAYS?'disabled':''}>Neste dag →</button></div>
+      <ul class="log">${log.slice().reverse().map(l=>`<li>${l}</li>`).join('')}</ul><div id="sres"></div>`;
+    $('#ord').onclick = () => { pending = [day + LEAD]; log.push(`Dag ${day}: Bestilte ${QTY} kartonger (saldo ${stock}).`); draw(); };
+    $('#nx').onclick = step;
+    if (day > DAYS) finish();
+  };
+  const chart = () => {
+    const max = 30, w = 400, h = 170, dx = w/DAYS;
+    const y = v => h - 8 - (Math.min(v,max)/max)*(h-16);
+    const pts = hist.map((v,i)=>`${(i*dx).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+    const bp = 6;
+    return `<line x1="0" x2="${w}" y1="${y(bp)}" y2="${y(bp)}" stroke="var(--n3)" stroke-dasharray="4 4" stroke-width="1.5"/>
+      <text x="${w-4}" y="${y(bp)-4}" text-anchor="end" font-size="11" fill="var(--n3)">bestillingspunkt uten buffer = 2 × 3 = 6</text>
+      <line x1="0" x2="${w}" y1="${y(0)}" y2="${y(0)}" stroke="var(--bad)" stroke-width="1"/>
+      <polyline points="${pts}" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/>
+      ${hist.map((v,i)=>`<circle cx="${i*dx}" cy="${y(v)}" r="3" fill="${v===0?'var(--bad)':'var(--yellow)'}"/>`).join('')}`;
+  };
+  const step = () => {
+    if (pending[0] === day){ stock += QTY; pending = []; log.push(`Dag ${day}: ${QTY} kartonger kom inn.`); }
+    const d = SALE[rnd(0,2)], sold = Math.min(d, stock);
+    stock -= sold;
+    if (sold < d){ lost += d - sold; empties++; log.push(`Dag ${day}: Butikkene ville ha ${d}, men bare ${sold} fantes. Tomt!`); }
+    else log.push(`Dag ${day}: Solgte ${d}. Saldo ${stock}.`);
+    hist.push(stock); day++; draw();
+  };
+  const finish = () => {
+    const avg = hist.reduce((s,v)=>s+v,0)/hist.length;
+    let pct = 100 - lost*12 - Math.max(0, avg-12)*3; pct = Math.max(0, Math.min(100, pct));
+    done(pct);
+    $('#sres').innerHTML = `<div class="panel" style="margin-top:14px"><b>Ferdig!</b> Tapt salg: ${lost} kartonger. Gjennomsnittlig lagersaldo: ${avg.toFixed(1)} kartonger. Poeng: ${Math.round(pct)} %.
+      <p class="small" style="margin:8px 0 0">Tips: Med salg på ca. 2 per dag og ledetid 3 dager bør du bestille når saldoen er rundt 2 × 3 = 6. Fordi salget svinger (opptil 3 per dag), trenger du i tillegg et lite <b>sikkerhetslager</b> – bestill når saldoen er 8–9.</p>
+      <div class="row" style="margin-top:10px"><span class="spacer"></span><button class="btn" id="again">Spill igjen</button></div></div>`;
+    $('#again').onclick = reset;
+  };
+  reset();
+}
+
+/* Kapittelprøve */
+function pageProve(){
+  header(`<a href="#/">Kap ${K.nr}</a>`, 'Kapittelprøve', `${NIVA[store.lvl]} · 15 tilfeldige spørsmål fra hele kapitlet`, false);
+  app.innerHTML = `<div class="stage" id="stage"></div><p class="stage" style="margin-top:22px"><a href="#/">← Tilbake til alle tema</a></p>`;
+  const start = () => {
+    let pool = [];
+    K.temaer.forEach(t => t.aktiviteter.filter(a => a.type === 'quiz' && visible(a)).forEach(a => a.sp.forEach(q => pool.push(Object.assign({_tema:t.tittel}, q)))));
+    const qs = shuffle(pool).slice(0, 15);
+    if (!qs.length){ $('#stage').innerHTML = '<p class="muted">Ingen spørsmål på dette nivået.</p>'; return; }
+    runQuiz($('#stage'), {sp:qs}, pct => setBest('prove', pct), null, {questions:qs, perTema:true, restart:start});
+  };
+  start();
+}
+
+/* =================== RUTING =================== */
+function route(){
+  if (canSpeak) speechSynthesis.cancel();
+  const parts = location.hash.replace(/^#\/?/,'').split('/').filter(Boolean);
+  if (parts[0] === 'prove') pageProve();
+  else {
+    const t = K.temaer.find(x => x.id === parts[0]);
+    const a = t && t.aktiviteter.find(x => x.id === parts[1]);
+    if (t && a) pageAct(t,a); else if (t) pageTema(t); else pageHome();
+  }
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange', route);
+renderLevels(); route();
+})();
+</script>
+</body>
+</html>
