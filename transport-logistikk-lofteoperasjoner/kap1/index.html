@@ -55,7 +55,8 @@ header.top::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height
   .levelbar .wrap{flex-wrap:nowrap;gap:6px}
   .levelbar .lbl{display:none}
   .seg{flex:1;min-width:0;flex-wrap:nowrap;overflow-x:auto;gap:4px;scrollbar-width:none}
-  .seg button{padding:4px 8px;font-size:13.5px;white-space:nowrap;border-width:1.5px}
+  .seg button{padding:4px 7px;font-size:13px;white-space:nowrap;border-width:1.5px}
+  .levelbar .iconbtn{padding:4px 7px}
   .seg button .dot{width:7px;height:7px;margin-right:3px}
   .tools{flex:none}
 }
@@ -198,6 +199,37 @@ textarea{width:100%;min-height:150px;font:inherit;padding:10px 12px;border:2px s
 .result .big{font-family:inherit;font-size:64px;font-weight:800;line-height:1}
 .result .msg{font-size:19px;margin:6px 0 16px}
 
+/* Læringsmål */
+.mal{border-left:5px solid var(--yellow)}
+.mal ul{margin:8px 0 0;padding-left:0;list-style:none;display:grid;gap:6px}
+.mal li{display:flex;gap:10px;align-items:flex-start}
+.mal li::before{content:"✓";color:var(--yellow);font-weight:900;flex:none}
+
+/* Faser: Lær · Øv · Tenk · Voks */
+.phase-steps{display:flex;gap:12px;flex-wrap:wrap;color:var(--yellow);font-weight:800;letter-spacing:.06em;font-size:14px}
+.phase{margin-top:30px}
+.phase-h{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.phase-h .pn{width:44px;height:44px;border-radius:12px;background:var(--yellow);color:var(--yellow-ink);display:grid;place-items:center;font-weight:900;font-size:13px;flex:none;line-height:1.05;text-align:center}
+.phase-h .pn small{display:block;font-size:15px}
+.phase-h h2{font-size:26px}
+.phase-h p{margin:2px 0 0;color:var(--muted);font-size:15px}
+.ftag{font-size:11px;font-weight:900;letter-spacing:.1em;color:var(--yellow);text-transform:uppercase}
+
+/* Lagring */
+.note{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-left:5px solid var(--n2);border-radius:10px;background:var(--panel);font-size:15px;margin:0 0 12px}
+.note b{white-space:nowrap}
+.note.warn{border-left-color:var(--n3)}
+.linkbtn{background:none;border:0;padding:0;text-decoration:underline;font-weight:600;color:inherit}
+.choice{display:grid;gap:8px;margin:10px 0}
+.choice label{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:2px solid var(--line);border-radius:10px;background:var(--bg);cursor:pointer}
+.choice input{width:20px;height:20px;margin-top:2px;flex:none}
+.choice label:has(input:checked){border-color:var(--yellow)}
+
+/* Voks */
+.voks-text p{margin:0 0 10px;font-size:18px}
+.voks-q{margin:14px 0 6px;font-weight:700}
+.voks-do{border:2px dashed var(--yellow);border-radius:12px;padding:12px 14px;margin-top:14px}
+
 footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:14px;color:var(--muted)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 :focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
@@ -209,7 +241,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:14px;color
   <span class="lbl">Nivå:</span>
   <div class="seg" id="levels" role="group" aria-label="Velg nivå"></div>
   <div class="tools">
-    <button class="iconbtn" id="themeBtn" title="Bytt mellom lyst og mørkt">Lys / mørk</button>
+    <button class="iconbtn" id="themeBtn" title="Bytt mellom lyst og mørkt" aria-label="Bytt mellom lyst og mørkt"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" style="display:block"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>
   </div>
 </div></div>
 <main class="wrap" id="app" tabindex="-1"></main>
@@ -255,7 +287,9 @@ const KAPITTEL = {
       ['Innkjøp og distribusjon av varer', 'innkjop-og-distribusjon-av-varer/2638662d26', 'Fagstoff']
     ],
     arbeidsbok: '1.1, 1.2, 1.3, 1.10, 1.11, 1.12, 1.24',
+    mal: ["forklare forskjellen på et varelager, en godsterminal og en passasjerterminal", "beskrive veien varene går fra fabrikk via sentrallager og regionlager til butikk", "forklare hvorfor en kjede kjøper inn sentralt"],
     aktiviteter: [
+      { type:'voks', id:'t1-voks', tittel:"Du er et ledd i kjeden", tekst:["En vare går gjennom mange hender før den havner i butikkhylla. Fabrikken, sentrallageret, regionlageret, sjåføren, butikken – alle er avhengige av at leddet før dem har gjort jobben sin.", "Når én person kommer for sent, plukker feil eller glemmer å si fra, merkes det et annet sted i kjeden. Kanskje er det en tom hylle. Kanskje er det en kunde som venter forgjeves.", "Å ta ansvar på jobb handler mye om dette: å gjøre din del ordentlig, også når ingen ser deg."], sporsmal:["Hvem er avhengig av at du gjør jobben din i dag – på skolen, i praksis eller på jobb?", "Tenk på en gang noen andre ikke gjorde sin del. Hvordan påvirket det deg?"], handling:"Legg merke til én gang i løpet av uka der du gjør din del litt bedre enn nødvendig." },
       { type:'flash', id:'t1-flash', tittel:'Begrepskort: lager og terminal', kort:[
         ['Varelager','Oppbevarer varer en periode mellom produsent og kjøper, til de blir bestilt.'],
         ['Godsterminal','Knutepunkt der gods blir tatt imot, sortert og sendt videre uten unødig venting.'],
@@ -329,7 +363,9 @@ const KAPITTEL = {
       ['Bestillingspunkt og sikkerhetslager', 'bestillingspunkt-og-sikkerhetslager/9dd06bee36', 'Fagstoff']
     ],
     arbeidsbok: '1.7, 1.8, 1.13, 1.14, 1.15, 1.16, 1.25, 1.29',
+    mal: ["forklare hva ERP, OLFI og WMS er", "regne ut lagersaldo og bestillingspunkt", "forklare hvorfor lageret trenger et sikkerhetslager"],
     aktiviteter: [
+      { type:'voks', id:'t2-voks', tittel:"Systemet vet bare det du forteller det", tekst:["Lagerstyringssystemet er ikke smartere enn det vi taster og skanner inn. Hopper du over én skanning fordi det er travelt, viser saldoen feil.", "En feil saldo kan bety at det bestilles for sent – og at butikkene går tomme. Eller at det bestilles for mye, og lageret fylles opp med varer ingen trenger.", "Gode vaner er ofte små: skann hver gang, også når du har dårlig tid."], sporsmal:["Hvilke snarveier frister når det er travelt på jobb eller på skolen?", "Hva kan konsekvensen bli hvis alle tar den samme snarveien?"], handling:"Velg én liten rutine du skal gjøre riktig hver gang denne uka – uansett tempo." },
       { type:'flash', id:'t2-flash', tittel:'Begrepskort: lagerstyring', kort:[
         ['ERP','Enterprise Resource Planning – ressursforvaltningssystem. En database med mange programmoduler.'],
         ['OLFI','De første lagerstyringssystemene: Ordre-, Lager-, Fakturerings- og Innkjøpsmodul.'],
@@ -399,7 +435,9 @@ const KAPITTEL = {
       ['Kontroll av transportavtale', 'kontroll-av-transportavtale/43f859d552', 'Fagstoff']
     ],
     arbeidsbok: '1.5, 1.17, 1.21, 1.32',
+    mal: ["gjennomføre en mottakskontroll mot pakkseddel og fraktbrev", "skille mellom kontroll av kjøpsavtalen og transportavtalen", "skrive riktig merknad i fraktbrevet ved skade, manko og tidsgaranti"],
     aktiviteter: [
+      { type:'voks', id:'t3-voks', tittel:"Å si fra – høflig, men tydelig", tekst:["Sjåføren har dårlig tid og vil at du skal kvittere med en gang. Det er lett å bare signere for å slippe bråk.", "Men å stå for det du ser, er en del av jobben. Du kan være vennlig og samtidig tydelig: «Jeg forstår at du har det travelt. Jeg skriver bare skaden i fraktbrevet, så er du i gang om et minutt.»", "De fleste respekterer en som gjør jobben skikkelig – særlig når det sies på en hyggelig måte."], sporsmal:["Når synes du det er vanskelig å si fra?", "Skriv én setning du kan bruke når noen presser deg til å gjøre noe raskere enn du bør."], handling:"Øv på setningen din høyt én gang. Det er lettere å si den når det gjelder." },
       { type:'flash', id:'t3-flash', tittel:'Begrepskort: varemottak', kort:[
         ['Pakkseddel','Liste som følger varene og viser alle artiklene i ordren.'],
         ['Faktura','Regningen fra selgeren. Krysses mot pakkseddel eller varer.'],
@@ -490,7 +528,9 @@ const KAPITTEL = {
       ['Ulike begreper som betyr det samme', 'ulike-begreper-som-betyr-det-samme/9a4df73cf1', 'Fagstoff']
     ],
     arbeidsbok: '1.4, 1.10, 1.27, 1.30',
+    mal: ["forklare F-, D- og T-pak og forskjellen på plukklager og volumlager", "velge riktig prinsipp: holdbarhetsdato, FIFO eller LIFO/crossdocking", "forklare hvorfor varene som plukkes oftest, står nærmest utlastingen"],
     aktiviteter: [
+      { type:'voks', id:'t4-voks', tittel:"Orden er en vane – og en tjeneste", tekst:["Når du rydder en vare inn på riktig lokasjon, med riktig dato fremst, gjør du ikke bare din egen jobb lettere. Du hjelper den som skal plukke etter deg.", "Rot sprer seg. En pall på feil plass fører til leting, feilplukk og irritasjon – ofte for noen andre enn den som satte den der.", "En god regel på lageret og i livet: Forlat plassen slik du selv vil finne den."], sporsmal:["Hvor i hverdagen merker du at andre har ryddet – eller ikke ryddet – etter seg?", "Hva er én ting du kan gjøre for at neste person får det lettere?"], handling:"Rydd én plass ekstra i dag – på verkstedet, i klasserommet eller hjemme." },
       { type:'flash', id:'t4-flash', tittel:'Begrepskort: plassering og innrydding', kort:[
         ['F-pak','Forbrukerforpakning – den enkeltvaren kunden kjøper.'],
         ['D-pak','Detaljistforpakning – pakningen butikken bestiller.'],
@@ -577,7 +617,9 @@ const KAPITTEL = {
       ['Lagerstyring (besøk et lager)', 'lagerstyring/e7f05060c4', 'Oppgave']
     ],
     arbeidsbok: '1.8, 1.26',
+    mal: ["beskrive veien fra kundeordre til ferdig pall", "bygge en stabil kundepall og forklare hvorfor den pakkes i strekkfilm", "forklare hvordan en tom plukkplass blir etterfylt"],
     aktiviteter: [
+      { type:'voks', id:'t5-voks', tittel:"Raskt er bra. Riktig er bedre.", tekst:["På et plukklager går det fort. Mange måles på hvor mange linjer de plukker i timen. Likevel koster én feil ofte mer enn ti sekunder ekstra.", "En feil vare på pallen betyr en misfornøyd butikk, en ny transport og noen som må rette opp. Det er bedre å spørre en gang for mye enn å gjette.", "Gode kolleger hjelper hverandre også mellom sonene. Det er samme kundeordre, selv om dere plukker hver deres del."], sporsmal:["Når har du valgt tempo foran kvalitet – og hvordan gikk det?", "Hvordan kan du spørre om hjelp uten at det føles flaut?"], handling:"Neste gang du er usikker på en oppgave: spør før du gjør, ikke etter." },
       { type:'flash', id:'t5-flash', tittel:'Begrepskort: ordre og plukk', kort:[
         ['Ordrebekreftelse','Bekreftelse til kunden på at ordren er mottatt. Fra da er kjøpsavtalen bindende.'],
         ['Plukkliste','Liste over varene som skal plukkes i én plukksone, sortert for korteste vei.'],
@@ -660,7 +702,9 @@ const KAPITTEL = {
       ['Hva er en terminal?', 'hva-er-en-terminal/04f1384e9b', 'Fagstoff']
     ],
     arbeidsbok: '1.2, 1.6, 1.9, 1.18, 1.20, 1.22, 1.23, 1.28, 1.31, 1.32, 1.33',
+    mal: ["forklare hvordan et kolli går via avsender-, sentral- og mottakerterminal", "sortere gods som skal videre lokalt og til andre regioner", "vite når jeg må be om opplysninger eller ta forbehold når jeg tar imot gods"],
     aktiviteter: [
+      { type:'voks', id:'t6-voks', tittel:"Hver pakke er noens ting", tekst:["På en terminal går tusenvis av kolli gjennom hendene dine. Det er lett å glemme at hver eneste av dem er viktig for noen.", "Kanskje er det en bursdagsgave. Kanskje er det medisiner, eller en reservedel som får en bedrift i gang igjen.", "Å behandle godset som om det var ditt eget, er en holdning – ikke bare en regel."], sporsmal:["Har du opplevd at noe du ventet på, kom skadet eller for sent? Hvordan føltes det?", "Hva betyr det for deg å gjøre en jobb du kan være stolt av?"], handling:"Tenk på én person som venter på noe du er med på å levere – i jobb eller praksis." },
       { type:'flash', id:'t6-flash', tittel:'Begrepskort: godsterminal', kort:[
         ['Kolli','Én enhet gods – en pakke, en eske eller en pall.'],
         ['Samlastterminal','Terminal der gods fra mange avsendere samles og sorteres.'],
@@ -765,7 +809,9 @@ const KAPITTEL = {
       ['Terminaler', 'terminaler/6a8f025da7', 'Fagstoff']
     ],
     arbeidsbok: '1.3, 1.19',
+    mal: ["forklare hva en passasjerterminal er, og hvilke jobber logistikkoperatører har der", "forklare hva universell utforming er, og gi eksempler fra en terminal"],
     aktiviteter: [
+      { type:'voks', id:'t7-voks', tittel:"Service er også logistikk", tekst:["På en passasjerterminal er det mennesker som skal videre, ikke paller. Noen er stresset, noen er usikre, noen trenger hjelp, men spør ikke.", "Et enkelt «Trenger du hjelp?» kan gjøre hele reisen enklere for noen. Å se folk rundt seg er en egenskap arbeidsgivere legger merke til.", "Universell utforming handler om bygg og skilt. Godt vertskap handler om deg."], sporsmal:["Når har noen hjulpet deg uten at du ba om det? Hva gjorde de?", "Hvem rundt deg kunne trengt et «Trenger du hjelp?» denne uka?"], handling:"Tilby hjelp til én person denne uka, uten at de ber om det." },
       { type:'flash', id:'t7-flash', tittel:'Begrepskort: passasjerterminal', kort:[
         ['Passasjerterminal','Anlegg der passasjerer går på, går av eller bytter transportmiddel.'],
         ['Omstigning','Å bytte fra ett transportmiddel til et annet underveis på reisen.'],
@@ -807,7 +853,17 @@ const KAPITTEL = {
 const K = KAPITTEL;
 const NIVA = {0:'Alle nivåer',1:'Nybegynner',2:'Trygg',3:'Ekspert'};
 const NIVA_KORT = {1:'Nybegynner',2:'Trygg',3:'Ekspert'};
-const TYPE = {flash:'Begrepskort',quiz:'Quiz',match:'Koble sammen',order:'Rekkefølge',sort:'Sorter',calc:'Regneoppgaver',case:'Case',reflect:'Skriveoppgave',sim:'Simulering'};
+const TYPE = {flash:'Begrepskort',quiz:'Quiz',match:'Koble sammen',order:'Rekkefølge',sort:'Sorter',calc:'Regneoppgaver',case:'Case',reflect:'Skriveoppgave',sim:'Simulering',voks:'60 sekunder'};
+/* De fire fasene på TLLfluenseren. En aktivitet kan overstyre med feltet fase:'laer'|'ov'|'tenk'|'voks'. */
+const FASER = [
+  {id:'laer', nr:'01', ikon:'↗', navn:'Lær', tekst:'Få tak på det viktigste. Tydelige forklaringer, eksempler og fagstoff.'},
+  {id:'ov',   nr:'02', ikon:'✓', navn:'Øv',  tekst:'Tren på det du skal mestre. Repetisjon og interaktive oppgaver.'},
+  {id:'tenk', nr:'03', ikon:'?', navn:'Tenk', tekst:'Stopp opp og vurder. Situasjoner fra arbeidslivet som utfordrer faglig skjønn.'},
+  {id:'voks', nr:'04', ikon:'+', navn:'Voks', tekst:'Korte perspektiver på ansvar, samarbeid, vaner og det å fungere godt i arbeidslivet.'}
+];
+const FASE_AV_TYPE = {flash:'laer', quiz:'ov', match:'ov', order:'ov', sort:'ov', calc:'ov', case:'tenk', sim:'tenk', reflect:'tenk', voks:'voks'};
+const faseAv = a => a.fase || FASE_AV_TYPE[a.type];
+const faseNavn = id => FASER.find(f => f.id === id).navn;
 const $ = s => document.querySelector(s);
 const app = $('#app');
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -817,10 +873,26 @@ const rnd = (a,b) => a + Math.floor(Math.random()*(b-a+1));
 
 /* --- lagring (bare i denne nettleseren) --- */
 const KEY = 'tll-' + K.id;
-let store = {lvl:0, best:{}};
+let store = {lvl:0, best:{}, saveText:false};   // saveText:false = delt PC, skriftlige svar lagres ikke
 try { const s = JSON.parse(localStorage.getItem(KEY)); if (s) store = Object.assign(store, s); } catch(e){}
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e){} };
 const setBest = (id, pct) => { pct = Math.round(pct); if (!(store.best[id] >= pct)) { store.best[id] = pct; save(); } };
+
+/* Skriftlige svar: lagres i nettleseren bare hvis eleven har valgt «Min egen PC».
+   Ellers holdes teksten bare i minnet mens siden er åpen. */
+const TXT = KEY + '-txt-';
+const mem = {};
+const getText = id => { if (store.saveText){ try { return localStorage.getItem(TXT + id) || ''; } catch(e){ return ''; } } return mem[id] || ''; };
+const setText = (id, v) => { mem[id] = v; if (store.saveText){ try { localStorage.setItem(TXT + id, v); } catch(e){} } };
+const delText = id => { delete mem[id]; try { localStorage.removeItem(TXT + id); } catch(e){} };
+const allTextKeys = () => { const out = []; try { for (let i = 0; i < localStorage.length; i++){ const k = localStorage.key(i); if (k && k.indexOf(TXT) === 0) out.push(k); } } catch(e){} return out; };
+const clearTexts = () => { allTextKeys().forEach(k => { try { localStorage.removeItem(k); } catch(e){} }); Object.keys(mem).forEach(k => delete mem[k]); };
+const clearAll = () => { clearTexts(); try { localStorage.removeItem(KEY); } catch(e){} store = {lvl:0, best:{}, saveText:false}; };
+function textNote(id){
+  return store.saveText
+    ? `<div class="note warn" id="tnote"><span aria-hidden="true">💾</span><span><b>Lagres på denne PC-en.</b> Teksten din lagres i nettleseren, og andre som bruker PC-en kan se den. Ingenting sendes til læreren. <button class="linkbtn" id="tdel">Slett teksten</button> · <a href="#/lagring">Endre</a></span></div>`
+    : `<div class="note" id="tnote"><span aria-hidden="true">🔒</span><span><b>Lagres ikke.</b> Teksten blir borte når du lukker siden. Skal du levere den, trykker du «Kopier tekst» og limer den inn der læreren ber om det. <a href="#/lagring">Endre</a></span></div>`;
+}
 
 /* --- tema --- */
 try { const t = localStorage.getItem('tll-theme'); if (t) document.documentElement.dataset.theme = t; } catch(e){}
@@ -864,7 +936,7 @@ function header(crumbs, title, sub, showKm){
     ${sub ? `<div class="sub">${sub}</div>` : ''}
     ${showKm ? `<div class="km"><b>Kompetansemål</b><span>${esc(K.kompetansemal.tekst)} <span style="opacity:.7">(${esc(K.kompetansemal.kode)})</span></span></div>` : ''}`;
 }
-$('#ftr').innerHTML = `${esc(K.fag)} · Kapittel ${K.nr}. Tekster og oppgaver er egenprodusert. Fagstoff fra <a href="${K.ressurser.ndlaEmne}" target="_blank" rel="noopener">NDLA</a> er lenket til, ikke kopiert. Kompetansemål fra Utdanningsdirektoratet (NLOD). Henvisninger til arbeidsboka gjelder oppgavenummer i elevens egen bok. Resultatene lagres bare i denne nettleseren.`;
+$('#ftr').innerHTML = `${esc(K.fag)} · Kapittel ${K.nr}. Tekster og oppgaver er egenprodusert. Fagstoff fra <a href="${K.ressurser.ndlaEmne}" target="_blank" rel="noopener">NDLA</a> er lenket til, ikke kopiert. Kompetansemål fra Utdanningsdirektoratet (NLOD). Henvisninger til arbeidsboka gjelder oppgavenummer i elevens egen bok. Resultater lagres bare i nettleseren på denne enheten, og ingenting sendes til læreren – <a href="#/lagring">les om lagring</a>.`;
 
 /* --- fremdrift --- */
 function temaProg(t){
@@ -878,7 +950,12 @@ function pageHome(){
   header(`<span>Kapittel ${K.nr}</span>`, `Kap ${K.nr} · ${esc(K.tittel)}`, esc(K.ingress), true);
   const r = K.ressurser;
   app.innerHTML = `
+    <div class="note ${store.saveText ? 'warn' : ''}" style="margin-top:4px"><span aria-hidden="true">${store.saveText ? '💾' : '🔒'}</span><span>
+      <b>Lagring på denne PC-en:</b> Resultatene dine lagres bare i denne nettleseren og sendes ikke til læreren.
+      ${store.saveText ? 'Det du skriver i skriveoppgavene lagres også her – andre som bruker PC-en kan se det.' : 'Det du skriver i skriveoppgavene lagres ikke.'}
+      Bruker du en delt skole-PC, sletter du alt når du er ferdig. <a href="#/lagring">Innstillinger og sletting</a></span></div>
     <div class="section-h"><h2>Velg tema</h2><span class="muted small">Velg nivå øverst – Nybegynner, Trygg eller Ekspert</span></div>
+    <div class="phase-steps" style="margin:-4px 0 14px">${FASER.map(f => `<span>${f.navn.toUpperCase()}</span>`).join('')}</div>
     <div class="grid">${K.temaer.map(t => { const p = temaProg(t); return `
       <a class="tcard" href="#/${t.id}">
         <div class="lab"><span class="lok">${t.lok}</span><span class="bars"></span></div>
@@ -888,7 +965,7 @@ function pageHome(){
       </a>`; }).join('')}
       <a class="tcard" href="#/prove">
         <div class="lab"><span class="lok" style="background:var(--asphalt);color:var(--yellow)">TEST</span><span class="bars"></span></div>
-        <div class="body"><h3>Kapittelprøve</h3><p>15 tilfeldige spørsmål fra hele kapitlet på nivået du har valgt. Se hvilke tema du må øve mer på.</p>
+        <div class="body"><span class="ftag">Øv</span><h3>Kapittelprøve</h3><p>15 tilfeldige spørsmål fra hele kapitlet på nivået du har valgt. Se hvilke tema du må øve mer på.</p>
           <div class="progtxt">${store.best['prove'] != null ? 'Beste resultat: ' + store.best['prove'] + ' %' : 'Ikke tatt ennå'}</div></div>
       </a>
     </div>
@@ -904,32 +981,108 @@ function pageHome(){
 function pageTema(t){
   header(`<a href="#/">Kap ${K.nr}</a> <span>›</span> <span>${t.lok}</span>`, esc(t.tittel), esc(t.kort), false);
   const acts = t.aktiviteter.filter(visible);
+  const phaseHead = f => `<div class="phase-h"><span class="pn" aria-hidden="true">${f.nr}<small>${f.ikon}</small></span><div><h2>${f.navn}</h2><p>${esc(f.tekst)}</p></div></div>`;
+  const cards = f => { const list = acts.filter(a => faseAv(a) === f.id);
+    return list.length ? `<div class="acts">${list.map(a => actCard(t,a)).join('')}</div>` : `<p class="muted small">Ingen aktiviteter i ${f.navn} på nivået du har valgt.</p>`; };
   app.innerHTML = `
-    <div class="two">
-      <div class="panel kort"><h3 style="font-size:22px">Kort fortalt</h3><ul>${t.punkter.map(p => `<li>${p}</li>`).join('')}</ul></div>
-      <div class="panel"><h3 style="font-size:22px">Les og se mer</h3>
-        <ul class="reslist">${t.ndla.map(([tt,u,ty]) => `<li><span class="tag ndla">${esc(ty)}</span><a href="${NDLA+u}" target="_blank" rel="noopener">${esc(tt)}</a></li>`).join('')}
-        <li><span class="tag">Bok</span><span>Arbeidsboka: oppgave ${esc(t.arbeidsbok)}</span></li></ul></div>
-    </div>
-    <div class="section-h"><h2>Aktiviteter</h2><span class="muted small">${NIVA[store.lvl]} · ${acts.length} aktiviteter</span></div>
-    ${acts.length ? `<div class="acts">${acts.map(a => actCard(t,a)).join('')}</div>` : `<p class="muted">Ingen aktiviteter på dette nivået. Velg et annet nivå øverst.</p>`}
+    ${t.mal ? `<div class="panel mal"><h3 style="font-size:22px">Læringsmål – etter dette temaet kan jeg …</h3><ul>${t.mal.map(m => `<li>${esc(m)}</li>`).join('')}</ul></div>` : ''}
+    <section class="phase" id="laer">${phaseHead(FASER[0])}
+      <div class="two">
+        <div class="panel kort"><h3 style="font-size:22px">Kort fortalt</h3><ul>${t.punkter.map(p => `<li>${p}</li>`).join('')}</ul></div>
+        <div class="panel"><h3 style="font-size:22px">Les og se mer</h3>
+          <ul class="reslist">${t.ndla.map(([tt,u,ty]) => `<li><span class="tag ndla">${esc(ty)}</span><a href="${NDLA+u}" target="_blank" rel="noopener">${esc(tt)}</a></li>`).join('')}
+          <li><span class="tag">Bok</span><span>Arbeidsboka: oppgave ${esc(t.arbeidsbok)}</span></li></ul></div>
+      </div>
+      <div style="margin-top:12px">${cards(FASER[0])}</div>
+    </section>
+    ${FASER.slice(1).map(f => `<section class="phase" id="${f.id}">${phaseHead(f)}${cards(f)}</section>`).join('')}
+    <p class="muted small" style="margin-top:18px">${NIVA[store.lvl]} · ${acts.length} aktiviteter. Begrepskort og Voks gjelder alle nivåer.</p>
     <p style="margin-top:22px"><a href="#/">← Tilbake til alle tema</a></p>`;
 }
 function actCard(t,a){
   const n = a.nivaa || 0;
   const b = store.best[a.id];
   return `<a class="act" data-n="${n}" href="#/${t.id}/${a.id}">
+    <span class="ftag">${faseNavn(faseAv(a))}</span>
     <div class="kind"><span>${TYPE[a.type]}</span><span class="lvl n${n}">${n ? NIVA_KORT[n] : 'Alle'}</span></div>
     <h4>${esc(a.tittel)}</h4>
     <div class="small">${b != null ? `<span class="done">✓ Beste: ${b} %</span>` : '<span class="muted">Ikke gjort</span>'}</div></a>`;
 }
 
 function pageAct(t,a){
-  header(`<a href="#/">Kap ${K.nr}</a> <span>›</span> <a href="#/${t.id}">${esc(t.tittel)}</a>`, esc(a.tittel), `${TYPE[a.type]}${a.nivaa ? ' · ' + NIVA_KORT[a.nivaa] : ''}`, false);
+  header(`<a href="#/">Kap ${K.nr}</a> <span>›</span> <a href="#/${t.id}">${esc(t.tittel)}</a>`, esc(a.tittel), `${faseNavn(faseAv(a)).toUpperCase()} · ${TYPE[a.type]}${a.nivaa ? ' · ' + NIVA_KORT[a.nivaa] : ''}`, false);
   app.innerHTML = `<div class="stage" id="stage"></div><p class="stage" style="margin-top:22px"><a href="#/${t.id}">← Tilbake til ${esc(t.tittel)}</a></p>`;
   const st = $('#stage');
   const done = pct => setBest(a.id, pct);
-  ({flash:runFlash, quiz:runQuiz, match:runMatch, order:runOrder, sort:runSort, calc:runCalc, case:runCase, reflect:runReflect, sim:runSim})[a.type](st, a, done, t);
+  ({flash:runFlash, quiz:runQuiz, match:runMatch, order:runOrder, sort:runSort, calc:runCalc, case:runCase, reflect:runReflect, sim:runSim, voks:runVoks})[a.type](st, a, done, t);
+}
+
+function pageLagring(){
+  header(`<a href="#/">Kap ${K.nr}</a>`, 'Lagring på denne PC-en', 'Hva som lagres, hvor det lagres, og hvordan du sletter det', false);
+  const nTxt = allTextKeys().length, nRes = Object.keys(store.best).length;
+  app.innerHTML = `<div class="stage">
+    <div class="panel">
+      <h3 style="font-size:22px">Dette lagres – og bare her</h3>
+      <ul>
+        <li><b>Resultater</b> (prosent på aktivitetene) og nivået du har valgt, lagres i nettleseren på denne PC-en.</li>
+        <li><b>Det du skriver</b> i skriveoppgaver og Voks lagres bare hvis du velger «Min egen PC» nedenfor.</li>
+        <li><b>Ingenting sendes</b> til læreren, skolen eller andre. Det finnes ingen innlogging.</li>
+        <li>Bytter du PC eller nettleser, ser du ikke resultatene dine der.</li>
+      </ul>
+      <p class="small muted">Nå lagret her: ${nRes} resultat${nRes===1?'':'er'} og ${nTxt} skriftlig${nTxt===1?'':'e'} svar.</p>
+    </div>
+    <div class="panel" style="margin-top:14px">
+      <h3 style="font-size:22px">Hvilken PC bruker du?</h3>
+      <div class="choice" role="radiogroup" aria-label="Type PC">
+        <label><input type="radio" name="pc" value="delt" ${store.saveText?'':'checked'}><span><b>Delt skole-PC</b> – det jeg skriver, lagres ikke. Teksten forsvinner når jeg lukker siden.</span></label>
+        <label><input type="radio" name="pc" value="egen" ${store.saveText?'checked':''}><span><b>Min egen PC</b> – lagre det jeg skriver, så jeg kan fortsette senere.</span></label>
+      </div>
+      <div id="pcmsg"></div>
+    </div>
+    <div class="panel" style="margin-top:14px">
+      <h3 style="font-size:22px">Slett alt fra denne PC-en</h3>
+      <p>Sletter alle resultater, nivåvalg og alt du har skrevet i dette kapitlet. Gjør dette når du er ferdig på en delt PC.</p>
+      <div class="row"><button class="btn ghost" id="del1">Slett alt</button><span id="delc"></span></div>
+      <div id="delmsg"></div>
+    </div>
+  </div><p class="stage" style="margin-top:22px"><a href="#/">← Tilbake til kapitlet</a></p>`;
+  app.querySelectorAll('input[name=pc]').forEach(r => r.onchange = () => {
+    if (r.value === 'egen'){ store.saveText = true; Object.keys(mem).forEach(id => setText(id, mem[id])); save();
+      $('#pcmsg').innerHTML = '<div class="fb">Det du skriver, lagres nå på denne PC-en. Husk å slette når du er ferdig hvis andre bruker PC-en.</div>'; }
+    else { store.saveText = false; save(); clearTexts();
+      $('#pcmsg').innerHTML = '<div class="fb">Ok. Det du skriver, lagres ikke lenger, og tidligere lagrede tekster er slettet.</div>'; }
+  });
+  $('#del1').onclick = () => {
+    $('#delc').innerHTML = '<button class="btn" id="del2" style="background:var(--bad);border-color:var(--bad)">Ja, slett alt</button>';
+    $('#del2').onclick = () => { clearAll(); renderLevels(); $('#delc').innerHTML = ''; $('#delmsg').innerHTML = '<div class="fb" style="margin-top:10px">Alt er slettet fra denne PC-en.</div>'; };
+  };
+}
+
+function runVoks(st, a, done){
+  const all = a.tekst.join(' ');
+  st.innerHTML = `<div class="row" style="margin-bottom:8px"><span class="ftag">Voks · 60 sekunder</span><span class="spacer"></span>${sayBtn(all)}</div>
+    <div class="panel voks-text">${a.tekst.map(p => `<p>${esc(p)}</p>`).join('')}</div>
+    <h3 style="font-size:22px;margin-top:18px">Tenk over</h3>
+    ${a.sporsmal.map((q,i) => `<div class="voks-q">${i+1}. ${esc(q)}</div>`).join('')}
+    <p class="instr" style="margin-top:8px">Du kan skrive ned tankene dine, men du må ikke. Snakk gjerne med en medelev i stedet.</p>
+    ${textNote(a.id)}
+    <textarea id="ta" placeholder="Mine tanker (valgfritt) …" style="min-height:110px">${esc(getText(a.id))}</textarea>
+    <div class="row" style="margin-top:10px"><span class="spacer"></span><button class="btn ghost" id="cp">Kopier tekst</button></div>
+    <div class="voks-do"><b>Ta med deg:</b> ${esc(a.handling)}</div>
+    <div class="row" style="margin-top:16px"><span class="spacer"></span><button class="btn yellow" id="fin">Ferdig – jeg har tenkt over dette</button></div><div id="vr"></div>`;
+  const ta = $('#ta');
+  ta.oninput = () => setText(a.id, ta.value);
+  wireTextNote(a.id, ta);
+  $('#cp').onclick = () => copyText(ta, $('#cp'));
+  $('#fin').onclick = () => { done(100); $('#vr').innerHTML = '<div class="fb" style="margin-top:12px"><b>Bra!</b> Voks handler om små steg. Prøv «Ta med deg» denne uka.</div>'; };
+}
+function wireTextNote(id, ta){
+  const d = $('#tdel'); if (d) d.onclick = () => { delText(id); ta.value = ''; ta.dispatchEvent(new Event('input')); delText(id); d.textContent = 'Slettet ✓'; };
+}
+function copyText(ta, btn){
+  ta.select();
+  try { navigator.clipboard.writeText(ta.value); } catch(e){ try { document.execCommand('copy'); } catch(e2){} }
+  btn.textContent = 'Kopiert ✓';
 }
 
 function resultBox(pct, again, extra){
@@ -1157,16 +1310,17 @@ function runCase(st, a, done){
 }
 
 function runReflect(st, a, done){
-  const dk = KEY + '-txt-' + a.id; let txt = '';
-  try { txt = localStorage.getItem(dk) || ''; } catch(e){}
+  const txt = getText(a.id);
   st.innerHTML = `<div class="q"><span>${esc(a.q)}</span>${sayBtn(a.q)}</div>
     <p class="instr">Skriv svaret ditt med egne ord. Når du er ferdig, trykker du «Sjekk svaret mitt» og krysser av for punktene du har fått med.</p>
+    ${textNote(a.id)}
     <textarea id="ta" placeholder="Skriv her …">${esc(txt)}</textarea>
     <div class="row" style="margin-top:10px"><span class="counter" id="wc"></span><span class="spacer"></span>
     <button class="btn ghost" id="cp">Kopier tekst</button><button class="btn yellow" id="chk">Sjekk svaret mitt</button></div><div id="rf"></div>`;
   const ta = $('#ta'), wc = () => $('#wc').textContent = (ta.value.trim() ? ta.value.trim().split(/\s+/).length : 0) + ' ord';
-  wc(); ta.oninput = () => { wc(); try { localStorage.setItem(dk, ta.value); } catch(e){} };
-  $('#cp').onclick = () => { ta.select(); try { navigator.clipboard.writeText(ta.value); } catch(e){ document.execCommand('copy'); } $('#cp').textContent = 'Kopiert ✓'; };
+  wc(); ta.oninput = () => { wc(); setText(a.id, ta.value); };
+  wireTextNote(a.id, ta);
+  $('#cp').onclick = () => copyText(ta, $('#cp'));
   $('#chk').onclick = () => {
     $('#rf').innerHTML = `<div class="panel" style="margin-top:14px"><b>Dette bør et godt svar inneholde.</b> Kryss av for det du har med:
       <ul class="checks">${a.punkter.map((p,i)=>`<li><label><input type="checkbox" data-i="${i}"><span>${esc(p)}</span></label></li>`).join('')}</ul>
@@ -1235,7 +1389,7 @@ function runSim(st, a, done){
 
 /* Kapittelprøve */
 function pageProve(){
-  header(`<a href="#/">Kap ${K.nr}</a>`, 'Kapittelprøve', `${NIVA[store.lvl]} · 15 tilfeldige spørsmål fra hele kapitlet`, false);
+  header(`<a href="#/">Kap ${K.nr}</a>`, 'Kapittelprøve', `ØV · ${NIVA[store.lvl]} · 15 tilfeldige spørsmål fra hele kapitlet`, false);
   app.innerHTML = `<div class="stage" id="stage"></div><p class="stage" style="margin-top:22px"><a href="#/">← Tilbake til alle tema</a></p>`;
   const start = () => {
     let pool = [];
@@ -1252,6 +1406,7 @@ function route(){
   if (canSpeak) speechSynthesis.cancel();
   const parts = location.hash.replace(/^#\/?/,'').split('/').filter(Boolean);
   if (parts[0] === 'prove') pageProve();
+  else if (parts[0] === 'lagring') pageLagring();
   else {
     const t = K.temaer.find(x => x.id === parts[0]);
     const a = t && t.aktiviteter.find(x => x.id === parts[1]);
