@@ -3,6 +3,7 @@
   'use strict';
   const types = ['Film', 'Artikkel', 'Nettside', 'Podkast', 'Annet'];
   const draftKey = 'tll-resource-draft-v1';
+  const sharedTeacherURL = 'https://tll-laererrom.jarle-bruntveit.chatgpt.site';
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function safeURL(value) {
     try { const u = new URL(value); return ['https:', 'http:'].includes(u.protocol) && !u.username && !u.password; } catch { return false; }
@@ -76,7 +77,7 @@
     let data = structuredClone(published), editing = '', dirty = false, storageOK = true, initialMessage = '';
     try { const saved = localStorage.getItem(draftKey); if (saved) { data = validate(JSON.parse(saved)); initialMessage = 'Et lokalt utkast er hentet fra denne nettleseren.'; } } catch { storageOK = false; initialMessage = 'Lokalt utkast kunne ikke leses. Du kan fortsatt redigere og laste ned endringene.'; }
     root.classList.add('rb');
-    root.innerHTML = `<section class="rb-intro"><div class="kicker">Lærerrom · Ressurser</div><h1>Samle det som forklarer godt.</h1><p>Registrer lenken én gang og velg alle temaene den passer til.</p><a href="#/">← Til den publiserte ressursbanken</a></section><div class="rb-note"><strong>Du arbeider med et lokalt utkast.</strong> Lagrede endringer vises bare i denne nettleseren. For å gjøre dem tilgjengelige for elevene: last ned ressursfilen og legg den ved en melding til meg med beskjed om å publisere den. Ikke legg personopplysninger i ressursbanken.</div><p id="rb-message" class="rb-status" role="status" aria-live="polite"></p><div class="rb-actions"><button id="rb-add">Legg til ressurs</button><button id="rb-export">Last ned ressursfil for publisering</button><label class="rb-field">Åpne ressursfil<input id="rb-import" type="file" accept="application/json,.json"></label><button id="rb-reset">Hent publisert versjon</button></div><section id="rb-form-area" class="rb-editor" hidden></section><h2>Ressurser i utkastet</h2><div id="rb-draft-list"></div>`;
+    root.innerHTML = `<section class="rb-intro"><div class="kicker">Lærerrom · Ressurser</div><h1>Samle det som forklarer godt.</h1><p>Registrer lenken én gang og velg alle temaene den passer til.</p><a href="#/">← Til den publiserte ressursbanken</a></section><div class="rb-note"><strong>Du arbeider med et lokalt utkast.</strong> Lagrede endringer vises bare i denne nettleseren. Overfør utkastet til det felles lærerrommet. Der kan du lagre det varig og merke det klart til kontroll. Ikke legg personopplysninger i ressursbanken.</div><p id="rb-message" class="rb-status" role="status" aria-live="polite"></p><div class="rb-actions"><button id="rb-transfer">Overfør til felles lærerrom →</button><a href="${sharedTeacherURL}">Åpne felles lærerrom</a><button id="rb-add">Legg til ressurs</button><button id="rb-export">Last ned ressursfil for publisering</button><label class="rb-field">Åpne ressursfil<input id="rb-import" type="file" accept="application/json,.json"></label><button id="rb-reset">Hent publisert versjon</button></div><section id="rb-form-area" class="rb-editor" hidden></section><h2>Ressurser i utkastet</h2><div id="rb-draft-list"></div>`;
     const msg = text => {root.querySelector('#rb-message').textContent = text;};
     msg(initialMessage);
     const save = () => { try { if (!storageOK) throw Error(); localStorage.setItem(draftKey, JSON.stringify(data)); msg('Utkast lagret i denne nettleseren. Last ned ressursfilen når du vil publisere.'); } catch { msg('Endringene er bare i denne fanen. Last ned ressursfilen før du lukker siden.'); } };
@@ -107,6 +108,12 @@
       formArea.querySelector('input').focus(); formArea.scrollIntoView({block:'start',behavior:'smooth'});
     }
     root.querySelector('#rb-add').onclick = () => open();
+    root.querySelector('#rb-transfer').onclick = () => {
+      if (dirty) {msg('Lagre skjemaet i det lokale utkastet før du overfører.'); return;}
+      try {const payload = JSON.stringify(validate(data)); if (payload.length > 120000) throw Error('Utkastet er for stort for direkte overføring. Last ned ressursfilen og åpne den i det felles lærerrommet.');
+        location.href = sharedTeacherURL + '/#' + new URLSearchParams({utkast:payload});
+      } catch(e) {msg(e.message);}
+    };
     root.querySelector('#rb-export').onclick = () => {
       if (dirty) {msg('Lagre skjemaet i utkastet før du laster ned ressursfilen.'); return;}
       const url = URL.createObjectURL(new Blob([JSON.stringify(validate(data),null,2) + '\n'], {type:'application/json'})), a = document.createElement('a');
