@@ -1,37 +1,114 @@
 {
   "version": 1,
   "areas": [
-    {"id":"tll","title":"Transport, logistikk og løfteoperasjoner"},
-    {"id":"bransjeteknikk","title":"Bransjeteknikk"},
-    {"id":"bransjelaere","title":"Bransjelære"},
-    {"id":"yff","title":"YFF"},
-    {"id":"ub","title":"Ungdomsbedrift"}
+    {
+      "id": "tll",
+      "title": "Transport, logistikk og løfteoperasjoner"
+    },
+    {
+      "id": "bransjeteknikk",
+      "title": "Bransjeteknikk"
+    },
+    {
+      "id": "bransjelaere",
+      "title": "Bransjelære"
+    },
+    {
+      "id": "yff",
+      "title": "YFF"
+    },
+    {
+      "id": "ub",
+      "title": "Ungdomsbedrift"
+    }
   ],
   "topics": [
-    {"id":"kap1-t1","area":"tll","title":"Lager og terminaler i samfunnet","url":"/transport-logistikk-lofteoperasjoner/kap1/#/t1"},
-    {"id":"kap1-t2","area":"tll","title":"Lagerstyring og datasystemer","url":"/transport-logistikk-lofteoperasjoner/kap1/#/t2"},
-    {"id":"kap1-t3","area":"tll","title":"Varemottak og kontroll","url":"/transport-logistikk-lofteoperasjoner/kap1/#/t3"},
-    {"id":"kap1-t4","area":"tll","title":"Vareplassering og innrydding","url":"/transport-logistikk-lofteoperasjoner/kap1/#/t4"},
-    {"id":"kap1-t5","area":"tll","title":"Ordre, plukk og klargjøring","url":"/transport-logistikk-lofteoperasjoner/kap1/#/t5"},
-    {"id":"kap1-t6","area":"tll","title":"Godsterminaler og sortering","url":"/transport-logistikk-lofteoperasjoner/kap1/#/t6"},
-    {"id":"kap1-t7","area":"tll","title":"Passasjerterminaler","url":"/transport-logistikk-lofteoperasjoner/kap1/#/t7"},
-    {"id":"truck","area":"bransjeteknikk","title":"Truckopplæring","url":"/truck/opplaering/"},
-    {"id":"bransjelaere","area":"bransjelaere","title":"Bransjelære – generelt","url":"/bransjelaere/"},
-    {"id":"yff","area":"yff","title":"YFF – generelt","url":"/yff/"},
-    {"id":"ub","area":"ub","title":"Ungdomsbedrift – generelt","url":"/ungdomsbedrift/"}
+    {
+      "id": "kap1-t1",
+      "title": "Lager og terminaler i samfunnet",
+      "area": "tll",
+      "url": "/transport-logistikk-lofteoperasjoner/kap1/#/t1"
+    },
+    {
+      "id": "kap1-t2",
+      "title": "Lagerstyring og datasystemer",
+      "area": "tll",
+      "url": "/transport-logistikk-lofteoperasjoner/kap1/#/t2"
+    },
+    {
+      "id": "kap1-t3",
+      "title": "Varemottak og kontroll",
+      "area": "tll",
+      "url": "/transport-logistikk-lofteoperasjoner/kap1/#/t3"
+    },
+    {
+      "id": "kap1-t4",
+      "title": "Vareplassering og innrydding",
+      "area": "tll",
+      "url": "/transport-logistikk-lofteoperasjoner/kap1/#/t4"
+    },
+    {
+      "id": "kap1-t5",
+      "title": "Ordre, plukk og klargjøring",
+      "area": "tll",
+      "url": "/transport-logistikk-lofteoperasjoner/kap1/#/t5"
+    },
+    {
+      "id": "kap1-t6",
+      "title": "Godsterminaler og sortering",
+      "area": "tll",
+      "url": "/transport-logistikk-lofteoperasjoner/kap1/#/t6"
+    },
+    {
+      "id": "kap1-t7",
+      "title": "Passasjerterminaler",
+      "area": "tll",
+      "url": "/transport-logistikk-lofteoperasjoner/kap1/#/t7"
+    },
+    {
+      "id": "truck",
+      "title": "Truckopplæring",
+      "area": "bransjeteknikk",
+      "url": "/truck/opplaering/"
+    },
+    {
+      "id": "bransjelaere",
+      "title": "Bransjelære – generelt",
+      "area": "bransjelaere",
+      "url": "/bransjelaere/"
+    },
+    {
+      "id": "yff",
+      "title": "YFF – generelt",
+      "area": "yff",
+      "url": "/yff/"
+    },
+    {
+      "id": "ub",
+      "title": "Ungdomsbedrift – generelt",
+      "area": "ub",
+      "url": "/ungdomsbedrift/"
+    }
   ],
   "resources": [
     {
-      "id":"posten-logistikksenter-oslo",
-      "title":"Logistikksenter Oslo",
-      "provider":"Posten og Bring",
-      "type":"Film",
-      "url":"https://multimedia.postennorge.no/media/Logistikksenter+Oslo+%28presentasjon%29/1_i1n9i8w5/102074101",
-      "description":"Presentasjonsfilm fra Posten og Bring. Bruk filmen som et konkret eksempel når du arbeider med logistikksenterets rolle i samfunnet.",
-      "topics":["kap1-t1"],
-      "watchFor":"Se etter hvordan gods kommer inn, håndteres og sendes videre. Noter eksempler du faktisk finner i filmen.",
-      "questions":["Hvilke oppgaver ved et logistikksenter finner du eksempler på?","Hva skiller en godsterminal fra et varelager? Bruk fagbegreper og eventuelle eksempler fra filmen.","Hvorfor trenger samfunnet slike knutepunkter?"],
-      "visible":true
+      "id": "ad85f4a6-6132-43b5-8fcb-88f94e65bf4e",
+      "title": "Logistikkløsninger",
+      "provider": "Nasjonal Digital Læringsarena (NDLA)",
+      "type": "Film",
+      "url": "https://www.youtube.com/watch?v=e4_jG9RAI_g",
+      "description": "NDLA-film om pakketerminalen på Alnabru i Oslo. Følg pakkene gjennom mottak, registrering, sortering og utsending, og se hvordan en terminal bidrar til at gods kommer fram til mottakeren. Bruk filmen til å knytte fagbegrepene til praktiske arbeidsoppgaver.",
+      "topics": [
+        "kap1-t1"
+      ],
+      "watchFor": "Noter pakkens vei gjennom terminalen. Se etter arbeidsoppgaver og hjelpemidler ved mottak, registrering, sortering og utsending. Legg merke til hvordan informasjon om pakken henger sammen med den fysiske vareflyten.",
+      "questions": [
+        "Beskriv pakkens vei gjennom terminalen med egne ord. Bruk minst fire fagbegreper.",
+        "Hvorfor er riktig registrering og sortering viktig for at pakken skal komme til rett mottaker?",
+        "Hva skiller arbeidet på en pakketerminal fra arbeidet på et varelager? Bruk eksempler fra filmen.",
+        "En pakke blir sortert feil. Hvilke følger kan det få for mottakeren og for arbeidet videre i transportkjeden?"
+      ],
+      "visible": true
     }
   ]
 }
