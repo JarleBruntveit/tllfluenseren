@@ -244,6 +244,8 @@ footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:14px;color
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 :focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
 </style>
+<link rel="stylesheet" href="/assets/ressurser.css">
+<script defer src="/assets/ressurser.js"></script>
 </head>
 <body>
 <header class="top"><div class="wrap" id="hdr"></div></header>
@@ -979,6 +981,7 @@ function pageHome(){
           <div class="progtxt">${store.best['prove'] != null ? 'Beste resultat: ' + store.best['prove'] + ' %' : 'Ikke tatt ennå'}</div></div>
       </a>
     </div>
+    <section data-resource-area="tll"></section>
     <div id="podlist" hidden><div class="section-h"><h2>Podkast</h2><span class="muted small">Hør teorien – én episode per tema</span></div><div class="panel"><ul class="reslist" id="podul"></ul></div></div>
     <div class="section-h"><h2>Ressurser</h2></div>
     <div class="panel"><ul class="reslist">
@@ -1012,6 +1015,7 @@ function pageTema(t){
           <ul class="reslist">${t.ndla.map(([tt,u,ty]) => `<li><span class="tag ndla">${esc(ty)}</span><a href="${NDLA+u}" target="_blank" rel="noopener">${esc(tt)}</a></li>`).join('')}
           <li><span class="tag">Bok</span><span>Arbeidsboka: oppgave ${esc(t.arbeidsbok)}</span></li></ul></div>
       </div>
+      <section data-resource-topic="kap1-${t.id}"></section>
       <div style="margin-top:12px">${cards(FASER[0])}</div>
     </section>
     ${FASER.slice(1).map(f => `<section class="phase" id="${f.id}">${phaseHead(f)}${cards(f)}</section>`).join('')}
@@ -1479,3 +1483,4 @@ renderLevels(); route();
 </script>
 </body>
 </html>
+

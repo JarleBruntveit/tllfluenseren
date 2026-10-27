@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "areas": [
+    {"id":"tll","title":"Transport, logistikk og løfteoperasjoner"},
+    {"id":"bransjeteknikk","title":"Bransjeteknikk"},
+    {"id":"bransjelaere","title":"Bransjelære"},
+    {"id":"yff","title":"YFF"},
+    {"id":"ub","title":"Ungdomsbedrift"}
+  ],
+  "topics": [
+    {"id":"kap1-t1","area":"tll","title":"Lager og terminaler i samfunnet","url":"/transport-logistikk-lofteoperasjoner/kap1/#/t1"},
+    {"id":"kap1-t2","area":"tll","title":"Lagerstyring og datasystemer","url":"/transport-logistikk-lofteoperasjoner/kap1/#/t2"},
+    {"id":"kap1-t3","area":"tll","title":"Varemottak og kontroll","url":"/transport-logistikk-lofteoperasjoner/kap1/#/t3"},
+    {"id":"kap1-t4","area":"tll","title":"Vareplassering og innrydding","url":"/transport-logistikk-lofteoperasjoner/kap1/#/t4"},
+    {"id":"kap1-t5","area":"tll","title":"Ordre, plukk og klargjøring","url":"/transport-logistikk-lofteoperasjoner/kap1/#/t5"},
+    {"id":"kap1-t6","area":"tll","title":"Godsterminaler og sortering","url":"/transport-logistikk-lofteoperasjoner/kap1/#/t6"},
+    {"id":"kap1-t7","area":"tll","title":"Passasjerterminaler","url":"/transport-logistikk-lofteoperasjoner/kap1/#/t7"},
+    {"id":"truck","area":"bransjeteknikk","title":"Truckopplæring","url":"/truck/opplaering/"},
+    {"id":"bransjelaere","area":"bransjelaere","title":"Bransjelære – generelt","url":"/bransjelaere/"},
+    {"id":"yff","area":"yff","title":"YFF – generelt","url":"/yff/"},
+    {"id":"ub","area":"ub","title":"Ungdomsbedrift – generelt","url":"/ungdomsbedrift/"}
+  ],
+  "resources": [
+    {
+      "id":"posten-logistikksenter-oslo",
+      "title":"Logistikksenter Oslo",
+      "provider":"Posten og Bring",
+      "type":"Film",
+      "url":"https://multimedia.postennorge.no/media/Logistikksenter+Oslo+%28presentasjon%29/1_i1n9i8w5/102074101",
+      "description":"Presentasjonsfilm fra Posten og Bring. Bruk filmen som et konkret eksempel når du arbeider med logistikksenterets rolle i samfunnet.",
+      "topics":["kap1-t1"],
+      "watchFor":"Se etter hvordan gods kommer inn, håndteres og sendes videre. Noter eksempler du faktisk finner i filmen.",
+      "questions":["Hvilke oppgaver ved et logistikksenter finner du eksempler på?","Hva skiller en godsterminal fra et varelager? Bruk fagbegreper og eventuelle eksempler fra filmen.","Hvorfor trenger samfunnet slike knutepunkter?"],
+      "visible":true
+    }
+  ]
+}
