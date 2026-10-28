@@ -10,25 +10,18 @@
 <title>TLLfluenseren.no – lær, øv, tenk, voks</title>
 <meta name="description" content="Praktisk og interaktiv læring for VG2 Transport, logistikk og løfteoperasjoner – med verktøy, trening og litt livsvisdom på kjøpet.">
 <link rel="stylesheet" href="assets/styles.css"><link rel="stylesheet" href="assets/footer-info.css">
-<style>.subjectGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}.subjectCard{display:flex;flex-direction:column;min-height:220px;padding:26px;border-radius:20px;border:1px solid var(--line);background:linear-gradient(180deg,var(--panel),#0e171f);text-decoration:none;color:var(--text)}.subjectCard:hover,.subjectCard:focus-visible{border-color:var(--accent)}.subjectCard h3{font-size:23px;margin:0 0 14px}.subjectCard p{color:var(--muted);line-height:1.5}.subjectCard span{color:var(--accent);font-weight:800;margin-top:auto}</style><link rel="stylesheet" href="/assets/global-footer.css"><script defer src="/assets/global-footer.js"></script></head>
-<body class="homePage">
+<style>.subjectGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}.subjectCard{display:flex;flex-direction:column;min-height:220px;padding:26px;border-radius:20px;border:1px solid var(--line);background:linear-gradient(180deg,var(--panel),#0e171f);text-decoration:none;color:var(--text)}.subjectCard:hover,.subjectCard:focus-visible{border-color:var(--accent)}.subjectCard h3{font-size:23px;margin:0 0 14px}.subjectCard p{color:var(--muted);line-height:1.5}.subjectCard span{color:var(--accent);font-weight:800;margin-top:auto}</style><link rel="stylesheet" href="/assets/global-footer.css"><script defer src="/assets/global-footer.js"></script><link rel="stylesheet" href="/assets/elevflyt.css"></head>
+<body class="homePage"><a class="tll-skip" href="#tll-main">Hopp til innhold</a>
 <div class="wrap">
   <header class="topbar homeTopbar">
     <a class="brand" href="./" aria-label="TLLfluenseren forside">
       <span class="brandmark">TLL</span>
       <span>TLLfluenseren <small>Transport · Logistikk · Løfteoperasjoner · Livet</small></span>
     </a>
-    <nav class="homeNav" aria-label="Hovedmeny">
-      <a href="#plattform">Utforsk</a>
-      <a href="#fag">Fagområder</a>
-      <a href="/ressursbank/">Ressursbank</a>
-      <a href="/assistent/">TLL-assistenten</a>
-      <a href="/laererrom/">Lærerrom</a>
-      <a href="#om">Om</a>
-    </nav>
+    <nav class="tll-site-nav" aria-label="Hovedmeny"><a href="/" aria-current="page">Forside</a><a href="/#fag">Fagområder</a><a href="/ressursbank/">Ressursbank</a><a href="/assistent/">TLL-assistenten</a><a href="/laererrom/">Lærerrom</a><a href="/om/">Om</a></nav>
   </header>
 
-  <main>
+  <main id="tll-main" tabindex="-1">
     <section class="homeHero">
       <div class="heroCopy">
         <div class="kicker">Lær · Øv · Tenk · Voks</div>
@@ -71,19 +64,19 @@
           <span class="pillarNumber">02</span><span class="pillarIcon">✓</span>
           <h3>ØV</h3>
           <p>Tren på det du skal mestre. Repetisjon, prøver og interaktive oppgaver.</p>
-          <a href="truck/">Åpne Truck →</a>
+          <a href="truck/opplaering/#/oving">Øv med spørsmål og forklaringer →</a>
         </article>
         <article class="pillarCard think">
           <span class="pillarNumber">03</span><span class="pillarIcon">?</span>
           <h3>TENK</h3>
           <p>Stopp opp og vurder. Situasjoner fra arbeidslivet som utfordrer faglig skjønn.</p>
-          <span class="comingLabel">Innhold kommer</span>
+          <a href="transport-logistikk-lofteoperasjoner/kap1/#/t1/t1-r1">Tenk gjennom valg i lagerarbeid →</a>
         </article>
         <article class="pillarCard grow">
           <span class="pillarNumber">04</span><span class="pillarIcon">+</span>
           <h3>VOKS</h3>
           <p>Korte perspektiver på ansvar, samarbeid, vaner og det å fungere godt i arbeidslivet.</p>
-          <span class="comingLabel">60 sekunder livsvisdom kommer</span>
+          <a href="transport-logistikk-lofteoperasjoner/kap1/#/t1/t1-voks">60 sekunder: Du er et ledd i kjeden →</a>
         </article>
       </div>
     </section>
@@ -98,7 +91,7 @@
           <li>Ingen registrering av svar</li>
           <li>Eleven styrer opplesningen selv</li>
         </ul>
-        <div class="ctaRow" style="margin-top:0"><a class="btn primary homePrimary" href="truck/prove/">Gå til truckprøven →</a><a class="btn ghost" href="truck/nivaer/">Truck i tre nivåer</a></div>
+        <div class="ctaRow" style="margin-top:0"><a class="btn primary homePrimary" href="truck/prove/">Få teoriprøven lest opp →</a><a class="btn ghost" href="truck/nivaer/">Vurder egne ferdigheter</a></div>
       </div>
       <div class="toolMockup" aria-hidden="true">
         <div class="mockTop"><span></span><span></span><span></span><b>TEORIPRØVE</b></div>
@@ -125,7 +118,7 @@
 
   
 </div>
-<script>document.getElementById("footerYear").textContent=new Date().getFullYear();</script>
+
 </body>
 </html>
 

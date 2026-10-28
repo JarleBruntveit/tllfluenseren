@@ -7,7 +7,7 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=1" sizes="180x180">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Truckopplæring i tre nivåer – TLLfluenseren</title>
+<title>Vurder egne ferdigheter – TLLfluenseren</title>
 <meta name="description" content="Egenvurdering i truckopplæring: Nybegynner, Trygg og Ekspert. Legg ved bilder og video som dokumentasjon og lever én samlet fil.">
 <link rel="stylesheet" href="../../assets/styles.css">
 <style>
@@ -118,23 +118,22 @@ li.item.open .doc{display:block}
   .nivaPage .homeNav{display:none}
 }
 </style>
-<link rel="stylesheet" href="/assets/global-footer.css"><script defer src="/assets/global-footer.js"></script></head>
-<body class="homePage nivaPage">
+<link rel="stylesheet" href="/assets/global-footer.css"><script defer src="/assets/global-footer.js"></script><link rel="stylesheet" href="/assets/elevflyt.css"></head>
+<body class="homePage nivaPage"><a class="tll-skip" href="#tll-main">Hopp til innhold</a>
 <div class="wrap">
   <header class="topbar homeTopbar">
     <a class="brand" href="../../" aria-label="TLLfluenseren forside">
       <span class="brandmark">TLL</span>
       <span>TLLfluenseren <small>Truck · Opplæring i tre nivåer</small></span>
     </a>
-    <a class="btn ghost" href="../">Til Truck</a>
-  </header>
+    <nav class="tll-site-nav" aria-label="Hovedmeny"><a href="/">Forside</a><a href="/#fag">Fagområder</a><a href="/ressursbank/">Ressursbank</a><a href="/assistent/">TLL-assistenten</a><a href="/laererrom/">Lærerrom</a><a href="/om/">Om</a></nav>
+  </header><div class="tll-return"><a href="/truck/">← Tilbake til Truck</a></div>
 </div>
 
-<main class="nShell">
+<main id="tll-main" tabindex="-1" class="nShell">
   <header class="nHero">
     <div>
-      <a class="crumb" href="../">← Truck</a>
-      <h1>Truckopplæring<br>i tre nivåer</h1>
+      <h1>Vurder egne<br>ferdigheter</h1>
       <p>Vurder deg selv på hvert punkt, og legg ved bilder eller video som viser at du kan det. Når du er ferdig, lager du en innleveringsfil og leverer den til læreren.</p>
     </div>
     <div class="mast" aria-hidden="true">
@@ -157,6 +156,7 @@ li.item.open .doc{display:block}
     </div>
   </header>
 
+  <aside class="tll-storage" aria-label="Lagring og levering"><strong>Arbeidet lagres på denne enheten.</strong> Bruk samme nettleser hver gang. Det følger ikke med til en annen mobil eller PC. Læreren får arbeidet når du trykker «Lag innleveringsfil», laster ned filen og leverer den der læreren ber om det.<p id="local-save-status" role="status" aria-live="polite"></p></aside>
   <div class="student">
     <div class="field"><label for="navn">Navn</label><input id="navn" autocomplete="name" placeholder="Fornavn Etternavn"></div>
     <div class="field"><label for="klasse">Klasse</label><input id="klasse" placeholder="2TLLB"></div>
@@ -195,13 +195,13 @@ li.item.open .doc{display:block}
 <script>
 const LOGO = "data:image/png;base64,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";
 const LEVELS = [
-  { id:"n", name:"Nybegynner", intro:"Grunnleggende betjening. Her viser du at du kan kjøre trucken trygt.", items:[
+  { id:"n", name:"Nybegynner", intro:"Nybegynner: øv på grunnleggende betjening og sikker bruk sammen med instruktøren. Velg status for hver ferdighet; nivået beskriver oppgavene, ikke deg som person.", items:[
     "Kunne gjennomføre en daglig kontroll",
     "Betjener trucken på en trygg måte uten hinder",
     "Klarer å plassere drivhjulene korrekt i forhold til hindringer som skal forseres",
     "Klarer å bruke tårnet både når lasten skal plasseres og hentes"
   ]},
-  { id:"t", name:"Trygg", intro:"Du kjører sikkert i ulike situasjoner og forstår hvorfor.", items:[
+  { id:"t", name:"Trygg", intro:"Trygg: bruk ferdighetene i ulike praktiske situasjoner og forklar valgene dine.", items:[
     "Har grunnleggende kunnskap om truckens lastediagram",
     "Forklare truckens hovedkomponenter",
     "Beskrive truckens sikkerhetsfunksjoner",
@@ -215,7 +215,7 @@ const LEVELS = [
     "Kan bruke ekstrautstyr på en trygg og sikker måte",
     "Kan forklare enkel sikring av last på trucken"
   ]},
-  { id:"e", name:"Ekspert", intro:"Du kan forklare, vedlikeholde og lære bort.", items:[
+  { id:"e", name:"Ekspert", intro:"Ekspert: begrunn mer sammensatte valg, og forklar rutiner og vedlikehold til andre.", items:[
     "I en daglig kontroll kunne forklare virkemåten til alle komponentene",
     "Vite hvor hver enkelt av bryterne er og hva som skjer når de brukes den ene eller andre veien",
     "Skjønner truckens lastediagram og kan lære det videre",
@@ -238,7 +238,7 @@ const MAX_VIDEO_MB = 150;
 /* ---------- storage ---------- */
 let state = { student:{navn:"",klasse:"",dato:new Date().toISOString().slice(0,10)}, items:{}, level:"n" };
 try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.items) state = Object.assign(state, s); } catch(e){}
-function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){} }
+function save(){ const msg=$("#local-save-status");try { localStorage.setItem(KEY, JSON.stringify(state)); if(msg)msg.textContent="Lagret automatisk i denne nettleseren."; } catch(e){if(msg)msg.textContent="Kunne ikke lagre arbeidet her. Lag og last ned innleveringsfilen før du lukker siden.";} }
 function st(id){ return state.items[id] || (state.items[id] = { status:0, note:"", media:[] }); }
 
 const mem = new Map();
@@ -361,6 +361,7 @@ function renderItem(it){
     '<div class="doc">'+
       '<label class="lbl" for="note-'+it.id+'">Hva gjorde du, og hva lærte du?</label>'+
       '<textarea id="note-'+it.id+'" placeholder="Skriv kort hva bildet eller videoen viser.">'+esc(s.note)+'</textarea>'+
+      '<p class="hint">Teksten lagres automatisk her. Læreren ser den først når du leverer innleveringsfilen.</p>'+
       '<div class="addmedia">'+
         '<button class="btn" type="button" data-add><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg>Legg til bilde eller video</button>'+
       '</div>'+
@@ -481,7 +482,7 @@ async function buildReport(){
       parts.push('<div class="tb">Lærer: <label><input type="checkbox"> Godkjent</label><label><input type="checkbox"> Må øve mer</label></div></div>');
     }
   }
-  parts.push('</div></body></html>');
+  parts.push('</div></bo'+'dy></html>');
   return new Blob(parts, { type:"text/html" });
 }
 function fileName(){
