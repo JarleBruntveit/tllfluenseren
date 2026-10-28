@@ -246,16 +246,16 @@ footer{border-top:1px solid var(--line);padding:18px 0 30px;font-size:14px;color
 </style>
 <link rel="stylesheet" href="/assets/ressurser.css">
 <script defer src="/assets/ressurser.js"></script>
-</head>
-<body>
+<link rel="stylesheet" href="/assets/elevflyt.css"></head>
+<body><a class="tll-skip" href="#app">Hopp til innhold</a><nav class="tll-site-nav tll-standalone-nav" aria-label="Hovedmeny"><a href="/">Forside</a><a href="/#fag">Fagområder</a><a href="/ressursbank/">Ressursbank</a><a href="/assistent/">TLL-assistenten</a><a href="/laererrom/">Lærerrom</a><a href="/om/">Om</a></nav>
 <header class="top"><div class="wrap" id="hdr"></div></header>
 <div class="levelbar"><div class="wrap">
   <span class="lbl">Nivå:</span>
-  <div class="seg" id="levels" role="group" aria-label="Velg nivå"></div>
+  <div class="seg" id="levels" role="group" aria-label="Velg nivå" aria-describedby="level-help"></div>
   <div class="tools">
     <button class="iconbtn" id="themeBtn" title="Bytt mellom lyst og mørkt" aria-label="Bytt mellom lyst og mørkt"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" style="display:block"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>
   </div>
-</div></div>
+</div><div class="wrap tll-level-help" id="level-help" aria-live="polite"></div></div>
 <main class="wrap" id="app" tabindex="-1"></main>
 <footer><div class="wrap" id="ftr"></div></footer>
 
@@ -878,6 +878,7 @@ const faseAv = a => a.fase || FASE_AV_TYPE[a.type];
 const faseNavn = id => FASER.find(f => f.id === id).navn;
 const $ = s => document.querySelector(s);
 const app = $('#app');
+document.querySelector('.tll-skip').addEventListener('click',e=>{e.preventDefault();app.focus();app.scrollIntoView({block:'start'})});
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const strip = s => String(s).replace(/<[^>]+>/g,'');
 const shuffle = a => { a = a.slice(); for (let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
@@ -902,7 +903,7 @@ const clearTexts = () => { allTextKeys().forEach(k => { try { localStorage.remov
 const clearAll = () => { clearTexts(); try { localStorage.removeItem(KEY); } catch(e){} store = {lvl:0, best:{}, saveText:false}; };
 function textNote(id){
   return store.saveText
-    ? `<div class="note warn" id="tnote"><span aria-hidden="true">💾</span><span><b>Lagres på denne PC-en.</b> Teksten din lagres i nettleseren, og andre som bruker PC-en kan se den. Ingenting sendes til læreren. <button class="linkbtn" id="tdel">Slett teksten</button> · <a href="#/lagring">Endre</a></span></div>`
+    ? `<div class="note warn" id="tnote"><span aria-hidden="true">💾</span><span><b>Lagres automatisk her.</b> Teksten din lagres i nettleseren, og andre som bruker PC-en kan se den. Læreren får teksten når du kopierer den og leverer den der læreren ber om det. <button class="linkbtn" id="tdel">Slett teksten</button> · <a href="#/lagring">Endre</a></span></div>`
     : `<div class="note" id="tnote"><span aria-hidden="true">🔒</span><span><b>Lagres ikke.</b> Teksten blir borte når du lukker siden. Skal du levere den, trykker du «Kopier tekst» og limer den inn der læreren ber om det. <a href="#/lagring">Endre</a></span></div>`;
 }
 
@@ -931,10 +932,12 @@ const sayBtn = txt => canSpeak ? `<button class="say" data-say="${esc(strip(txt)
 document.addEventListener('click', e => { const b = e.target.closest('[data-say]'); if (b){ e.stopPropagation(); speak(b.dataset.say); } });
 
 /* --- nivåvelger --- */
+const LEVEL_HELP={0:'Alle: vis aktiviteter fra alle nivåene. Du kan velge ett nivå for å få færre aktiviteter om gangen.',1:'Nybegynner: bli kjent med begrepene.',2:'Trygg: bruk kunnskapen i praktiske oppgaver.',3:'Ekspert: begrunn valg og løs mer sammensatte oppgaver.'};
 function renderLevels(){
+  $('#level-help').textContent=LEVEL_HELP[store.lvl]+' Velg oppgaver som passer det du vil øve på. Du kan bytte når du vil.';
   const cols = {0:'var(--yellow)',1:'var(--n1)',2:'var(--n2)',3:'var(--n3)'};
   $('#levels').innerHTML = [1,2,3,0].map(n =>
-    `<button data-lvl="${n}" aria-pressed="${store.lvl===n}"><span class="dot" style="background:${cols[n]}"></span>${n===0?'Alle':NIVA[n]}</button>`).join('');
+    `<button data-lvl="${n}" title="${LEVEL_HELP[n]}" aria-pressed="${store.lvl===n}"><span class="dot" style="background:${cols[n]}"></span>${n===0?'Alle':NIVA[n]}</button>`).join('');
   $('#levels').querySelectorAll('button').forEach(b => b.onclick = () => { store.lvl = +b.dataset.lvl; save(); renderLevels(); route(); });
 }
 const visible = a => !a.nivaa || store.lvl === 0 || a.nivaa === store.lvl;
@@ -966,7 +969,8 @@ function pageHome(){
       <b>Lagring på denne PC-en:</b> Resultatene dine lagres bare i denne nettleseren og sendes ikke til læreren.
       ${store.saveText ? 'Det du skriver i skriveoppgavene lagres også her – andre som bruker PC-en kan se det.' : 'Det du skriver i skriveoppgavene lagres ikke.'}
       Bruker du en delt skole-PC, sletter du alt når du er ferdig. <a href="#/lagring">Innstillinger og sletting</a></span></div>
-    <div class="section-h"><h2>Velg tema</h2><span class="muted small">Velg nivå øverst – Nybegynner, Trygg eller Ekspert</span></div>
+    <section class="panel tll-start" aria-labelledby="start-heading"><h2 id="start-heading">Første gang her?</h2><p>Start med «Lager og terminaler i samfunnet». Les eller lytt til forklaringen, og prøv oppgavene etterpå. Har læreren gitt deg et annet tema, velger du det nedenfor.</p><a class="tll-action" href="#/t1">Start med Lager og terminaler i samfunnet →</a></section>
+    <div class="section-h"><h2>Velg tema</h2><span class="muted small">Velg ett nivå øverst hvis du vil se færre oppgaver</span></div>
     <div class="phase-steps" style="margin:-4px 0 14px">${FASER.map(f => `<span>${f.navn.toUpperCase()}</span>`).join('')}</div>
     <div class="grid">${K.temaer.map(t => { const p = temaProg(t); return `
       <a class="tcard" href="#/${t.id}">

@@ -29,64 +29,65 @@
   .crumb:hover{color:var(--text)}
   @media(max-width:760px){.truckTools{grid-template-columns:1fr}.toolCard{min-height:0}}
 </style>
-<link rel="stylesheet" href="/assets/global-footer.css"><script defer src="/assets/global-footer.js"></script></head>
-<body class="homePage">
+<link rel="stylesheet" href="/assets/global-footer.css"><script defer src="/assets/global-footer.js"></script><link rel="stylesheet" href="/assets/elevflyt.css"></head>
+<body class="homePage"><a class="tll-skip" href="#tll-main">Hopp til innhold</a>
 <div class="wrap">
   <header class="topbar homeTopbar">
     <a class="brand" href="../" aria-label="TLLfluenseren forside">
       <span class="brandmark">TLL</span>
       <span>TLLfluenseren <small>Transport · Logistikk · Løfteoperasjoner · Livet</small></span>
     </a>
-    <nav class="homeNav" aria-label="Hovedmeny">
-      <a href="../#plattform">Utforsk</a>
-      <a href="./" aria-current="page" style="color:var(--text)">Truck</a>
-      <a href="../#om">Om</a>
-    </nav>
-  </header>
+    <nav class="tll-site-nav" aria-label="Hovedmeny"><a href="/">Forside</a><a href="/#fag">Fagområder</a><a href="/ressursbank/">Ressursbank</a><a href="/assistent/">TLL-assistenten</a><a href="/laererrom/">Lærerrom</a><a href="/om/">Om</a></nav>
+  </header><div class="tll-return"><a href="/bransjeteknikk/">← Tilbake til Bransjeteknikk</a></div>
 
-  <main>
+  <main id="tll-main" tabindex="-1">
     <section class="truckHero">
-      <a class="crumb" href="../">← Forsiden</a>
       <h1>Truck</h1>
-      <p>Alt du trenger for truckopplæringen på ett sted. Øv til teoriprøven, og vis hva du mestrer i praksis – med bilder og video.</p>
+      <p>Velg det du skal gjøre: lær truckteori, øv med forklaringer, få teoriprøven lest opp eller vurder egne praktiske ferdigheter.</p>
     </section>
 
     <section class="truckTools" aria-label="Truckverktøy">
       <a class="toolCard" href="opplaering/">
         <span class="pillarNumber">LÆR</span><span class="pillarIcon" aria-hidden="true">↗</span>
-        <h2>Truckopplæring – modul for modul</h2>
+        <h2>Lær truckteori</h2>
         <p>Grunnkunnskap, truckteori og arbeidskort til praksis. Lær gjennom korte fagbolker og varierte aktiviteter.</p>
         <ul>
           <li>Situasjonsoppgaver, begrepskort og 40 øvingsspørsmål</li>
           <li>Lesestøtte, opplesning og valgfritt tempo</li>
           <li>Eget lærerrom med passord</li>
         </ul>
-        <span class="go">Start truckopplæringen →</span>
+        <span class="go">Lær truckteori →</span>
       </a>
 
-
+      <a class="toolCard" href="opplaering/#/oving">
+        <span class="pillarNumber">ØV</span><span class="pillarIcon" aria-hidden="true">✓</span>
+        <h2>Øv med spørsmål og forklaringer</h2>
+        <p>Velg et tema, svar på spørsmål og få vite hvorfor svaret er riktig. Du kan prøve flere ganger.</p>
+        <ul><li>Forklaring etter hvert svar</li><li>Øv i ditt eget tempo</li><li>En del av truckopplæringen</li></ul>
+        <span class="go">Øv med spørsmål og forklaringer →</span>
+      </a>
       <a class="toolCard" href="prove/">
-        <span class="pillarNumber">ØV</span><span class="pillarIcon" aria-hidden="true">🔊</span>
-        <h2>Truckførerprøven, lest høyt</h2>
-        <p>To teoriprøver med 40 spørsmål. Spørsmål og svaralternativer leses høyt, ett om gangen.</p>
+        <span class="pillarNumber">PRØVEOPPLESNING</span><span class="pillarIcon" aria-hidden="true">🔊</span>
+        <h2>Få teoriprøven lest opp</h2>
+        <p>Opplesningsstøtte under teoriprøven. Hør ett spørsmål om gangen, og svar på det ordinære prøvearket.</p>
         <ul>
           <li>Ingen fasit eller hint</li>
           <li>Ingen registrering av svar</li>
           <li>Eleven styrer opplesningen selv</li>
         </ul>
-        <span class="go">Åpne truckprøven →</span>
+        <span class="go">Få teoriprøven lest opp →</span>
       </a>
 
       <a class="toolCard" href="nivaer/">
         <span class="pillarNumber">VIS</span><span class="pillarIcon" aria-hidden="true">▲</span>
-        <h2>Truckopplæring i tre nivåer</h2>
+        <h2>Vurder egne ferdigheter</h2>
         <p>Nybegynner, Trygg og Ekspert – 27 punkter. Vurder deg selv og legg ved bilder eller video som dokumentasjon.</p>
         <ul>
           <li>Ta bilde eller film rett fra mobilen</li>
           <li>Lagres bare på elevens egen enhet</li>
           <li>Lever én samlet fil til læreren</li>
         </ul>
-        <span class="go">Start egenvurderingen →</span>
+        <span class="go">Vurder egne ferdigheter →</span>
       </a>
     </section>
   </main>

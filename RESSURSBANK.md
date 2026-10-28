@@ -6,4 +6,4 @@ Når brukeren ber om kontroll/publisering: Bruk Sites read_database_overview, le
 
 Sammenlign med nyeste katalog i denne GitHub-repoen. Hvis identiske er det ingenting å publisere. Ved autorisert publisering, valider lenker og JSON og oppdater bare ressursbank/katalog.json med siste blob-SHA; bekreft GitHub Pages-utrulling. Ikke overskriv et nyere felles utkast. Lærerrommet viser «Publisert» når det lagrede innholdet matcher den offentlige katalogen.
 
-Lokale utkast kan overføres fra ressursbank/#/laerer. Den opprinnelige localStorage-nøkkelen er uendret. Ingen GitHub-nøkler ligger i nettleseren.
+Lokale utkast kan overføres via lærerinngangen /laererrom/, som lenker til ressursbank/#/laerer. Overføringsfunksjonen vises ikke i elevens hovedmeny. Den opprinnelige localStorage-nøkkelen er uendret. Ingen GitHub-nøkler ligger i nettleseren.

@@ -1,0 +1,17 @@
+/* Felles navigasjon og elevveiledning. */
+.tll-site-nav{display:flex!important;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:6px 18px;max-width:100%;font:700 14px/1.5 system-ui,sans-serif}
+.tll-site-nav a{display:inline-flex!important;align-items:center;min-height:44px;text-decoration:none;color:var(--muted,#aab7c4);white-space:nowrap;padding:3px 0}
+.tll-site-nav a:hover,.tll-site-nav a[aria-current="page"]{color:var(--ink,var(--text,#f5f7f9));text-decoration:underline;text-underline-offset:5px}
+.tll-site-nav a:focus-visible,.tll-action:focus-visible,.tll-return a:focus-visible{outline:3px solid var(--accent,var(--yellow,#f2b84b));outline-offset:4px}
+.topbar:has(>.tll-site-nav),.mast:has(>.tll-site-nav){gap:12px;flex-wrap:wrap}
+.tll-standalone-nav{width:min(1120px,calc(100% - 32px));margin:0 auto;padding:12px 0;border-bottom:1px solid var(--line,#2b3a48)}
+.tll-return{width:min(1120px,calc(100% - 32px));margin:12px auto 0;font-size:14px}
+.tll-return a{display:inline-flex;align-items:center;min-height:44px;color:var(--muted,#aab7c4);text-underline-offset:4px}
+.tll-skip{position:absolute;left:-9999px;top:8px;z-index:1000}.tll-skip:focus{left:12px;background:#f2b84b;color:#111820;padding:14px;border-radius:8px}
+.tll-start{margin:24px 0}.tll-start h2{font-size:26px;margin-bottom:12px}.tll-start p{margin:0 0 16px;max-width:70ch}
+.tll-action{display:inline-flex;align-items:center;min-height:48px;background:#f2b84b;color:#111820!important;padding:12px 18px;border-radius:12px;font-weight:800;text-decoration:none}
+.tll-level-help{padding-top:0!important;padding-bottom:12px!important;font-size:14px;color:var(--muted,#aab7c4)}
+.tll-help{flex-basis:100%;margin:0;max-width:65ch}.tll-note-help{margin:0 0 16px!important;max-width:70ch}
+.tll-storage{padding:16px 18px;margin:0 0 22px;border:1px solid var(--line,#2b3a48);border-left:3px solid #f2b84b;border-radius:12px;color:var(--muted,#aab7c4);line-height:1.6}.tll-storage strong{color:var(--ink,var(--text,#f5f7f9))}.tll-storage p:empty{display:none}.tll-storage p{margin:8px 0 0}
+@media(max-width:760px){.tll-standalone-nav{width:calc(100% - 32px)}.tll-site-nav{width:100%;justify-content:flex-start;gap:0 16px}.tll-level-help{font-size:13px}.tll-action{max-width:100%;white-space:normal}.truckHero{padding-top:32px!important}}
+@media print{.tll-site-nav,.tll-return,.tll-skip{display:none!important}}
