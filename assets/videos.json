@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "channels": [
+    {
+      "name": "YouTube",
+      "url": "https://www.youtube.com/channel/UCFOS4AJmeRHC_8EQcWKS82A",
+      "description": "Undervisningsfilmer og korte forklaringer."
+    },
+    {
+      "name": "TikTok",
+      "url": "https://www.tiktok.com/@TLLfluenseren",
+      "description": "Korte fagklipp og tanker på veien."
+    },
+    {
+      "name": "Instagram",
+      "url": "https://www.instagram.com/tllfluenseren/",
+      "description": "Fag, mestring og livsvisdom."
+    }
+  ],
+  "videos": [
+    {
+      "id": "aapningsklipp",
+      "title": "Velkommen til TLLfluenseren",
+      "description": "Bli kjent med fagstoffet og tanken bak TLLfluenseren.",
+      "duration": "0:23",
+      "topic": "velkommen",
+      "lessons": [],
+      "order": 0,
+      "availableAt": "2026-11-02T08:00:00+01:00",
+      "sourceUrl": "https://static.metricool.com/planner/202611/7469578-file-2066548536121817999.mp4",
+      "youtubeUrl": null
+    },
+    {
+      "id": "dekk-gafler-lys",
+      "title": "Dekk, gafler og lys",
+      "description": "Se hvordan du kontrollerer dekk, gafler, slanger, kjeder og lys før bruk.",
+      "duration": "2:51",
+      "topic": "daglig-kontroll",
+      "lessons": [
+        "2.2-5",
+        "3.2-2",
+        "4.2-2"
+      ],
+      "order": 1,
+      "availableAt": "2026-11-03T09:00:00+01:00",
+      "sourceUrl": "https://static.metricool.com/planner/202611/7469578-file-12201094490773937196.mp4",
+      "youtubeUrl": null
+    },
+    {
+      "id": "motorrom-vaesker",
+      "title": "Motorrom og væsker",
+      "description": "Batteri, motorolje, luftfilter, hydraulikkolje og kjølevæske i praksis.",
+      "duration": "2:34",
+      "topic": "daglig-kontroll",
+      "lessons": [
+        "2.2-4",
+        "2.2-5",
+        "3.2-2",
+        "3.2-6",
+        "4.2-2"
+      ],
+      "order": 2,
+      "availableAt": "2026-11-03T11:00:00+01:00",
+      "sourceUrl": "https://static.metricool.com/planner/202611/7469578-file-13285265844575606539.mp4",
+      "youtubeUrl": null
+    },
+    {
+      "id": "bremser-styring",
+      "title": "Bremser, styring og betjening",
+      "description": "Bli kjent med bremsene, styringen og truckens betjeningsorganer.",
+      "duration": "2:24",
+      "topic": "daglig-kontroll",
+      "lessons": [
+        "2.2-4",
+        "3.2-3",
+        "3.2-7",
+        "4.2-1",
+        "4.2-3"
+      ],
+      "order": 3,
+      "availableAt": "2026-11-03T13:00:00+01:00",
+      "sourceUrl": "https://static.metricool.com/planner/202611/7469578-file-2761724217681402720.mp4",
+      "youtubeUrl": null
+    },
+    {
+      "id": "funksjonstest",
+      "title": "Funksjonstest fra utsiden",
+      "description": "Se løft, tilt, sideforskyvning og gaffelspredning fra utsiden av trucken.",
+      "duration": "0:57",
+      "topic": "daglig-kontroll",
+      "lessons": [
+        "3.2-3",
+        "4.2-3"
+      ],
+      "order": 4,
+      "availableAt": "2026-11-03T15:00:00+01:00",
+      "sourceUrl": "https://static.metricool.com/planner/202611/7469578-file-7632986049074817645.mp4",
+      "youtubeUrl": null
+    },
+    {
+      "id": "pedaler-sete",
+      "title": "Pedaler og sete",
+      "description": "Gasspedal, bremsepedal, krypepedal, parkeringsbrems og setets funksjoner.",
+      "duration": "1:38",
+      "topic": "daglig-kontroll",
+      "lessons": [
+        "2.2-4",
+        "3.2-3",
+        "4.2-1",
+        "4.2-3"
+      ],
+      "order": 5,
+      "availableAt": "2026-11-03T17:00:00+01:00",
+      "sourceUrl": "https://static.metricool.com/planner/202611/7469578-file-13820565953959914391.mp4",
+      "youtubeUrl": null
+    },
+    {
+      "id": "det-du-ikke-endrer",
+      "title": "Det du ikke endrer, det velger du",
+      "description": "En tanke om vaner, små endringer og valg i hverdagen.",
+      "duration": "1:03",
+      "topic": "livsvisdom",
+      "lessons": [],
+      "order": 6,
+      "availableAt": null,
+      "sourceUrl": null,
+      "youtubeUrl": null
+    }
+  ]
+}
