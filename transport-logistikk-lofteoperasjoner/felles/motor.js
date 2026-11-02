@@ -543,6 +543,7 @@ function bootKapittel(){
   let store = TLL.lesLager(K.id);
   ctx = { kapId: K.id, store };
   const save = () => TLL.skrivLager(K.id, store);
+  const KN = esc(K.kortnavn || ('Kap ' + K.nr));
   const visible = a => !a.nivaa || store.lvl === 0 || a.nivaa === store.lvl;
 
   const LEVEL_HELP = {0:'Alle: vis aktiviteter fra alle nivåene. Du kan velge ett nivå for å få færre aktiviteter om gangen.',1:'Nybegynner: bli kjent med begrepene.',2:'Trygg: bruk kunnskapen i praktiske oppgaver.',3:'Ekspert: begrunn valg og løs mer sammensatte oppgaver.'};
@@ -559,15 +560,15 @@ function bootKapittel(){
       <div class="crumbs"><a href="../">${esc(K.fag)}</a> <span>›</span> ${crumbs}</div>
       <h1>${title}</h1>
       ${sub ? `<div class="sub">${sub}</div>` : ''}
-      ${showKm ? `<div class="km"><b>Kompetansemål</b><span>${esc(K.kompetansemal.tekst)} <span style="opacity:.7">(${esc(K.kompetansemal.kode)})</span></span></div>` : ''}`;
+      ${showKm ? [].concat(K.kompetansemal).map(m => `<div class="km"><b>Kompetansemål</b><span>${esc(m.tekst)} <span style="opacity:.7">(${esc(m.kode)})</span></span></div>`).join('') : ''}`;
   }
-  $('#ftr').innerHTML = `${esc(K.fag)} · Kapittel ${K.nr}. Tekster, oppgaver og tegninger er egenprodusert. Fagstoff fra <a href="${K.ressurser.ndlaEmne}" target="_blank" rel="noopener">NDLA</a> er lenket til, ikke kopiert. Kompetansemål fra Utdanningsdirektoratet (NLOD). Henvisninger til lærebok og arbeidsbok gjelder sidetall og oppgavenummer i elevens egne bøker. Resultater lagres bare i nettleseren på denne enheten – <a href="#/lagring">les om lagring</a> · <a href="#/rapport">lever fremdrift</a>.`;
+  $('#ftr').innerHTML = K.fotnote || `${esc(K.fag)} · Kapittel ${K.nr}. Tekster, oppgaver og tegninger er egenprodusert. Fagstoff fra <a href="${K.ressurser.ndlaEmne}" target="_blank" rel="noopener">NDLA</a> er lenket til, ikke kopiert. Kompetansemål fra Utdanningsdirektoratet (NLOD). Henvisninger til lærebok og arbeidsbok gjelder sidetall og oppgavenummer i elevens egne bøker. Resultater lagres bare i nettleseren på denne enheten – <a href="#/lagring">les om lagring</a> · <a href="#/rapport">lever fremdrift</a>.`;
 
   const temaProg = t => { const acts = t.aktiviteter.filter(visible); return { done: acts.filter(a => store.best[a.id] != null).length, total: acts.length }; };
   const done = id => pct => { TLL.registrerResultat(K.id, store, id, pct); };
 
   function pageHome(){
-    header(`<span>Kapittel ${K.nr}</span>`, `Kap ${K.nr} · ${esc(K.tittel)}`, esc(K.ingress), true);
+    header(`<span>${esc(K.kortnavn || 'Kapittel ' + K.nr)}</span>`, K.kortnavn ? esc(K.tittel) : `Kap ${K.nr} · ${esc(K.tittel)}`, esc(K.ingress), true);
     const r = K.ressurser;
     const alle = K.temaer.reduce((s,t) => { const p = temaProg(t); return { d: s.d + p.done, n: s.n + p.total }; }, { d: 0, n: 0 });
     app.innerHTML = `
@@ -585,23 +586,23 @@ function bootKapittel(){
             <div class="progtxt">${p.done} av ${p.total} aktiviteter gjort</div>
             <div class="prog"><i style="width:${p.total?100*p.done/p.total:0}%"></i></div></div>
         </a>`; }).join('')}
-        <a class="tcard" href="../prove/?kap=${K.id}">
+        ${K.prove === false ? '' : `<a class="tcard" href="../prove/?kap=${K.id}">
           <div class="lab"><span class="lok" style="background:var(--asphalt);color:var(--yellow)">TEST</span><span class="bars"></span></div>
           <div class="body"><span class="ftag">Øv</span><h3>Kapittelprøve</h3><p>Tilfeldige spørsmål fra hele kapitlet på nivået du velger. Se hvilke tema du må øve mer på.</p></div>
-        </a>
+        </a>`}
         <a class="tcard" href="#/rapport">
           <div class="lab"><span class="lok" style="background:var(--n2);color:#111820">LEVER</span><span class="bars"></span></div>
           <div class="body"><h3>Lever fremdrift</h3><p>Last ned en rapport over det du har gjort, og lever den i Teams.</p></div>
         </a>
       </div>
-      <section data-resource-area="tll"></section>
+      ${K.ressursomrade === false ? '' : `<section data-resource-area="${esc(K.ressursomrade || 'tll')}"></section>`}
       <div id="podlist" hidden><div class="section-h"><h2>Podkast</h2><span class="muted small">Hør teorien – én episode per tema</span></div><div class="panel"><ul class="reslist" id="podul"></ul></div></div>
       <div class="section-h"><h2>Ressurser</h2></div>
       <div class="panel"><ul class="reslist">
         ${r.presentasjon ? `<li><span class="tag">Lysark</span><a href="${esc(r.presentasjon)}" target="_blank" rel="noopener">Lysark til kapittel ${K.nr}</a></li>` : ''}
         ${r.laerebok ? `<li><span class="tag">Bok</span><span>${esc(r.laerebok)}</span></li>` : ''}
-        <li><span class="tag">Bok</span><span>${esc(r.arbeidsbok)}</span></li>
-        <li><span class="tag ndla">NDLA</span><a href="${r.ndlaEmne}" target="_blank" rel="noopener">Emnet «Drift på terminal og lager» på NDLA</a></li>
+        ${r.arbeidsbok ? `<li><span class="tag">Bok</span><span>${esc(r.arbeidsbok)}</span></li>` : ''}
+        <li><span class="tag ndla">NDLA</span><a href="${r.ndlaEmne}" target="_blank" rel="noopener">${esc(r.ndlaEmneNavn || 'Emnet «Drift på terminal og lager» på NDLA')}</a></li>
         ${r.ordliste ? `<li><span class="tag ndla">NDLA</span><a href="${r.ordliste}" target="_blank" rel="noopener">Ordliste for lager og logistikk</a></li>` : ''}
       </ul></div>`;
     const items = {};
@@ -614,7 +615,7 @@ function bootKapittel(){
   }
 
   function pageTema(t){
-    header(`<a href="#/">Kap ${K.nr}</a> <span>›</span> <span>${t.lok}</span>`, esc(t.tittel), esc(t.kort), false);
+    header(`<a href="#/">${KN}</a> <span>›</span> <span>${t.lok}</span>`, esc(t.tittel), esc(t.kort), false);
     const acts = t.aktiviteter.filter(visible);
     const phaseHead = f => `<div class="phase-h"><span class="pn" aria-hidden="true">${f.nr}<small>${f.ikon}</small></span><div><h2>${f.navn}</h2><p>${esc(f.tekst)}</p></div></div>`;
     const cards = f => { const list = acts.filter(a => faseAv(a) === f.id);
@@ -628,9 +629,10 @@ function bootKapittel(){
           <div class="panel"><h3 style="font-size:22px">Les og se mer</h3>
             <ul class="reslist">
             ${t.bok ? `<li><span class="tag">Lærebok</span><span>${esc(t.bok)}</span></li>` : ''}
-            ${t.ndla.map(([tt,u,ty]) => `<li><span class="tag ndla">${esc(ty)}</span><a href="${NDLA+u}" target="_blank" rel="noopener">${esc(tt)}</a></li>`).join('')}
-            <li><span class="tag">Arbeidsbok</span><span>Oppgave ${esc(t.arbeidsbok)}</span></li></ul></div>
+            ${t.ndla.map(([tt,u,ty]) => `<li><span class="tag ndla">${esc(ty)}</span><a href="${/^https?:/.test(u) ? u : NDLA+u}" target="_blank" rel="noopener">${esc(tt)}</a></li>`).join('')}
+            ${t.arbeidsbok ? `<li><span class="tag">Arbeidsbok</span><span>Oppgave ${esc(t.arbeidsbok)}</span></li>` : ''}</ul></div>
         </div>
+        ${t.ekstra ? `<div class="panel" style="margin-top:14px">${t.ekstra}</div>` : ''}
         <section data-resource-topic="${K.id}-${t.id}"></section>
         <div style="margin-top:12px">${cards(FASER[0])}</div>
       </section>
@@ -649,18 +651,18 @@ function bootKapittel(){
       <div class="small">${b != null ? `<span class="done">✓ Beste: ${b} %</span>${l && l.n > 1 ? ` <span class="muted">· ${l.n} forsøk</span>` : ''}` : '<span class="muted">Ikke gjort</span>'}</div></a>`;
   }
   function pageAct(t,a){
-    header(`<a href="#/">Kap ${K.nr}</a> <span>›</span> <a href="#/${t.id}">${esc(t.tittel)}</a>`, esc(a.tittel), `${faseNavn(faseAv(a)).toUpperCase()} · ${TYPE[a.type]}${a.nivaa ? ' · ' + NIVA_KORT[a.nivaa] : ''}`, false);
+    header(`<a href="#/">${KN}</a> <span>›</span> <a href="#/${t.id}">${esc(t.tittel)}</a>`, esc(a.tittel), `${faseNavn(faseAv(a)).toUpperCase()} · ${TYPE[a.type]}${a.nivaa ? ' · ' + NIVA_KORT[a.nivaa] : ''}`, false);
     const idx = t.aktiviteter.filter(visible), pos = idx.indexOf(a), neste = idx[pos+1];
-    app.innerHTML = `<div class="stage" id="stage"></div><p class="stage row" style="margin-top:22px"><a href="#/${t.id}">← Tilbake til ${esc(t.tittel)}</a><span class="spacer"></span>${neste ? `<a href="#/${t.id}/${neste.id}">Neste: ${esc(neste.tittel)} →</a>` : ''}</p>`;
+    app.innerHTML = `${a.vis ? `<div class="stage"><div class="panel vis" style="margin-bottom:14px">${a.vis}</div></div>` : ''}<div class="stage" id="stage"></div><p class="stage row" style="margin-top:22px"><a href="#/${t.id}">← Tilbake til ${esc(t.tittel)}</a><span class="spacer"></span>${neste ? `<a href="#/${t.id}/${neste.id}">Neste: ${esc(neste.tittel)} →</a>` : ''}</p>`;
     RUN[a.type]($('#stage'), a, done(a.id), t);
   }
   function pageRapport(){
-    header(`<a href="#/">Kap ${K.nr}</a>`, 'Lever fremdrift', 'Last ned en rapport og lever den i Teams', false);
+    header(`<a href="#/">${KN}</a>`, 'Lever fremdrift', 'Last ned en rapport og lever den i Teams', false);
     app.innerHTML = `<div class="stage" id="stage"></div>`;
     rapportSkjema($('#stage'), '#/');
   }
   function pageLagring(){
-    header(`<a href="#/">Kap ${K.nr}</a>`, 'Lagring på denne PC-en', 'Hva som lagres, hvor det lagres, og hvordan du sletter det', false);
+    header(`<a href="#/">${KN}</a>`, 'Lagring på denne PC-en', 'Hva som lagres, hvor det lagres, og hvordan du sletter det', false);
     const nTxt = TLL.tekstNokler(K.id).length, nRes = Object.keys(store.best).length;
     app.innerHTML = `<div class="stage">
       <div class="panel">
@@ -707,7 +709,7 @@ function bootKapittel(){
   function route(){
     if (canSpeak) speechSynthesis.cancel();
     const parts = location.hash.replace(/^#\/?/,'').split('/').filter(Boolean);
-    if (parts[0] === 'prove') location.replace('../prove/?kap=' + K.id);
+    if (parts[0] === 'prove' && K.prove !== false) location.replace('../prove/?kap=' + K.id);
     else if (parts[0] === 'lagring') pageLagring();
     else if (parts[0] === 'rapport') pageRapport();
     else {
