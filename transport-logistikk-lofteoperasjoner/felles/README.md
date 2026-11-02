@@ -32,3 +32,21 @@ Fasen (Lær, Øv, Tenk, Voks) settes automatisk ut fra oppgavetypen, men kan ove
 
 Alt innhold skal være egenprodusert. Bruk læreboka, arbeidsboka og fasiten bare som faglig grunnlag –
 ikke kopier tekst, oppgaver, figurer eller bilder fra forlagets bøker. Lenk til NDLA i stedet for å kopiere.
+
+## Andre fag enn TLL (for eksempel Norsk)
+
+Motoren kan også brukes av sider utenfor TLL-mappen, se `norsk/soknadsbrev/`. Lenk til filene med
+absolutt sti (`/transport-logistikk-lofteoperasjoner/felles/motor.js` osv.) og la være å laste `kapitler.js`.
+Valgfrie felt i `data.js`:
+
+| Felt | Hva det gjør |
+| --- | --- |
+| `kortnavn` | Brukes i brødsmulestien i stedet for «Kap 1» (f.eks. «Søknadsbrev»). |
+| `prove: false` | Skjuler kortet for kapittelprøve. |
+| `ressursomrade: false` | Skjuler TLL-blokken «Se og lær – flere kilder». |
+| `fotnote` | Egen bunntekst (HTML). |
+| `kompetansemal` | Kan være en liste med flere mål. |
+| `ressurser.ndlaEmneNavn` | Lenketekst for NDLA-emnet. `arbeidsbok` kan utelates. |
+| `tema.ekstra` | HTML-panel under «Kort fortalt» (f.eks. en øvingsannonse). |
+| `aktivitet.vis` | HTML-panel som vises over oppgaven. |
+| `tema.ndla` | Lenker kan være hele URL-er (`https://…`), ikke bare TLL-stier. |
