@@ -72,6 +72,54 @@
       "url": "/truck/opplaering/"
     },
     {
+      "id": "adr-bok",
+      "title": "ADR – finn fram i boka",
+      "area": "bransjeteknikk",
+      "url": "/bransjeteknikk/adr/#/bok"
+    },
+    {
+      "id": "adr-fare",
+      "title": "ADR – klasser, farer og merking",
+      "area": "bransjeteknikk",
+      "url": "/bransjeteknikk/adr/#/fare"
+    },
+    {
+      "id": "adr-mengde",
+      "title": "ADR – mengdelempelsen",
+      "area": "bransjeteknikk",
+      "url": "/bransjeteknikk/adr/#/mengde"
+    },
+    {
+      "id": "adr-lq",
+      "title": "ADR – begrensede mengder",
+      "area": "bransjeteknikk",
+      "url": "/bransjeteknikk/adr/#/lq"
+    },
+    {
+      "id": "adr-kontroll",
+      "title": "ADR – dokumenter, utstyr og kolli",
+      "area": "bransjeteknikk",
+      "url": "/bransjeteknikk/adr/#/kontroll"
+    },
+    {
+      "id": "adr-tunnel",
+      "title": "ADR – tunnel og rutevalg",
+      "area": "bransjeteknikk",
+      "url": "/bransjeteknikk/adr/#/tunnel"
+    },
+    {
+      "id": "adr-uhell",
+      "title": "ADR – uhell og skriftlige instruksjoner",
+      "area": "bransjeteknikk",
+      "url": "/bransjeteknikk/adr/#/uhell"
+    },
+    {
+      "id": "adr-oppdrag",
+      "title": "ADR – samlet transportoppdrag",
+      "area": "bransjeteknikk",
+      "url": "/bransjeteknikk/adr/#/oppdrag"
+    },
+    {
       "id": "bransjelaere",
       "title": "Bransjelære – generelt",
       "area": "bransjelaere",
