@@ -602,8 +602,8 @@ function bootKapittel(){
         ${r.presentasjon ? `<li><span class="tag">Lysark</span><a href="${esc(r.presentasjon)}" target="_blank" rel="noopener">Lysark til kapittel ${K.nr}</a></li>` : ''}
         ${r.laerebok ? `<li><span class="tag">Bok</span><span>${esc(r.laerebok)}</span></li>` : ''}
         ${r.arbeidsbok ? `<li><span class="tag">Bok</span><span>${esc(r.arbeidsbok)}</span></li>` : ''}
-        <li><span class="tag ndla">NDLA</span><a href="${r.ndlaEmne}" target="_blank" rel="noopener">${esc(r.ndlaEmneNavn || 'Emnet «Drift på terminal og lager» på NDLA')}</a></li>
-        ${r.ordliste ? `<li><span class="tag ndla">NDLA</span><a href="${r.ordliste}" target="_blank" rel="noopener">Ordliste for lager og logistikk</a></li>` : ''}
+        <li><span class="tag ndla">${esc(r.ndlaEmneTag || 'NDLA')}</span><a href="${r.ndlaEmne}" target="_blank" rel="noopener">${esc(r.ndlaEmneNavn || 'Emnet «Drift på terminal og lager» på NDLA')}</a></li>
+        ${r.ordliste ? `<li><span class="tag ndla">${esc(r.ordlisteTag || 'NDLA')}</span><a href="${r.ordliste}" target="_blank" rel="noopener">${esc(r.ordlisteNavn || 'Ordliste for lager og logistikk')}</a></li>` : ''}
       </ul></div>`;
     const items = {};
     K.temaer.forEach((t,i) => findEpisode(i+1, () => {
