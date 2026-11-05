@@ -1,0 +1,2 @@
+/* TLL-figur – sikker progressiv forbedring. Ingen uendelig animasjon. */
+(()=>{const asset='/assets/tll-figur.webp';document.querySelectorAll('[data-tll-figur]').forEach(el=>{const media=el.querySelector('.tll-figur__media');if(!media)return;const img=new Image();img.alt='Jarle i TLL-jakke i et lagermiljø';img.width=104;img.height=104;img.decoding='async';img.loading='lazy';img.addEventListener('load',()=>{media.replaceChildren(img)});img.addEventListener('error',()=>{ /* behold tekstfallback */ });img.src=asset;});})();
