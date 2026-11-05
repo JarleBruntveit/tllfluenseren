@@ -323,6 +323,72 @@
       "questions": [
         "Hva vil du vite mer om før du velger fag?"
       ]
+    },
+    {
+      "id": "yrke-yrkessjafor-intervju-tine",
+      "title": "Yrkesintervju – hva gjør en yrkessjåfør?",
+      "provider": "Utdanning.no / Vimeo",
+      "type": "Film",
+      "url": "https://vimeo.com/1119342288",
+      "description": "Bli med yrkessjåføren Tine og få et innblikk i arbeidet hennes.",
+      "topics": [
+        "yrke-yrkessjafor"
+      ],
+      "watchFor": "Legg merke til hvilke oppgaver yrkessjåføren har, og hvilket ansvar som følger med arbeidet.",
+      "questions": [
+        "Hva fikk du vite om yrkessjåføryrket som du vil undersøke nærmere?"
+      ],
+      "visible": true
+    },
+    {
+      "id": "yrke-logistikk-ndla-pa-vei",
+      "title": "Logistikk på vei",
+      "provider": "NDLA",
+      "type": "Film",
+      "url": "https://ndla.no/nb/r/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/logistikk-pa-vei/7cc06dd6cc",
+      "description": "Fagstoff og film om terminalarbeid og godstransport på vei, med henting, sortering og omlasting av gods.",
+      "topics": [
+        "yrke-logistikk"
+      ],
+      "watchFor": "Se hvordan godset håndteres og sorteres før det sendes videre fra terminalen.",
+      "questions": [
+        "Hvordan samarbeider terminalarbeidere og sjåfører om å få godset fram?",
+        "Hva er viktig ved omlasting og sortering?"
+      ],
+      "visible": true
+    },
+    {
+      "id": "yrke-kran-ndla-yrkesfilm",
+      "title": "Kran- og løfteoperatør",
+      "provider": "NDLA / Kranutleierens Landsforening",
+      "type": "Film",
+      "url": "https://ndla.no/nb/r/teknologi-tp-pin-vg2/kran--og-lofteoperator/e24c9c39ae",
+      "description": "Film og spørsmål om kranføreryrket, arbeidsdagen og hva arbeidet krever. Siden har også lenker til mer informasjon om utdanningen.",
+      "topics": [
+        "yrke-kran-og-lofteoperasjoner"
+      ],
+      "watchFor": "Legg merke til arbeidsoppgavene og egenskapene som er nyttige for en kran- og løfteoperatør.",
+      "questions": [
+        "Hvilke sider ved kranføreryrket virker interessante for deg?",
+        "Hva vil du spørre en lærling om før du velger dette faget?"
+      ],
+      "visible": true
+    },
+    {
+      "id": "yrke-kran-ndla-lofteutstyr",
+      "title": "Løfteutstyr",
+      "provider": "Nasjonal digital læringsarena / YouTube",
+      "type": "Film",
+      "url": "https://www.youtube.com/watch?v=cQEqxFc6dQE",
+      "description": "NDLA-film om løfteutstyr. Bruk filmen til å utforske den praktiske siden av kran- og løfteoperasjonsfaget.",
+      "topics": [
+        "yrke-kran-og-lofteoperasjoner"
+      ],
+      "watchFor": "Legg merke til utstyret som vises, og noter fagbegreper du ønsker å lære mer om.",
+      "questions": [
+        "Hvilket utstyr vil du lære mer om, og hva brukes det til?"
+      ],
+      "visible": true
     }
   ]
 }
