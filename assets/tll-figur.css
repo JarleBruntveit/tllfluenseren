@@ -1,0 +1,7 @@
+/* TLL-figur: asset vises først når den er tilgjengelig. */
+.tll-figur{display:flex;align-items:center;gap:16px;padding:16px;border:1px solid #526a76;border-radius:16px;background:#10202b;margin:18px 0;max-width:720px}
+.tll-figur__media{width:104px;min-width:104px;aspect-ratio:1;overflow:hidden;border-radius:14px;background:#1a303b;display:grid;place-items:center}
+.tll-figur__media img{width:100%;height:100%;object-fit:cover}
+.tll-figur__fallback{font-size:25px;font-weight:800;color:#75d9e5}
+.tll-figur__text{line-height:1.55}.tll-figur__text strong{display:block;font-size:1.08rem}
+@media(max-width:480px){.tll-figur{gap:12px;padding:12px}.tll-figur__media{width:76px;min-width:76px}}
