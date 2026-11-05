@@ -20,6 +20,10 @@
     {
       "id": "ub",
       "title": "Ungdomsbedrift"
+    },
+    {
+      "id": "yrkesretninger",
+      "title": "Yrkesretninger"
     }
   ],
   "topics": [
@@ -136,6 +140,24 @@
       "title": "Ungdomsbedrift – generelt",
       "area": "ub",
       "url": "/ungdomsbedrift/"
+    },
+    {
+      "id": "yrke-yrkessjafor",
+      "title": "Yrkessjåførfaget",
+      "area": "yrkesretninger",
+      "url": "/yrkesretninger/yrkessjafor/"
+    },
+    {
+      "id": "yrke-kran-og-lofteoperasjoner",
+      "title": "Kran- og løfteoperasjonsfaget",
+      "area": "yrkesretninger",
+      "url": "/yrkesretninger/kran-og-lofteoperasjoner/"
+    },
+    {
+      "id": "yrke-logistikk",
+      "title": "Logistikkfaget",
+      "area": "yrkesretninger",
+      "url": "/yrkesretninger/logistikk/"
     }
   ],
   "resources": [
@@ -157,6 +179,150 @@
         "En pakke blir sortert feil. Hvilke følger kan det få for mottakeren og for arbeidet videre i transportkjeden?"
       ],
       "visible": true
+    },
+    {
+      "id": "yrke-yrkessjafor-0",
+      "title": "Hvorfor bli yrkessjåfør?",
+      "provider": "SOTIN – Transport- og logistikkutdanning i Norge",
+      "type": "Film",
+      "url": "https://www.youtube.com/watch?v=QmddWEPRMTk&t=4s",
+      "description": "Bli kjent med faget gjennom en film. Bruk den som utgangspunkt for samtale om yrkesvalg.",
+      "visible": true,
+      "topics": [
+        "yrke-yrkessjafor"
+      ],
+      "watchFor": "Legg merke til arbeidsoppgaver, samarbeid og ansvar.",
+      "questions": [
+        "Hva vil du vite mer om før du velger fag?"
+      ]
+    },
+    {
+      "id": "yrke-yrkessjafor-1",
+      "title": "Om yrket: Yrkessjåfør",
+      "provider": "Utdanning.no",
+      "type": "Nettside",
+      "url": "https://utdanning.no/yrker/beskrivelse/sjafor",
+      "description": "Les om arbeidsoppgaver, arbeidssteder og utdanning. Her finner du også informasjon om bedrifter i yrket.",
+      "visible": true,
+      "topics": [
+        "yrke-yrkessjafor"
+      ],
+      "watchFor": "",
+      "questions": [
+        "Hva vil du vite mer om før du velger fag?"
+      ]
+    },
+    {
+      "id": "yrke-yrkessjafor-2",
+      "title": "Yrkessjåfør på vilbli.no",
+      "provider": "vilbli.no",
+      "type": "Nettside",
+      "url": "https://www.vilbli.no/nb/no/yrke/v.ss3006/yrkessjafor?utdanningsprogram=v.tp#yrker",
+      "description": "Utforsk yrket og utdanningsmulighetene hos vilbli.no.",
+      "visible": true,
+      "topics": [
+        "yrke-yrkessjafor"
+      ],
+      "watchFor": "",
+      "questions": [
+        "Hva vil du vite mer om før du velger fag?"
+      ]
+    },
+    {
+      "id": "yrke-yrkessjafor-3",
+      "title": "Livet på veien",
+      "provider": "Livet på veien / Volvo Trucks Norge",
+      "type": "Nettside",
+      "url": "https://livetpaveien.no/",
+      "description": "Filmer, podkaster og historier fra transportbransjen. Bransjeinnhold laget for Volvo Trucks Norge.",
+      "visible": true,
+      "topics": [
+        "yrke-yrkessjafor"
+      ],
+      "watchFor": "",
+      "questions": [
+        "Hva vil du vite mer om før du velger fag?"
+      ]
+    },
+    {
+      "id": "yrke-kran-og-lofteoperasjoner-0",
+      "title": "Bli Kranfører – Norge trenger flere kranførere!",
+      "provider": "ANKCranes",
+      "type": "Film",
+      "url": "https://www.youtube.com/watch?v=REJgz0-sJRI&t=1s",
+      "description": "Bli kjent med faget gjennom en film. Bruk den som utgangspunkt for samtale om yrkesvalg.",
+      "visible": true,
+      "topics": [
+        "yrke-kran-og-lofteoperasjoner"
+      ],
+      "watchFor": "Legg merke til arbeidsoppgaver, samarbeid og ansvar.",
+      "questions": [
+        "Hva vil du vite mer om før du velger fag?"
+      ]
+    },
+    {
+      "id": "yrke-kran-og-lofteoperasjoner-1",
+      "title": "Om yrket: Fagoperatør i kran- og løfteoperasjoner",
+      "provider": "Utdanning.no",
+      "type": "Nettside",
+      "url": "https://utdanning.no/yrker/beskrivelse/kranforer",
+      "description": "Les om arbeidsoppgaver, arbeidssteder og utdanning. Her finner du også informasjon om bedrifter i yrket.",
+      "visible": true,
+      "topics": [
+        "yrke-kran-og-lofteoperasjoner"
+      ],
+      "watchFor": "",
+      "questions": [
+        "Hva vil du vite mer om før du velger fag?"
+      ]
+    },
+    {
+      "id": "yrke-logistikk-0",
+      "title": "Logistikkoperatør",
+      "provider": "Steinar Wighus",
+      "type": "Film",
+      "url": "https://www.youtube.com/watch?v=KaoNX5qJNWI&t=1s",
+      "description": "Bli kjent med faget gjennom en film. Bruk den som utgangspunkt for samtale om yrkesvalg.",
+      "visible": true,
+      "topics": [
+        "yrke-logistikk"
+      ],
+      "watchFor": "Legg merke til arbeidsoppgaver, samarbeid og ansvar.",
+      "questions": [
+        "Hva vil du vite mer om før du velger fag?"
+      ]
+    },
+    {
+      "id": "yrke-logistikk-1",
+      "title": "Om yrket: Logistikkoperatør",
+      "provider": "Utdanning.no",
+      "type": "Nettside",
+      "url": "https://utdanning.no/yrker/beskrivelse/logistikkoperator",
+      "description": "Les om arbeidsoppgaver, arbeidssteder og utdanning. Her finner du også informasjon om bedrifter i yrket.",
+      "visible": true,
+      "topics": [
+        "yrke-logistikk"
+      ],
+      "watchFor": "",
+      "questions": [
+        "Hva vil du vite mer om før du velger fag?"
+      ]
+    },
+    {
+      "id": "yrke-logistikk-2",
+      "title": "Logistikkoperatør på vilbli.no",
+      "provider": "vilbli.no",
+      "type": "Nettside",
+      "url": "https://www.vilbli.no/nb/no/yrke/v.ss3005/logistikkoperator?utdanningsprogram=v.tp#yrker",
+      "description": "Utforsk yrket og utdanningsmulighetene hos vilbli.no.",
+      "visible": true,
+      "topics": [
+        "yrke-logistikk"
+      ],
+      "watchFor": "",
+      "questions": [
+        "Hva vil du vite mer om før du velger fag?"
+      ]
     }
   ]
 }
