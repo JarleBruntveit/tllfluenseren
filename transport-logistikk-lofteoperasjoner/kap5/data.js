@@ -143,18 +143,19 @@ TLL.registrer({
     id: 't1', lok: 'A-01', tittel: 'Regelverket for sikring av last',
     kort: 'Hvorfor lasten må sikres, forskrift om bruk av kjøretøy §§ 3-2 og 3-3, kravene 0,8 og 0,5, kjøretøygrupper, standarder og veiledere.',
     bok: 'Læreboka 5.1–5.3 (s. 118–123)',
-    mal: ['forklare hvorfor både sjåfører og logistikkoperatører må kunne sikre last','gjengi hvor mye lastsikringen minst skal tåle framover, bakover og sidevegs','finne ut hvilket krav som gjelder for ulike kjøretøygrupper','nevne de godkjente sikringsmetodene og hvor reglene og veilederne finnes'],
+    mal: ['forklare hvorfor både sjåfører og logistikkoperatører må kunne sikre last','gjengi hvor mye lastsikringen minst skal tåle framover, bakover og sidevegs','finne ut hvilket krav som gjelder for ulike kjøretøygrupper','nevne de godkjente sikringsmetodene og hvor reglene og veilederne finnes','forklare når transportforetaket må gi sjåføren skriftlig sikringsdokumentasjon'],
     punkter: [
       'Last som forskyver seg, velter eller faller av, kan skade sjåføren, andre trafikanter, godset og kjøretøyet. Derfor er sikring av last både et <b>trafikksikkerhetstiltak</b> og et krav i loven.',
       'Sikring av last er pensum i føreropplæringen for tunge kjøretøy og i yrkessjåførutdanningen. <b>Logistikkoperatører</b> laster også biler og konteinere – og må derfor kunne reglene.',
       'EU vedtok i 2014 et direktiv om <b>utekontroll</b> (kontroll av kjøretøy langs veg). Det ga et felles minimumsnivå for lastsikring. Norge innførte nivået fra <b>1. januar 2018</b> i <b>forskrift om bruk av kjøretøy, §§ 3-2 og 3-3</b>.',
-      '§ 3-2 handler om plassering: sjåføren skal ha godt utsyn, lys og skilt skal ikke dekkes til, vekta skal fordeles jevnt – og minst <b>20 %</b> av totalvekta skal ligge på hjulene som styrer. Godset skal ikke kunne falle av, slepe i vegen, støve eller sjenere andre.',
+      '§ 3-2 handler om plassering: sjåføren skal ha godt utsyn, lys og skilt skal ikke dekkes til, vekta skal fordeles jevnt – og minst <b>20 %</b> av totalvekta skal ligge på hjulene som styrer. Godset skal ikke kunne falle eller renne av, slepe i vegen, støve eller sjenere andre.',
+      '<b>Nytt fra 1. juni 2026 – § 3-2a:</b> Transportforetaket skal sørge for at sjåføren kan sikre lasten etter reglene (kjøretøy over 3 500 kg). Ved gods med <b>høy transportrisiko</b> skal sjåføren ha med <b>skriftlig dokumentasjon</b> på hvordan lasten skal sikres og med hvilket utstyr – for eksempel ved høyde/bredde over 3, betongelementer, stålcoiler, kabeltromler, stående papirruller og krokløftcontainere. Dokumentasjonen skal være klar før lasting og kunne vises fram ved kontroll.',
       '§ 3-3 setter kravene. For tunge kjøretøy (M2, M3, N2, N3, O3, O4 og raske traktorer) skal sikringen tåle <b>0,8 × godsets vekt framover</b> og <b>0,5 × vekta bakover og sidevegs</b>. For lettere kjøretøy, som varebil (N1) og små tilhengere (O1, O2), er kravet <b>1,0 × vekta framover</b>. Sikringen skal også hindre at lasten <b>heller eller velter</b>.',
       'Godkjente metoder er <b>låsing, blokkering, direktesurring og overfallssurring</b> – eller en kombinasjon. Veilederne beskriver også <b>loopsurring</b> og <b>grimesurring</b>. Det gamle ordet «stenging» heter nå <b>blokkering</b>.',
       'Utstyret skal oppfylle europeiske standarder, for eksempel <b>EN 12195</b> (beregning, stropper, kjetting, ståltau), <b>EN 12640</b> (surringspunkter) og <b>EN 12642</b> (styrken i påbygget). Gode hjelpemidler er IRU-veilederen med «Quick Lashing Guide», den svenske TYA-veilederen og lastsikringsapper.',
       'Ved <b>kombinert transport</b> (for eksempel bil + ferje eller bil + tog) skal lasten sikres etter reglene for alle transportformene på turen.'
     ],
-    ndla: [N.bil, N.togbat, N.brosjyre, N.lasting],
+    ndla: [['Lovdata: forskrift om bruk av kjøretøy, kapittel 3', 'https://lovdata.no/dokument/SF/forskrift/1990-01-25-92/KAPITTEL_4', 'Lovtekst'], N.togbat, N.brosjyre, N.lasting, N.bil],
     arbeidsbok: '5.1, 5.2, 5.3, 5.8, 5.9',
     aktiviteter: [
       { type:'voks', id:'t1-voks', tittel:'Reglene er skrevet av erfaring', tekst:['Mange regler i transport finnes fordi noe har gått galt. Kravet om at lasten skal tåle 0,8 ganger vekta framover er ikke et tilfeldig tall – det er målt i forsøk med bråbremsing.','Det er lett å tenke at regler er noe kontrolløren bryr seg om. Men den som får en løs pall gjennom frontveggen, er sjåføren. Den som møter et lass som glir av i en sving, er en annen trafikant.','En god fagarbeider følger reglene også når ingen kontrollerer – fordi hun vet hvorfor de finnes.'], sporsmal:['Hvilke regler på skolen eller i praksis forstår du bedre når du vet hvorfor de finnes?','Hvem har du ansvar for når du laster en bil som andre skal kjøre?'], handling:'Spør en sjåfør eller instruktør i praksis om en gang lasten nesten gikk galt – og hva de lærte av det.' },
@@ -172,7 +173,9 @@ TLL.registrer({
         ['O4','Tilhenger eller semitrailer med tillatt totalvekt over 10 000 kg.'],
         ['EN 12195-1','Standarden som beskriver hvordan surringskrefter skal beregnes.'],
         ['Quick Lashing Guide','Kortversjon av IRU-veilederen med tabeller for hvor mye ulike sikringer holder.'],
-        ['Kombinert transport','Transport med flere transportformer, for eksempel bil og ferje. Lasten må sikres for alle.']
+        ['Kombinert transport','Transport med flere transportformer, for eksempel bil og ferje. Lasten må sikres for alle.'],
+        ['§ 3-2a (fra 2026)','Transportforetaket skal veilede sjåføren og gi skriftlig sikringsdokumentasjon ved gods med høy transportrisiko.'],
+        ['Høy transportrisiko','F.eks. gods med høyde/bredde over 3, betongelementer, stål, kabeltromler, stående papirruller og krokløftcontainere.']
       ]},
       { type:'quiz', id:'t1-q1', nivaa:1, tittel:'Hvorfor og hvor mye?', sp:[
         { q:'Hvor mye skal lastsikringen på en tung lastebil minst tåle framover?', a:['0,5 ganger godsets vekt','0,8 ganger godsets vekt','2 ganger godsets vekt','Det finnes ikke noe krav'], r:1, f:'Framover 0,8 – bakover og sidevegs 0,5.' },
@@ -190,7 +193,9 @@ TLL.registrer({
         ['På en varebil (N1) er kravet framover 0,8 ganger vekta.', false, 'Lettere kjøretøy som ikke er nevnt i § 3-3 nr. 2, har kravet 1,0 ganger vekta framover.'],
         ['Sikringen skal også hindre at lasten heller eller velter.', true, 'Det holder ikke bare å hindre at lasten glir.'],
         ['Tar du ferje, holder det å sikre lasten for vegtransport.', false, 'Ved kombinert transport må lasten sikres for alle transportformene.'],
-        ['Surringer på åpent lasteplan bør ligge innenfor sidelemmene når det er mulig.', true, 'Ellers må løse ender festes så de ikke kan skade andre trafikanter.']
+        ['Surringer på åpent lasteplan bør ligge innenfor sidelemmene når det er mulig.', true, 'Ellers må løse ender festes så de ikke kan skade andre trafikanter.'],
+        ['Fra 1. juni 2026 skal sjåføren ha med skriftlig sikringsdokumentasjon når han frakter betongelementer.', true, '§ 3-2a: Betongelementer regnes som gods med høy transportrisiko.'],
+        ['Gods kan stikke 40 cm ut på siden av bilen uten tillatelse hvis det er merket.', false, '§ 3-4: Mer enn 15 cm ut på sidene krever tillatelse fra Statens vegvesen (med unntak for båt).']
       ]},
       { type:'sort', id:'t1-s1', nivaa:2, tittel:'Hvilket krav gjelder?', instr:'Hvor mye skal sikringen minst tåle i retningen som er oppgitt?', kat:['0,5 × vekta','0,8 × vekta','1,0 × vekta'], items:[
         ['Lastebil N3 – framover',1,'Tunge kjøretøy: 0,8 framover.'],
@@ -228,6 +233,8 @@ TLL.registrer({
         { q:'Hvorfor er kravet framover høyere enn bakover?', a:['Fordi lasten er tyngre framme','Fordi bråbremsing gir større krefter enn akselerasjon','Fordi frontveggen er svakere','Det er tilfeldig'], r:1, f:'Forsøk viser at bremsekreftene er størst. Når bilen bremser, skyves lasten framover.' },
         { q:'Hvorfor har svenske veiledere et strengere krav sidevegs for rullende last?', a:['Fordi Sverige har flere svinger','Fordi Sverige frakter mye papir på tunge ruller','Fordi svenske lastebiler er smalere','Fordi EU krever det'], r:1, f:'For rullende last sidevegs bruker den svenske veilederen 0,6 i stedet for 0,5.' },
         { q:'En kollega vil bruke en egen beregningsmetode i stedet for EN 12195-1. Hva sier forskriften?', a:['Det er aldri lov','Det kan godtas hvis det kan dokumenteres at sikringen tåler kravene','Det er alltid lov','Bare politiet kan bestemme det'], r:1, f:'Andre metoder kan godtas når det er dokumentert at sikringen minst tåler kreftene i kravet.' },
+        { q:'Du skal kjøre en stående papirrull for et transportfirma. Hva krever § 3-2a (fra 1. juni 2026)?', a:['Ingenting spesielt','At firmaet gir deg skriftlig dokumentasjon på hvordan lasten skal sikres, og at du har den med','At du kjører under 50 km/t','At kunden sikrer lasten'], r:1, f:'Stående papirruller regnes som gods med høy transportrisiko. Dokumentasjonen skal kunne vises ved kontroll.' },
+        { q:'Et kolli er 2,4 m høyt og 0,7 m bredt. Hvorfor er det ekstra viktig å ha sikringsdokumentasjon?', a:['Fordi høyde/bredde er over 3 – høy transportrisiko etter § 3-2a','Fordi det er tungt','Fordi det er bredt','Det trengs ikke'], r:0, f:'2,4 ÷ 0,7 ≈ 3,4. Over 3 gir dokumentasjonsplikt.' },
         { q:'Du kjører en container fra Stavanger til Danmark med ferje. Hvilke regler gjelder?', a:['Bare vegreglene','Bare sjøreglene','Reglene for både veg og sjø','Ingen – containeren er lukket'], r:2, f:'Ved kombinert transport sikrer du for alle transportformene.' }
       ]},
       { type:'reflect', id:'t1-r1', nivaa:3, tittel:'Forklar: Hvorfor sikre last?', q:'En ny sommervikar på lageret sier: «Det er jo sjåføren som har ansvaret for lasten. Jeg setter bare pallene inn.» Forklar hvorfor også logistikkoperatøren må kunne lastsikring. Bruk regelverket i svaret.', punkter:[
@@ -244,6 +251,7 @@ TLL.registrer({
   /* ================================================================ T2 */
   {
     id: 't2', lok: 'A-02', tittel: 'Krefter, friksjon og tyngdepunkt',
+    podkast: { tittel: 'Fysikken bak lastsikring på norske veier' },
     kort: 'Treghetskrefter ved bremsing, akselerasjon og sving, tyngdekraft i newton, Newtons lover, friksjonskoeffisient og hvor mye friksjonen holder igjen.',
     bok: 'Læreboka 5.4 (s. 124–130)',
     mal: ['forklare hvilke krefter lasten blir utsatt for når bilen bremser, akselererer og svinger','regne om fra kilogram til newton','forklare hva friksjonskoeffisienten forteller','regne ut hvor mye av kraften friksjonen holder igjen, og hvor mye som må sikres i tillegg'],
@@ -721,6 +729,7 @@ TLL.registrer({
       'Regn ut antall surringer for hver retning – framover, bakover og sidevegs, både gli og tippe. <b>Det høyeste antallet gjelder.</b>',
       'Blokkering er det beste alternativet når det er mulig. Heftet har også en tabell for <b>blokkeringskapasitet (BC)</b> – hvor mye frontvegg, bakkarm eller støtter kan holde igjen.',
       'NB: På merkelappen står ofte <b>bruddstyrken</b> (f.eks. 4 000 kg). Den må ikke forveksles med <b>LC</b>, som er det du regner med.',
+      'Fra 1. juni 2026 krever <b>§ 3-2a</b> skriftlig sikringsdokumentasjon for gods med høy transportrisiko. Et heftet, en standard eller en sikringsplan som viser metode og utstyr, er eksempler på slik dokumentasjon.',
       '<b>Betongelementer</b> har en egen NLF-standard: bare <b>kjetting</b> (minst 8 mm kortlenket Grade 80), kantbeskyttelse av metall, dokumenterte surrefester – og <b>kassetthenger</b> som førstevalg for veggelementer.'
     ],
     ekstra: `<h3 style="font-size:22px;margin-top:0">Dokumenter</h3>
@@ -728,7 +737,7 @@ TLL.registrer({
         <li><span class="tag">PDF</span><span><a href="dokumenter/Sikring_av_last_hjelpedokument.pdf" target="_blank" rel="noopener">Sikring av last – hjelpedokument (sikringsplan)</a><br><span class="small muted">Skriv ut og fyll inn for kolliet du skal sikre. Laget av Jarle Bruntveit.</span></span></li>
         <li><span class="tag ndla">NDLA</span><span><a href="${NDLA_R + N.brosjyre[1]}" target="_blank" rel="noopener">Lastsikring ved vegtransport – lastsikringsheftet (NLF)</a><br><span class="small muted">Åpne PDF-en fra NDLA-siden. Klassen har også papireksemplarer – spør læreren.</span></span></li>
         <li><span class="tag">Bok</span><span>Lastsikring av betongelementer under transport (NLF-standard)<br><span class="small muted">Standarden selges av Norges Lastebileier-Forbund og legges ikke ut her. Bruk skolens eksemplar.</span></span></li>
-        <li><span class="tag">Lov</span><span>Forskrift om bruk av kjøretøy (Lovdata): <a href="https://lovdata.no/forskrift/1990-01-25-92/%C2%A73-2" target="_blank" rel="noopener">§ 3-2 Plassering og sikring av gods</a> · <a href="https://lovdata.no/forskrift/1990-01-25-92/%C2%A73-3" target="_blank" rel="noopener">§ 3-3 Nærmere om sikring av gods</a> · <a href="https://lovdata.no/forskrift/1990-01-25-92/%C2%A73-4" target="_blank" rel="noopener">§ 3-4</a></span></li>
+        <li><span class="tag">Lov</span><span>Forskrift om bruk av kjøretøy (Lovdata): <a href="https://lovdata.no/forskrift/1990-01-25-92/%C2%A73-2" target="_blank" rel="noopener">§ 3-2 Plassering og sikring av gods</a> · <a href="https://lovdata.no/forskrift/1990-01-25-92/%C2%A73-2a" target="_blank" rel="noopener">§ 3-2a Dokumentasjonsplikt (fra 2026)</a> · <a href="https://lovdata.no/forskrift/1990-01-25-92/%C2%A73-3" target="_blank" rel="noopener">§ 3-3 Nærmere om sikring av gods</a> · <a href="https://lovdata.no/forskrift/1990-01-25-92/%C2%A73-4" target="_blank" rel="noopener">§ 3-4 Utstikkende gods</a></span></li>
         <li><span class="tag">App</span><span>Lastsikringsapper, for eksempel TYA Lastsikring og ReadyLash (MariTerm), regner ut sikringen for deg.</span></li>
       </ul>`,
     ndla: [N.brosjyre, N.bil, N.begreper],

@@ -5,7 +5,7 @@ Legg lydfilene her. Spilleren på kapittelsiden finner dem automatisk.
 | Fil | Tema |
 | --- | --- |
 | `episode-1.mp3` | Regelverket for sikring av last |
-| `episode-2.mp3` | Krefter, friksjon og tyngdepunkt |
+| `episode-2.m4a` | Krefter, friksjon og tyngdepunkt – «Fysikken bak lastsikring på norske veier» (lagt inn) |
 | `episode-3.mp3` | Låsing og blokkering |
 | `episode-4.mp3` | Surring og surringsutstyr |
 | `episode-5.mp3` | Ulike lasttyper og kombinert transport |
