@@ -344,8 +344,42 @@ const GEN = {
       ans:ret*pr, unit:'kr', steps:[`Godskriving = antall returnerte paller × pris per pall`,`${ret} × ${pr} = <b>${(ret*pr).toLocaleString('nb-NO')}</b> kr`,`Du betaler da bare for de ${diff} pallene du beholder.`] }; },
   dager(){ const lager=rnd(4,30)*2, f=rnd(2,6), l=rnd(2,8); const d=Math.floor(lager/f), ok = d > l;
     return { task:`Lagersaldoen for en vare er <b>${lager}</b> kartonger, og lageret selger <b>${f}</b> kartonger per dag. Hvor mange <b>hele dager</b> varer lageret før det er tomt? (Ledetida for ny bestilling er ${l} dager.)`,
-      ans:d, unit:'dager', steps:[`Dager = saldo ÷ salg per dag`,`${lager} ÷ ${f} = ${(lager/f).toLocaleString('nb-NO',{maximumFractionDigits:1})} → <b>${d}</b> hele dager`, ok ? `Det er mer enn ledetida på ${l} dager, så det er tid til å bestille.` : `Det er ikke mer enn ledetida på ${l} dager – bestill nå!`] }; }
+      ans:d, unit:'dager', steps:[`Dager = saldo ÷ salg per dag`,`${lager} ÷ ${f} = ${(lager/f).toLocaleString('nb-NO',{maximumFractionDigits:1})} → <b>${d}</b> hele dager`, ok ? `Det er mer enn ledetida på ${l} dager, så det er tid til å bestille.` : `Det er ikke mer enn ledetida på ${l} dager – bestill nå!`] }; },
+
+  /* ---- Kap 5 Sikring av last. Alle svar er hele tall (faktorer regnes i tideler for å unngå avrundingsfeil). ---- */
+  tyngde(){ const kg = rnd(1,60)*25, g = GODS[rnd(0,GODS.length-1)];
+    return { task:`Et kolli med ${g} veier <b>${fmt(kg)} kg</b>. Med hvor stor kraft trekker tyngdekraften kolliet ned mot lasteplanet? Regn med at 1 kg gir 10 N.`,
+      ans:kg*10, unit:'N', steps:[`Kraft (N) = masse (kg) × 10`,`${fmt(kg)} × 10 = <b>${fmt(kg*10)}</b> N`] }; },
+  sikrkrav(){ const v = KJORETOY[rnd(0,KJORETOY.length-1)], kg = rnd(v.min,v.max)*100, dir = ['framover','bakover','sidevegs'][rnd(0,2)];
+    const f = dir === 'framover' ? v.f : 5, ans = kg*f/10;
+    return { task:`Du skal frakte <b>${fmt(kg)} kg</b> gods på en ${v.n}. Hvor mange kg må lastsikringen minst kunne holde igjen <b>${dir}</b>?`,
+      ans, unit:'kg', steps:[dir === 'framover' ? `Framover: ${v.f === 8 ? 'tunge kjøretøy (M2, M3, N2, N3, O3, O4) – 0,8 × vekta' : 'lettere kjøretøy – 1,0 × vekta'}` : `${dir[0].toUpperCase() + dir.slice(1)}: 0,5 × vekta for alle kjøretøy`,`${fmt(kg)} × ${tidel(f)} = <b>${fmt(ans)}</b> kg`] }; },
+  friksjon(){ const kg = rnd(2,30)*100, m = [2,3,4,5,6][rnd(0,4)], N = kg*10;
+    return { task:`Et kolli på <b>${fmt(kg)} kg</b> står på lasteplanet. Friksjonskoeffisienten mellom kolliet og underlaget er <b>µ = ${tidel(m)}</b>. Hvor stor kraft (N) holder friksjonen igjen?`,
+      ans:kg*m, unit:'N', steps:[`Tyngde = ${fmt(kg)} kg × 10 = ${fmt(N)} N`,`Friksjonskraft = tyngde × µ`,`${fmt(N)} × ${tidel(m)} = <b>${fmt(kg*m)}</b> N`] }; },
+  restkraft(){ const kg = rnd(3,30)*100, fram = rnd(0,1) === 1, krav = fram ? 8 : 5, m = fram ? [2,3,4,5,6][rnd(0,4)] : [1,2,3,4][rnd(0,3)], N = kg*10;
+    return { task:`Et kolli på <b>${fmt(kg)} kg</b> står på en lastebil (N3). Friksjonen mellom kolliet og planet er <b>µ = ${tidel(m)}</b>. Hvor mange newton må du sikre med blokkering eller surring for å hindre at kolliet glir <b>${fram ? 'framover' : 'sidevegs'}</b>?`,
+      ans:kg*(krav-m), unit:'N', steps:[`Tyngde = ${fmt(kg)} × 10 = ${fmt(N)} N`,`Krav ${fram ? 'framover' : 'sidevegs'} = ${fmt(N)} × ${tidel(krav)} = ${fmt(kg*krav)} N`,`Friksjonen holder = ${fmt(N)} × ${tidel(m)} = ${fmt(kg*m)} N`,`Må sikres = ${fmt(kg*krav)} − ${fmt(kg*m)} = <b>${fmt(kg*(krav-m))}</b> N`] }; },
+  stropper(){ let kg, cap, fram, need, ans;
+    do { kg = rnd(8,40)*100; fram = rnd(0,1) === 1; cap = (fram ? [450,600,680,810,1100] : [720,1100,1700,2900])[rnd(0, fram ? 4 : 3)]; need = kg*(fram ? 8 : 5)/10; ans = Math.ceil(need/cap); } while (ans < 2 || ans > 8);
+    return { task:`Et kolli på <b>${fmt(kg)} kg</b> skal sikres med overfallssurringer på en lastebil (N3). Tabellen i veilederen viser at én overfallssurring holder igjen <b>${fmt(cap)} kg ${fram ? 'framover' : 'sidevegs'}</b> ved denne friksjonen. Hvor mange overfallssurringer trenger du for å sikre ${fram ? 'framover' : 'sidevegs'}?`,
+      ans, unit:'surringer', steps:[`Krav = ${fmt(kg)} × ${fram ? '0,8' : '0,5'} = ${fmt(need)} kg`,`Antall = krav ÷ det én surring holder = ${fmt(need)} ÷ ${fmt(cap)} = ${(need/cap).toLocaleString('nb-NO',{maximumFractionDigits:2})}`,`Rund alltid <b>opp</b>: <b>${ans}</b> surringer`] }; },
+  fart(){ const v1 = [10,15,20,25,30][rnd(0,4)], k = rnd(2,3), v2 = v1*k;
+    return { task:`Du kjører gjennom en krapp sving i <b>${v1} km/t</b>. Neste gang kjører du gjennom den samme svingen i <b>${v2} km/t</b>. Hvor mange ganger større blir kraften som skyver lasten utover?`,
+      ans:k*k, unit:'ganger', steps:[`Kraften utover i en sving øker med farten i andre (farten ganget med seg selv).`,`Farten øker ${v2} ÷ ${v1} = ${k} ganger`,`${k} × ${k} = <b>${k*k}</b> ganger så stor kraft`] }; },
+  kloss(){ const t = KLOSS[rnd(0,KLOSS.length-1)], r = rnd(t.min,t.max)*15, ans = r/t.d;
+    return { task:`Du skal sikre ${t.n}. Radien er <b>${r} cm</b>. Hvor høye må klossene minst være?`,
+      ans, unit:'cm', steps:[`Regel: ${t.regel}`,`${r} ÷ ${t.d} = <b>${ans}</b> cm`,'I tillegg må lasten surres.'] }; }
 };
+const GODS = ['maskindeler','maling','fliser','sement','papir','motorolje','kopipapir','dekk'];
+const KJORETOY = [{n:'lastebil (N3)',f:8,min:20,max:180},{n:'lastebil (N2)',f:8,min:10,max:60},{n:'semitrailer (O4)',f:8,min:40,max:250},{n:'varebil (N1)',f:10,min:2,max:12},{n:'tilhenger på 3 000 kg tillatt totalvekt (O2) bak en personbil',f:10,min:2,max:20}];
+const KLOSS = [
+  {n:'én papirrull som kan rulle i kjøreretningen', d:3, min:2, max:5, regel:'Med én eller to ruller skal klossene være minst 1/3 av radien.'},
+  {n:'en kabeltrommel som kan rulle i kjøreretningen', d:5, min:2, max:8, regel:'Klosser foran og bak på minst 1/5 av trommelens radius.'},
+  {n:'hjulene på en traktor som står på lasteplanet', d:3, min:2, max:5, regel:'Klosser foran og bak på alle hjul, minst 1/3 av hjulradien.'}
+];
+const fmt = n => n.toLocaleString('nb-NO');
+const tidel = n => n === 10 ? '1,0' : (n/10).toLocaleString('nb-NO');
 function runCalc(st, a, done){
   const n = a.antall || 5; let i = 0, score = 0, tryN = 0, cur;
   const draw = () => {

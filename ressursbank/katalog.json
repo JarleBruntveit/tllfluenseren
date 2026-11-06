@@ -70,6 +70,36 @@
       "url": "/transport-logistikk-lofteoperasjoner/kap1/#/t7"
     },
     {
+      "id": "kap5-t1",
+      "title": "Regelverket for sikring av last",
+      "area": "tll",
+      "url": "/transport-logistikk-lofteoperasjoner/kap5/#/t1"
+    },
+    {
+      "id": "kap5-t2",
+      "title": "Krefter, friksjon og tyngdepunkt",
+      "area": "tll",
+      "url": "/transport-logistikk-lofteoperasjoner/kap5/#/t2"
+    },
+    {
+      "id": "kap5-t3",
+      "title": "Låsing og blokkering",
+      "area": "tll",
+      "url": "/transport-logistikk-lofteoperasjoner/kap5/#/t3"
+    },
+    {
+      "id": "kap5-t4",
+      "title": "Surring og surringsutstyr",
+      "area": "tll",
+      "url": "/transport-logistikk-lofteoperasjoner/kap5/#/t4"
+    },
+    {
+      "id": "kap5-t5",
+      "title": "Ulike lasttyper og kombinert transport",
+      "area": "tll",
+      "url": "/transport-logistikk-lofteoperasjoner/kap5/#/t5"
+    },
+    {
       "id": "truck",
       "title": "Truckopplæring",
       "area": "bransjeteknikk",
@@ -387,6 +417,27 @@
       "watchFor": "Legg merke til utstyret som vises, og noter fagbegreper du ønsker å lære mer om.",
       "questions": [
         "Hvilket utstyr vil du lære mer om, og hva brukes det til?"
+      ],
+      "visible": true
+    },
+    {
+      "id": "ndla-film-sikring-av-last",
+      "title": "Sikring av last",
+      "provider": "Nasjonal Digital Læringsarena (NDLA)",
+      "type": "Film",
+      "url": "https://www.youtube.com/watch?v=078vDI0ICNI",
+      "description": "Opplæringsfilm fra NDLA om hva du må tenke på når last skal sikres på et lasteplan. Filmen viser ulike sikringsmetoder og utstyret som brukes, og passer til hele kapittel 5.",
+      "topics": [
+        "kap5-t2",
+        "kap5-t3",
+        "kap5-t4"
+      ],
+      "watchFor": "Legg merke til hvilke sikringsmetoder som brukes, hvordan friksjon og tyngdepunkt påvirker valget, og hvordan stroppene legges og strammes.",
+      "questions": [
+        "Hvilke sikringsmetoder ser du i filmen? Gi ett eksempel på hver.",
+        "Hvorfor er friksjonen mellom godset og planet så viktig?",
+        "Hvor ligger tyngdepunktet på kolliene i filmen, og hvordan påvirker det sikringen?",
+        "Hva ville du sjekket på stroppene før du brukte dem?"
       ],
       "visible": true
     }

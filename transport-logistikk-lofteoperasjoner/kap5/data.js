@@ -1,0 +1,675 @@
+/* =====================================================================
+   KAPITTELDATA – Kap 5 Sikring av last etter gjeldende forskrifter
+   Alle tekster, oppgaver og tegninger er egenprodusert for TLLfluenseren.
+   Faglig grunnlag: læreboka i Transport, logistikk og løfteoperasjoner (Vg2), kapittel 5,
+   forskrift om bruk av kjøretøy §§ 3-2 og 3-3 og NDLA-emnet «Sikring av last» (lenket til, ikke kopiert).
+   Ingenting er kopiert fra boka. Tabellverdier i oppgavene er oppgitt i selve oppgaven («tabellen viser …»),
+   slik at elevene øver på framgangsmåten – de faktiske tabellene finner de i læreboka eller i veilederen.
+   Oppgavetyper: flash, quiz, tf, fill, match, order, sort, calc, check, hotspot, case, reflect, voks
+   ===================================================================== */
+(function(){
+const NDLA_E = 'https://ndla.no/nb/e/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/sikring-av-last/63c9b82c0d';
+const NDLA_R = 'https://ndla.no/nb/r/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/';
+
+/* NDLA-ressursene i emnet «Sikring av last» (stier relativt til ressurssamlingen) */
+const N = {
+  viktig:   ['Hva er viktig å tenke på ved sikring av last?', 'hva-er-viktig-a-tenke-pa-ved-sikring-av-last/fa6979744c', 'Film'],
+  tre:      ['Hvordan tre en lastestropp', 'hvordan-tre-en-lastestropp/1554d978b7', 'Film'],
+  kolli:    ['Stroppe et kolli', 'stroppe-et-kolli/9a7ca857be', 'Film'],
+  forsp:    ['Forspenning av lastestropp', 'forspenning-av-lastestropp/60dc116d7d', 'Film'],
+  demo:     ['Friksjon og stenging av last – demonstrasjon', 'friksjon-og-stenging-av-last--demonstrasjon/d8f8f086cd', 'Film'],
+  togbat:   ['Regler for lastsikring på tog, båt og fly', 'regler-for-lastsikring-pa-tog-bat-og-fly/7d675e6901', 'Fagstoff'],
+  bil:      ['Regler for lastsikring på bil', 'regler-for-lastsikring-pa-bil/7f6e2cc45e', 'Fagstoff'],
+  surreband:['Surrebånd', 'surreband/d5899881fd', 'Fagstoff'],
+  kjetting: ['Kjetting', 'kjetting/50c46d320f', 'Fagstoff'],
+  lastbarer:['Lastbærer', 'lastbarer/8a40f1065e', 'Fagstoff'],
+  begreper: ['Begreper i lastsikring', 'begreper-i-lastsikring/373cb41de2', 'Fagstoff'],
+  test:     ['Lastsikring – hva har du lært?', 'lastsikring---hva-har-du-lart/54c69097f4', 'Vurderingsressurs'],
+  krefter:  ['Krefter', 'krefter/138056486f', 'Fagstoff'],
+  friksjon: ['Friksjon', 'friksjon/97a407eb6d', 'Fagstoff'],
+  lasting:  ['Lasting og sikring', 'lasting-og-sikring/5b6441f803', 'Fagstoff'],
+  brosjyre: ['Lastsikringsbrosjyre (miniguide etter NS-EN 12195)', 'lastsikringsbrosjyre/de48b28cc9', 'Fagstoff']
+};
+
+/* ---------- Egne tegninger (SVG). Klikkbare områder har data-z. ---------- */
+const S = 'font-family="Inter,system-ui,sans-serif"';
+
+/* Lasteplan sett ovenfra */
+const SVG_PLAN = `<svg viewBox="0 0 600 340" ${S} role="img" aria-label="Lasteplanet på en lastebil sett ovenfra, med paller">
+  <rect x="0" y="0" width="600" height="340" fill="#ffffff"/>
+  <text x="14" y="24" font-size="13" font-weight="700" fill="#1b2128">← KJØRERETNING</text>
+  <rect x="12" y="92" width="66" height="150" rx="10" fill="#c9ced3" stroke="#5c6670" stroke-width="2"/>
+  <text x="45" y="172" text-anchor="middle" font-size="11" font-weight="700" fill="#1b2128" transform="rotate(-90 45 172)">FØRERHUS</text>
+  <rect x="95" y="40" width="480" height="256" fill="#f4f1ea" stroke="#5c6670" stroke-width="2"/>
+  <rect data-z="side" x="109" y="40" width="452" height="13" fill="#9aa3ab"/>
+  <rect data-z="side" x="109" y="283" width="452" height="13" fill="#9aa3ab"/>
+  <rect data-z="front" x="95" y="40" width="15" height="256" fill="#1d6fb8"/>
+  <rect data-z="bak" x="560" y="40" width="15" height="256" fill="#e07b00"/>
+  <g pointer-events="none" fill="#d9b98a" stroke="#8b6a38" stroke-width="2">
+    <rect x="112" y="56" width="74" height="104"/><rect x="190" y="56" width="74" height="104"/><rect x="268" y="56" width="74" height="104"/><rect x="346" y="56" width="74" height="104"/>
+    <rect x="112" y="164" width="74" height="86"/><rect x="190" y="164" width="74" height="86"/><rect x="268" y="164" width="74" height="86"/><rect x="346" y="164" width="74" height="86"/>
+  </g>
+  <rect data-z="gap" x="112" y="252" width="308" height="30" fill="#fff4e5" stroke="#e07b00" stroke-dasharray="5 4" stroke-width="2"/>
+  <text x="266" y="272" text-anchor="middle" font-size="12" fill="#8a4b00" pointer-events="none">25 cm luft</text>
+  <rect data-z="bom" x="426" y="54" width="11" height="228" fill="#f2b84b" stroke="#8b6a38"/>
+  <g fill="#1b2128">
+    <circle data-z="feste" cx="150" cy="46" r="7"/><circle data-z="feste" cx="270" cy="46" r="7"/><circle data-z="feste" cx="390" cy="46" r="7"/><circle data-z="feste" cx="510" cy="46" r="7"/>
+    <circle data-z="feste" cx="150" cy="290" r="7"/><circle data-z="feste" cx="270" cy="290" r="7"/><circle data-z="feste" cx="390" cy="290" r="7"/><circle data-z="feste" cx="510" cy="290" r="7"/>
+  </g>
+  <text x="335" y="326" text-anchor="middle" font-size="12" fill="#5c6670">Åtte paller på et lasteplan (sett ovenfra). Tegningen er ikke i målestokk.</text>
+</svg>`;
+
+/* Fire surringsteknikker, merket A–D */
+const kolliEnde = `<rect x="95" y="62" width="100" height="78" fill="#d9b98a" stroke="#8b6a38" stroke-width="2"/>`;
+const planLinje = `<line x1="15" y1="140" x2="275" y2="140" stroke="#1b2128" stroke-width="4"/>`;
+const stropp = 'fill="none" stroke="#e07b00" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"';
+const feste = (x) => `<circle cx="${x}" cy="140" r="6" fill="#1b2128"/>`;
+const panel = (tx, ty, z, bokstav, tekst, innhold) => `<g transform="translate(${tx} ${ty})">
+    <rect data-z="${z}" x="4" y="4" width="282" height="160" rx="10" fill="#ffffff" stroke="#9aa3ab" stroke-width="2"/>
+    <g pointer-events="none"><text x="18" y="28" font-size="18" font-weight="800" fill="#1b2128">${bokstav}</text><text x="272" y="26" text-anchor="end" font-size="11" fill="#5c6670">${tekst}</text>${innhold}</g></g>`;
+const SVG_TEKNIKK = `<svg viewBox="0 0 590 340" ${S} role="img" aria-label="Fire tegninger av ulike surringsteknikker, merket A, B, C og D">
+  ${panel(0, 0, 'overfall', 'A', 'sett bakfra', planLinje + kolliEnde + `<path ${stropp} d="M58 140 L95 62 L195 62 L232 140"/>` + feste(58) + feste(232))}
+  ${panel(300, 0, 'loop', 'B', 'sett bakfra', planLinje + kolliEnde + `<path ${stropp} d="M52 140 L95 60 L197 60 L199 136 L95 137 L68 140"/>` + feste(52) + feste(68))}
+  ${panel(0, 172, 'grime', 'C', 'sett fra siden · kjøreretning ←', planLinje + `<rect x="110" y="52" width="110" height="88" fill="#d9b98a" stroke="#8b6a38" stroke-width="2"/><path ${stropp} d="M111 78 L111 53 L202 140"/>` + feste(202))}
+  ${panel(300, 172, 'direkte', 'D', 'sett fra siden', planLinje + `<rect x="100" y="62" width="90" height="78" fill="#d9b98a" stroke="#8b6a38" stroke-width="2"/><circle cx="106" cy="100" r="5" fill="#fff" stroke="#1b2128" stroke-width="2"/><circle cx="184" cy="100" r="5" fill="#fff" stroke="#1b2128" stroke-width="2"/><path ${stropp} d="M106 100 L52 140"/><path ${stropp} d="M184 100 L238 140"/>` + feste(52) + feste(238))}
+</svg>`;
+
+/* Surringsvinkler: stroppen går fra festet (nede til venstre) opp til lastens øverste punkt */
+const vpanel = (tx, z, deg, L) => { const ax = 24, ay = 160, r = 24, rad = deg*Math.PI/180;
+  const ex = +(ax + L*Math.cos(rad)).toFixed(1), ey = +(ay - L*Math.sin(rad)).toFixed(1);
+  return `<g transform="translate(${tx} 0)">
+    <rect data-z="${z}" x="3" y="4" width="139" height="190" rx="10" fill="#ffffff" stroke="#9aa3ab" stroke-width="2"/>
+    <g pointer-events="none">
+      <rect x="${ex}" y="${ey}" width="${(136-ex).toFixed(1)}" height="${(ay-ey).toFixed(1)}" fill="#d9b98a" stroke="#8b6a38" stroke-width="2"/>
+      <line x1="8" y1="${ay}" x2="137" y2="${ay}" stroke="#1b2128" stroke-width="3"/>
+      <path ${stropp} d="M${ax} ${ay} L${ex} ${ey}"/>
+      <circle cx="${ax}" cy="${ay}" r="5" fill="#1b2128"/>
+      <path d="M${ax+r} ${ay} A ${r} ${r} 0 0 0 ${(ax + r*Math.cos(rad)).toFixed(1)} ${(ay - r*Math.sin(rad)).toFixed(1)}" fill="none" stroke="#1d6fb8" stroke-width="2"/>
+      <text x="72" y="184" text-anchor="middle" font-size="16" font-weight="800" fill="#1d6fb8">${deg}°</text>
+    </g></g>`; };
+const SVG_VINKEL = `<svg viewBox="0 0 580 200" ${S} role="img" aria-label="Fire stropper med surringsvinkel 90, 60, 45 og 20 grader">
+  ${vpanel(0, 'v90', 90, 110)}${vpanel(145, 'v60', 60, 115)}${vpanel(290, 'v45', 45, 115)}${vpanel(435, 'v20', 20, 82)}
+</svg>`;
+
+TLL.registrer({
+  id: 'kap5',
+  fag: 'Transport, logistikk og løfteoperasjoner',
+  nr: 5,
+  tittel: 'Sikring av last etter gjeldende forskrifter',
+  ingress: 'Hvorfor lasten må sitte fast, hvilke krefter den utsettes for, og hvordan du sikrer den med låsing, blokkering og surring – etter regelverket som gjelder i dag.',
+  kompetansemal: [
+    { kode: 'TOL02-01 · KV427', tekst: 'sikre last etter gjeldende forskrifter' },
+    { kode: 'TOL02-01 · KV427', tekst: 'bruke ulike metoder og utstyr for å utføre sikre laste-, losse- og løfteoperasjoner' }
+  ],
+  ressurser: {
+    // KUN egenprodusert materiell her (f.eks. egne lysark). IKKE last opp forlagets presentasjon eller PDF-er.
+    presentasjon: '',
+    laerebok: 'Læreboka, kapittel 5 (s. 117–158)',
+    ndlaEmne: NDLA_E,
+    ndlaEmneNavn: 'Emnet «Sikring av last» på NDLA',
+    ordliste: NDLA_R + N.begreper[1],
+    ordlisteNavn: 'Begreper i lastsikring (NDLA)'
+  },
+  temaer: [
+  /* ================================================================ T1 */
+  {
+    id: 't1', lok: 'A-01', tittel: 'Regelverket for sikring av last',
+    kort: 'Hvorfor lasten må sikres, forskrift om bruk av kjøretøy §§ 3-2 og 3-3, kravene 0,8 og 0,5, kjøretøygrupper, standarder og veiledere.',
+    bok: 'Læreboka 5.1–5.3 (s. 118–123)',
+    mal: ['forklare hvorfor både sjåfører og logistikkoperatører må kunne sikre last','gjengi hvor mye lastsikringen minst skal tåle framover, bakover og sidevegs','finne ut hvilket krav som gjelder for ulike kjøretøygrupper','nevne de godkjente sikringsmetodene og hvor reglene og veilederne finnes'],
+    punkter: [
+      'Last som forskyver seg, velter eller faller av, kan skade sjåføren, andre trafikanter, godset og kjøretøyet. Derfor er sikring av last både et <b>trafikksikkerhetstiltak</b> og et krav i loven.',
+      'Sikring av last er pensum i føreropplæringen for tunge kjøretøy og i yrkessjåførutdanningen. <b>Logistikkoperatører</b> laster også biler og konteinere – og må derfor kunne reglene.',
+      'EU vedtok i 2014 et direktiv om <b>utekontroll</b> (kontroll av kjøretøy langs veg). Det ga et felles minimumsnivå for lastsikring. Norge innførte nivået fra <b>1. januar 2018</b> i <b>forskrift om bruk av kjøretøy, §§ 3-2 og 3-3</b>.',
+      '§ 3-2 handler om plassering: sjåføren skal ha godt utsyn, lys og skilt skal ikke dekkes til, vekta skal fordeles jevnt – og minst <b>20 %</b> av totalvekta skal ligge på hjulene som styrer. Godset skal ikke kunne falle av, slepe i vegen, støve eller sjenere andre.',
+      '§ 3-3 setter kravene. For tunge kjøretøy (M2, M3, N2, N3, O3, O4 og raske traktorer) skal sikringen tåle <b>0,8 × godsets vekt framover</b> og <b>0,5 × vekta bakover og sidevegs</b>. For lettere kjøretøy, som varebil (N1) og små tilhengere (O1, O2), er kravet <b>1,0 × vekta framover</b>. Sikringen skal også hindre at lasten <b>heller eller velter</b>.',
+      'Godkjente metoder er <b>låsing, blokkering, direktesurring og overfallssurring</b> – eller en kombinasjon. Veilederne beskriver også <b>loopsurring</b> og <b>grimesurring</b>. Det gamle ordet «stenging» heter nå <b>blokkering</b>.',
+      'Utstyret skal oppfylle europeiske standarder, for eksempel <b>EN 12195</b> (beregning, stropper, kjetting, ståltau), <b>EN 12640</b> (surringspunkter) og <b>EN 12642</b> (styrken i påbygget). Gode hjelpemidler er IRU-veilederen med «Quick Lashing Guide», den svenske TYA-veilederen og lastsikringsapper.',
+      'Ved <b>kombinert transport</b> (for eksempel bil + ferje eller bil + tog) skal lasten sikres etter reglene for alle transportformene på turen.'
+    ],
+    ndla: [N.bil, N.togbat, N.brosjyre, N.lasting],
+    aktiviteter: [
+      { type:'voks', id:'t1-voks', tittel:'Reglene er skrevet av erfaring', tekst:['Mange regler i transport finnes fordi noe har gått galt. Kravet om at lasten skal tåle 0,8 ganger vekta framover er ikke et tilfeldig tall – det er målt i forsøk med bråbremsing.','Det er lett å tenke at regler er noe kontrolløren bryr seg om. Men den som får en løs pall gjennom frontveggen, er sjåføren. Den som møter et lass som glir av i en sving, er en annen trafikant.','En god fagarbeider følger reglene også når ingen kontrollerer – fordi hun vet hvorfor de finnes.'], sporsmal:['Hvilke regler på skolen eller i praksis forstår du bedre når du vet hvorfor de finnes?','Hvem har du ansvar for når du laster en bil som andre skal kjøre?'], handling:'Spør en sjåfør eller instruktør i praksis om en gang lasten nesten gikk galt – og hva de lærte av det.' },
+      { type:'flash', id:'t1-flash', tittel:'Begrepskort: regelverket', kort:[
+        ['Forskrift om bruk av kjøretøy','Forskriften med de norske reglene for plassering og sikring av gods (§§ 3-2 og 3-3).'],
+        ['Utekontroll','Kontroll av kjøretøy langs vegen. Et EU-direktiv fra 2014 ga felles krav til lastsikring ved slike kontroller.'],
+        ['0,8 × vekta','Hvor mye sikringen minst skal tåle framover på tunge kjøretøy.'],
+        ['0,5 × vekta','Hvor mye sikringen minst skal tåle bakover og sidevegs.'],
+        ['1,0 × vekta','Kravet framover på lettere kjøretøy, for eksempel varebil og små tilhengere.'],
+        ['Låsing','Godset festes direkte til kjøretøyet med låser, for eksempel konteinerlåser.'],
+        ['Blokkering','Godset plasseres inntil vegger, lemmer, staker eller mellomlegg slik at det ikke kan flytte seg. Før kalt «stenging».'],
+        ['Surring','Godset festes med stropper, kjetting, ståltau eller lignende.'],
+        ['N3','Lastebil med tillatt totalvekt over 12 000 kg.'],
+        ['N1','Varebil – bil for gods med tillatt totalvekt opptil 3 500 kg.'],
+        ['O4','Tilhenger eller semitrailer med tillatt totalvekt over 10 000 kg.'],
+        ['EN 12195-1','Standarden som beskriver hvordan surringskrefter skal beregnes.'],
+        ['Quick Lashing Guide','Kortversjon av IRU-veilederen med tabeller for hvor mye ulike sikringer holder.'],
+        ['Kombinert transport','Transport med flere transportformer, for eksempel bil og ferje. Lasten må sikres for alle.']
+      ]},
+      { type:'quiz', id:'t1-q1', nivaa:1, tittel:'Hvorfor og hvor mye?', sp:[
+        { q:'Hvor mye skal lastsikringen på en tung lastebil minst tåle framover?', a:['0,5 ganger godsets vekt','0,8 ganger godsets vekt','2 ganger godsets vekt','Det finnes ikke noe krav'], r:1, f:'Framover 0,8 – bakover og sidevegs 0,5.' },
+        { q:'Hvor mye skal sikringen minst tåle sidevegs?', a:['0,5 ganger godsets vekt','0,8 ganger godsets vekt','1,0 ganger godsets vekt','0,2 ganger godsets vekt'], r:0, f:'Halve vekta sidevegs og bakover.' },
+        { q:'Hvilken forskrift har de norske reglene for sikring av last?', a:['Arbeidsmiljøloven','Forskrift om bruk av kjøretøy','Kjøpsloven','Forskrift om førerkort'], r:1, f:'Reglene står i §§ 3-2 og 3-3.' },
+        { q:'Hvorfor må en logistikkoperatør kunne lastsikring?', a:['Fordi logistikkoperatører ofte laster biler og konteinere','Fordi de skal kjøre bilen','Fordi det står på fraktbrevet','Det trenger de ikke'], r:0, f:'Den som laster, påvirker hvor godt lasten kan sikres.' },
+        { q:'Hvilken av disse er IKKE en sikringsmetode i forskriften?', a:['Låsing','Blokkering','Surring','Presenning'], r:3, f:'Presenning beskytter mot vær og vind, men sikrer ikke lasten.' },
+        { q:'Fra når gjaldt EUs minimumsnivå for lastsikring i Norge?', a:['1. januar 2008','1. januar 2018','1. januar 2024','Det gjelder ikke i Norge'], r:1, f:'Det ble innført gjennom forskrift om bruk av kjøretøy fra 1. januar 2018.' }
+      ]},
+      { type:'tf', id:'t1-tf', nivaa:1, tittel:'Sant eller usant: regelverket', ps:[
+        ['Minst 20 % av kjøretøyets aktuelle totalvekt skal hvile på hjulene som styrer.', true, 'Ellers blir bilen vanskelig å styre.'],
+        ['Det er lov å dekke til baklysene hvis lasten er godt surret.', false, 'Påbudt lys og kjennemerker skal ikke dekkes til.'],
+        ['Reglene om sikring gjelder også for kjetting, tau og presenning på bilen.', true, 'Heller ikke festemidlene skal kunne falle av eller slenge.'],
+        ['«Stenging» og «blokkering» betyr det samme.', true, 'Forskriften bruker i dag ordet blokkering. Noen sier også «stempling».'],
+        ['På en varebil (N1) er kravet framover 0,8 ganger vekta.', false, 'Lettere kjøretøy som ikke er nevnt i § 3-3 nr. 2, har kravet 1,0 ganger vekta framover.'],
+        ['Sikringen skal også hindre at lasten heller eller velter.', true, 'Det holder ikke bare å hindre at lasten glir.'],
+        ['Tar du ferje, holder det å sikre lasten for vegtransport.', false, 'Ved kombinert transport må lasten sikres for alle transportformene.'],
+        ['Surringer på åpent lasteplan bør ligge innenfor sidelemmene når det er mulig.', true, 'Ellers må løse ender festes så de ikke kan skade andre trafikanter.']
+      ]},
+      { type:'sort', id:'t1-s1', nivaa:2, tittel:'Hvilket krav gjelder?', instr:'Hvor mye skal sikringen minst tåle i retningen som er oppgitt?', kat:['0,5 × vekta','0,8 × vekta','1,0 × vekta'], items:[
+        ['Lastebil N3 – framover',1,'Tunge kjøretøy: 0,8 framover.'],
+        ['Lastebil N3 – sidevegs',0,'Sidevegs er kravet 0,5.'],
+        ['Semitrailer O4 – framover',1,'O4 er nevnt i § 3-3 nr. 2.'],
+        ['Semitrailer O4 – bakover',0,'Bakover er kravet 0,5.'],
+        ['Varebil N1 – framover',2,'Lettere kjøretøy: 1,0 framover.'],
+        ['Varebil N1 – sidevegs',0,'Sidevegs er det 0,5 for alle.'],
+        ['Tilhenger O2 (bak personbil) – framover',2,'O2 er ikke nevnt i nr. 2, så kravet er 1,0.'],
+        ['Lastebil N2 – framover',1,'N2 er nevnt i nr. 2.']
+      ]},
+      { type:'calc', id:'t1-c1', nivaa:1, gen:'sikrkrav', tittel:'Hvor mye skal sikringen tåle?', antall:5 },
+      { type:'match', id:'t1-m1', nivaa:2, tittel:'Kjøretøygrupper', instr:'Koble kjøretøygruppen med riktig beskrivelse.', par:[
+        ['M1','Personbil med høyst 8 sitteplasser i tillegg til føreren'],
+        ['M3','Buss med over 8 sitteplasser og tillatt totalvekt over 5 000 kg'],
+        ['N1','Varebil med tillatt totalvekt opptil 3 500 kg'],
+        ['N2','Lastebil over 3 500 kg, men ikke over 12 000 kg'],
+        ['N3','Lastebil over 12 000 kg'],
+        ['O4','Tilhenger eller semitrailer over 10 000 kg']
+      ]},
+      { type:'match', id:'t1-m2', nivaa:3, tittel:'Standarder for lastsikringsutstyr', instr:'Koble standarden med det den handler om.', par:[
+        ['EN 12195-1','Beregning av surringskrefter'],
+        ['EN 12195-2','Surrebånd (stropper) av kunstfiber'],
+        ['EN 12195-3','Surringskjettinger'],
+        ['EN 12640','Surringspunkter (fester) på kjøretøyet'],
+        ['EN 12642','Styrken i påbygget (vegger og lemmer)'],
+        ['EN 12641','Presenninger']
+      ]},
+      { type:'fill', id:'t1-fill', nivaa:2, tittel:'Fyll inn: kravene i § 3-3', tekst:'På en tung lastebil skal lastsikringen minst tåle [[0,8]] ganger godsets vekt framover og [[0,5]] ganger vekta bakover og [[sidevegs]]. Sikringen skal også hindre at lasten heller eller [[velter]]. Godkjente metoder er låsing, [[blokkering]], direktesurring og overfallssurring. Surringskreftene skal beregnes etter standarden [[EN 12195-1]].', ekstra:['1,5','0,2','presenning','EN 283','glir'], f:'På lettere kjøretøy, som varebil, er kravet framover 1,0 ganger vekta.' },
+      { type:'order', id:'t1-o1', nivaa:2, tittel:'Planlegg lastsikringen', instr:'Sett stegene i en fornuftig rekkefølge – fra du får oppdraget til bilen ruller.', steg:[
+        'Finn ut hva godset veier, hvor høyt det er og hvor tyngdepunktet ligger','Finn ut hvilken kjøretøygruppe bilen er, og hvilke krav som gjelder','Finn friksjonen mellom godset og underlaget','Velg metode – blokker så mye som mulig','Regn ut hvor mange surringer du trenger i tillegg','Last og sikr godset','Kontroller sikringen før avreise','Etterstram etter en tids kjøring'
+      ], f:'Blokkering er ofte den enkleste og sikreste løsningen. Surring kommer i tillegg der blokkering ikke holder.' },
+      { type:'quiz', id:'t1-q2', nivaa:3, tittel:'Bruk regelverket', sp:[
+        { q:'Du har 20 tonn gods på en semitrailer. Hvor mye må sikringen minst holde igjen framover?', a:['10 tonn','16 tonn','20 tonn','8 tonn'], r:1, f:'20 t × 0,8 = 16 t framover. Bakover og sidevegs: 20 t × 0,5 = 10 t.' },
+        { q:'Hvorfor er kravet framover høyere enn bakover?', a:['Fordi lasten er tyngre framme','Fordi bråbremsing gir større krefter enn akselerasjon','Fordi frontveggen er svakere','Det er tilfeldig'], r:1, f:'Forsøk viser at bremsekreftene er størst. Når bilen bremser, skyves lasten framover.' },
+        { q:'Hvorfor har svenske veiledere et strengere krav sidevegs for rullende last?', a:['Fordi Sverige har flere svinger','Fordi Sverige frakter mye papir på tunge ruller','Fordi svenske lastebiler er smalere','Fordi EU krever det'], r:1, f:'For rullende last sidevegs bruker den svenske veilederen 0,6 i stedet for 0,5.' },
+        { q:'En kollega vil bruke en egen beregningsmetode i stedet for EN 12195-1. Hva sier forskriften?', a:['Det er aldri lov','Det kan godtas hvis det kan dokumenteres at sikringen tåler kravene','Det er alltid lov','Bare politiet kan bestemme det'], r:1, f:'Andre metoder kan godtas når det er dokumentert at sikringen minst tåler kreftene i kravet.' },
+        { q:'Du kjører en container fra Stavanger til Danmark med ferje. Hvilke regler gjelder?', a:['Bare vegreglene','Bare sjøreglene','Reglene for både veg og sjø','Ingen – containeren er lukket'], r:2, f:'Ved kombinert transport sikrer du for alle transportformene.' }
+      ]},
+      { type:'reflect', id:'t1-r1', nivaa:3, tittel:'Forklar: Hvorfor sikre last?', q:'En ny sommervikar på lageret sier: «Det er jo sjåføren som har ansvaret for lasten. Jeg setter bare pallene inn.» Forklar hvorfor også logistikkoperatøren må kunne lastsikring. Bruk regelverket i svaret.', punkter:[
+        'Lasten kan skade folk, gods og kjøretøy hvis den flytter seg',
+        'Sikring av last er et trafikksikkerhetstiltak',
+        'Reglene står i forskrift om bruk av kjøretøy §§ 3-2 og 3-3',
+        'Kravene: 0,8 × vekta framover og 0,5 × vekta bakover og sidevegs (tunge kjøretøy)',
+        'Den som laster, bestemmer om lasten kan blokkeres (inntil frontvegg, uten luft)',
+        'Riktig plassering gir jevn vektfordeling og nok vekt på styrende hjul',
+        'Godt samarbeid mellom lager og sjåfør gjør sikringen enklere og tryggere'
+      ]}
+    ]
+  },
+  /* ================================================================ T2 */
+  {
+    id: 't2', lok: 'A-02', tittel: 'Krefter, friksjon og tyngdepunkt',
+    kort: 'Treghetskrefter ved bremsing, akselerasjon og sving, tyngdekraft i newton, Newtons lover, friksjonskoeffisient og hvor mye friksjonen holder igjen.',
+    bok: 'Læreboka 5.4 (s. 124–130)',
+    mal: ['forklare hvilke krefter lasten blir utsatt for når bilen bremser, akselererer og svinger','regne om fra kilogram til newton','forklare hva friksjonskoeffisienten forteller','regne ut hvor mye av kraften friksjonen holder igjen, og hvor mye som må sikres i tillegg'],
+    punkter: [
+      'Lasten står ikke fast av seg selv. Den vil fortsette i samme fart og retning (<b>treghet</b>). Når bilen <b>bremser</b>, skyves lasten <b>framover</b>. Når bilen <b>akselererer</b>, skyves den <b>bakover</b>. I en <b>sving</b> skyves den <b>utover</b>.',
+      'Forsøk viser omtrent 8 N per kg ved full bråbremsing og omtrent 5 N per kg ved kraftig akselerasjon og i sving. Det er bakgrunnen for kravene 0,8 og 0,5.',
+      'Tyngdekraften trekker 1 kg ned med omtrent <b>10 N</b> (egentlig 9,81 N). Et kolli på 600 kg presses mot planet med 6 000 N. I lastsikring brukes også <b>dekanewton</b>: 1 daN = 10 N.',
+      '<b>Newtons 1. lov:</b> Et kolli i ro blir liggende i ro – eller i jevn fart – til en kraft virker på det. <b>2. lov:</b> Kraft = masse × akselerasjon. Dobbelt så tung last gir dobbelt så stor kraft. Tungt gods står altså <i>ikke</i> bedre enn lett gods. <b>3. lov:</b> Til hver kraft finnes en like stor motkraft.',
+      '<b>Friksjonskoeffisienten (µ)</b> forteller hvor godt to flater «griper» i hverandre. Den måles med en <b>krengeprøve</b>: Du vipper underlaget til godset begynner å gli. Jo brattere, desto høyere µ.',
+      'Eksempler: plastpall mot stålplate har lav friksjon (rundt 0,15–0,2). Trepall mot riflet aluminium ligger rundt 0,4. En <b>friksjonsmatte</b> av gummi gir rundt 0,6. Bruk alltid den <b>laveste</b> friksjonen i «stabelen» – det er der godset glir først.',
+      'Friksjonen holder igjen <b>tyngden × µ</b>. Resten må sikres med blokkering eller surring. Eksempel: 1 000 kg og µ = 0,3 → friksjonen holder 3 000 N. Kravet framover er 8 000 N, så 5 000 N må sikres.',
+      'På ujevn veg («vaskebrett») kan godset lette fra planet et øyeblikk. Da forsvinner friksjonen. Stramme <b>overfallssurringer</b> presser godset ned og holder friksjonen på plass.',
+      '<b>Tyngdepunktet</b> er punktet der vi kan tenke oss at all massen er samlet. Høyt tyngdepunkt gir større fare for velt. Kolli med skjevt tyngdepunkt er ofte merket med et eget symbol.'
+    ],
+    ndla: [N.krefter, N.friksjon, N.demo, N.begreper],
+    aktiviteter: [
+      { type:'voks', id:'t2-voks', tittel:'Små krefter, store følger', tekst:['En pall på 500 kg står helt rolig på lasteplanet når du kjører jevnt. Men ved en bråbremsing presses den framover med en kraft som tilsvarer 400 kg. Den kraften kan ingen holde igjen med hendene.','Det samme gjelder mye annet: Små ting som ser ufarlige ut når alt går rolig, blir store når noe uventet skjer. En dårlig vane, en snarvei, en løs stropp.','Profesjonelle planlegger for det som kan skje – ikke bare for det som pleier å skje.'], sporsmal:['Hva er «bråbremsingen» i ditt liv – situasjoner der små svakheter plutselig blir store?','Hva kan du gjøre i dag for å være forberedt?'], handling:'Velg én ting du ofte tar en snarvei på, og gjør den grundig hver gang denne uka.' },
+      { type:'flash', id:'t2-flash', tittel:'Begrepskort: krefter og friksjon', kort:[
+        ['Treghet','Godset vil fortsette i samme fart og retning. Derfor «vil» det videre når bilen bremser.'],
+        ['Treghetskraft','Kraften som skyver lasten motsatt vei av kjøretøyets fartsendring.'],
+        ['Newton (N)','Enheten for kraft. 1 kg blir trukket ned med omtrent 10 N.'],
+        ['Dekanewton (daN)','10 N. Brukes ofte på merkingen av surrebånd.'],
+        ['Newtons 1. lov','Et kolli i ro blir i ro – eller i jevn fart – til en kraft virker på det.'],
+        ['Newtons 2. lov','Kraft = masse × akselerasjon. Tyngre gods trenger kraftigere sikring.'],
+        ['Newtons 3. lov','Til hver kraft finnes en like stor motkraft.'],
+        ['Friksjon','Motstanden mot å gli når to flater ligger mot hverandre.'],
+        ['Friksjonskoeffisient (µ)','Tall som viser hvor stor friksjonen er mellom to materialer. Høyere tall = bedre grep.'],
+        ['Krengeprøve','Test der underlaget vippes til godset glir. Vinkelen viser friksjonen.'],
+        ['Friksjonsmatte','Gummimatte som legges under godset for å øke friksjonen (rundt µ = 0,6).'],
+        ['Vaskebrett','Ujevn veg der godset kan lette fra planet og miste friksjonen.'],
+        ['Tyngdepunkt','Punktet der vi tenker oss at all massen er samlet.'],
+        ['Udelbar enhet','Når last og kjøretøy er låst eller sikret så godt at de oppfører seg som én enhet.']
+      ]},
+      { type:'quiz', id:'t2-q1', nivaa:1, tittel:'Hvilken vei skyves lasten?', sp:[
+        { q:'Bilen bråbremser. Hvilken vei skyves lasten?', a:['Framover','Bakover','Oppover','Den står stille'], r:0, f:'Lasten vil fortsette framover når bilen stopper.' },
+        { q:'Bilen akselererer kraftig fra lyskrysset. Hvilken vei skyves lasten?', a:['Framover','Bakover','Sidevegs','Nedover'], r:1, f:'Bilen drar fra lasten, så lasten skyves bakover.' },
+        { q:'Bilen kjører i en krapp venstresving. Hvilken vei skyves lasten?', a:['Mot venstre (inn i svingen)','Mot høyre (ut av svingen)','Framover','Bakover'], r:1, f:'I sving skyves lasten utover – bort fra sentrum av svingen.' },
+        { q:'Omtrent hvor stor kraft trekker tyngdekraften 1 kg ned med?', a:['1 N','10 N','100 N','1 000 N'], r:1, f:'9,81 N – rundet av til 10 N.' },
+        { q:'Hva viser friksjonskoeffisienten?', a:['Hvor tungt godset er','Hvor godt to flater griper i hverandre','Hvor fort bilen kan kjøre','Hvor høyt godset er'], r:1, f:'Jo høyere µ, desto bedre grep.' }
+      ]},
+      { type:'tf', id:'t2-tf', nivaa:1, tittel:'Sant eller usant: krefter og friksjon', ps:[
+        ['Tungt gods står så godt at det ikke trenger sikring.', false, 'Newtons 2. lov: Tyngre gods gir større krefter og trenger kraftigere sikring.'],
+        ['1 daN er det samme som 10 N.', true, 'Deka betyr ti.'],
+        ['Friksjonsmatter øker friksjonen mellom godset og underlaget.', true, 'Gummimatter gir ofte rundt µ = 0,6.'],
+        ['Plastpall mot stålgolv gir høy friksjon.', false, 'Den kombinasjonen gir lav friksjon, rundt 0,15–0,2.'],
+        ['På ujevn veg kan friksjonen mellom godset og planet forsvinne helt et øyeblikk.', true, 'Godset kan «hoppe» – derfor må overfallssurringer være strammet.'],
+        ['Høyt tyngdepunkt gir mindre fare for velt.', false, 'Høyt tyngdepunkt gir større veltefare.'],
+        ['De største kreftene på lasten oppstår vanligvis ved bråbremsing.', true, 'Omtrent 8 N per kg framover.']
+      ]},
+      { type:'match', id:'t2-m1', nivaa:1, tittel:'Situasjon og kraft', instr:'Hva skjer med lasten i hver situasjon?', par:[
+        ['Bråbremsing','Lasten skyves framover'],
+        ['Kraftig akselerasjon','Lasten skyves bakover'],
+        ['Krapp sving','Lasten skyves utover'],
+        ['Vaskebrettveg','Lasten kan lette og miste friksjonen'],
+        ['Bratt motbakke','Lasten vil gli bakover']
+      ]},
+      { type:'fill', id:'t2-fill', nivaa:2, tittel:'Fyll inn: friksjon', tekst:'Et kolli på 500 kg blir trukket ned med en kraft på [[5 000]] N. Friksjonskoeffisienten mellom kolliet og planet er 0,4. Da holder friksjonen igjen [[2 000]] N. Kravet framover er 0,8 × 5 000 N = [[4 000]] N. Derfor må du sikre [[2 000]] N i tillegg med blokkering eller [[surring]].', ekstra:['500','3 000','1 000','presenning'], f:'Framgangsmåten: tyngde → det friksjonen holder → kravet → differansen må sikres.' },
+      { type:'sort', id:'t2-s1', nivaa:2, tittel:'Høy eller lav friksjon?', instr:'Gir kombinasjonen lav eller god friksjon? Tenk på materialene.', kat:['Lav (0,3 eller lavere)','God (0,4 eller høyere)'], items:[
+        ['Plastpall mot rustfri stålplate',0,'Rundt 0,15.'],
+        ['Kolli på friksjonsmatte av gummi',1,'Rundt 0,6.'],
+        ['Glatt, malt plate mot glatt, malt plate',0,'Rundt 0,2.'],
+        ['Grov betong mot sagd treplate',1,'Rundt 0,7.'],
+        ['Lasteplan med is og snø',0,'Is gir svært lav friksjon – rengjør planet.'],
+        ['Trepall (sagd tre) mot riflet aluminium',1,'Rundt 0,4.'],
+        ['Kartong mot kartong',1,'Rundt 0,5.']
+      ]},
+      { type:'calc', id:'t2-c1', nivaa:1, gen:'tyngde', tittel:'Fra kilo til newton', antall:5 },
+      { type:'calc', id:'t2-c2', nivaa:2, gen:'friksjon', tittel:'Hvor mye holder friksjonen?', antall:5 },
+      { type:'calc', id:'t2-c3', nivaa:3, gen:'restkraft', tittel:'Hvor mye må sikres?', antall:5 },
+      { type:'quiz', id:'t2-q2', nivaa:3, tittel:'Tenk som en lastsikrer', sp:[
+        { q:'En storsekk står på en trepall på et stålgolv. Storsekk mot trepall har µ = 0,4. Trepall mot stål har µ = 0,3. Hvilken friksjon regner du med?', a:['0,4','0,3','0,7','0,1'], r:1, f:'Bruk den laveste. Pallen glir på stålet før sekken glir på pallen.' },
+        { q:'Du har 5 tonn på bilen og akselererer med 5 m/s². Hvor stor kraft virker på godset?', a:['1 000 N','25 000 N','5 000 N','50 000 N'], r:1, f:'F = m × a = 5 000 kg × 5 m/s² = 25 000 N.' },
+        { q:'Du dobler lastvekta fra 5 til 10 tonn. Hva skjer med kreftene ved samme bremsing?', a:['De halveres','De blir like','De dobles','De firedobles'], r:2, f:'Kraften er proporsjonal med massen.' },
+        { q:'Hvorfor er friksjonsmatter ekstra nyttige på vinteren?', a:['De holder godset varmt','Snø og is på planet gir svært lav friksjon','De er påbudt om vinteren','De gjør stroppene sterkere'], r:1, f:'Matter og rent plan gir mer friksjon – og mindre behov for andre sikringer.' },
+        { q:'Hvorfor skal overfallssurringer være strammet, selv om friksjonen er høy?', a:['For at de ikke skal blafre','For å presse godset ned og hindre at friksjonen forsvinner på ujevn veg','Fordi kontrolløren vil se det','Det trengs ikke'], r:1, f:'Uten forspenning kan godset «vandre» på vaskebrett.' }
+      ]},
+      { type:'case', id:'t2-case', nivaa:3, tittel:'Case: Malingspallen', intro:'Du skal frakte en pall med malingsspann på en lastebil (N3). Pallen med maling veier 800 kg. Det er en plastpall, og lasteplanet har stålgolv. Spannene er krympet fast til pallen.', steg:[
+        { q:'Hva er det første du bør finne ut?', valg:[
+          { t:'Friksjonen mellom plastpallen og stålgolvet', ok:true, f:'Riktig. Spannene er krympet fast, så pallen og malingen er én enhet. Da er det pallen mot golvet som avgjør.' },
+          { t:'Hvilken farge malingen har', ok:false, f:'Fargen påvirker ikke sikringen.' },
+          { t:'Om spannene har lokk', ok:false, f:'Viktig for emballasjen, men ikke for hvor mye som må sikres.' }
+        ]},
+        { q:'Friksjonen er lav, rundt µ = 0,2. Hvor mye holder friksjonen igjen?', valg:[
+          { t:'800 × 10 × 0,2 = 1 600 N', ok:true, f:'Tyngden er 8 000 N, og friksjonen holder 20 % av det.' },
+          { t:'800 × 0,2 = 160 N', ok:false, f:'Husk å gjøre om til newton først: 800 kg ≈ 8 000 N.' },
+          { t:'8 000 N', ok:false, f:'Det er hele tyngden. Friksjonen holder bare en del av den.' }
+        ]},
+        { q:'Kravet framover er 0,8 × 8 000 N = 6 400 N. Hvor mye må sikres i tillegg til friksjonen?', valg:[
+          { t:'4 800 N', ok:true, f:'6 400 N − 1 600 N = 4 800 N.' },
+          { t:'1 600 N', ok:false, f:'Det er det friksjonen klarer selv.' },
+          { t:'0 N – friksjonen holder', ok:false, f:'Friksjonen holder bare 1 600 N av 6 400 N.' }
+        ]},
+        { q:'Hva er den enkleste måten å bedre situasjonen på?', valg:[
+          { t:'Legg friksjonsmatte under pallen og plasser den helt inntil frontveggen', ok:true, f:'Matten øker friksjonen, og frontveggen blokkerer framover. Sikr i tillegg mot sideforskyvning og velt.' },
+          { t:'Kjør sakte, så trengs ingen sikring', ok:false, f:'En bråbremsing kan skje uansett fart.' },
+          { t:'Legg en presenning over pallen', ok:false, f:'Presenning er ikke lastsikringsutstyr.' }
+        ]}
+      ]}
+    ]
+  },
+  /* ================================================================ T3 */
+  {
+    id: 't3', lok: 'B-01', tittel: 'Låsing og blokkering',
+    kort: 'Konteinerlåser, blokkering mot frontvegg, baklem og sidekarmer, mellomlegg, sperrebommer, strekk- og krympefilm og blokkering mot velt.',
+    bok: 'Læreboka 5.5–5.6 (s. 131–134) og 5.9 (s. 149)',
+    mal: ['forklare forskjellen på låsing og blokkering','blokkere last framover, bakover og sidevegs','forklare 15 cm-regelen og når du trenger mellomlegg','forklare hvor høyt du må blokkere for å hindre velt'],
+    punkter: [
+      '<b>Låsing</b> betyr at godset festes direkte i kjøretøyet med låser. Typisk eksempel: en konteiner som låses til chassiset med <b>konteinerlåser</b> (twistlocks). Da blir bil og last én <b>udelbar enhet</b>.',
+      '<b>Blokkering</b> betyr at godset står tett inntil noe som hindrer det i å flytte seg: frontveggen, lemmene, delevegger, staker – eller <b>mellomlegg</b> som bukker, klosser, kiler og tomme paller.',
+      '<b>Framover:</b> Sett lasten helt inntil frontveggen. Hvor mye frontveggen tåler, avhenger av påbygget (standarden EN 12642) og av friksjonen – bedre friksjon betyr at frontveggen kan holde igjen mer gods.',
+      '<b>Bakover:</b> Blokker mot baklemmen eller mot en tverrgående innretning. Mange distribusjonsbiler har <b>skinner og sperrebommer</b> som kan settes der lasten slutter.',
+      '<b>Sidevegs:</b> Det bør ikke være mer enn <b>15 cm</b> luft mellom lasten og sidekarmene. Er det mer, fyller du med mellomlegg.',
+      '<b>Mot velt:</b> Blokkeringen må gå høyt nok i forhold til tyngdepunktet. Blokkerer du helt opp til tyngdepunktet, kan ikke kolliet velte den veien.',
+      'Pallet gods er ofte stabilisert med <b>strekkfilm</b> (plast som strekkes 20–40 % rundt pallen) eller <b>krympefilm</b> (plast som krymper rundt varene når den varmes opp). Filmen holder kolliene sammen, men pallen må fortsatt blokkeres og sikres mot velt på bilen.',
+      'Blokkering er ofte nok for lett stykkgods i lukket konteiner – men tyngre last trenger nesten alltid <b>surring i tillegg</b>.'
+    ],
+    ndla: [N.viktig, N.demo, N.lastbarer, N.lasting],
+    aktiviteter: [
+      { type:'voks', id:'t3-voks', tittel:'Gjør det riktig første gang', tekst:['Det tar kanskje fem minutter ekstra å flytte pallene helt inntil frontveggen og fylle hullene med mellomlegg. Det tar mye lenger tid å rydde opp etter en last som har veltet.','Kvalitet handler ofte om å gjøre det kjedelige grundig – også på fredag ettermiddag.','Kunden ser ikke hvordan du lastet. Men kunden merker det når varene kommer hele fram.'], sporsmal:['Når er det mest fristende for deg å «gjøre det fort» i stedet for «gjøre det riktig»?','Hvordan føles det når noen andre har gjort en jobb grundig for deg?'], handling:'Velg én oppgave denne uka som du gjør så grundig at du kunne vist den fram til en sensor.' },
+      { type:'flash', id:'t3-flash', tittel:'Begrepskort: låsing og blokkering', kort:[
+        ['Låsing','Godset festes direkte i kjøretøyet med låser, f.eks. konteinerlåser.'],
+        ['Konteinerlås (twistlock)','Lås som fester konteinerens hjørner til chassiset.'],
+        ['Blokkering','Lasten står tett inntil vegger, lemmer, staker eller mellomlegg og kan ikke flytte seg.'],
+        ['Frontvegg','Veggen foran på lasteplanet. Blokkerer lasten framover.'],
+        ['Baklem','Lemmen bak på lasteplanet. Kan blokkere lasten bakover.'],
+        ['Sperrebom','Tverrstang som festes i skinner i distribusjonsbiler og blokkerer lasten bakover.'],
+        ['Mellomlegg','Tomme paller, klosser, bukker, kiler eller luftputer som fyller tomrom.'],
+        ['15 cm-regelen','Mer enn 15 cm luft til sidekarmene? Fyll med mellomlegg.'],
+        ['Strekkfilm','Plastfilm som strekkes rundt kolliene på en pall for å holde dem samlet.'],
+        ['Krympefilm','Plastfilm som krymper rundt varene når den varmes opp. Gir svært stram pakking.'],
+        ['Staker','Stolper på siden av lasteplanet, f.eks. for tømmer og materialpakker.'],
+        ['Blokkering mot velt','Blokkeringen må gå minst opp til tyngdepunktet for å hindre velt.']
+      ]},
+      { type:'hotspot', id:'t3-hs1', nivaa:1, tittel:'Finn fram på lasteplanet', instr:'Tegningen viser lasteplanet på en lastebil sett ovenfra. Trykk på riktig sted.', svg:SVG_PLAN, sp:[
+        { q:'Hva blokkerer pallene mot forskyvning framover?', z:'front', f:'Frontveggen. Pallene står helt inntil den, så de kan ikke skli framover ved bråbremsing.' },
+        { q:'Hva blokkerer pallene mot forskyvning bakover?', z:'bom', f:'Sperrebommen er satt rett bak den siste pallen. Baklemmen står for langt unna til å blokkere.' },
+        { q:'Her er det for mye luft mellom lasten og sidekarmen. Trykk der det må fylles med mellomlegg.', z:'gap', f:'25 cm er mer enn 15 cm. Fyll med mellomlegg, eller sikr med surring.' },
+        { q:'Trykk på et surringsfeste.', z:'feste', f:'Surringsfestene sitter i lastbæreren. Husk: Ingen kjede er sterkere enn det svakeste leddet.' },
+        { q:'Hvilken del av lastbæreren blokkerer lasten sidevegs – når det ikke er for mye luft?', z:'side', f:'Sidekarmene (lemmene), så sant de er sterke nok.' },
+        { q:'Trykk på baklemmen.', z:'bak', f:'Baklemmen kan blokkere bakover når lasten står helt inntil den.' }
+      ]},
+      { type:'quiz', id:'t3-q1', nivaa:1, tittel:'Låsing eller blokkering?', sp:[
+        { q:'En konteiner festes til chassiset med konteinerlåser. Hvilken metode er dette?', a:['Låsing','Blokkering','Surring','Overfallssurring'], r:0, f:'Godset låses direkte til kjøretøyet.' },
+        { q:'Du setter pallene tett inntil frontveggen. Hvilken metode er dette?', a:['Låsing','Blokkering','Grimesurring','Direktesurring'], r:1, f:'Frontveggen blokkerer lasten framover.' },
+        { q:'Hvor mye luft bør det maksimalt være mellom lasten og sidekarmene?', a:['5 cm','15 cm','50 cm','1 meter'], r:1, f:'Mer enn 15 cm – fyll med mellomlegg.' },
+        { q:'Hva kan du bruke som mellomlegg?', a:['Tomme paller, klosser og kiler','Presenning','Løse stropper','Ingenting'], r:0, f:'Også luftputer og bukker kan brukes.' },
+        { q:'Hva gjør strekkfilmen rundt en pall?', a:['Holder kolliene på pallen samlet','Sikrer pallen til lasteplanet','Erstatter all surring','Gjør pallen lettere'], r:0, f:'Filmen stabiliserer pallen, men pallen må fortsatt sikres på bilen.' }
+      ]},
+      { type:'tf', id:'t3-tf', nivaa:1, tittel:'Sant eller usant: blokkering', ps:[
+        ['Når en konteiner er låst til chassiset, blir bil og konteiner en udelbar enhet.', true, 'Låsene holder konteineren fast i alle retninger.'],
+        ['Det er greit med 40 cm luft til sidekarmen hvis lasten er tung.', false, 'Mer enn 15 cm luft må fylles med mellomlegg – uansett vekt.'],
+        ['Bedre friksjon gjør at frontveggen kan blokkere mer gods.', true, 'Friksjonen tar en del av kraften, så frontveggen får mindre å holde igjen.'],
+        ['Blokkering framover hindrer også at lasten glir bakover.', false, 'Bakover må du blokkere for seg – f.eks. med sperrebom eller baklem.'],
+        ['Blokkerer du opp til tyngdepunktet, kan kolliet ikke velte den veien.', true, 'Høy nok blokkering hindrer både forskyvning og velt.'],
+        ['Krympefilm krymper når den varmes opp.', true, 'Pallen sendes gjennom et varmekammer.']
+      ]},
+      { type:'sort', id:'t3-s1', nivaa:2, tittel:'Låsing, blokkering eller surring?', instr:'Hvilken sikringsmetode beskrives?', kat:['Låsing','Blokkering','Surring'], items:[
+        ['Konteineren festes med twistlocks i alle fire hjørner',0,'Låser i kjøretøyet = låsing.'],
+        ['Pallene står tett mot frontveggen',1,'Frontveggen blokkerer.'],
+        ['En sperrebom settes rett bak de siste pallene',1,'Sperrebommen blokkerer bakover.'],
+        ['Et kolli strammes ned mot planet med to stropper',2,'Stropper = surring.'],
+        ['Tomme paller fyller luft mellom lasten og sidekarmen',1,'Mellomlegg blokkerer sidevegs.'],
+        ['En maskin festes med kjetting fra løfteøyene til festene på planet',2,'Kjetting = surring (direktesurring).'],
+        ['Kiler legges foran og bak hjulene på en bil som fraktes',1,'Klosser og kiler blokkerer.'],
+        ['Et vekselflak festes med låser til bilen',0,'Låser = låsing.']
+      ]},
+      { type:'fill', id:'t3-fill', nivaa:2, tittel:'Fyll inn: blokkering', tekst:'For å blokkere lasten framover setter du den helt inntil [[frontveggen]]. Bakover kan du bruke baklemmen eller en [[sperrebom]]. Sidevegs bør det ikke være mer enn [[15]] cm luft til sidekarmene. Er det mer, fyller du med [[mellomlegg]]. For å hindre velt må blokkeringen gå minst opp til [[tyngdepunktet]].', ekstra:['taket','50','presenning','hjulene'], f:'Blokkering er ofte den raskeste og sikreste metoden – men tung last trenger surring i tillegg.' },
+      { type:'quiz', id:'t3-q2', nivaa:3, tittel:'Blokkering i praksis', sp:[
+        { q:'Du har bare 10 paller på en bil med plass til 16. Hvordan blokkerer du best bakover?', a:['Sett pallene bakerst','Sett pallene inntil frontveggen og en sperrebom rett bak den siste','La det være luft – den er jo tung','Legg pallene på høykant'], r:1, f:'Framover blokkerer frontveggen, bakover sperrebommen.' },
+        { q:'En høy pall har tyngdepunktet 1,0 m over planet. Du blokkerer bare de nederste 20 cm. Hva er problemet?', a:['Ingenting','Pallen kan velte over blokkeringen','Pallen blir for tung','Blokkeringen er for høy'], r:1, f:'Blokker opp til tyngdepunktet – eller sikr mot velt med surring.' },
+        { q:'Hvorfor kan en frontvegg holde igjen mer gods når friksjonen er høy?', a:['Fordi veggen blir sterkere','Fordi friksjonen tar en del av kraften','Fordi godset blir lettere','Det stemmer ikke'], r:1, f:'Friksjonen og frontveggen deler på jobben.' },
+        { q:'Du laster lett stykkgods i en lukket konteiner. Hva er normalt nok?', a:['Blokkering mot veggene i hele bredden og høyden','Ingen sikring','Bare presenning','Bare én stropp'], r:0, f:'Start mot frontveggen og fyll hele bredden og høyden. Tunge kolli lavt og fremme.' },
+        { q:'Hvorfor må du blokkere «platelaster» helt opp til den øverste platen?', a:['Ellers kan de øverste platene skli over blokkeringen','Fordi det ser pent ut','Fordi platene er lette','Det trenger du ikke'], r:0, f:'Plater glir lett på hverandre. I tillegg må lasten surres.' }
+      ]},
+      { type:'case', id:'t3-case', nivaa:3, tittel:'Case: Distribusjonsbilen', intro:'Du laster en distribusjonsbil med skillevegg, skinner og to sperrebommer. Du har 11 paller dagligvarer. Bilen har plass til 18 paller. Pallene er filmet.', steg:[
+        { q:'Hvor setter du de første pallene?', valg:[
+          { t:'Tett inntil frontveggen, i hele bredden', ok:true, f:'Da er lasten blokkert framover fra starten.' },
+          { t:'Bakerst, så de er lette å få ut', ok:false, f:'Da står lasten fritt framover – og kan skli ved bråbremsing.' },
+          { t:'Spredt utover hele planet for jevn vekt', ok:false, f:'Luft mellom pallene gjør at de kan flytte seg.' }
+        ]},
+        { q:'Den siste raden har bare én pall. Det er 1 meter luft ved siden av den. Hva gjør du?', valg:[
+          { t:'Fyller med mellomlegg (for eksempel tomme paller) eller sikrer pallen med surring', ok:true, f:'1 meter er mye mer enn 15 cm. Pallen må blokkeres eller surres sidevegs.' },
+          { t:'Lar den stå – den er filmet', ok:false, f:'Filmen holder kolliene på pallen sammen, men hindrer ikke pallen i å skli.' },
+          { t:'Legger presenning rundt', ok:false, f:'Presenning er ikke sikringsutstyr.' }
+        ]},
+        { q:'Hvordan blokkerer du lasten bakover?', valg:[
+          { t:'Setter en sperrebom i skinnene rett bak de siste pallene', ok:true, f:'Bommen blokkerer bakover der lasten slutter.' },
+          { t:'Stoler på baklemmen, selv om den står 3 meter bak', ok:false, f:'Baklemmen blokkerer bare når lasten står inntil den.' },
+          { t:'Kjører forsiktig fra lyskryss', ok:false, f:'Kjørestil erstatter ikke sikring.' }
+        ]},
+        { q:'Underveis tømmer du de fire første pallene hos første kunde. Hva nå?', valg:[
+          { t:'Flytter sperrebommen eller sikrer de resterende pallene på nytt før du kjører videre', ok:true, f:'Lasten skal være sikret på hele turen – også etter hver levering.' },
+          { t:'Kjører videre – resten står jo fortsatt', ok:false, f:'Nå er det luft foran pallene. De kan skli framover.' },
+          { t:'Ringer kunden og spør', ok:false, f:'Det er sjåførens ansvar å sikre lasten.' }
+        ]}
+      ]},
+      { type:'reflect', id:'t3-r1', nivaa:2, tittel:'Lag en oversikt: Når passer blokkering?', q:'Lag en oversikt over situasjoner der du kan bruke blokkering som sikringsmetode. Ta med hva du blokkerer mot, og når du må surre i tillegg.', punkter:[
+        'Blokkering framover mot frontveggen',
+        'Blokkering bakover mot baklem eller sperrebom',
+        'Blokkering sidevegs med mellomlegg når det er mer enn 15 cm luft',
+        'Klosser eller kiler for runde kolli og kjøretøy',
+        'Blokkering opp til tyngdepunktet for å hindre velt',
+        'Surring i tillegg for tung last eller når blokkeringen ikke er høy nok'
+      ]}
+    ]
+  },
+  /* ================================================================ T4 */
+  {
+    id: 't4', lok: 'B-02', tittel: 'Surring og surringsutstyr',
+    kort: 'Overfalls-, loop-, grime- og direktesurring, surringsvinkler, etterstramming, merking av surrebånd (LC, STF, SHF), kjetting og surringsfester.',
+    bok: 'Læreboka 5.7 (s. 135–148)',
+    mal: ['kjenne igjen de fire surringsteknikkene og vite hva hver av dem brukes til','forklare hvordan surringsvinkelen påvirker kraften','lese merkingen på et surrebånd og vite når utstyret skal kasseres','bruke en tabellverdi til å regne ut hvor mange surringer du trenger'],
+    punkter: [
+      '<b>Overfallssurring</b> (overtoppsurring): Stroppen går over lasten fra side til side og presser den ned mot planet. Den virker ved å <b>øke friksjonen</b>. Den skal ligge over tyngdepunktet, og den må være godt strammet.',
+      '<b>Loopsurring</b>: Stroppen går rundt lasten og festes på samme side. Den brukes <b>i par</b> (én på hver side) og hindrer forskyvning og velt <b>sidevegs</b>. Minst ett par per lastseksjon – lange kolli minst to par.',
+      '<b>Grimesurring</b>: Stroppen legges rundt toppkanten foran (eller bak) på lasten og går skrått ned til et feste på hver side langs lasten. Den hindrer glidning og velt <b>framover eller bakover</b>. Vinkelen mot planet skal ikke være over <b>45°</b>. Festet på halv høyde holder den bare halvparten.',
+      '<b>Direktesurring</b> (også kalt kryssurring): Stroppen eller kjettingen går direkte fra et feste <b>på godset</b> til et feste på bilen. Vinkelen bør være mellom <b>30° og 60°</b>. Krysser surringene, skal krysset ligge over tyngdepunktet.',
+      '<b>Surringsvinkelen</b> er vinkelen mellom planet og stroppen. Ved 90° presser hele strammekraften nedover. Jo lavere vinkel, desto mindre presser den ned. Tabellene for overfallssurring gjelder ved 75–90°. Ved 30–75° trenger du dobbelt så mange stropper. Under 30° må du velge en annen metode.',
+      '<b>Merking av surrebånd</b> (EN 12195-2): <b>LC</b> (lashing capacity – hva båndet tåler i rett strekk, oppgitt i daN), <b>S<sub>HF</sub></b> (standard håndkraft på strammeren) og <b>S<sub>TF</sub></b> (strammekraften du oppnår i båndet), i tillegg til produsent, år, materiale og «Not for lifting». Båndet skal ikke brukes til løft.',
+      '<b>Kasser</b> båndet hvis merkelappen mangler, eller hvis det har kutt, knuter eller andre skader, eller hvis strammeren er rustet og treg. Bruk <b>kantbeskyttere</b> mot skarpe kanter.',
+      '<b>Kjetting</b> brukes særlig på stein, stål og betong. Den skal være <b>kortlenket</b>, merket og minst <b>Grade 80</b>. En <b>tolk</b> viser om kjettingen har vært overbelastet.',
+      'Surringene er aldri sterkere enn <b>surringsfestet</b> de sitter i. Stropper strekker seg og lasten «setter seg» – derfor skal du alltid <b>etterstramme</b> etter en tids kjøring.'
+    ],
+    ndla: [N.tre, N.kolli, N.forsp, N.surreband, N.kjetting, N.lastbarer, N.brosjyre],
+    aktiviteter: [
+      { type:'voks', id:'t4-voks', tittel:'Si fra om utstyret', tekst:['Du finner en stropp med et lite kutt. Det er travelt, og den ser ut til å holde. Kanskje legger du den tilbake i kassa – og så tar en kollega den i morgen.','Å kassere eller merke dårlig utstyr er en liten handling. Men den beskytter neste person som bruker det, kanskje i en situasjon der stroppen må holde igjen flere tonn.','Å si fra er ikke å sladre. Det er å ta vare på hverandre.'], sporsmal:['Har du sett utstyr – på skolen, i praksis eller hjemme – som burde vært byttet ut?','Hva gjør det lettere eller vanskeligere å si fra?'], handling:'Neste gang du ser utstyr som ikke er i orden: Merk det eller si fra med én gang.' },
+      { type:'flash', id:'t4-flash', tittel:'Begrepskort: surring og utstyr', kort:[
+        ['Overfallssurring','Stroppen går over lasten og presser den ned. Øker friksjonen.'],
+        ['Loopsurring','Stroppen går rundt lasten og festes på samme side. Brukes i par. Sikrer sidevegs.'],
+        ['Grimesurring','Stroppen går rundt toppkanten foran (eller bak) og ned til feste på hver side. Sikrer framover eller bakover. Maks 45°.'],
+        ['Direktesurring','Fra feste på godset direkte til feste på bilen. Vinkel 30–60°.'],
+        ['Surringsvinkel','Vinkelen mellom planet og stroppen.'],
+        ['LC (lashing capacity)','Hvor stor kraft båndet er beregnet for i rett strekk. Oppgis i daN.'],
+        ['SHF (standard hand force)','Den vanlige håndkraften på strammeren, ca. 50 daN.'],
+        ['STF (standard tension force)','Strammekraften du oppnår i båndet med normal håndkraft.'],
+        ['Etterstramming','Stramme surringene igjen etter en tids kjøring fordi lasten har satt seg.'],
+        ['Kantbeskytter','Beskytter stroppen mot skarpe kanter – og godset mot stroppen.'],
+        ['Kortlenket kjetting','Kjetting der løkka innvendig er høyst tre ganger så lang som materialtykkelsen.'],
+        ['Grade 80','Minste kvalitetsklasse for surringskjetting. Grade 100 er sterkere.'],
+        ['Tolk','Måleverktøy som viser om kjettingløkkene er strukket (overbelastet).'],
+        ['Surringsfeste','Festepunktet i lastbæreren. Surringen er aldri sterkere enn festet.']
+      ]},
+      { type:'hotspot', id:'t4-hs1', nivaa:1, tittel:'Kjenn igjen surringsteknikken', instr:'Tegningene viser fire surringsteknikker. Stroppen er oransje. Trykk på riktig tegning.', svg:SVG_TEKNIKK, sp:[
+        { q:'Hvilken tegning viser overfallssurring?', z:'overfall', f:'A: Stroppen går over lasten fra side til side og presser den ned.' },
+        { q:'Hvilken tegning viser loopsurring?', z:'loop', f:'B: Stroppen går rundt lasten og begge endene er festet på samme side.' },
+        { q:'Hvilken tegning viser grimesurring?', z:'grime', f:'C: Stroppen ligger rundt toppkanten foran og går skrått ned til et feste langs siden. Vinkelen er under 45°.' },
+        { q:'Hvilken tegning viser direktesurring?', z:'direkte', f:'D: Stroppene går direkte fra festene på godset til festene på bilen.' },
+        { q:'Hvilken teknikk virker ved å øke friksjonen?', z:'overfall', f:'Overfallssurringen presser lasten ned – da øker friksjonen.' },
+        { q:'Hvilken teknikk krever et feste på selve godset?', z:'direkte', f:'Direktesurring festes i løfteøyer eller surringspunkter på godset.' }
+      ]},
+      { type:'quiz', id:'t4-q1', nivaa:1, tittel:'Surringsteknikker og utstyr', sp:[
+        { q:'Hvilken surringsteknikk brukes i par og sikrer lasten sidevegs?', a:['Loopsurring','Grimesurring','Overfallssurring','Låsing'], r:0, f:'Ett loopsurringspar per lastseksjon.' },
+        { q:'Hvilken vinkel skal en grimesurring maksimalt ha mot planet?', a:['30°','45°','75°','90°'], r:1, f:'Maks 45° – ellers holder den for lite i lengderetningen.' },
+        { q:'Hva betyr «LC» på merkelappen til et surrebånd?', a:['Lengden på båndet','Lashing capacity – hva båndet tåler i rett strekk','Lastens vekt','Leverandørens kode'], r:1, f:'LC oppgis i daN.' },
+        { q:'Når skal et surrebånd kasseres?', a:['Når det er nytt','Når merkelappen mangler eller båndet har kutt eller knuter','Når det er vått','Når det er oransje'], r:1, f:'Også når strammeren er rustet og treg.' },
+        { q:'Hvorfor skal du etterstramme etter en tids kjøring?', a:['Fordi lasten setter seg og stroppene strekker seg','Fordi kontrolløren krever det','For å teste strammeren','Det trengs ikke'], r:0, f:'Slakke stropper kan gi rykk som overbelaster utstyret.' },
+        { q:'Hva slags kjetting skal brukes på stein, stål og betong?', a:['Langlenket kjetting','Kortlenket kjetting, merket, minst Grade 80','Hvilken som helst','Tau'], r:1, f:'Langlenket kjetting er forbudt på stein, stål og betong.' }
+      ]},
+      { type:'tf', id:'t4-tf', nivaa:1, tittel:'Sant eller usant: surring', ps:[
+        ['Et surrebånd kan også brukes til løft hvis du er forsiktig.', false, 'Båndet er merket «Not for lifting» – det er ikke laget for løft.'],
+        ['Ved 90° surringsvinkel virker hele strammekraften nedover.', true, 'Jo lavere vinkel, desto mindre kraft nedover.'],
+        ['Overfallssurringer bør ligge over tyngdepunktet.', true, 'Da står kolliet stabilt.'],
+        ['Under 30° vinkel er overfallssurring en god metode.', false, 'Under 30° må du velge en annen metode.'],
+        ['En grime festet på halv høyde holder like mye som en festet på toppen.', false, 'Den holder bare halvparten av tabellverdien.'],
+        ['Surringen er aldri sterkere enn festet den sitter i.', true, 'Ingen kjede er sterkere enn det svakeste leddet.'],
+        ['Polyester er det vanligste materialet i surrebånd.', true, 'Polyamid og polypropylen finnes også.'],
+        ['Går tolken ikke inn i kjettingløkka på tvers, er kjettingen i orden.', false, 'Da er løkka strukket – kjettingen har vært overbelastet.']
+      ]},
+      { type:'order', id:'t4-o1', nivaa:1, tittel:'Slik bruker du et surrebånd', instr:'Sett stegene i riktig rekkefølge.', steg:[
+        'Kontroller båndet: merkelapp, kutt, knuter og strammer','Fest kroken i et surringsfeste på lastbæreren','Legg kantbeskyttere på skarpe kanter','Legg båndet over lasten','Tre båndet inn i snella på strammeren','Dra den løse enden stramt','Jekk med strammeren til båndet er godt strammet','Fest den løse enden så den ikke slenger','Etterstram etter en tids kjøring'
+      ], f:'Se gjerne NDLA-filmene «Hvordan tre en lastestropp» og «Forspenning av lastestropp».' },
+      { type:'match', id:'t4-m1', nivaa:2, tittel:'Merking og utstyr', instr:'Koble begrepet med riktig forklaring.', par:[
+        ['LC','Hva båndet tåler i rett strekk (daN)'],
+        ['SHF','Normal håndkraft på strammeren'],
+        ['STF','Strammekraften du oppnår i båndet'],
+        ['Grade 80','Minstekrav til kvalitet på surringskjetting'],
+        ['Tolk','Viser om kjettingen er overbelastet'],
+        ['Kantbeskytter','Hindrer at stroppen kuttes av skarpe kanter']
+      ]},
+      { type:'sort', id:'t4-s1', nivaa:2, tittel:'Hvilken teknikk passer?', instr:'Hvilken surringsteknikk passer best til situasjonen?', kat:['Overfallssurring','Loopsurring','Grimesurring','Direktesurring'], items:[
+        ['Pallen står inntil frontveggen og må presses ned mot planet for å hindre glidning bakover og sidevegs',0,'Overfallssurring øker friksjonen.'],
+        ['En høy, smal kasse må sikres mot å velte sidevegs',1,'Et loopsurringspar sikrer sidevegs mot både glidning og velt.'],
+        ['Lasten kan ikke stå inntil frontveggen, og den må hindres i å gli framover',2,'Grimen holder lasten tilbake framover.'],
+        ['En gravemaskin har egne surringsøyer',3,'Fest direkte i øynene på maskinen.'],
+        ['En stor transformator med løfteører skal på trailer',3,'Direktesurring fra ørene til festene på trailer.'],
+        ['Lang last må sikres sidevegs og hindres i å vri seg',1,'Lange kolli: minst to loopsurringspar.']
+      ]},
+      { type:'hotspot', id:'t4-hs2', nivaa:3, tittel:'Surringsvinkelen', instr:'Tegningene viser stropper med ulik surringsvinkel. Trykk på riktig tegning.', svg:SVG_VINKEL, sp:[
+        { q:'Hvilken stropp presser med hele strammekraften nedover?', z:'v90', f:'Ved 90° virker all kraft rett ned.' },
+        { q:'Hvilken vinkel er for lav til at du kan bruke overfallssurring?', z:'v20', f:'Under 30° må du velge en annen metode.' },
+        { q:'Ved hvilken vinkel virker omtrent like mye av kraften nedover som sidevegs?', z:'v45', f:'Ved 45° virker rundt 70 % nedover og 70 % sidevegs.' },
+        { q:'Ved hvilken vinkel virker omtrent 90 % nedover og halvparten sidevegs?', z:'v60', f:'Ved 60° presser stroppen fortsatt godt ned.' }
+      ]},
+      { type:'calc', id:'t4-c1', nivaa:2, gen:'stropper', tittel:'Hvor mange surringer trenger du?', antall:5 },
+      { type:'check', id:'t4-chk1', nivaa:2, tittel:'Kontroll av surringsutstyr', instr:'Du går gjennom kassa med surringsutstyr før en tur. Kryss av utstyret som ikke kan brukes.', dok:'Utstyrskontroll – bil 14', meta:'Kontrollert av: lærling · Før avreise', kolonner:['Utstyr','Det du ser'], kryss:'Kan ikke brukes', rader:[
+        { c:['Surrebånd 1','Hel merkelapp: LC 2 500 daN, STF 400 daN, «Not for lifting». Ingen skader.'], avvik:false, f:'Merket og uten skader.' },
+        { c:['Surrebånd 2','Merkelappen er revet av.'], avvik:true, f:'Uten merking vet du ikke hva båndet tåler. Kasser det.' },
+        { c:['Surrebånd 3','Et kutt på 1 cm i kanten av båndet.'], avvik:true, f:'Kutt svekker båndet. Kasser det.' },
+        { c:['Surrebånd 4','Det er knyttet en knute for å gjøre båndet kortere.'], avvik:true, f:'Knuter svekker båndet kraftig.' },
+        { c:['Surrebånd 5','Skittent etter forrige tur, men helt og merket.'], avvik:false, f:'Vask det gjerne i varmt såpevann, men det kan brukes.' },
+        { c:['Strammer på bånd 6','Rustet og går tungt.'], avvik:true, f:'En treg strammer gir dårlig forspenning – bytt ut.' },
+        { c:['Kjetting 1','Kortlenket, merket Grade 80, tolken går inn på tvers.'], avvik:false, f:'Tolken går inn – løkkene er ikke strukket.' },
+        { c:['Kjetting 2','Langlenket, umerket. Skal brukes på betongelementer.'], avvik:true, f:'Langlenket kjetting er forbudt på stein, stål og betong – og den er umerket.' },
+        { c:['Kantbeskyttere','Fire stykker i plast, hele.'], avvik:false, f:'I orden.' }
+      ], etter:'Utstyr som ikke kan brukes, skal merkes og tas ut av bruk med én gang – så ingen andre tar det.' },
+      { type:'case', id:'t4-case', nivaa:3, tittel:'Case: Velg surringsmetode', intro:'Du skal sikre en kasse med maskindeler på en lastebil (N3). Kassa veier 2 400 kg, er 1,8 m høy, 1,2 m lang og 1,0 m bred. Den står på trelemmer på et lasteplan av riflet aluminium. Kassa kan ikke stå inntil frontveggen fordi det står annet gods der.', steg:[
+        { q:'Hvor mye må sikringen minst holde igjen framover?', valg:[
+          { t:'0,8 × 2 400 kg = 1 920 kg', ok:true, f:'Tunge kjøretøy: 0,8 framover.' },
+          { t:'0,5 × 2 400 kg = 1 200 kg', ok:false, f:'0,5 gjelder bakover og sidevegs.' },
+          { t:'2 400 kg', ok:false, f:'1,0 gjelder lettere kjøretøy som varebil.' }
+        ]},
+        { q:'Tabellen i veilederen viser at én overfallssurring bare holder 680 kg framover ved denne friksjonen. Hvor mange trenger du framover?', valg:[
+          { t:'3 – fordi 2 × 680 = 1 360 er for lite, mens 3 × 680 = 2 040 holder', ok:true, f:'Rund alltid opp.' },
+          { t:'2 – det er nesten nok', ok:false, f:'«Nesten nok» holder ikke. 2 × 680 = 1 360 kg < 1 920 kg.' },
+          { t:'1 – friksjonen tar resten', ok:false, f:'Tabellverdien har allerede regnet med friksjonen.' }
+        ]},
+        { q:'Hvilken løsning gir færre stropper framover?', valg:[
+          { t:'En grimesurring rundt fronten av kassa', ok:true, f:'Grimen holder lasten tilbake framover og er langt mer effektiv enn overfallssurring i den retningen.' },
+          { t:'Flere overfallssurringer på skrå', ok:false, f:'Lavere vinkel gjør overfallssurringen svakere.' },
+          { t:'Presenning over kassa', ok:false, f:'Presenning sikrer ikke.' }
+        ]},
+        { q:'Grimen kan bare festes på halv høyde. Hva betyr det?', valg:[
+          { t:'Den holder bare halvparten av tabellverdien', ok:true, f:'Regn med halve verdien – og sjekk om det fortsatt holder.' },
+          { t:'Den holder dobbelt så mye', ok:false, f:'Det er motsatt.' },
+          { t:'Det spiller ingen rolle', ok:false, f:'Høyden på grimen har mye å si.' }
+        ]},
+        { q:'Kassa er høy og smal (1,8 m høy, 1,0 m bred). Hva må du også sjekke?', valg:[
+          { t:'At den er sikret mot å velte – både sidevegs og framover', ok:true, f:'Sikringen skal hindre både glidning og velt.' },
+          { t:'Ingenting mer – den glir ikke', ok:false, f:'Høyt tyngdepunkt gir veltefare.' },
+          { t:'At den er merket med farlig gods', ok:false, f:'Bare hvis innholdet er farlig gods.' }
+        ]}
+      ]},
+      { type:'reflect', id:'t4-r1', nivaa:3, tittel:'Forklar: Fire surringsteknikker', q:'Forklar de fire surringsteknikkene for en medelev som har vært borte. Si hvordan stroppen legges, hva teknikken sikrer mot, og én ting man må passe på for hver av dem.', punkter:[
+        'Overfallssurring: over lasten, presser ned og øker friksjonen – over tyngdepunktet, godt strammet',
+        'Loopsurring: rundt lasten med begge ender på samme side – i par, sikrer sidevegs',
+        'Grimesurring: rundt toppkanten foran eller bak – sikrer framover/bakover, maks 45°',
+        'Direktesurring: fra feste på godset til feste på bilen – vinkel 30–60°',
+        'Surringsvinkelen påvirker hvor mye stroppen holder',
+        'Kontroller utstyret og etterstram underveis'
+      ]}
+    ]
+  },
+  /* ================================================================ T5 */
+  {
+    id: 't5', lok: 'C-01', tittel: 'Ulike lasttyper og kombinert transport',
+    kort: 'Velt i sving, ruller, rør, tromler, materialpakker, kjøretøy, tømmer, betongelementer, løsmasser og stykkgods – og lastsikring på ferje og tog.',
+    bok: 'Læreboka 5.8–5.10 (s. 149–158)',
+    mal: ['forklare hvorfor farten i sving har så mye å si for veltefaren','velge riktig sikring for runde kolli, kjøretøy, tømmer, betong og løsmasser','forklare hvorfor presenning og nett ikke er lastsikringsutstyr','forklare hva som gjelder når lasten skal på ferje eller tog'],
+    punkter: [
+      'I sving øker treghetskraften med farten i andre: <b>dobbel fart gir fire ganger så stor kraft</b> utover, tredobbel fart gir ni ganger så stor. Høyt tyngdepunkt gjør veltefaren ekstra stor.',
+      '<b>Ruller</b> (f.eks. papirruller) sikres med <b>klosser</b> og surring. Med én eller to ruller skal klossene være minst <b>1/3 av radien</b> høye. <b>Kabeltromler</b> som kan rulle i kjøreretningen, får klosser foran og bak på minst <b>1/5 av radien</b> – og surres fast.',
+      '<b>Kjøretøy</b> på lasteplanet får klosser foran og bak på alle hjul, minst <b>1/3 av hjulradien</b>. Surringene festes i hjul eller aksler – ikke i fjærende deler – og skal til sammen tåle kjøretøyets vekt.',
+      '<b>Materialpakker</b> sikres helst med sidestaker, blokkeres mot frontveggen og surres. <b>Tømmer</b> skal ha støtte av minst to sidestaker, ingen stokker over frontveggen, og surres med automatiske strammere festet i rammen.',
+      '<b>Betongelementer</b> skal ligge direkte mot blokkeringen. Mellomlegg bør være minst 5 cm høye. Surr med <b>kjetting</b> og blokker – på et underlag uten snø og is.',
+      '<b>Løsmasser</b> blokkeres av påbygget. Bakkanten bør ikke ha brattere vinkel enn 45°, og massene skal ikke gå over karmene. Støvende masser fuktes eller dekkes. <b>Presenning, nett og kapell er ikke lastsikringsutstyr</b> – de beskytter mot vær, støv og løse biter.',
+      '<b>Stykkgods</b> i konteiner blokkeres ved å starte mot frontveggen i hele bredden og høyden. Tunge kolli plasseres lavt og fremme – innenfor aksellastene.',
+      '<b>Kombinert transport:</b> På ferje og skip må lasten også sikres mot krefter <b>oppover og sidevegs</b> fordi skipet ruller og stamper. Havet deles i sjøområder (A, B og C) etter bølgehøyde – Skagerrak og Nordsjøen er strengere enn Kattegat. Skal konteineren videre på tog, sikrer du for toget også.'
+    ],
+    ndla: [N.togbat, N.viktig, N.kjetting, N.test],
+    aktiviteter: [
+      { type:'voks', id:'t5-voks', tittel:'Ansvaret følger lasten', tekst:['En last passerer mange hender: Den som pakker, den som laster, sjåføren, ferjemannskapet, den som losser. Det er fristende å tenke at «noen andre» sjekker.','Men når noe går galt, spør alle: Hvem så det – og hvorfor sa ingen noe?','Å ta ansvar betyr å gjøre sin egen del ordentlig og si fra når man ser noe som ikke er i orden – selv om det ikke er «din» last.'], sporsmal:['Har du opplevd at alle trodde noen andre hadde ansvaret?','Hvordan kan du si fra på en måte som blir tatt godt imot?'], handling:'Øv på en setning du kan bruke når du må si fra om noe på jobb – for eksempel: «Jeg ser at … Kan vi sjekke det sammen?»' },
+      { type:'flash', id:'t5-flash', tittel:'Begrepskort: lasttyper', kort:[
+        ['Velt i sving','Dobbel fart gir fire ganger så stor kraft utover. Høyt tyngdepunkt øker faren.'],
+        ['Kloss','Blokk av tre eller annet materiale som hindrer runde kolli og hjul i å rulle.'],
+        ['Kabeltrommel','Stor trommel med kabel. Klosser minst 1/5 av radien når den kan rulle i kjøreretningen.'],
+        ['Rullende last','Ruller, rør og tromler. Trenger klosser og surring.'],
+        ['Sidestaker','Stolper langs siden av planet. Brukes for tømmer, rør og materialpakker.'],
+        ['Tømmer','Minst to sidestaker per stokk, ingen stokker over frontveggen, surring festet i rammen.'],
+        ['Betongelementer','Blokkeres og surres med kjetting. Mellomlegg minst 5 cm.'],
+        ['Løsmasser','Sand, grus, jord. Påbygget blokkerer. Maks 45° i bakkant.'],
+        ['Presenning og nett','Beskytter mot vær og støv – er ikke lastsikringsutstyr.'],
+        ['Stykkgods','Enkeltkolli av ulik størrelse. Blokkeres mot veggene i konteineren.'],
+        ['Kombinert transport','Transport med flere transportformer. Lasten sikres for alle.'],
+        ['Sjøområde A, B og C','Inndeling av havet etter bølgehøyde. C har de høyeste bølgene.'],
+        ['Rulle og stampe','Et skip ruller sidevegs og stamper (vipper) framover og bakover i bølgene.']
+      ]},
+      { type:'quiz', id:'t5-q1', nivaa:1, tittel:'Lasttyper', sp:[
+        { q:'Er presenning lastsikringsutstyr?', a:['Ja','Nei – den beskytter bare mot vær og vind','Bare om vinteren','Bare på åpne biler'], r:1, f:'Presenning, nett og kapell sikrer ikke lasten.' },
+        { q:'Hva bruker du for å hindre at en papirrull ruller?', a:['Klosser og surring','Bare presenning','Ingenting – den er tung','Strekkfilm'], r:0, f:'Klosser hindrer rulling, surring holder rullen nede.' },
+        { q:'Hvor fester du surringene når du frakter en bil på et lasteplan?', a:['I hjulene eller akslene','I speilene','I fjærene','I panseret'], r:0, f:'Ikke i deler som fjærer, for da blir surringene slakke.' },
+        { q:'Hvilken last surres vanligvis med kjetting?', a:['Betongelementer','Bleier','Tomme paller','Pappesker'], r:0, f:'Stein, stål og betong surres helst med kjetting.' },
+        { q:'Hva skjer med kraften utover i en sving hvis du dobler farten?', a:['Den dobles','Den blir fire ganger så stor','Den halveres','Den er lik'], r:1, f:'Kraften øker med farten i andre.' }
+      ]},
+      { type:'tf', id:'t5-tf', nivaa:1, tittel:'Sant eller usant: lasttyper', ps:[
+        ['Ingen tømmerstokker skal stikke over frontveggen.', true, 'Stokker over frontveggen kan gå inn i førerhuset ved bråbremsing.'],
+        ['Tunge kolli plasseres helst lavt og fremme.', true, 'Men innenfor aksellastene.'],
+        ['Nett er godkjent lastsikringsutstyr for tunge kolli.', false, 'Nett holder på lette ting som bark og flis, men er ikke lastsikringsutstyr.'],
+        ['Støvende løsmasser kan fuktes for å hindre støv.', true, 'Eller dekkes med presenning.'],
+        ['På ferje i Nordsjøen må lasten også sikres mot krefter oppover.', true, 'Skipet ruller og stamper i bølgene.'],
+        ['Det er lov å feste surringene i fjærene på en bil som fraktes.', false, 'Fest i hjul eller aksler.'],
+        ['Betongelementer kan fraktes på et lasteplan med is, bare de er surret.', false, 'Underlaget skal være fritt for snø og is.']
+      ]},
+      { type:'match', id:'t5-m1', nivaa:2, tittel:'Lasttype og sikring', instr:'Koble lasttypen med riktig sikring.', par:[
+        ['Papirruller i én høyde','Klosser minst 1/3 av radien + surring'],
+        ['Kabeltrommel som kan rulle i kjøreretningen','Klosser minst 1/5 av radien + surring'],
+        ['Personbil på lasteplanet','Klosser ved alle hjul + surring i hjul eller aksler'],
+        ['Tømmer','Minst to sidestaker per stokk + surring i rammen'],
+        ['Betongelementer','Blokkering + kjetting, mellomlegg minst 5 cm'],
+        ['Løsmasser','Påbygget blokkerer, maks 45° i bakkant']
+      ]},
+      { type:'sort', id:'t5-s1', nivaa:2, tittel:'Er dette lastsikringsutstyr?', instr:'Kan dette brukes til å sikre lasten – eller beskytter det bare?', kat:['Sikringsutstyr','Ikke sikringsutstyr'], items:[
+        ['Surrebånd med merkelapp',0,'Godkjent etter EN 12195-2.'],
+        ['Kortlenket kjetting, Grade 80',0,'Godkjent etter EN 12195-3.'],
+        ['Presenning',1,'Beskytter mot vær og vind.'],
+        ['Klosser og kiler',0,'Blokkerer runde kolli og hjul.'],
+        ['Nett over et lass med flis',1,'Hindrer at lette biter blåser av, men sikrer ikke.'],
+        ['Kapell på lastebilen',1,'Kapellet beskytter mot vær – det er ikke beregnet på å holde igjen last.'],
+        ['Sperrebom',0,'Blokkerer bakover.'],
+        ['Friksjonsmatte',0,'Øker friksjonen og reduserer behovet for andre sikringer.']
+      ]},
+      { type:'calc', id:'t5-c1', nivaa:2, gen:'kloss', tittel:'Hvor høye klosser?', antall:5 },
+      { type:'calc', id:'t5-c2', nivaa:3, gen:'fart', tittel:'Fart og veltefare', antall:4 },
+      { type:'check', id:'t5-chk1', nivaa:3, tittel:'Sjekk lasten før avreise', instr:'Du er lærling og går en runde rundt lastebilen (N3) sammen med sjåføren før avreise. Kryss av punktene som må rettes før bilen kan kjøre.', dok:'Lastkontroll – oppdrag 5521', meta:'Blandet last · Stavanger → Haugesund', kolonner:['Last','Det du ser'], kryss:'Må rettes', rader:[
+        { c:['Paller med dagligvarer','Står tett inntil frontveggen i hele bredden.'], avvik:false, f:'Blokkert framover.' },
+        { c:['Pall nr. 9','Det er 30 cm luft mellom pallen og sidekarmen.'], avvik:true, f:'Mer enn 15 cm – fyll med mellomlegg eller surr.' },
+        { c:['Kabeltrommel','Står på planet uten klosser, med én stropp over.'], avvik:true, f:'Trommelen kan rulle. Den trenger klosser foran og bak og må surres fast.' },
+        { c:['Papirrull','Klosser på 1/3 av radien foran og bak, og surret.'], avvik:false, f:'Riktig sikret.' },
+        { c:['Løse kartonger bakerst','Bare dekket med presenning.'], avvik:true, f:'Presenning er ikke sikringsutstyr. Blokker eller surr kartongene.' },
+        { c:['Tunge maskindeler','Plassert øverst på pallene.'], avvik:true, f:'Tunge kolli skal stå lavt – høyt tyngdepunkt gir veltefare.' },
+        { c:['Stroppeender','Rullet opp og festet.'], avvik:false, f:'Løse ender kan slå og skade andre.' },
+        { c:['Baklys og skilt','Synlige og ikke tildekket.'], avvik:false, f:'I orden etter § 3-2.' }
+      ], etter:'Husk å etterstramme surringene etter en tids kjøring – og etter hver levering der lasten endres.' },
+      { type:'case', id:'t5-case', nivaa:3, tittel:'Case: Til Danmark med ferje', intro:'Du skal kjøre en semitrailer med maskindeler fra Stavanger til Hirtshals i Danmark. Turen går med ferje over Skagerrak. Lasten er sikret etter vegreglene.', steg:[
+        { q:'Hvilke regler må du sikre etter?', valg:[
+          { t:'Reglene for både veg og sjø', ok:true, f:'Ved kombinert transport sikrer du for alle transportformene.' },
+          { t:'Bare vegreglene – traileren står jo stille på ferja', ok:false, f:'Ferja ruller og stamper. Det gir krefter lasten ikke møter på vegen.' },
+          { t:'Bare dansk lov', ok:false, f:'Du må følge reglene for strekningene du kjører og seiler.' }
+        ]},
+        { q:'Hvorfor må lasten sikres annerledes på sjøen?', valg:[
+          { t:'Skipet ruller og stamper, så lasten utsettes også for krefter oppover og større krefter sidevegs', ok:true, f:'Derfor trengs ofte flere surringer, særlig sidevegs og vertikalt.' },
+          { t:'Fordi saltvann gjør stroppene svakere', ok:false, f:'Det er bevegelsene i sjøen som er grunnen.' },
+          { t:'Det trengs ikke', ok:false, f:'Jo høyere bølger, desto strengere krav.' }
+        ]},
+        { q:'Hvilket sjøområde er Skagerrak i?', valg:[
+          { t:'Område B – samme som Nordsjøen', ok:true, f:'Kattegat er område A. Skagerrak og Nordsjøen har høyere bølger og er område B.' },
+          { t:'Område A – samme som Kattegat', ok:false, f:'Kattegat har lavere bølger enn Skagerrak.' },
+          { t:'Ingen område – det er en fjord', ok:false, f:'Skagerrak er åpent hav.' }
+        ]},
+        { q:'Hvor kan du finne hvor mye ekstra sikring som trengs?', valg:[
+          { t:'I veiledere for sikring ved kombinert transport, f.eks. en Quick Lashing Guide eller en lastsikringsapp', ok:true, f:'Spør også rederiet – de har egne krav.' },
+          { t:'Gjette ut fra erfaring', ok:false, f:'Bruk tabeller og veiledere.' },
+          { t:'Spørre en tilfeldig passasjer', ok:false, f:'Rederiet og veilederne er riktig kilde.' }
+        ]}
+      ]},
+      { type:'reflect', id:'t5-r1', nivaa:3, tittel:'Utforsk: Lastsikring på din praksisplass', q:'Tenk på en bedrift du har vært på (praksis, YFF eller deltidsjobb). Beskriv to typer last som blir fraktet der, og forklar hvordan hver av dem bør sikres. Bruk fagbegrepene fra kapitlet.', punkter:[
+        'Jeg har beskrevet to konkrete lasttyper',
+        'Jeg har valgt sikringsmetode (låsing, blokkering, surring eller kombinasjon) for hver',
+        'Jeg har nevnt riktig utstyr (stropper, kjetting, klosser, mellomlegg osv.)',
+        'Jeg har tenkt på friksjon og tyngdepunkt',
+        'Jeg har nevnt kravene 0,8 og 0,5',
+        'Jeg har nevnt kontroll før avreise og etterstramming'
+      ]}
+    ]
+  }
+  ]
+});
+})();
