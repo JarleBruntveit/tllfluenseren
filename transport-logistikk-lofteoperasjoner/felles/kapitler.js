@@ -4,5 +4,6 @@
 window.TLL = window.TLL || {};
 TLL.FAG = { id: 'tll', navn: 'Transport, logistikk og løfteoperasjoner' };
 TLL.KAPITLER = [
-  { id: 'kap1', nr: 1, tittel: 'Grunnleggende prinsipper ved lager- og terminalarbeid', sti: 'kap1/' }
+  { id: 'kap1', nr: 1, tittel: 'Grunnleggende prinsipper ved lager- og terminalarbeid', sti: 'kap1/' },
+  { id: 'kap5', nr: 5, tittel: 'Sikring av last etter gjeldende forskrifter', sti: 'kap5/' }
 ];
