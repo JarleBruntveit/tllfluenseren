@@ -94,9 +94,10 @@ const SVG_VINKEL = `<svg viewBox="0 0 580 200" ${S} role="img" aria-label="Fire 
 
 /* ---------- Egne øvingstabeller (egenprodusert, IKKE kopiert fra boka/veilederne) ----------
    Overfallssurring: én stropp, STF 400 daN, vinkel 75–90°, friksjon på begge sider av stroppen.
-   Formel: kg = 2 · µ · 4 000 N / (10 · (krav − µ)) / 1,1 (sikkerhetsfaktor), rundet til nærmeste 10 kg.
+   Formel (etter prinsippet i EN 12195-1): kg = 2 · µ · 4 000 N / (10 · (krav − µ)) / fs, rundet til nærmeste 10 kg.
+   Sikkerhetsfaktor fs = 1,25 framover og 1,1 sidevegs. Verdiene stemmer da omtrent med NLF-heftet «Lastsikring ved vegtransport».
    Krav: 0,8 framover og 0,5 sidevegs. Tallene er forenklet – bruk veileder, app eller lærebokas tabeller i praksis. */
-const holder = (mu, krav) => mu >= krav ? null : Math.round(2*mu*4000/(10*(krav - mu))/1.1/10)*10;
+const holder = (mu, krav) => mu >= krav ? null : Math.round(2*mu*4000/(10*(krav - mu))/(krav === 0.8 ? 1.25 : 1.1)/10)*10;
 const OVERFALL = { rader: [0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.6].map(mu => ({ mu, fram: holder(mu, 0.8), side: holder(mu, 0.5) })) };
 const FRIKSJON = [
   ['plastpall mot stålplate', 0.15], ['plastpall mot kryssfiner', 0.2], ['høvlet tre mot riflet aluminium', 0.25],
@@ -110,7 +111,7 @@ const VIS_OVERFALL = `<h3 style="font-size:18px;margin:0 0 6px">Øvingstabell: H
   <table ${TS}><thead><tr><th ${TH}>Friksjon µ</th><th ${TH}>Framover (kg)</th><th ${TH}>Sidevegs og bakover (kg)</th></tr></thead><tbody>
   ${OVERFALL.rader.map(r => `<tr><td ${TD}>${mu2(r.mu)}</td><td ${TD}>${r.fram ? nb(r.fram) : 'glir ikke'}</td><td ${TD}>${r.side ? nb(r.side) : 'glir ikke'}</td></tr>`).join('')}
   </tbody></table>
-  <p class="small muted" style="margin-top:6px">Forutsetninger: surrebånd strammet til S<sub>TF</sub> 400 daN, surringsvinkel 75–90°. Ved 30–75° holder stroppen halvparten. Øvingstabellen er laget av TLLfluenseren med en forenklet formel – i praksis bruker du tabellene i læreboka, veilederen eller en lastsikringsapp.</p>`;
+  <p class="small muted" style="margin-top:6px">Forutsetninger: surrebånd strammet til S<sub>TF</sub> 400 daN, surringsvinkel 75–90°. Ved 30–75° holder stroppen halvparten. Øvingstabellen er regnet ut av TLLfluenseren og stemmer omtrent med lastsikringsheftet fra NLF. I praksis bruker du heftet, læreboka eller en lastsikringsapp. Kjenner du ikke friksjonen, bruker du µ = 0,20.</p>`;
 const VIS_FRIKSJON = `<h3 style="font-size:18px;margin:0 0 6px">Friksjonstabell (omtrentlige verdier)</h3>
   <table ${TS}><thead><tr><th ${TH}>Kontaktflate</th><th ${TH}>µ</th></tr></thead><tbody>
   ${FRIKSJON.map(([m,mu]) => `<tr><td style="border:1px solid #9aa3ab;padding:5px 8px;text-align:left">${m}</td><td ${TD}>${mu2(mu)}</td></tr>`).join('')}
@@ -556,16 +557,16 @@ TLL.registrer({
         { c:['Kjetting 2','Langlenket, umerket. Skal brukes på betongelementer.'], avvik:true, f:'Langlenket kjetting er forbudt på stein, stål og betong – og den er umerket.' },
         { c:['Kantbeskyttere','Fire stykker i plast, hele.'], avvik:false, f:'I orden.' }
       ], etter:'Utstyr som ikke kan brukes, skal merkes og tas ut av bruk med én gang – så ingen andre tar det.' },
-      { type:'case', id:'t4-case', nivaa:3, tittel:'Case: Velg surringsmetode', vis:VIS_FRIKSJON + VIS_OVERFALL, intro:'Du skal sikre en kasse med maskindeler på en lastebil (N3). Kassa veier 2 400 kg, er 1,8 m høy, 1,2 m lang og 1,0 m bred. Den står på lemmer av sagd tre på et lasteplan av riflet aluminium. Kassa kan ikke stå inntil frontveggen fordi det står annet gods der.', steg:[
+      { type:'case', id:'t4-case', nivaa:3, tittel:'Case: Velg surringsmetode', vis:VIS_FRIKSJON + VIS_OVERFALL, intro:'Du skal sikre en kasse med maskindeler på en lastebil (N3). Kassa veier 2 500 kg, er 1,8 m høy, 1,2 m lang og 1,0 m bred. Den står på lemmer av sagd tre på et lasteplan av riflet aluminium. Kassa kan ikke stå inntil frontveggen fordi det står annet gods der.', steg:[
         { q:'Hvor mye må sikringen minst holde igjen framover?', valg:[
-          { t:'0,8 × 2 400 kg = 1 920 kg', ok:true, f:'Tunge kjøretøy: 0,8 framover.' },
-          { t:'0,5 × 2 400 kg = 1 200 kg', ok:false, f:'0,5 gjelder bakover og sidevegs.' },
-          { t:'2 400 kg', ok:false, f:'1,0 gjelder lettere kjøretøy som varebil.' }
+          { t:'0,8 × 2 500 kg = 2 000 kg', ok:true, f:'Tunge kjøretøy: 0,8 framover.' },
+          { t:'0,5 × 2 500 kg = 1 250 kg', ok:false, f:'0,5 gjelder bakover og sidevegs.' },
+          { t:'2 500 kg', ok:false, f:'1,0 gjelder lettere kjøretøy som varebil.' }
         ]},
         { q:'Bruk tabellene over: Sagd tre mot riflet aluminium gir µ = 0,40. Hvor mange overfallssurringer trenger du framover?', valg:[
-          { t:'3 – fordi 2 × 730 = 1 460 kg er for lite, mens 3 × 730 = 2 190 kg holder', ok:true, f:'Rund alltid opp.' },
-          { t:'2 – det er nesten nok', ok:false, f:'«Nesten nok» holder ikke. 2 × 730 = 1 460 kg < 1 920 kg.' },
-          { t:'1 – friksjonen tar resten', ok:false, f:'Tabellverdien har allerede regnet med friksjonen.' }
+          { t:'4 – fordi 3 × 640 = 1 920 kg er litt for lite, mens 4 × 640 = 2 560 kg holder', ok:true, f:'Rund alltid opp – også når det bare mangler 80 kg.' },
+          { t:'3 – det er nesten nok', ok:false, f:'«Nesten nok» holder ikke. 3 × 640 = 1 920 kg < 2 000 kg.' },
+          { t:'2 – friksjonen tar resten', ok:false, f:'Tabellverdien har allerede regnet med friksjonen.' }
         ]},
         { q:'Hvilken løsning gir færre stropper framover?', valg:[
           { t:'En grimesurring rundt fronten av kassa', ok:true, f:'Grimen holder lasten tilbake framover og er langt mer effektiv enn overfallssurring i den retningen.' },
@@ -703,6 +704,160 @@ TLL.registrer({
         'Jeg har tenkt på friksjon og tyngdepunkt',
         'Jeg har nevnt kravene 0,8 og 0,5',
         'Jeg har nevnt kontroll før avreise og etterstramming'
+      ]}
+    ]
+  },
+  /* ================================================================ T6 */
+  {
+    id: 't6', lok: 'C-02', tittel: 'Lastsikringsheftet og dokumenter',
+    kort: 'Dokumentene du trenger: hjelpedokument for sikringsplan, NLF-heftet «Lastsikring ved vegtransport» og NLF-standarden for betongelementer – med oppgaver der du slår opp og regner som en sjåfør.',
+    bok: 'Læreboka 5.3 og 5.7 (s. 122–148)',
+    mal: ['finne fram i lastsikringsheftet og vite hvilke forutsetninger tabellene bygger på','slå opp friksjon og hvor mye én surring holder','regne ut hvor mange surringer som trengs mot glidning og tipping','lage en enkel sikringsplan for et kolli'],
+    punkter: [
+      '<b>Lastsikringsheftet</b> («Lastsikring ved vegtransport», NLF-standard 2021) er en miniguide etter EN 12195-1. Tabellene viser hvor mange tonn én sikring holder igjen mot å <b>gli</b> og mot å <b>tippe</b>.',
+      'Tabellene forutsetter <b>surrefester på 2 000 daN</b>, <b>stropper med LC 1 600 daN</b>, håndkraft S<sub>HF</sub> 50 daN og forspenning <b>S<sub>TF</sub> 400 daN</b>. Har utstyret andre verdier, bruker du en <b>omregningsfaktor</b> (f.eks. aktuell S<sub>TF</sub> ÷ 400).',
+      'Kjenner du ikke friksjonen, skal du bruke <b>µ = 0,20</b>. Flatene skal være rene og fri for frost, is og snø.',
+      'For tipping regner du ut <b>H/B</b> (høyde delt på bredde) og <b>H/L</b> (høyde delt på lengde) og <b>runder opp</b> til nærmeste tabellverdi. Har kolliet skjevt tyngdepunkt, måler du fra tyngdepunktet.',
+      'Regn ut antall surringer for hver retning – framover, bakover og sidevegs, både gli og tippe. <b>Det høyeste antallet gjelder.</b>',
+      'Blokkering er det beste alternativet når det er mulig. Heftet har også en tabell for <b>blokkeringskapasitet (BC)</b> – hvor mye frontvegg, bakkarm eller støtter kan holde igjen.',
+      'NB: På merkelappen står ofte <b>bruddstyrken</b> (f.eks. 4 000 kg). Den må ikke forveksles med <b>LC</b>, som er det du regner med.',
+      '<b>Betongelementer</b> har en egen NLF-standard: bare <b>kjetting</b> (minst 8 mm kortlenket Grade 80), kantbeskyttelse av metall, dokumenterte surrefester – og <b>kassetthenger</b> som førstevalg for veggelementer.'
+    ],
+    ekstra: `<h3 style="font-size:22px;margin-top:0">Dokumenter</h3>
+      <ul class="reslist">
+        <li><span class="tag">PDF</span><span><a href="dokumenter/Sikring_av_last_hjelpedokument.pdf" target="_blank" rel="noopener">Sikring av last – hjelpedokument (sikringsplan)</a><br><span class="small muted">Skriv ut og fyll inn for kolliet du skal sikre. Laget av Jarle Bruntveit.</span></span></li>
+        <li><span class="tag ndla">NDLA</span><span><a href="${NDLA_R + N.brosjyre[1]}" target="_blank" rel="noopener">Lastsikring ved vegtransport – lastsikringsheftet (NLF)</a><br><span class="small muted">Åpne PDF-en fra NDLA-siden. Klassen har også papireksemplarer – spør læreren.</span></span></li>
+        <li><span class="tag">Bok</span><span>Lastsikring av betongelementer under transport (NLF-standard)<br><span class="small muted">Standarden selges av Norges Lastebileier-Forbund og legges ikke ut her. Bruk skolens eksemplar.</span></span></li>
+        <li><span class="tag">Lov</span><span>Forskrift om bruk av kjøretøy (Lovdata): <a href="https://lovdata.no/forskrift/1990-01-25-92/%C2%A73-2" target="_blank" rel="noopener">§ 3-2 Plassering og sikring av gods</a> · <a href="https://lovdata.no/forskrift/1990-01-25-92/%C2%A73-3" target="_blank" rel="noopener">§ 3-3 Nærmere om sikring av gods</a> · <a href="https://lovdata.no/forskrift/1990-01-25-92/%C2%A73-4" target="_blank" rel="noopener">§ 3-4</a></span></li>
+        <li><span class="tag">App</span><span>Lastsikringsapper, for eksempel TYA Lastsikring og ReadyLash (MariTerm), regner ut sikringen for deg.</span></li>
+      </ul>`,
+    ndla: [N.brosjyre, N.bil, N.begreper],
+    arbeidsbok: '5.14, 5.15, 5.21',
+    aktiviteter: [
+      { type:'voks', id:'t6-voks', tittel:'Slå det opp', tekst:['Erfarne sjåfører har ofte god magefølelse for hvor mange stropper som trengs. Men magefølelsen tar feil oftere enn vi tror – særlig med høye kolli og glatte underlag.','Å slå opp i heftet eller bruke en app er ikke et tegn på at du er usikker. Det er et tegn på at du er profesjonell.','De beste fagarbeiderne er ikke de som aldri sjekker. Det er de som vet når de må sjekke.'], sporsmal:['Når stoler du på magefølelsen – og når burde du heller sjekket?','Hva kan du gjøre for å bli raskere til å finne fram i heftet?'], handling:'Neste gang du er usikker på jobb eller skole: Slå det opp eller spør, i stedet for å gjette.' },
+      { type:'flash', id:'t6-flash', tittel:'Begrepskort: lastsikringsheftet', kort:[
+        ['LC (lashing capacity)','Sikringskapasiteten til stroppen. Heftet regner med LC 1 600 daN.'],
+        ['Bruddstyrke','Kraften der stroppen ryker. Ofte oppgitt i Norge – må ikke forveksles med LC.'],
+        ['S<sub>TF</sub> 400 daN'.replace(/<[^>]+>/g,''),'Forspenningen heftet regner med i hver stropp.'],
+        ['Surrefeste 2 000 daN','Kapasiteten heftet regner med i hvert surrefeste. Den må ikke overskrides.'],
+        ['Omregningsfaktor','Brukes når utstyret har andre verdier enn heftet, f.eks. aktuell S_TF ÷ 400.'],
+        ['µ = 0,20','Friksjonen du skal bruke når du ikke vet hva friksjonen er.'],
+        ['H/B','Høyde delt på bredde. Brukes for å finne om kolliet kan tippe sidevegs.'],
+        ['H/L','Høyde delt på lengde. Brukes for tipping framover og bakover.'],
+        ['Lastrad','Kolli som står ved siden av hverandre på tvers av planet.'],
+        ['Lasteseksjon','En «skive» av lasten på tvers – kan ha flere rader og lag.'],
+        ['Blokkeringskapasitet (BC)','Hvor stor kraft frontvegg, bakkarm eller støtter tåler. Tabellen gjelder BC 1 000 daN.'],
+        ['Kantprofil','Planke eller profil langs kanten som fordeler kraften fra stroppene over flere seksjoner.'],
+        ['Det høyeste antallet gjelder','Regn ut for alle retninger, både gli og tippe – og bruk det største tallet.']
+      ]},
+      { type:'quiz', id:'t6-q1', nivaa:1, tittel:'Hva bygger tabellene på?', sp:[
+        { q:'Hvilken forspenning (S_TF) regner lastsikringsheftet med i stroppene?', a:['50 daN','400 daN','1 600 daN','4 000 daN'], r:1, f:'50 daN er håndkraften, 1 600 daN er LC.' },
+        { q:'Hvor mye regner heftet med at et surrefeste tåler?', a:['500 daN','2 000 daN','5 000 daN','10 000 daN'], r:1, f:'Kapasiteten til surrefestene må ikke overskrides.' },
+        { q:'Du vet ikke hva friksjonen mellom godset og planet er. Hvilken verdi bruker du?', a:['0,20','0,40','0,60','0,80'], r:0, f:'Ukjent friksjon: bruk µ = 0,20.' },
+        { q:'Merkelappen sier «4 000 kg». Hva er det mest sannsynlig?', a:['LC','Bruddstyrken','S_TF','Vekta på stroppen'], r:1, f:'I Norge står ofte bruddstyrken på lappen. LC er det du regner med.' },
+        { q:'Du har regnet ut antall surringer for alle retninger. Hvilket tall bruker du?', a:['Det laveste','Gjennomsnittet','Det høyeste','Bare tallet for framover'], r:2, f:'Det høyeste antallet gjelder.' },
+        { q:'Overfallssurringen har en vinkel på 50°. Hva sier heftet?', a:['Bruk tabellen som den er','Doble antall surringer eller halver verdiene','Velg en annen metode','Tredoble antallet'], r:1, f:'75–90°: tabellen gjelder. 30–75°: doble antallet. Under 30°: annen metode.' }
+      ]},
+      { type:'tf', id:'t6-tf', nivaa:1, tittel:'Sant eller usant: heftet og betongstandarden', ps:[
+        ['H/B og H/L skal rundes opp til nærmeste tabellverdi.', true, 'Da regner du på den sikre siden.'],
+        ['Blokkering er ifølge heftet det beste alternativet når det er mulig.', true, 'Surring kommer i tillegg der blokkering ikke holder.'],
+        ['Betongelementer kan surres med fiberstropper hvis de er nye.', false, 'Betongstandarden sier kjetting – aldri fiberstropper.'],
+        ['Pinnekrakken holder veggelementene fast under transport.', false, 'Pinnekrakken er bare til hjelp ved lasting og lossing. Den er ikke sikring.'],
+        ['Mangler dokumentasjon på surrefestene, regner du med 2 tonn.', true, 'Det står i betongstandarden.'],
+        ['En kjetting uten merkebrikke regnes som 8 mm Grade 80 med LC 4 tonn.', true, 'Det er det sikre valget når merkingen mangler.'],
+        ['Ved kjetting over betongkanter bør du bruke kantbeskyttelse av metall.', true, 'Både kjettingen og elementet beskyttes.']
+      ]},
+      { type:'quiz', id:'t6-q2', nivaa:2, tittel:'Slå opp i lastsikringsheftet', sp:[
+        { q:'Bruk friksjonstabellen i heftet: Hva er friksjonen for sagd tre/trepall mot riflet aluminium?', a:['0,15','0,25','0,40','0,60'], r:2, f:'Høvlet tre mot riflet aluminium er bare 0,25 – sjekk hvilket tre det er.' },
+        { q:'Bruk friksjonstabellen: Hva er friksjonen for plastpall mot rustfri stålplate?', a:['0,15','0,30','0,45','0,70'], r:0, f:'Plastpaller har lav friksjon. Vurder friksjonsmatte.' },
+        { q:'Bruk tabellen for overfallssurring mot å GLI: Hvor mange tonn holder én stropp framover når µ = 0,40?', a:['0,38 t','0,63 t','2,9 t','6,0 t'], r:1, f:'Sidevegs og bakover holder den 2,9 t ved samme friksjon.' },
+        { q:'Bruk tabellen for loopsurring mot å GLI: Hvor mange tonn holder ett loopsurringspar sidevegs når µ = 0,30?', a:['1,1 t','3,3 t','7,3 t','11 t'], r:2, f:'Loopsurring er svært effektiv sidevegs.' },
+        { q:'Bruk tabellen for grimesurring mot å GLI: Hvor mange tonn holder én grime framover når µ = 0,30?', a:['0,38 t','1,3 t','4,9 t','10 t'], r:2, f:'Sammenlign med overfallssurring: 0,38 t. Grimen er mye mer effektiv framover.' },
+        { q:'Bruk tabellen for direktesurring mot å GLI: Hvor mange tonn holder én direktesurring framover når µ = 0,30?', a:['0,51 t','1,3 t','2,6 t','4,9 t'], r:1, f:'Sidevegs og bakover holder den 2,6 t.' }
+      ], fase:'ov' },
+      { type:'calc', id:'t6-c1', nivaa:2, gen:'overfallTabell', tittel:'Øv med øvingstabellen (samme framgangsmåte som heftet)', antall:5, tabell:OVERFALL, friksjon:FRIKSJON, medMateriale:true, vis:VIS_FRIKSJON + VIS_OVERFALL },
+      { type:'case', id:'t6-case1', nivaa:3, tittel:'Case: Pallen med maskindeler', intro:'Du skal sikre en pall med maskindeler på en lastebil (N3) med overfallssurringer. Pallen veier 1 500 kg og er 1,8 m høy, 1,2 m lang og 0,8 m bred. Tyngdepunktet er midt i. Det er en trepall av sagd tre, og lasteplanet er riflet aluminium. Pallen står alene. Ha lastsikringsheftet foran deg.', steg:[
+        { q:'Hvilken friksjon bruker du?', valg:[
+          { t:'µ = 0,40 (sagd tre mot riflet aluminium)', ok:true, f:'Sjekk alltid om treet er sagd eller høvlet.' },
+          { t:'µ = 0,25', ok:false, f:'0,25 gjelder høvlet tre mot riflet aluminium.' },
+          { t:'µ = 0,20 – det gjelder alltid', ok:false, f:'0,20 bruker du bare når du ikke vet friksjonen.' }
+        ]},
+        { q:'Hvor mange tonn må sikres mot å gli framover og sidevegs?', valg:[
+          { t:'Framover 1,2 t (0,8 × 1,5) og sidevegs 0,75 t (0,5 × 1,5)', ok:true, f:'Bakover er det også 0,75 t.' },
+          { t:'1,5 t i alle retninger', ok:false, f:'Kravet er 0,8 framover og 0,5 sidevegs og bakover på N3.' },
+          { t:'0,75 t framover og 1,2 t sidevegs', ok:false, f:'Det er omvendt.' }
+        ]},
+        { q:'Heftet sier at én overfallssurring holder 0,63 t framover ved µ = 0,40. Hvor mange trenger du mot å gli framover?', valg:[
+          { t:'2 – fordi 2 × 0,63 = 1,26 t er mer enn 1,2 t', ok:true, f:'Sidevegs holder én stropp 2,9 t, så der holder det med én.' },
+          { t:'1', ok:false, f:'0,63 t er mindre enn 1,2 t.' },
+          { t:'4', ok:false, f:'To er nok: 1,26 t > 1,2 t.' }
+        ]},
+        { q:'Så tipping sidevegs: H/B = 1,8 ÷ 0,8 = 2,25. Hvilken rad i tabellen bruker du?', valg:[
+          { t:'2,4 – du runder opp til nærmeste tabellverdi', ok:true, f:'Ved H/B 2,4 og én rad holder én overfallssurring 3,3 t mot tipping. 0,75 t er godt innenfor.' },
+          { t:'2,2 – du runder til nærmeste', ok:false, f:'Rund alltid opp – da er du på den sikre siden.' },
+          { t:'2,0', ok:false, f:'Det er å runde ned. Rund opp.' }
+        ]},
+        { q:'Tipping framover: H/L = 1,8 ÷ 1,2 = 1,5 → 1,6 i tabellen. Én surring holder 2,3 t. Hva blir konklusjonen?', valg:[
+          { t:'2 overfallssurringer – det høyeste antallet (glidning framover) gjelder', ok:true, f:'Står pallen inntil frontveggen, er den blokkert framover. Da holder det med 1.' },
+          { t:'1 overfallssurring – tipping krever bare én', ok:false, f:'Du må ta det høyeste antallet av alle utregningene.' },
+          { t:'3 overfallssurringer', ok:false, f:'Ingen av utregningene krever 3.' }
+        ]}
+      ]},
+      { type:'case', id:'t6-case2', nivaa:3, tittel:'Case: Annen stropp – omregningsfaktor', intro:'Du har stropper med LC 2 500 daN. Merkelappen sier S_TF 500 daN. Heftet regner med LC 1 600 daN og S_TF 400 daN.', steg:[
+        { q:'Overfallssurring mot å GLI: Hvilken omregningsfaktor gjelder?', valg:[
+          { t:'500 ÷ 400 = 1,25', ok:true, f:'Mot glidning er det forspenningen som teller.' },
+          { t:'2 500 ÷ 1 600 ≈ 1,56', ok:false, f:'LC brukes for loop-, grime- og direktesurring – ikke for overfallssurring mot å gli.' },
+          { t:'1,0 – stroppen er jo sterkere', ok:false, f:'Når utstyret avviker, bruker du omregningsfaktoren.' }
+        ]},
+        { q:'Overfallssurring mot å TIPPE: Heftet sier du skal bruke den minste av S_TF ÷ 400 og LC ÷ 1 600. Hva blir faktoren?', valg:[
+          { t:'1,25 – den minste av 1,25 og 1,56', ok:true, f:'Bruk alltid den minste verdien – da regner du på den sikre siden.' },
+          { t:'1,56 – den største', ok:false, f:'Heftet sier den minste.' },
+          { t:'2,81 – summen', ok:false, f:'Faktorene skal ikke legges sammen.' }
+        ]},
+        { q:'Én standard overfallssurring holder 0,63 t framover (µ = 0,40). Omtrent hvor mye holder din stropp?', valg:[
+          { t:'Omtrent 0,79 t (0,63 × 1,25)', ok:true, f:'Bedre forspenning gir mer friksjon.' },
+          { t:'Omtrent 0,98 t (0,63 × 1,56)', ok:false, f:'Mot glidning er faktoren 1,25.' },
+          { t:'0,63 t – det samme', ok:false, f:'Omregningsfaktoren gjør at den holder mer.' }
+        ]},
+        { q:'Kan du regne med at stroppen holder mer enn surrefestet tåler?', valg:[
+          { t:'Nei – kapasiteten til surrefestene må ikke overskrides', ok:true, f:'Ingen kjede er sterkere enn det svakeste leddet.' },
+          { t:'Ja, stroppen bestemmer', ok:false, f:'Surrefestet er ofte det svakeste leddet.' },
+          { t:'Bare om sommeren', ok:false, f:'Det gjelder alltid.' }
+        ]}
+      ]},
+      { type:'case', id:'t6-case3', nivaa:3, tittel:'Case: Hvor mye holder frontveggen?', intro:'Du skal frakte 12 tonn gods på en lastebil med påbygg i L-klasse (EN 12642 L). Lasten står helt inntil frontveggen. Friksjonen er µ = 0,30. Heftets blokkeringstabell gjelder for 1 000 daN, og frontveggen på et L-kjøretøy har BC 5 000 daN (faktor 5).', steg:[
+        { q:'Ved µ = 0,30 viser blokkeringstabellen 2,0 t framover per 1 000 daN. Hvor mye kan frontveggen blokkere?', valg:[
+          { t:'2,0 t × 5 = 10 t', ok:true, f:'Omregningsfaktoren er BC ÷ 1 000 = 5.' },
+          { t:'2,0 t', ok:false, f:'Husk faktoren for frontveggen.' },
+          { t:'12 t – den holder alt', ok:false, f:'Regn det ut før du stoler på det.' }
+        ]},
+        { q:'Lasten er 12 t. Hva betyr det?', valg:[
+          { t:'Frontveggen holder 10 t – du må sikre de resterende 2 t framover på annen måte', ok:true, f:'For eksempel med grimesurring eller flere stropper.' },
+          { t:'Det går fint – det er nesten nok', ok:false, f:'«Nesten» er ikke godt nok i lastsikring.' },
+          { t:'Du må kjøre uten last', ok:false, f:'Du sikrer resten med surring.' }
+        ]},
+        { q:'Hva kan du gjøre for at frontveggen skal holde mer?', valg:[
+          { t:'Øke friksjonen, for eksempel med friksjonsmatter', ok:true, f:'Høyere friksjon gir høyere tabellverdi.' },
+          { t:'Kjøre fortere', ok:false, f:'Det gjør kreftene større.' },
+          { t:'Legge presenning over lasten', ok:false, f:'Presenning er ikke sikringsutstyr.' }
+        ]}
+      ]},
+      { type:'quiz', id:'t6-q3', nivaa:2, tittel:'Betongelementer (NLF-standarden)', sp:[
+        { q:'Hva skal du bruke for å surre betongelementer?', a:['Fiberstropper','Kjetting','Tau','Strekkfilm'], r:1, f:'Aldri fiberstropper på betongelementer.' },
+        { q:'Hva er minstekravet til kjettingen?', a:['6 mm langlenket','8 mm kortlenket Grade 80','Hvilken som helst merket kjetting','10 mm langlenket Grade 50'], r:1, f:'Langlenket kjetting skal ikke brukes til lastsikring.' },
+        { q:'Hva er førstevalget for transport av veggelementer?', a:['Vanlig lasteplan','Kassetthenger','Varebil','Container'], r:1, f:'I kassetthengeren holder hydrauliske armer elementene sidevegs og bakover.' },
+        { q:'Hva brukes heisklokkene til ved direktesurring?', a:['Som festepunkt for kjettingen på toppen av elementet','Som pynt','Til å måle vekt','De brukes ikke'], r:0, f:'Gjelder elementer der klokkene er godkjent for sikring.' },
+        { q:'Hvorfor skal elementene stemples av i bunnen med staker og kiler?', a:['For at de ikke skal skli ut i bunnen','For at de skal se ryddige ut','For å gjøre dem lettere','Det trengs ikke'], r:0, f:'Direktesurringen holder toppen. Bunnen må også låses.' },
+        { q:'Hvilket verneutstyr skal du alltid bruke ved lasting og lossing av betongelementer?', a:['Hjelm, vernesko og hansker','Bare refleksvest','Ingenting spesielt','Bare hørselvern'], r:0, f:'Tunge løft med kran krever fullt verneutstyr.' }
+      ]},
+      { type:'reflect', id:'t6-r1', nivaa:3, tittel:'Lag en sikringsplan', q:'Velg et kolli (fra praksis, fra skolens lager eller et du finner på). Lag en sikringsplan etter hjelpedokumentet: oppgi vekt, mål, friksjon, hvor mange tonn som må sikres framover, sidevegs og bakover – og hvilke metoder og hvor mange surringer du vil bruke. Bruk lastsikringsheftet.', punkter:[
+        'Jeg har oppgitt vekt, høyde, lengde og bredde',
+        'Jeg har funnet friksjonen i friksjonstabellen (eller brukt 0,20)',
+        'Jeg har regnet ut tonn framover (× 0,8), sidevegs og bakover (× 0,5)',
+        'Jeg har valgt metode og brukt blokkering der det er mulig',
+        'Jeg har regnet ut antall surringer mot å gli og mot å tippe (H/B og H/L)',
+        'Jeg har brukt det høyeste antallet',
+        'Jeg har sjekket at utstyret er merket og at surrefestene tåler kreftene'
       ]}
     ]
   }
