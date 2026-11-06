@@ -19,12 +19,12 @@ const N = {
   forsp:    ['Forspenning av lastestropp', 'forspenning-av-lastestropp/60dc116d7d', 'Film'],
   demo:     ['Friksjon og stenging av last – demonstrasjon', 'friksjon-og-stenging-av-last--demonstrasjon/d8f8f086cd', 'Film'],
   togbat:   ['Regler for lastsikring på tog, båt og fly', 'regler-for-lastsikring-pa-tog-bat-og-fly/7d675e6901', 'Fagstoff'],
-  bil:      ['Regler for lastsikring på bil', 'regler-for-lastsikring-pa-bil/7f6e2cc45e', 'Fagstoff'],
+  bil:      ['Regler for lastsikring på bil (utdatert – se merknad)', 'regler-for-lastsikring-pa-bil/7f6e2cc45e', 'Fagstoff · utdatert'],
   surreband:['Surrebånd', 'surreband/d5899881fd', 'Fagstoff'],
   kjetting: ['Kjetting', 'kjetting/50c46d320f', 'Fagstoff'],
   lastbarer:['Lastbærer', 'lastbarer/8a40f1065e', 'Fagstoff'],
   begreper: ['Begreper i lastsikring', 'begreper-i-lastsikring/373cb41de2', 'Fagstoff'],
-  test:     ['Lastsikring – hva har du lært?', 'lastsikring---hva-har-du-lart/54c69097f4', 'Vurderingsressurs'],
+  test:     ['Lastsikring – hva har du lært? (ett spørsmål er utdatert – se merknad)', 'lastsikring---hva-har-du-lart/54c69097f4', 'Vurderingsressurs · utdatert'],
   krefter:  ['Krefter', 'krefter/138056486f', 'Fagstoff'],
   friksjon: ['Friksjon', 'friksjon/97a407eb6d', 'Fagstoff'],
   lasting:  ['Lasting og sikring', 'lasting-og-sikring/5b6441f803', 'Fagstoff'],
@@ -117,6 +117,13 @@ const VIS_FRIKSJON = `<h3 style="font-size:18px;margin:0 0 6px">Friksjonstabell 
   ${FRIKSJON.map(([m,mu]) => `<tr><td style="border:1px solid #9aa3ab;padding:5px 8px;text-align:left">${m}</td><td ${TD}>${mu2(mu)}</td></tr>`).join('')}
   </tbody></table><p class="small muted" style="margin-top:6px">Bruk alltid den laveste friksjonen i «stabelen» – der glir godset først.</p><hr style="margin:14px 0;border:0;border-top:1px solid #9aa3ab">`;
 
+
+/* Merknad om NDLA-ressurser som bygger på reglene fra før 2018 (kontrollert mot Lovdata 6.11.2026). */
+const MERKNAD_UTDATERT = `<div class="note warn"><span aria-hidden="true">⚠️</span><span><b>Merknad om to NDLA-ressurser.</b>
+  <b>«Regler for lastsikring på bil»</b> er skrevet før reglene ble endret 1. januar 2018. Der står det at Sverige og Danmark «kan komme til» å innføre EU-reglene i 2012–2013. I dag gjelder EU-nivået også i Norge.
+  I testen <b>«Lastsikring – hva har du lært?»</b> er alternativet «hele lastens vekt forover og halve til sidene og bakover» den gamle regelen.
+  <b>Dette gjelder i dag</b> (forskrift om bruk av kjøretøy § 3-3): tunge kjøretøy (M2, M3, N2, N3, O3, O4) skal tåle <b>0,8 × vekta framover</b> og <b>0,5 × vekta bakover og sidevegs</b>. Lettere kjøretøy som varebil og små tilhengere: <b>1,0 × vekta framover</b>. Fra 1. juni 2026 krever § 3-2a også skriftlig sikringsdokumentasjon ved gods med høy transportrisiko.</span></div>`;
+
 TLL.registrer({
   id: 'kap5',
   fag: 'Transport, logistikk og løfteoperasjoner',
@@ -157,6 +164,7 @@ TLL.registrer({
     ],
     ndla: [['Lovdata: forskrift om bruk av kjøretøy, kapittel 3', 'https://lovdata.no/dokument/SF/forskrift/1990-01-25-92/KAPITTEL_4', 'Lovtekst'], N.togbat, N.brosjyre, N.lasting, N.bil],
     arbeidsbok: '5.1, 5.2, 5.3, 5.8, 5.9',
+    ekstra: MERKNAD_UTDATERT,
     aktiviteter: [
       { type:'voks', id:'t1-voks', tittel:'Reglene er skrevet av erfaring', tekst:['Mange regler i transport finnes fordi noe har gått galt. Kravet om at lasten skal tåle 0,8 ganger vekta framover er ikke et tilfeldig tall – det er målt i forsøk med bråbremsing.','Det er lett å tenke at regler er noe kontrolløren bryr seg om. Men den som får en løs pall gjennom frontveggen, er sjåføren. Den som møter et lass som glir av i en sving, er en annen trafikant.','En god fagarbeider følger reglene også når ingen kontrollerer – fordi hun vet hvorfor de finnes.'], sporsmal:['Hvilke regler på skolen eller i praksis forstår du bedre når du vet hvorfor de finnes?','Hvem har du ansvar for når du laster en bil som andre skal kjøre?'], handling:'Spør en sjåfør eller instruktør i praksis om en gang lasten nesten gikk galt – og hva de lærte av det.' },
       { type:'flash', id:'t1-flash', tittel:'Begrepskort: regelverket', kort:[
@@ -620,6 +628,7 @@ TLL.registrer({
     ],
     ndla: [N.togbat, N.viktig, N.kjetting, N.test],
     arbeidsbok: '5.13',
+    ekstra: MERKNAD_UTDATERT,
     aktiviteter: [
       { type:'voks', id:'t5-voks', tittel:'Ansvaret følger lasten', tekst:['En last passerer mange hender: Den som pakker, den som laster, sjåføren, ferjemannskapet, den som losser. Det er fristende å tenke at «noen andre» sjekker.','Men når noe går galt, spør alle: Hvem så det – og hvorfor sa ingen noe?','Å ta ansvar betyr å gjøre sin egen del ordentlig og si fra når man ser noe som ikke er i orden – selv om det ikke er «din» last.'], sporsmal:['Har du opplevd at alle trodde noen andre hadde ansvaret?','Hvordan kan du si fra på en måte som blir tatt godt imot?'], handling:'Øv på en setning du kan bruke når du må si fra om noe på jobb – for eksempel: «Jeg ser at … Kan vi sjekke det sammen?»' },
       { type:'flash', id:'t5-flash', tittel:'Begrepskort: lasttyper', kort:[
@@ -732,7 +741,7 @@ TLL.registrer({
       'Fra 1. juni 2026 krever <b>§ 3-2a</b> skriftlig sikringsdokumentasjon for gods med høy transportrisiko. Et heftet, en standard eller en sikringsplan som viser metode og utstyr, er eksempler på slik dokumentasjon.',
       '<b>Betongelementer</b> har en egen NLF-standard: bare <b>kjetting</b> (minst 8 mm kortlenket Grade 80), kantbeskyttelse av metall, dokumenterte surrefester – og <b>kassetthenger</b> som førstevalg for veggelementer.'
     ],
-    ekstra: `<h3 style="font-size:22px;margin-top:0">Dokumenter</h3>
+    ekstra: MERKNAD_UTDATERT + `<h3 style="font-size:22px;margin-top:14px">Dokumenter</h3>
       <ul class="reslist">
         <li><span class="tag">PDF</span><span><a href="dokumenter/Sikring_av_last_hjelpedokument.pdf" target="_blank" rel="noopener">Sikring av last – hjelpedokument (sikringsplan)</a><br><span class="small muted">Skriv ut og fyll inn for kolliet du skal sikre. Laget av Jarle Bruntveit.</span></span></li>
         <li><span class="tag ndla">NDLA</span><span><a href="${NDLA_R + N.brosjyre[1]}" target="_blank" rel="noopener">Lastsikring ved vegtransport – lastsikringsheftet (NLF)</a><br><span class="small muted">Åpne PDF-en fra NDLA-siden. Klassen har også papireksemplarer – spør læreren.</span></span></li>
