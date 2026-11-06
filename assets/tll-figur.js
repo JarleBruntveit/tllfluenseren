@@ -1,7 +1,7 @@
 /* TLL-figur: GIF kan brukes også når eget WebP-stillbilde mangler. */
 (()=>{
  const animated='/assets/TLL-figur-uten-ring.gif';
- const still='/assets/tll-figur-stillbilde.webp';
+ const still='/assets/TLL-figur-stillbilde.webp';
  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  document.querySelectorAll('[data-tll-figur]').forEach((el,index)=>{
   const media=el.querySelector('.tll-figur__media');if(!media)return;
