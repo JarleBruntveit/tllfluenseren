@@ -52,7 +52,7 @@ konkrete eksempler fra lastebil og lager, og at fagordene forklares første gang
 - Kasser bånd uten merking, med kutt, knuter eller rustet strammer. Bruk kantbeskyttere.
 - Kjetting: kortlenket, merket, minst Grade 80. Tolk viser overbelastning. Langlenket er forbudt på stein, stål og betong.
 - Surringsfestet er det svakeste leddet. Etterstram alltid etter en tids kjøring.
-- Regneeksempel: 2 400 kg framover → 1 920 kg. Én overfallssurring holder 680 kg → 3 surringer (rund opp). Grime er mer effektiv framover.
+- Regneeksempel: 2 400 kg framover → 1 920 kg. Ved µ = 0,40 holder én overfallssurring ca. 730 kg framover → 3 surringer (rund opp). Grime er mer effektiv framover.
 
 ## Episode 5 – Ulike lasttyper og kombinert transport
 

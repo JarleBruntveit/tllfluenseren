@@ -360,10 +360,22 @@ const GEN = {
   restkraft(){ const kg = rnd(3,30)*100, fram = rnd(0,1) === 1, krav = fram ? 8 : 5, m = fram ? [2,3,4,5,6][rnd(0,4)] : [1,2,3,4][rnd(0,3)], N = kg*10;
     return { task:`Et kolli på <b>${fmt(kg)} kg</b> står på en lastebil (N3). Friksjonen mellom kolliet og planet er <b>µ = ${tidel(m)}</b>. Hvor mange newton må du sikre med blokkering eller surring for å hindre at kolliet glir <b>${fram ? 'framover' : 'sidevegs'}</b>?`,
       ans:kg*(krav-m), unit:'N', steps:[`Tyngde = ${fmt(kg)} × 10 = ${fmt(N)} N`,`Krav ${fram ? 'framover' : 'sidevegs'} = ${fmt(N)} × ${tidel(krav)} = ${fmt(kg*krav)} N`,`Friksjonen holder = ${fmt(N)} × ${tidel(m)} = ${fmt(kg*m)} N`,`Må sikres = ${fmt(kg*krav)} − ${fmt(kg*m)} = <b>${fmt(kg*(krav-m))}</b> N`] }; },
-  stropper(){ let kg, cap, fram, need, ans;
-    do { kg = rnd(8,40)*100; fram = rnd(0,1) === 1; cap = (fram ? [450,600,680,810,1100] : [720,1100,1700,2900])[rnd(0, fram ? 4 : 3)]; need = kg*(fram ? 8 : 5)/10; ans = Math.ceil(need/cap); } while (ans < 2 || ans > 8);
-    return { task:`Et kolli på <b>${fmt(kg)} kg</b> skal sikres med overfallssurringer på en lastebil (N3). Tabellen i veilederen viser at én overfallssurring holder igjen <b>${fmt(cap)} kg ${fram ? 'framover' : 'sidevegs'}</b> ved denne friksjonen. Hvor mange overfallssurringer trenger du for å sikre ${fram ? 'framover' : 'sidevegs'}?`,
-      ans, unit:'surringer', steps:[`Krav = ${fmt(kg)} × ${fram ? '0,8' : '0,5'} = ${fmt(need)} kg`,`Antall = krav ÷ det én surring holder = ${fmt(need)} ÷ ${fmt(cap)} = ${(need/cap).toLocaleString('nb-NO',{maximumFractionDigits:2})}`,`Rund alltid <b>opp</b>: <b>${ans}</b> surringer`] }; },
+  /* Oppslag i øvingstabellen som kapitlet sender med (a.tabell, a.friksjon). Nivå: a.medMateriale = eleven må finne µ selv. */
+  overfallTabell(a){ const T = a.tabell, rader = T.rader.filter(r => r.fram), F = a.friksjon || [];
+    let kg, fram, rad, mat, need, cap, ans;
+    do {
+      if (a.medMateriale){ mat = F[rnd(0,F.length-1)]; rad = T.rader.find(r => r.mu === mat[1]); }
+      else { rad = rader[rnd(0,rader.length-1)]; mat = null; }
+      fram = rnd(0,1) === 1 || !rad.side; kg = rnd(5,40)*100; need = kg*(fram ? 8 : 5)/10;
+      cap = fram ? rad.fram : rad.side; ans = cap ? Math.ceil(need/cap) : 0;
+    } while (!cap || ans < 1 || ans > 8);
+    const mu = tidel2(rad.mu), retn = fram ? 'framover' : 'sidevegs';
+    return { task:`Et kolli på <b>${fmt(kg)} kg</b> skal sikres med overfallssurringer på en lastebil (N3). ${mat ? `Kontaktflaten er <b>${mat[0]}</b>.` : `Friksjonen mellom kolliet og planet er <b>µ = ${mu}</b>.`} Bruk øvingstabellen. Hvor mange overfallssurringer trenger du for å sikre <b>${retn}</b>?`,
+      ans, unit:'surringer', steps:[
+        ...(mat ? [`Friksjonstabellen: ${mat[0]} → µ = ${mu}`] : []),
+        `Øvingstabellen, rad µ = ${mu}, kolonne ${retn}: én surring holder ${fmt(cap)} kg`,
+        `Krav ${retn} = ${fmt(kg)} × ${fram ? '0,8' : '0,5'} = ${fmt(need)} kg`,
+        `${fmt(need)} ÷ ${fmt(cap)} = ${(need/cap).toLocaleString('nb-NO',{maximumFractionDigits:2})} → rund alltid <b>opp</b>: <b>${ans}</b> surringer`] }; },
   fart(){ const v1 = [10,15,20,25,30][rnd(0,4)], k = rnd(2,3), v2 = v1*k;
     return { task:`Du kjører gjennom en krapp sving i <b>${v1} km/t</b>. Neste gang kjører du gjennom den samme svingen i <b>${v2} km/t</b>. Hvor mange ganger større blir kraften som skyver lasten utover?`,
       ans:k*k, unit:'ganger', steps:[`Kraften utover i en sving øker med farten i andre (farten ganget med seg selv).`,`Farten øker ${v2} ÷ ${v1} = ${k} ganger`,`${k} × ${k} = <b>${k*k}</b> ganger så stor kraft`] }; },
@@ -379,11 +391,12 @@ const KLOSS = [
   {n:'hjulene på en traktor som står på lasteplanet', d:3, min:2, max:5, regel:'Klosser foran og bak på alle hjul, minst 1/3 av hjulradien.'}
 ];
 const fmt = n => n.toLocaleString('nb-NO');
+const tidel2 = mu => mu.toLocaleString('nb-NO',{minimumFractionDigits:2});
 const tidel = n => n === 10 ? '1,0' : (n/10).toLocaleString('nb-NO');
 function runCalc(st, a, done){
   const n = a.antall || 5; let i = 0, score = 0, tryN = 0, cur;
   const draw = () => {
-    cur = GEN[a.gen](); tryN = 0;
+    cur = GEN[a.gen](a); tryN = 0;
     st.innerHTML = `<div class="row"><span class="counter">Oppgave ${i+1} av ${n}</span><span class="spacer"></span><span class="counter">${score} riktige</span></div>
       <div class="meter"><i style="width:${100*i/n}%"></i></div>
       <div class="calc panel"><div class="task">${cur.task}</div>

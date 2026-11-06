@@ -91,6 +91,31 @@ const SVG_VINKEL = `<svg viewBox="0 0 580 200" ${S} role="img" aria-label="Fire 
   ${vpanel(0, 'v90', 90, 110)}${vpanel(145, 'v60', 60, 115)}${vpanel(290, 'v45', 45, 115)}${vpanel(435, 'v20', 20, 82)}
 </svg>`;
 
+
+/* ---------- Egne øvingstabeller (egenprodusert, IKKE kopiert fra boka/veilederne) ----------
+   Overfallssurring: én stropp, STF 400 daN, vinkel 75–90°, friksjon på begge sider av stroppen.
+   Formel: kg = 2 · µ · 4 000 N / (10 · (krav − µ)) / 1,1 (sikkerhetsfaktor), rundet til nærmeste 10 kg.
+   Krav: 0,8 framover og 0,5 sidevegs. Tallene er forenklet – bruk veileder, app eller lærebokas tabeller i praksis. */
+const holder = (mu, krav) => mu >= krav ? null : Math.round(2*mu*4000/(10*(krav - mu))/1.1/10)*10;
+const OVERFALL = { rader: [0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.6].map(mu => ({ mu, fram: holder(mu, 0.8), side: holder(mu, 0.5) })) };
+const FRIKSJON = [
+  ['plastpall mot stålplate', 0.15], ['plastpall mot kryssfiner', 0.2], ['høvlet tre mot riflet aluminium', 0.25],
+  ['trepall mot stålplate', 0.3], ['sagd tre (trepall) mot riflet aluminium', 0.4], ['kartong mot trepall', 0.4],
+  ['trepall mot kryssfiner', 0.45], ['kartong mot kartong', 0.5], ['trepall på friksjonsmatte av gummi', 0.6]
+];
+const nb = n => n.toLocaleString('nb-NO');
+const mu2 = mu => mu.toLocaleString('nb-NO',{minimumFractionDigits:2});
+const TS = 'style="border-collapse:collapse;width:100%;font-size:15px"', TD = 'style="border:1px solid #9aa3ab;padding:5px 8px;text-align:center"', TH = 'style="border:1px solid #9aa3ab;padding:5px 8px;background:rgba(242,184,75,.18)"';
+const VIS_OVERFALL = `<h3 style="font-size:18px;margin:0 0 6px">Øvingstabell: Hvor mye holder én overfallssurring igjen?</h3>
+  <table ${TS}><thead><tr><th ${TH}>Friksjon µ</th><th ${TH}>Framover (kg)</th><th ${TH}>Sidevegs og bakover (kg)</th></tr></thead><tbody>
+  ${OVERFALL.rader.map(r => `<tr><td ${TD}>${mu2(r.mu)}</td><td ${TD}>${r.fram ? nb(r.fram) : 'glir ikke'}</td><td ${TD}>${r.side ? nb(r.side) : 'glir ikke'}</td></tr>`).join('')}
+  </tbody></table>
+  <p class="small muted" style="margin-top:6px">Forutsetninger: surrebånd strammet til S<sub>TF</sub> 400 daN, surringsvinkel 75–90°. Ved 30–75° holder stroppen halvparten. Øvingstabellen er laget av TLLfluenseren med en forenklet formel – i praksis bruker du tabellene i læreboka, veilederen eller en lastsikringsapp.</p>`;
+const VIS_FRIKSJON = `<h3 style="font-size:18px;margin:0 0 6px">Friksjonstabell (omtrentlige verdier)</h3>
+  <table ${TS}><thead><tr><th ${TH}>Kontaktflate</th><th ${TH}>µ</th></tr></thead><tbody>
+  ${FRIKSJON.map(([m,mu]) => `<tr><td style="border:1px solid #9aa3ab;padding:5px 8px;text-align:left">${m}</td><td ${TD}>${mu2(mu)}</td></tr>`).join('')}
+  </tbody></table><p class="small muted" style="margin-top:6px">Bruk alltid den laveste friksjonen i «stabelen» – der glir godset først.</p><hr style="margin:14px 0;border:0;border-top:1px solid #9aa3ab">`;
+
 TLL.registrer({
   id: 'kap5',
   fag: 'Transport, logistikk og løfteoperasjoner',
@@ -105,6 +130,7 @@ TLL.registrer({
     // KUN egenprodusert materiell her (f.eks. egne lysark). IKKE last opp forlagets presentasjon eller PDF-er.
     presentasjon: '',
     laerebok: 'Læreboka, kapittel 5 (s. 117–158)',
+    arbeidsbok: 'Arbeidsboka, kapittel 5 (oppgave 5.1–5.21)',
     ndlaEmne: NDLA_E,
     ndlaEmneNavn: 'Emnet «Sikring av last» på NDLA',
     ordliste: NDLA_R + N.begreper[1],
@@ -128,6 +154,7 @@ TLL.registrer({
       'Ved <b>kombinert transport</b> (for eksempel bil + ferje eller bil + tog) skal lasten sikres etter reglene for alle transportformene på turen.'
     ],
     ndla: [N.bil, N.togbat, N.brosjyre, N.lasting],
+    arbeidsbok: '5.1, 5.2, 5.3, 5.8, 5.9',
     aktiviteter: [
       { type:'voks', id:'t1-voks', tittel:'Reglene er skrevet av erfaring', tekst:['Mange regler i transport finnes fordi noe har gått galt. Kravet om at lasten skal tåle 0,8 ganger vekta framover er ikke et tilfeldig tall – det er målt i forsøk med bråbremsing.','Det er lett å tenke at regler er noe kontrolløren bryr seg om. Men den som får en løs pall gjennom frontveggen, er sjåføren. Den som møter et lass som glir av i en sving, er en annen trafikant.','En god fagarbeider følger reglene også når ingen kontrollerer – fordi hun vet hvorfor de finnes.'], sporsmal:['Hvilke regler på skolen eller i praksis forstår du bedre når du vet hvorfor de finnes?','Hvem har du ansvar for når du laster en bil som andre skal kjøre?'], handling:'Spør en sjåfør eller instruktør i praksis om en gang lasten nesten gikk galt – og hva de lærte av det.' },
       { type:'flash', id:'t1-flash', tittel:'Begrepskort: regelverket', kort:[
@@ -225,12 +252,13 @@ TLL.registrer({
       'Tyngdekraften trekker 1 kg ned med omtrent <b>10 N</b> (egentlig 9,81 N). Et kolli på 600 kg presses mot planet med 6 000 N. I lastsikring brukes også <b>dekanewton</b>: 1 daN = 10 N.',
       '<b>Newtons 1. lov:</b> Et kolli i ro blir liggende i ro – eller i jevn fart – til en kraft virker på det. <b>2. lov:</b> Kraft = masse × akselerasjon. Dobbelt så tung last gir dobbelt så stor kraft. Tungt gods står altså <i>ikke</i> bedre enn lett gods. <b>3. lov:</b> Til hver kraft finnes en like stor motkraft.',
       '<b>Friksjonskoeffisienten (µ)</b> forteller hvor godt to flater «griper» i hverandre. Den måles med en <b>krengeprøve</b>: Du vipper underlaget til godset begynner å gli. Jo brattere, desto høyere µ.',
-      'Eksempler: plastpall mot stålplate har lav friksjon (rundt 0,15–0,2). Trepall mot riflet aluminium ligger rundt 0,4. En <b>friksjonsmatte</b> av gummi gir rundt 0,6. Bruk alltid den <b>laveste</b> friksjonen i «stabelen» – det er der godset glir først.',
+      'Eksempler: plastpall mot stålplate har lav friksjon (rundt 0,15–0,2). Tre mot riflet aluminium ligger mellom 0,25 (høvlet tre) og 0,4 (sagd tre). En <b>friksjonsmatte</b> av gummi gir rundt 0,6. Bruk alltid den <b>laveste</b> friksjonen i «stabelen» – det er der godset glir først.',
       'Friksjonen holder igjen <b>tyngden × µ</b>. Resten må sikres med blokkering eller surring. Eksempel: 1 000 kg og µ = 0,3 → friksjonen holder 3 000 N. Kravet framover er 8 000 N, så 5 000 N må sikres.',
       'På ujevn veg («vaskebrett») kan godset lette fra planet et øyeblikk. Da forsvinner friksjonen. Stramme <b>overfallssurringer</b> presser godset ned og holder friksjonen på plass.',
       '<b>Tyngdepunktet</b> er punktet der vi kan tenke oss at all massen er samlet. Høyt tyngdepunkt gir større fare for velt. Kolli med skjevt tyngdepunkt er ofte merket med et eget symbol.'
     ],
     ndla: [N.krefter, N.friksjon, N.demo, N.begreper],
+    arbeidsbok: '5.10, 5.11 (friksjon), 5.16, 5.17, 5.18',
     aktiviteter: [
       { type:'voks', id:'t2-voks', tittel:'Små krefter, store følger', tekst:['En pall på 500 kg står helt rolig på lasteplanet når du kjører jevnt. Men ved en bråbremsing presses den framover med en kraft som tilsvarer 400 kg. Den kraften kan ingen holde igjen med hendene.','Det samme gjelder mye annet: Små ting som ser ufarlige ut når alt går rolig, blir store når noe uventet skjer. En dårlig vane, en snarvei, en løs stropp.','Profesjonelle planlegger for det som kan skje – ikke bare for det som pleier å skje.'], sporsmal:['Hva er «bråbremsingen» i ditt liv – situasjoner der små svakheter plutselig blir store?','Hva kan du gjøre i dag for å være forberedt?'], handling:'Velg én ting du ofte tar en snarvei på, og gjør den grundig hver gang denne uka.' },
       { type:'flash', id:'t2-flash', tittel:'Begrepskort: krefter og friksjon', kort:[
@@ -279,7 +307,7 @@ TLL.registrer({
         ['Glatt, malt plate mot glatt, malt plate',0,'Rundt 0,2.'],
         ['Grov betong mot sagd treplate',1,'Rundt 0,7.'],
         ['Lasteplan med is og snø',0,'Is gir svært lav friksjon – rengjør planet.'],
-        ['Trepall (sagd tre) mot riflet aluminium',1,'Rundt 0,4.'],
+        ['Trepall mot stålplate',0,'Rundt 0,3.'],
         ['Kartong mot kartong',1,'Rundt 0,5.']
       ]},
       { type:'calc', id:'t2-c1', nivaa:1, gen:'tyngde', tittel:'Fra kilo til newton', antall:5 },
@@ -290,6 +318,9 @@ TLL.registrer({
         { q:'Du har 5 tonn på bilen og akselererer med 5 m/s². Hvor stor kraft virker på godset?', a:['1 000 N','25 000 N','5 000 N','50 000 N'], r:1, f:'F = m × a = 5 000 kg × 5 m/s² = 25 000 N.' },
         { q:'Du dobler lastvekta fra 5 til 10 tonn. Hva skjer med kreftene ved samme bremsing?', a:['De halveres','De blir like','De dobles','De firedobles'], r:2, f:'Kraften er proporsjonal med massen.' },
         { q:'Hvorfor er friksjonsmatter ekstra nyttige på vinteren?', a:['De holder godset varmt','Snø og is på planet gir svært lav friksjon','De er påbudt om vinteren','De gjør stroppene sterkere'], r:1, f:'Matter og rent plan gir mer friksjon – og mindre behov for andre sikringer.' },
+        { q:'Du vipper et lasteplan sakte opp. Kolliet begynner å gli ved ca. 15°. Omtrent hvilken friksjonskoeffisient har du?', a:['0,1','0,3','0,6','0,9'], r:1, f:'En helning på rundt 15° svarer til µ ≈ 0,3. Ved rundt 30° er µ ≈ 0,6.' },
+        { q:'Vinterføre med våt is gir µ mellom 0,05 og 0,15 mellom dekk og veg. Hva bør du gjøre før en bratt bakke?', a:['Kjøre fortere','Legge på kjetting for å øke friksjonen','Slippe luft ut av dekkene','Ingenting – lasten er sikret'], r:1, f:'Lastsikringen hjelper ikke hvis hele bilen sklir. Kjetting øker grepet.' },
+        { q:'Du skal sette et tungt kolli med skjevt tyngdepunkt på en bakløfter. Hvor skal tyngdepunktet være?', a:['Ytterst på plattformen','Midt mellom løftearmene','Så nær bilen som mulig, uansett side','Det spiller ingen rolle'], r:1, f:'Da fordeles vekta jevnt på løftearmene.' },
         { q:'Hvorfor skal overfallssurringer være strammet, selv om friksjonen er høy?', a:['For at de ikke skal blafre','For å presse godset ned og hindre at friksjonen forsvinner på ujevn veg','Fordi kontrolløren vil se det','Det trengs ikke'], r:1, f:'Uten forspenning kan godset «vandre» på vaskebrett.' }
       ]},
       { type:'case', id:'t2-case', nivaa:3, tittel:'Case: Malingspallen', intro:'Du skal frakte en pall med malingsspann på en lastebil (N3). Pallen med maling veier 800 kg. Det er en plastpall, og lasteplanet har stålgolv. Spannene er krympet fast til pallen.', steg:[
@@ -333,6 +364,7 @@ TLL.registrer({
       'Blokkering er ofte nok for lett stykkgods i lukket konteiner – men tyngre last trenger nesten alltid <b>surring i tillegg</b>.'
     ],
     ndla: [N.viktig, N.demo, N.lastbarer, N.lasting],
+    arbeidsbok: '5.5, 5.11 (blokkering, strekk- og krympefilm), 5.12, 5.19',
     aktiviteter: [
       { type:'voks', id:'t3-voks', tittel:'Gjør det riktig første gang', tekst:['Det tar kanskje fem minutter ekstra å flytte pallene helt inntil frontveggen og fylle hullene med mellomlegg. Det tar mye lenger tid å rydde opp etter en last som har veltet.','Kvalitet handler ofte om å gjøre det kjedelige grundig – også på fredag ettermiddag.','Kunden ser ikke hvordan du lastet. Men kunden merker det når varene kommer hele fram.'], sporsmal:['Når er det mest fristende for deg å «gjøre det fort» i stedet for «gjøre det riktig»?','Hvordan føles det når noen andre har gjort en jobb grundig for deg?'], handling:'Velg én oppgave denne uka som du gjør så grundig at du kunne vist den fram til en sensor.' },
       { type:'flash', id:'t3-flash', tittel:'Begrepskort: låsing og blokkering', kort:[
@@ -388,6 +420,7 @@ TLL.registrer({
         { q:'En høy pall har tyngdepunktet 1,0 m over planet. Du blokkerer bare de nederste 20 cm. Hva er problemet?', a:['Ingenting','Pallen kan velte over blokkeringen','Pallen blir for tung','Blokkeringen er for høy'], r:1, f:'Blokker opp til tyngdepunktet – eller sikr mot velt med surring.' },
         { q:'Hvorfor kan en frontvegg holde igjen mer gods når friksjonen er høy?', a:['Fordi veggen blir sterkere','Fordi friksjonen tar en del av kraften','Fordi godset blir lettere','Det stemmer ikke'], r:1, f:'Friksjonen og frontveggen deler på jobben.' },
         { q:'Du laster lett stykkgods i en lukket konteiner. Hva er normalt nok?', a:['Blokkering mot veggene i hele bredden og høyden','Ingen sikring','Bare presenning','Bare én stropp'], r:0, f:'Start mot frontveggen og fyll hele bredden og høyden. Tunge kolli lavt og fremme.' },
+        { q:'Et kolli er 180 cm høyt og har tyngdepunktet midt i. Hvor høyt må blokkeringen minst gå for å hindre velt?', a:['30 cm','90 cm','150 cm','180 cm'], r:1, f:'Opp til tyngdepunktet: 180 cm ÷ 2 = 90 cm.' },
         { q:'Hvorfor må du blokkere «platelaster» helt opp til den øverste platen?', a:['Ellers kan de øverste platene skli over blokkeringen','Fordi det ser pent ut','Fordi platene er lette','Det trenger du ikke'], r:0, f:'Plater glir lett på hverandre. I tillegg må lasten surres.' }
       ]},
       { type:'case', id:'t3-case', nivaa:3, tittel:'Case: Distribusjonsbilen', intro:'Du laster en distribusjonsbil med skillevegg, skinner og to sperrebommer. Du har 11 paller dagligvarer. Bilen har plass til 18 paller. Pallene er filmet.', steg:[
@@ -440,6 +473,7 @@ TLL.registrer({
       'Surringene er aldri sterkere enn <b>surringsfestet</b> de sitter i. Stropper strekker seg og lasten «setter seg» – derfor skal du alltid <b>etterstramme</b> etter en tids kjøring.'
     ],
     ndla: [N.tre, N.kolli, N.forsp, N.surreband, N.kjetting, N.lastbarer, N.brosjyre],
+    arbeidsbok: '5.4, 5.6, 5.7, 5.11 (surringer, lastrad, lastseksjon), 5.14, 5.15, 5.20, 5.21',
     aktiviteter: [
       { type:'voks', id:'t4-voks', tittel:'Si fra om utstyret', tekst:['Du finner en stropp med et lite kutt. Det er travelt, og den ser ut til å holde. Kanskje legger du den tilbake i kassa – og så tar en kollega den i morgen.','Å kassere eller merke dårlig utstyr er en liten handling. Men den beskytter neste person som bruker det, kanskje i en situasjon der stroppen må holde igjen flere tonn.','Å si fra er ikke å sladre. Det er å ta vare på hverandre.'], sporsmal:['Har du sett utstyr – på skolen, i praksis eller hjemme – som burde vært byttet ut?','Hva gjør det lettere eller vanskeligere å si fra?'], handling:'Neste gang du ser utstyr som ikke er i orden: Merk det eller si fra med én gang.' },
       { type:'flash', id:'t4-flash', tittel:'Begrepskort: surring og utstyr', kort:[
@@ -509,7 +543,8 @@ TLL.registrer({
         { q:'Ved hvilken vinkel virker omtrent like mye av kraften nedover som sidevegs?', z:'v45', f:'Ved 45° virker rundt 70 % nedover og 70 % sidevegs.' },
         { q:'Ved hvilken vinkel virker omtrent 90 % nedover og halvparten sidevegs?', z:'v60', f:'Ved 60° presser stroppen fortsatt godt ned.' }
       ]},
-      { type:'calc', id:'t4-c1', nivaa:2, gen:'stropper', tittel:'Hvor mange surringer trenger du?', antall:5 },
+      { type:'calc', id:'t4-c1', nivaa:2, gen:'overfallTabell', tittel:'Slå opp i øvingstabellen', antall:5, tabell:OVERFALL, vis:VIS_OVERFALL },
+      { type:'calc', id:'t4-c2', nivaa:3, gen:'overfallTabell', tittel:'Fra materiale til antall surringer', antall:5, tabell:OVERFALL, friksjon:FRIKSJON, medMateriale:true, vis:VIS_FRIKSJON + VIS_OVERFALL },
       { type:'check', id:'t4-chk1', nivaa:2, tittel:'Kontroll av surringsutstyr', instr:'Du går gjennom kassa med surringsutstyr før en tur. Kryss av utstyret som ikke kan brukes.', dok:'Utstyrskontroll – bil 14', meta:'Kontrollert av: lærling · Før avreise', kolonner:['Utstyr','Det du ser'], kryss:'Kan ikke brukes', rader:[
         { c:['Surrebånd 1','Hel merkelapp: LC 2 500 daN, STF 400 daN, «Not for lifting». Ingen skader.'], avvik:false, f:'Merket og uten skader.' },
         { c:['Surrebånd 2','Merkelappen er revet av.'], avvik:true, f:'Uten merking vet du ikke hva båndet tåler. Kasser det.' },
@@ -521,15 +556,15 @@ TLL.registrer({
         { c:['Kjetting 2','Langlenket, umerket. Skal brukes på betongelementer.'], avvik:true, f:'Langlenket kjetting er forbudt på stein, stål og betong – og den er umerket.' },
         { c:['Kantbeskyttere','Fire stykker i plast, hele.'], avvik:false, f:'I orden.' }
       ], etter:'Utstyr som ikke kan brukes, skal merkes og tas ut av bruk med én gang – så ingen andre tar det.' },
-      { type:'case', id:'t4-case', nivaa:3, tittel:'Case: Velg surringsmetode', intro:'Du skal sikre en kasse med maskindeler på en lastebil (N3). Kassa veier 2 400 kg, er 1,8 m høy, 1,2 m lang og 1,0 m bred. Den står på trelemmer på et lasteplan av riflet aluminium. Kassa kan ikke stå inntil frontveggen fordi det står annet gods der.', steg:[
+      { type:'case', id:'t4-case', nivaa:3, tittel:'Case: Velg surringsmetode', vis:VIS_FRIKSJON + VIS_OVERFALL, intro:'Du skal sikre en kasse med maskindeler på en lastebil (N3). Kassa veier 2 400 kg, er 1,8 m høy, 1,2 m lang og 1,0 m bred. Den står på lemmer av sagd tre på et lasteplan av riflet aluminium. Kassa kan ikke stå inntil frontveggen fordi det står annet gods der.', steg:[
         { q:'Hvor mye må sikringen minst holde igjen framover?', valg:[
           { t:'0,8 × 2 400 kg = 1 920 kg', ok:true, f:'Tunge kjøretøy: 0,8 framover.' },
           { t:'0,5 × 2 400 kg = 1 200 kg', ok:false, f:'0,5 gjelder bakover og sidevegs.' },
           { t:'2 400 kg', ok:false, f:'1,0 gjelder lettere kjøretøy som varebil.' }
         ]},
-        { q:'Tabellen i veilederen viser at én overfallssurring bare holder 680 kg framover ved denne friksjonen. Hvor mange trenger du framover?', valg:[
-          { t:'3 – fordi 2 × 680 = 1 360 er for lite, mens 3 × 680 = 2 040 holder', ok:true, f:'Rund alltid opp.' },
-          { t:'2 – det er nesten nok', ok:false, f:'«Nesten nok» holder ikke. 2 × 680 = 1 360 kg < 1 920 kg.' },
+        { q:'Bruk tabellene over: Sagd tre mot riflet aluminium gir µ = 0,40. Hvor mange overfallssurringer trenger du framover?', valg:[
+          { t:'3 – fordi 2 × 730 = 1 460 kg er for lite, mens 3 × 730 = 2 190 kg holder', ok:true, f:'Rund alltid opp.' },
+          { t:'2 – det er nesten nok', ok:false, f:'«Nesten nok» holder ikke. 2 × 730 = 1 460 kg < 1 920 kg.' },
           { t:'1 – friksjonen tar resten', ok:false, f:'Tabellverdien har allerede regnet med friksjonen.' }
         ]},
         { q:'Hvilken løsning gir færre stropper framover?', valg:[
@@ -575,6 +610,7 @@ TLL.registrer({
       '<b>Kombinert transport:</b> På ferje og skip må lasten også sikres mot krefter <b>oppover og sidevegs</b> fordi skipet ruller og stamper. Havet deles i sjøområder (A, B og C) etter bølgehøyde – Skagerrak og Nordsjøen er strengere enn Kattegat. Skal konteineren videre på tog, sikrer du for toget også.'
     ],
     ndla: [N.togbat, N.viktig, N.kjetting, N.test],
+    arbeidsbok: '5.13',
     aktiviteter: [
       { type:'voks', id:'t5-voks', tittel:'Ansvaret følger lasten', tekst:['En last passerer mange hender: Den som pakker, den som laster, sjåføren, ferjemannskapet, den som losser. Det er fristende å tenke at «noen andre» sjekker.','Men når noe går galt, spør alle: Hvem så det – og hvorfor sa ingen noe?','Å ta ansvar betyr å gjøre sin egen del ordentlig og si fra når man ser noe som ikke er i orden – selv om det ikke er «din» last.'], sporsmal:['Har du opplevd at alle trodde noen andre hadde ansvaret?','Hvordan kan du si fra på en måte som blir tatt godt imot?'], handling:'Øv på en setning du kan bruke når du må si fra om noe på jobb – for eksempel: «Jeg ser at … Kan vi sjekke det sammen?»' },
       { type:'flash', id:'t5-flash', tittel:'Begrepskort: lasttyper', kort:[
