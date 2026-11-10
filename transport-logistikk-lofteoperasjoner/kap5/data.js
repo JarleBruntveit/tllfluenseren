@@ -941,6 +941,7 @@ TLL.registrer({
         { q:'Grimen sitter halvveis opp på lasten. Hvor mye holder den mot tipping?', a:['Dobbelt så mye','Halvparten av tabellverdien','Det samme','Ingenting'], r:1, f:'Grimen bør sitte øverst for å hindre tipping best.' },
         { q:'Grimen har to parter per side. Hva betyr det?', a:['Den holder dobbelt så mye som tabellen viser','Den holder halvparten','Den kan ikke brukes','Ingen endring'], r:0, f:'To parter per side = dobbel verdi.' },
         { q:'Du trenger fire direktesurringer som virker i samme retning. Hva advarer heftet om?', a:['At surringene ikke alltid tar belastningen samtidig','At det blir for dyrt','At du må bruke kjetting','Ingenting'], r:0, f:'Sikringen kan bli underdimensjonert. Blokkering er ofte bedre.' },
+        { q:'Det er is og snø på lasteplanet. Hva betyr det for friksjonstabellen?', a:['Verdiene gjelder ikke – friksjonen blir lavere, så du må rengjøre planet eller regne med lavere µ','Ingenting – tabellen gjelder alltid','Friksjonen blir høyere','Du kan bruke 0,60'], r:0, f:'Tabellverdiene forutsetter rene flater uten frost, is og snø. Vær også obs på oljete flater.' },
         { q:'Stroppene har LC 2 500 daN, men surrefestene tåler 2 000 daN. Hvilken omregningsfaktor gjelder for loopsurring?', a:['2 500 ÷ 1 600 ≈ 1,56','2 000 ÷ 1 600 = 1,25','1,0','2 500 ÷ 400 ≈ 6,3'], r:1, f:'Surrefestets kapasitet må ikke overskrides.' }
       ]},
       { type:'case', id:'t7-case1', nivaa:3, tittel:'Case: Maskinkassen som ikke er blokkert', intro:'En maskinkasse i stål på 6 tonn står alene på et plywoodplan. Den er 2,2 m høy, 1,0 m bred og 2,0 m lang, med tyngdepunktet på midten. Du bruker overfallssurring med 85° vinkel. Kassen står ikke inntil frontveggen. Ha heftet foran deg.', steg:[
@@ -1051,6 +1052,40 @@ TLL.registrer({
           { t:'2', ok:false, f:'2 × 1,9 = 3,8 t er mindre enn 4 t.' },
           { t:'3', ok:true, f:'4 ÷ 1,9 = 2,1 → 3. Alternativt: flytt pallene inntil frontveggen. Da holder det med 1 per 4 tonn.' },
           { t:'1', ok:false, f:'1,9 t er mindre enn 4 t.' }
+        ]}
+            ]},
+      { type:'case', id:'t7-case6', nivaa:2, tittel:'Case: Les merkelappen', intro:'Merkelappen på stroppen viser: LC 1 700 daN, S_HF 50 daN, S_TF 400 daN. Under «Lokale regler» står det 4 000 kg for Norge og Sverige. Heftet regner med LC 1 600 daN og S_TF 400 daN.', steg:[
+        { q:'Hva er stroppens sikringskapasitet (LC)?', valg:[
+          { t:'1 700 daN', ok:true, f:'LC er det du regner med.' },
+          { t:'4 000 kg', ok:false, f:'Det er bruddstyrken. Den må ikke forveksles med LC.' },
+          { t:'400 daN', ok:false, f:'Det er forspenningen S_TF.' }
+        ]},
+        { q:'Hvilken omregningsfaktor gjelder for direktesurring?', valg:[
+          { t:'Omtrent 1,06 (1 700 ÷ 1 600)', ok:true, f:'Direktesurring, loopsurring og grime regnes om med LC.' },
+          { t:'1,0 (400 ÷ 400)', ok:false, f:'Forspenningen brukes for overfallssurring mot å gli.' },
+          { t:'2,5 (4 000 ÷ 1 600)', ok:false, f:'4 000 kg er bruddstyrken, ikke LC.' }
+        ]},
+        { q:'Hvilken omregningsfaktor gjelder for overfallssurring mot å gli?', valg:[
+          { t:'1,0 (400 ÷ 400)', ok:true, f:'Stroppen er like god som tabellstroppen mot glidning.' },
+          { t:'Omtrent 1,06 (1 700 ÷ 1 600)', ok:false, f:'Mot glidning er det forspenningen S_TF som teller.' },
+          { t:'0,125 (50 ÷ 400)', ok:false, f:'50 daN er håndkraften S_HF.' }
+        ]}
+      ]},
+      { type:'case', id:'t7-case7', nivaa:3, tittel:'Case: Velg og begrunn opplegget', intro:'Du skal frakte 8 tonn kartonger på trepaller (sagd tre) på plywood. Lasten fyller hele planet og står inntil frontveggen og sideveggene. Én overfallssurring holder bare 0,81 t framover ved µ = 0,45.', steg:[
+        { q:'Hvilket opplegg er best?', valg:[
+          { t:'Blokkering mot frontvegg og sider, pluss overfallssurringer mot risting', ok:true, f:'Blokkeringen tar de store kreftene. Surringene holder lasten nede.' },
+          { t:'10 overfallssurringer uten å bruke blokkeringen', ok:false, f:'8 ÷ 0,81 = 9,9 → 10 stropper. Det er unødvendig mye arbeid når lasten allerede er blokkert.' },
+          { t:'Ingen sikring – lasten er tung nok', ok:false, f:'Tung last glir like lett som lett last. Den trenger bare større kraft for å stoppe.' }
+        ]},
+        { q:'Lasten verken glir eller tipper etter tabellene. Hvor mange surringer anbefaler heftet mot risting?', valg:[
+          { t:'2', ok:true, f:'Én per 4 tonn: 8 ÷ 4 = 2.' },
+          { t:'0', ok:false, f:'Det er lov, men risting kan få lasten til å vandre. Heftet anbefaler én per 4 tonn.' },
+          { t:'8', ok:false, f:'Anbefalingen er én per 4 tonn, ikke én per tonn.' }
+        ]},
+        { q:'Hvordan begrunner du valget overfor sjåføren?', valg:[
+          { t:'Blokkering er heftets førstevalg, sparer stropper og tid – og surringene sikrer mot risting', ok:true, f:'En god begrunnelse viser til regelverket og forklarer hvorfor metoden passer lasten.' },
+          { t:'Sånn har vi alltid gjort det', ok:false, f:'Vane er ingen faglig begrunnelse.' },
+          { t:'Det ser stødig ut', ok:false, f:'Magefølelse er ikke nok. Regn det ut eller slå det opp.' }
         ]}
       ]}
     ]
