@@ -1,76 +1,18 @@
 <!doctype html>
-<html lang="no">
+<html lang="nb">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lærerside – elevfremdrift TLL – TLLfluenseren</title>
-<meta name="robots" content="noindex">
-<link rel="icon" href="/favicon.ico?v=1" sizes="any">
-<link rel="icon" href="/favicon.svg?v=1" type="image/svg+xml">
-<link rel="icon" href="/favicon-32x32.png?v=1" type="image/png" sizes="32x32">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=1" sizes="180x180">
-<link rel="stylesheet" href="../felles/motor.css">
-<link rel="stylesheet" href="/assets/elevflyt.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <meta http-equiv="refresh" content="0; url=https://tll-laererrom.jarle-bruntveit.chatgpt.site/elevfremdrift">
+  <title>Elevfremdrift – Lærerrommet</title>
+  <link rel="stylesheet" href="/assets/styles.css">
 </head>
-<body data-side="laerer">
-<a class="tll-skip" href="#app">Hopp til innhold</a>
-<nav class="tll-site-nav tll-standalone-nav" aria-label="Hovedmeny"><a href="/">Forside</a><a href="/#fag">Fagområder</a><a href="/ressursbank/">Ressursbank</a><a href="/assistent/">TLL-assistenten</a><a href="/laererrom/">Lærerrom</a><a href="/om/">Om</a></nav>
-<header class="top"><div class="wrap">
-  <a class="brandlink" href="../../"><span class="bm">TLL</span>TLLfluenseren</a>
-  <div class="crumbs"><a href="../">Transport, logistikk og løfteoperasjoner</a> <span>›</span> <span>Lærerside</span></div>
-  <h1>Elevfremdrift</h1>
-  <div class="sub">Les inn elevenes fremdriftsrapporter fra Teams og se hele klassen samlet. Lag prøvelenker til klassen.</div>
-</div></header>
-<main class="wrap" id="app" tabindex="-1">
-  <div class="note" style="margin-top:4px"><span aria-hidden="true">🔒</span><span><b>Personvern:</b> Rapportene leses bare i denne nettleseren. Ingenting lastes opp eller lagres på nettsiden, og oversikten forsvinner når du lukker eller laster siden på nytt. Bruk «Last ned som regneark» hvis du vil ta vare på oversikten.</span></div>
-
-  <div class="section-h"><h2>1. Les inn rapporter</h2></div>
-  <div class="panel">
-    <div class="drop" id="drop">
-      <p style="margin:0 0 10px"><b>Dra rapportfilene hit</b> (PDF eller JSON) – gjerne mange samtidig.</p>
-      <label class="btn ghost" style="display:inline-block">Velg filer <input type="file" id="files" accept=".pdf,.json,application/pdf,application/json" multiple hidden></label>
-    </div>
-    <details style="margin-top:12px"><summary><b>Har eleven levert en tekstkode i stedet?</b></summary>
-      <p class="small">Lim inn én eller flere koder som starter med «TLLRAPPORT:».</p>
-      <textarea id="codes" class="codebox" placeholder="TLLRAPPORT:…"></textarea>
-      <div class="row"><button class="btn ghost" id="readcodes">Les inn kodene</button></div>
-    </details>
-    <details style="margin-top:8px"><summary><b>Slik henter du filene fra Teams</b></summary>
-      <ol class="steps-teams">
-        <li>Lag en oppgave i Teams der elevene skal levere fremdriftsrapporten (filen «fremdrift-navn-dato.pdf»).</li>
-        <li>Åpne innleveringene. Elevfilene ligger også i klassens fillager (SharePoint/OneDrive) under mappen for elevarbeid.</li>
-        <li>Last ned filene og dra dem inn i feltet over.</li>
-      </ol>
-    </details>
-    <div id="readmsg"></div>
-  </div>
-
-  <div id="overview" hidden>
-    <div class="section-h"><h2>2. Klasseoversikt</h2>
-      <div class="row"><label class="small">Kapittel <select class="sel" id="kapsel"></select></label>
-      <button class="btn ghost" id="csv">Last ned som regneark</button><button class="btn ghost" id="clear">Tøm</button></div></div>
-    <p class="small muted">Hver celle viser hvor mange aktiviteter eleven har gjort i temaet, og gjennomsnittet av beste resultat. Grønn: 80 % eller mer · gul: 50–79 % · rød: under 50 %. Trykk på en elev for detaljer.</p>
-    <div class="ltab-wrap"><table class="ltab" id="tab"></table></div>
-    <div id="detail"></div>
-  </div>
-
-  <div class="section-h"><h2>3. Lag en prøvelenke til klassen</h2></div>
-  <div class="panel">
-    <p>Velg kapitler, nivå og antall spørsmål. Alle elever som åpner lenken, får de samme spørsmålene. Resultatet kommer med i fremdriftsrapporten.</p>
-    <div class="opt-grid" id="pkap"></div>
-    <div class="row" style="margin-top:10px">
-      <label>Navn på prøven <input type="text" id="pnavn" class="sel" placeholder="F.eks. Prøve kap 1–3"></label>
-      <label>Nivå <select class="sel" id="pniva"><option value="0">Alle nivåer</option><option value="1">Nybegynner</option><option value="2">Trygg</option><option value="3">Ekspert</option></select></label>
-      <label>Antall <select class="sel" id="pant"><option>10</option><option selected>15</option><option>20</option><option>30</option><option>40</option></select></label>
-      <button class="btn yellow" id="plag">Lag lenke</button>
-    </div>
-    <div id="plink"></div>
-  </div>
-</main>
-<footer class="kapfot"><div class="wrap">Lærersiden behandler rapportene bare lokalt i nettleseren. Rapportene inneholder elevens navn, klasse, resultater og eventuelle tekster eleven har valgt å ta med. En kontrollsum viser om en rapportfil er endret etter at den ble laget.</div></footer>
-<script src="../felles/kapitler.js"></script>
-<script src="../felles/fremdrift.js?v=rapport-pdf"></script>
-<script src="../felles/motor.js"></script>
-<script src="laerer.js"></script>
+<body>
+  <main class="wrap">
+    <h1>Elevfremdrift</h1>
+    <p>Verktøyet er flyttet til Lærerrommet og krever pålogging.</p>
+    <p><a href="https://tll-laererrom.jarle-bruntveit.chatgpt.site/elevfremdrift">Åpne Elevfremdrift i Lærerrommet →</a></p>
+  </main>
 </body>
 </html>
