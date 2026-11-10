@@ -83,10 +83,16 @@ export async function lagRapportPdf(rapport, TLL) {
   for (const [id, data] of kapitler) {
     const kapittel = TLL.kapitler[id];
     const navn = kapittel ? 'Kapittel ' + kapittel.nr + ' · ' + kapittel.tittel : id;
-    const aktiviteter = new Map((kapittel?.temaer || []).flatMap(tema =>
+    const temaer = kapittel?.temaer || [];
+    const aktiviteter = new Map(temaer.flatMap(tema =>
       tema.aktiviteter.map(a => [a.id, tema.lok + ' · ' + a.tittel])
     ));
     const resultater = Object.entries(data.resultater);
+    const rester = temaer.map(tema => ({
+      tema,
+      aktiviteter: tema.aktiviteter.filter(a => !Object.hasOwn(data.resultater, a.id))
+    })).filter(gruppe => gruppe.aktiviteter.length);
+    const antallSomGjenstar = rester.reduce((sum, gruppe) => sum + gruppe.aktiviteter.length, 0);
     skriv(navn, { size: 16, hold: 28 });
     const antall = resultater.length;
     skriv(`${nivaa[data.niva] || nivaa[0]} · ${antall} ${antall === 1 ? 'aktivitet' : 'aktiviteter'} registrert`, { color: '#405160', gap: 9 });
@@ -99,6 +105,23 @@ export async function lagRapportPdf(rapport, TLL) {
     for (const [aktivitet, svar] of tekster) {
       skriv(aktiviteter.get(aktivitet) || aktivitet, { hold: 17, gap: 1 });
       skriv(svar, { gap: 10 });
+    }
+    if (kapittel) {
+      const paabegynt = new Set([...(data.paabegynt || []), ...Object.keys(data.tekster)]);
+      if (antallSomGjenstar) {
+        skriv(`Gjenstår · ${antallSomGjenstar} ${antallSomGjenstar === 1 ? 'aktivitet' : 'aktiviteter'}`, { size: 14, hold: 44 });
+        skriv('Alle nivåer. Status bygger på registrerte resultater og svar i denne nettleseren.', { size: 10, color: '#405160', gap: 9 });
+        for (const gruppe of rester) {
+          skriv(gruppe.tema.lok + ' · ' + gruppe.tema.tittel, { size: 12, hold: 30 });
+          for (const aktivitet of gruppe.aktiviteter) {
+            const status = paabegynt.has(aktivitet.id) ? 'Påbegynt' : 'Ikke påbegynt';
+            skriv(`${aktivitet.tittel} · ${nivaa[aktivitet.nivaa || 0]} · ${status}`, { size: 10, gap: 2 });
+          }
+          y += 6;
+        }
+      } else {
+        skriv('Ingen aktiviteter gjenstår i dette kapittelet.', { size: 11 });
+      }
     }
     y += 9;
   }
