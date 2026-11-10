@@ -720,10 +720,10 @@ function bootKapittel(){
       </section>
       ${FASER.slice(1).map(f => `<section class="phase" id="${f.id}">${phaseHead(f)}${cards(f)}</section>`).join('')}
       <p class="muted small" style="margin-top:18px">${NIVA[store.lvl]} · ${acts.length} aktiviteter. Begrepskort og Voks gjelder alle nivåer.</p>
-      <nav class="row" aria-label="Naviger mellom temaer" style="margin-top:22px">
+      <nav class="row topic-nav" aria-label="Naviger mellom temaer">
         ${forrige ? `<a class="btn ghost" href="#/${forrige.id}">← Forrige tema: ${temaNavn(forrige)}</a>` : ''}
         <a class="btn ghost" href="#/">Tilbake til alle tema</a>
-        ${neste ? `<a class="btn ghost" href="#/${neste.id}">Neste tema: ${temaNavn(neste)} →</a>` : ''}
+        ${neste ? `<a class="btn yellow topic-nav-next" href="#/${neste.id}">Neste tema: ${temaNavn(neste)} →</a>` : ''}
       </nav>`;
     const nr = index + 1;
     findEpisode(nr, src => { const el = $('#pod'); if (!el) return; el.hidden = false; el.innerHTML = podPlayer(nr, t, src); wirePlayer(el); });
