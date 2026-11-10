@@ -1,0 +1,28 @@
+/* Lærerrommet: egen, rolig blågrønn profil – TLL-logoen beholdes. */
+body.teacher-area{--teacher-bg:#0c1921;--teacher-panel:#142a34;--teacher-panel-2:#193541;--teacher-line:#31515c;--teacher-accent:#8ed7cc;background:radial-gradient(circle at 20% 0%,#173945,transparent 40%),var(--teacher-bg);color:#f1f7f7}
+.teacher-shell{width:min(1120px,calc(100% - 32px));margin:0 auto}
+.teacher-header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px 0;border-bottom:1px solid var(--teacher-line)}
+.teacher-brand{display:flex;align-items:center;gap:12px;color:#f5f8f8;text-decoration:none;font-weight:900}
+.teacher-brand .brandmark{flex:none;background:#f2b84b;color:#111820}
+.teacher-brand small{display:block;font-size:12px;color:#bdd0d4;font-weight:500}
+.teacher-back{color:var(--teacher-accent);font-weight:750;text-decoration:none}
+.teacher-back:hover,.teacher-card a:hover{text-decoration:underline}
+.teacher-intro{padding:48px 0 20px}
+.teacher-intro h1{font-size:clamp(38px,6vw,62px);line-height:1.08;margin:12px 0 18px}
+.teacher-intro p{color:#c3d2d7;max-width:740px;line-height:1.65}
+.teacher-eyebrow{color:var(--teacher-accent);font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:900}
+.teacher-category{margin:24px 0 46px}
+.teacher-category h2{font-size:clamp(24px,3vw,32px);margin:0 0 8px}
+.teacher-category>p{color:#c3d2d7;margin:0 0 18px}
+.teacher-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:16px}
+.teacher-card{border:1px solid var(--teacher-line);border-radius:18px;background:linear-gradient(180deg,var(--teacher-panel),var(--teacher-bg));padding:24px;min-width:0}
+.teacher-card h3{font-size:22px;margin:10px 0 12px}
+.teacher-card p{color:#c3d2d7;line-height:1.55}
+.teacher-card a{color:var(--teacher-accent);font-weight:800}
+.teacher-card .teacher-link{display:inline-block;margin-top:10px}
+.teacher-card.pending{opacity:.7}
+.teacher-note{border-left:3px solid var(--teacher-accent);padding:12px 18px;background:var(--teacher-panel);border-radius:8px;color:#d1dfe2}
+.teacher-area .tll-site-nav{border-color:var(--teacher-line)}
+.teacher-area .tll-site-nav a[aria-current="page"]{color:var(--teacher-accent)}
+@media(max-width:600px){.teacher-header{padding:14px 0}.teacher-intro{padding-top:28px}.teacher-grid{grid-template-columns:1fr}.teacher-card{padding:20px}}
+@media print{.teacher-header,.teacher-category,.teacher-intro{break-inside:avoid}body.teacher-area{background:#fff;color:#111}}
