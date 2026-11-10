@@ -135,6 +135,13 @@ TLL.registrer({
     { kode: 'TOL02-01 · KV427', tekst: 'bruke ulike metoder og utstyr for å utføre sikre laste-, losse- og løfteoperasjoner' }
   ],
   visKapittelkilder: true,
+  filmLenker: [
+    { type: 'Fagfilm · NDLA', tittel: N.viktig[0], url: NDLA_R + N.viktig[1] },
+    { type: 'Fagfilm · NDLA', tittel: N.tre[0], url: NDLA_R + N.tre[1] },
+    { type: 'Fagfilm · NDLA', tittel: N.kolli[0], url: NDLA_R + N.kolli[1] },
+    { type: 'Fagfilm · NDLA', tittel: N.forsp[0], url: NDLA_R + N.forsp[1] },
+    { type: 'Fagfilm · NDLA', tittel: N.demo[0], url: NDLA_R + N.demo[1] }
+  ],
   ressurser: {
     // KUN egenprodusert materiell her (f.eks. egne lysark). IKKE last opp forlagets presentasjon eller PDF-er.
     presentasjon: '',
