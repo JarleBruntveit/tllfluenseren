@@ -880,6 +880,216 @@ TLL.registrer({
       ]}
     ]
   }
+  ,
+  {
+    id: 't7', lok: 'C-03', tittel: 'Oppgavebank: regn med lastsikringsheftet',
+    kort: 'Mange oppgaver der du slår opp i NLF-heftet «Lastsikring ved vegtransport» og regner ut sikringen – fra grunnreglene til hele case med overfalls-, loop-, grime- og direktesurring.',
+    bok: 'Læreboka 5.3 og 5.7 (s. 122–148)',
+    mal: ['regne ut hvor mange tonn lasten må sikres for framover, sidevegs og bakover','finne friksjonen og riktig tabellverdi i lastsikringsheftet','regne ut antall surringer for hver retning og velge det høyeste','justere for vinkel, omregningsfaktor og last i flere lag','velge og begrunne en sikringsmetode'],
+    punkter: [
+      'Ha <b>lastsikringsheftet</b> åpent mens du jobber. Tabellene står ikke her – du skal øve på å finne fram i heftet.',
+      '<b>Krav:</b> framover 0,8 × vekta, sidevegs og bakover 0,5 × vekta (tunge kjøretøy).',
+      '<b>Antall surringer</b> = lastens vekt ÷ det én surring holder ifølge tabellen. <b>Rund alltid opp.</b>',
+      'Regn ut for alle retninger – både gli og tippe. <b>Det høyeste antallet gjelder.</b>',
+      '<b>Tipping:</b> regn ut H/B og H/L og rund opp til nærmeste <b>høyere</b> tabellverdi.',
+      '<b>Blokkering</b> mot frontvegg eller annen last tar de store kreftene framover og sparer mange stropper.'
+    ],
+    ekstra: `<h3 style="font-size:22px;margin-top:0">Det du trenger</h3>
+      <ul class="reslist">
+        <li><span class="tag ndla">NDLA</span><span><a href="${NDLA_R + N.brosjyre[1]}" target="_blank" rel="noopener">Lastsikring ved vegtransport – lastsikringsheftet (NLF)</a><br><span class="small muted">Åpne PDF-en fra NDLA-siden, eller bruk papireksemplaret i klassen.</span></span></li>
+        <li><span class="tag">PDF</span><span><a href="dokumenter/Sikring_av_last_hjelpedokument.pdf" target="_blank" rel="noopener">Sikring av last – hjelpedokument (sikringsplan)</a><br><span class="small muted">Bruk det som kladd når du regner gjennom casene.</span></span></li>
+      </ul>`,
+    ndla: [N.brosjyre, N.friksjon, N.krefter],
+    aktiviteter: [
+      { type:'quiz', id:'t7-q1', nivaa:1, tittel:'Grunnreglene i heftet', sp:[
+        { q:'Hvor mye skal lastsikringen tåle sidevegs og bakover på en lastebil (N3)?', a:['0,5 × vekta','0,8 × vekta','1,0 × vekta','0,3 × vekta'], r:0, f:'Framover er det 0,8 × vekta.' },
+        { q:'Hvilken metode bør du velge først når det er mulig?', a:['Blokkering – lasten står tett mot frontvegg, karmer eller annen last','Overfallssurring','Loopsurring','Kjøre forsiktig'], r:0, f:'Blokkering er det beste alternativet. Surring kommer i tillegg.' },
+        { q:'Hvor mye fritt rom er tillatt til sammen når lasten er blokkert?', a:['Inntil 5 cm','Inntil 15 cm','Inntil 30 cm','Så mye du vil'], r:1, f:'For tungt, stumt gods som stål, stein og betong skal avstanden være så liten som mulig.' },
+        { q:'LC for en kjetting er ikke kjent. Hva kan du sette LC til?', a:['100 % av bruddstyrken','50 % av bruddstyrken','25 % av bruddstyrken','Det samme som en stropp'], r:1, f:'Halvparten av bruddstyrken.' },
+        { q:'Hvor mange loopsurringspar skal lasten minst sikres med?', a:['1','2','3','4'], r:1, f:'Én loopsurring består av to stropper – og du trenger minst to par.', fast:true },
+        { q:'Et kolli er 2,0 m høyt og 1,2 m bredt. H/B = 1,67. Hvilken rad i tippetabellen bruker du?', a:['1,6','1,8','2,0','1,4'], r:1, f:'Rund alltid opp til nærmeste høyere tabellverdi.' },
+        { q:'Hvorfor gir et lavt friksjonstall flere surringer?', a:['Godset glir lettere, så surringene må gjøre mer av jobben','Stroppene blir svakere','Lasten blir tyngre','Det gjør det ikke'], r:0, f:'Høy friksjon hjelper. Derfor er friksjonsmatter så effektive.' }
+      ]},
+      { type:'calc', id:'t7-c1', nivaa:1, gen:'perFireTonn', tittel:'Én surring per 4 tonn', antall:4 },
+      { type:'quiz', id:'t7-q2', nivaa:2, tittel:'Slå opp: friksjonstabellen', fase:'ov', sp:[
+        { q:'Hva er friksjonen for sagd tre/trepall mot plywood?', a:['0,30','0,40','0,45','0,60'], r:2, f:'En av de høyeste verdiene for trepaller.', fast:true },
+        { q:'Hva er friksjonen for høvlet treverk mot plywood?', a:['0,20','0,30','0,45','0,55'], r:1, f:'Høvlet tre er glattere enn sagd tre.', fast:true },
+        { q:'Hva er friksjonen for stål mot rustfri stålplate?', a:['0,15','0,20','0,30','0,45'], r:1, f:'Stål mot plywood er hele 0,45.', fast:true },
+        { q:'Hva er friksjonen for plastpall mot riflet aluminium?', a:['0,15','0,20','0,25','0,40'], r:0, f:'Plastpaller er glatte. Vurder friksjonsmatte.', fast:true },
+        { q:'Hva er friksjonen for grov betongoverflate mot tre?', a:['0,45','0,55','0,60','0,7'], r:3, f:'Slett betong mot tre er 0,55.', fast:true },
+        { q:'Hva er friksjonen for et friksjonsmellomlegg av gummi?', a:['0,30','0,45','0,60','0,80'], r:2, f:'Gummimatter kan gjøre at lasten ikke glir sidevegs i det hele tatt.', fast:true }
+      ]},
+      { type:'quiz', id:'t7-q3', nivaa:2, tittel:'Slå opp: tabellene for gli og tippe', fase:'ov', sp:[
+        { q:'Overfallssurring mot å GLI, µ = 0,45: Hvor mange tonn holder én stropp sidevegs?', a:['0,81 t','2,9 t','6,4 t','13 t'], r:2, f:'Framover holder den bare 0,81 t ved samme friksjon.', fast:true },
+        { q:'Overfallssurring mot å TIPPE, 1 rad, H/B = 2,4: Hvor mange tonn holder én stropp sidevegs?', a:['0,64 t','3,3 t','4,5 t','tipper ikke'], r:1, f:'Med flere rader holder hver stropp mindre.', fast:true },
+        { q:'Overfallssurring mot å GLI, µ = 0,70: Hvor mange tonn holder én stropp framover?', a:['1,9 t','2,7 t','4,4 t','glir ikke'], r:2, f:'Sidevegs og bakover glir ikke lasten ved denne friksjonen.', fast:true },
+        { q:'Loopsurring mot å GLI, µ = 0,20: Hvor mange tonn holder ett par sidevegs?', a:['1,8 t','4,1 t','5,4 t','7,6 t'], r:2, f:'Loopsurring er svært effektiv sidevegs.', fast:true },
+        { q:'Grimesurring mot å GLI, µ = 0,40: Hvor mange tonn holder én grime framover?', a:['0,63 t','2,5 t','6,0 t','15 t'], r:2, f:'Bakover holder den 15 t.', fast:true },
+        { q:'Direktesurring mot å TIPPE, H/L = 1,4: Hvor mange tonn holder én surring framover?', a:['2,6 t','3,8 t','8,2 t','tipper ikke'], r:2, f:'Bakover tipper ikke kolliet ved denne H/L-verdien.', fast:true },
+        { q:'Blokkering, µ = 0,45: Hvor mange tonn holder en anordning med BC 1 000 daN framover?', a:['1,9 t','2,9 t','5,1 t','20 t'], r:1, f:'En frontvegg med BC 5 000 daN holder fem ganger så mye: 14,5 t.', fast:true }
+      ]},
+      { type:'calc', id:'t7-c2', nivaa:2, gen:'antallStropper', tittel:'Hvor mange surringer trenger du?', antall:6, oppslag:[
+        ['overfallssurring', 0.45, 'sidevegs', 6.4], ['overfallssurring', 0.45, 'framover', 0.81], ['overfallssurring', 0.30, 'sidevegs', 1.1],
+        ['overfallssurring', 0.40, 'framover', 0.63], ['overfallssurring', 0.70, 'framover', 4.4], ['direktesurring', 0.20, 'sidevegs', 1.8],
+        ['grimesurring', 0.30, 'framover', 4.9], ['grimesurring', 0.40, 'framover', 6.0], ['direktesurring', 0.30, 'sidevegs', 2.6],
+        ['direktesurring', 0.45, 'framover', 1.9], ['direktesurring', 0.35, 'bakover', 3.3]
+      ]},
+      { type:'quiz', id:'t7-q4', nivaa:2, tittel:'Vinkler og justeringer', fase:'tenk', sp:[
+        { q:'Overfallssurringen har 25° vinkel mot planet. Hva gjør du?', a:['Bruker tabellen som vanlig','Dobler antall surringer','Velger en annen metode','Strammer hardere'], r:2, f:'Under 30° presser stroppen nesten ikke lasten ned.' },
+        { q:'Hvilken vinkel skal direktesurring ha på langs og på tvers?', a:['30°–60°','75°–90°','Maks 45°','Under 30°'], r:0, f:'Overfallssurring: 75–90°. Grime: maks 45° mot planet.' },
+        { q:'Grimen får 20° vinkel sidevegs. Hva skjer med tabellverdien?', a:['Den ganges med 0,85','Den ganges med 0,70','Den halveres','Ingen endring'], r:0, f:'5–30°: × 0,85. 30–45°: × 0,70.' },
+        { q:'Grimen sitter halvveis opp på lasten. Hvor mye holder den mot tipping?', a:['Dobbelt så mye','Halvparten av tabellverdien','Det samme','Ingenting'], r:1, f:'Grimen bør sitte øverst for å hindre tipping best.' },
+        { q:'Grimen har to parter per side. Hva betyr det?', a:['Den holder dobbelt så mye som tabellen viser','Den holder halvparten','Den kan ikke brukes','Ingen endring'], r:0, f:'To parter per side = dobbel verdi.' },
+        { q:'Du trenger fire direktesurringer som virker i samme retning. Hva advarer heftet om?', a:['At surringene ikke alltid tar belastningen samtidig','At det blir for dyrt','At du må bruke kjetting','Ingenting'], r:0, f:'Sikringen kan bli underdimensjonert. Blokkering er ofte bedre.' },
+        { q:'Det er is og snø på lasteplanet. Hva betyr det for friksjonstabellen?', a:['Verdiene gjelder ikke – friksjonen blir lavere, så du må rengjøre planet eller regne med lavere µ','Ingenting – tabellen gjelder alltid','Friksjonen blir høyere','Du kan bruke 0,60'], r:0, f:'Tabellverdiene forutsetter rene flater uten frost, is og snø. Vær også obs på oljete flater.' },
+        { q:'Stroppene har LC 2 500 daN, men surrefestene tåler 2 000 daN. Hvilken omregningsfaktor gjelder for loopsurring?', a:['2 500 ÷ 1 600 ≈ 1,56','2 000 ÷ 1 600 = 1,25','1,0','2 500 ÷ 400 ≈ 6,3'], r:1, f:'Surrefestets kapasitet må ikke overskrides.' }
+      ]},
+      { type:'case', id:'t7-case1', nivaa:3, tittel:'Case: Maskinkassen som ikke er blokkert', intro:'En maskinkasse i stål på 6 tonn står alene på et plywoodplan. Den er 2,2 m høy, 1,0 m bred og 2,0 m lang, med tyngdepunktet på midten. Du bruker overfallssurring med 85° vinkel. Kassen står ikke inntil frontveggen. Ha heftet foran deg.', steg:[
+        { q:'Hvilken friksjon bruker du?', valg:[
+          { t:'µ = 0,45 (stål mot plywood)', ok:true, f:'Stål mot rustfri stålplate ville gitt bare 0,20.' },
+          { t:'µ = 0,20', ok:false, f:'0,20 bruker du bare når du ikke vet friksjonen.' },
+          { t:'µ = 0,30', ok:false, f:'Sjekk friksjonstabellen under «Stål mot plater».' }
+        ]},
+        { q:'Én overfallssurring holder 6,4 t sidevegs og 0,81 t framover ved µ = 0,45. Hvor mange trenger du mot å gli?', valg:[
+          { t:'1 sidevegs og 8 framover', ok:true, f:'6 ÷ 6,4 = 0,94 → 1. 6 ÷ 0,81 = 7,4 → 8.' },
+          { t:'1 sidevegs og 1 framover', ok:false, f:'Overfallssurring er svak framover. Regn ut 6 ÷ 0,81.' },
+          { t:'2 sidevegs og 4 framover', ok:false, f:'Del lastens vekt på tabellverdien og rund opp.' }
+        ]},
+        { q:'Tipping sidevegs: H/B = 2,2 ÷ 1,0 = 2,2. Én stropp holder 4,5 t (1 rad). Hvor mange trenger du?', valg:[
+          { t:'2', ok:true, f:'6 ÷ 4,5 = 1,33 → 2. Framover er H/L = 1,1 → rad 1,2: kassen tipper ikke.' },
+          { t:'1', ok:false, f:'1,33 må rundes opp.' },
+          { t:'Ingen', ok:false, f:'Ved H/B 2,2 og én rad kan kassen tippe.' }
+        ]},
+        { q:'Hva blir svaret med bare overfallssurring?', valg:[
+          { t:'8 surringer – det høyeste antallet gjelder', ok:true, f:'Det er mange stropper. Finnes det en smartere løsning?' },
+          { t:'2 surringer', ok:false, f:'Du må ta det høyeste antallet av alle utregningene.' },
+          { t:'11 surringer – summen', ok:false, f:'Tallene skal ikke legges sammen.' }
+        ]},
+        { q:'Du flytter kassen helt inntil frontveggen. Hvor mange overfallssurringer trenger du nå?', valg:[
+          { t:'2 – frontveggen tar kreftene framover, og tipping sidevegs bestemmer', ok:true, f:'6 ÷ 4 = 1,5 → 2 stemmer også med én surring per 4 tonn.' },
+          { t:'8 – det endrer ingenting', ok:false, f:'Blokkering framover fjerner behovet for de åtte stroppene.' },
+          { t:'0 – blokkering er nok', ok:false, f:'Kassen kan fortsatt gli og tippe sidevegs.' }
+        ]}
+      ]},
+      { type:'case', id:'t7-case2', nivaa:3, tittel:'Case: Grimer på trailer', intro:'Du skal frakte 14 tonn trepaller (sagd tre) på en trailer med riflet aluminiumsgolv. Lasten står ikke inntil frontveggen, så du sikrer framover med grimer.', steg:[
+        { q:'Hvilken friksjon gjelder?', valg:[
+          { t:'µ = 0,40', ok:true, f:'Sagd tre mot riflet aluminium.' },
+          { t:'µ = 0,25', ok:false, f:'0,25 er høvlet treverk mot riflet aluminium.' },
+          { t:'µ = 0,15', ok:false, f:'Det er plastpall mot riflet aluminium.' }
+        ]},
+        { q:'Én grime holder 6,0 t framover ved µ = 0,40. Hvor mange grimer trenger du?', valg:[
+          { t:'3', ok:true, f:'14 ÷ 6,0 = 2,33 → rund opp til 3.' },
+          { t:'2', ok:false, f:'2 × 6,0 = 12 t er mindre enn 14 t.' },
+          { t:'14', ok:false, f:'Del lastens vekt på det én grime holder.' }
+        ]},
+        { q:'Grimen får 20° vinkel sidevegs. Hva holder én grime nå?', valg:[
+          { t:'5,1 t (6,0 × 0,85)', ok:true, f:'14 ÷ 5,1 = 2,75 → fortsatt 3 grimer.' },
+          { t:'4,2 t (6,0 × 0,70)', ok:false, f:'× 0,70 gjelder 30–45°.' },
+          { t:'3,0 t (halvparten)', ok:false, f:'Halvering gjelder overfallssurring med 30–75° vinkel.' }
+        ]},
+        { q:'Du bruker grimer med to parter per side. Hvor mange trenger du da (rett grime, 6,0 t)?', valg:[
+          { t:'2', ok:true, f:'Hver grime holder 12 t. 14 ÷ 12 = 1,17 → 2.' },
+          { t:'1', ok:false, f:'12 t er mindre enn 14 t.' },
+          { t:'3', ok:false, f:'Med dobbel verdi holder det med 2.' }
+        ]}
+      ]},
+      { type:'case', id:'t7-case3', nivaa:3, tittel:'Case: Sterkere stropper enn surrefestene', intro:'Du skal sikre en seksjon med stålprofiler på 16 tonn sidevegs med loopsurring. Friksjonen er µ = 0,30. Stroppene har LC 2 500 daN og S_TF 600 daN. Surrefestene på bilen tåler 2 000 daN.', steg:[
+        { q:'Hvilken omregningsfaktor bruker du for loopsurring?', valg:[
+          { t:'1,25 – surrefestet (2 000 ÷ 1 600) begrenser', ok:true, f:'Du kan aldri regne med mer enn det svakeste leddet.' },
+          { t:'1,56 – stroppens LC (2 500 ÷ 1 600)', ok:false, f:'Surrefestet tåler bare 2 000 daN.' },
+          { t:'1,5 – forspenningen (600 ÷ 400)', ok:false, f:'Forspenningen brukes for overfallssurring mot å gli.' }
+        ]},
+        { q:'Ett loopsurringspar holder 7,3 t ved µ = 0,30. Hva holder ditt par?', valg:[
+          { t:'Omtrent 9,1 t (7,3 × 1,25)', ok:true, f:'Bedre utstyr gir mer, men bare opp til surrefestets grense.' },
+          { t:'Omtrent 11,4 t (7,3 × 1,56)', ok:false, f:'Bruk faktoren 1,25.' },
+          { t:'7,3 t', ok:false, f:'Utstyret er bedre enn tabellstroppen, så du kan bruke omregningsfaktoren.' }
+        ]},
+        { q:'Hvor mange loopsurringspar trenger du?', valg:[
+          { t:'2 par', ok:true, f:'16 ÷ 9,1 = 1,75 → 2. Det stemmer også med kravet om minst to par.' },
+          { t:'1 par', ok:false, f:'9,1 t er mindre enn 16 t – og du trenger uansett minst to par.' },
+          { t:'3 par', ok:false, f:'To par holder 18,2 t.' }
+        ]},
+        { q:'Du vil heller bruke overfallssurring mot å gli. Hvilken omregningsfaktor gjelder da?', valg:[
+          { t:'1,5 (600 ÷ 400)', ok:true, f:'Mot glidning er det forspenningen S_TF som teller.' },
+          { t:'1,25 (2 000 ÷ 1 600)', ok:false, f:'1,25 gjelder LC-baserte metoder her.' },
+          { t:'1,56 (2 500 ÷ 1 600)', ok:false, f:'LC brukes ikke for overfallssurring mot å gli.' }
+        ]}
+      ]},
+      { type:'case', id:'t7-case4', nivaa:3, tittel:'Case: Last i to lag', intro:'En seksjon med paller i to lag og én rad veier 4 tonn. Øvre lag veier 2 tonn. Nedre lag står på plywood (µ = 0,45). Mellom lagene er det trepall mot krympefilm (µ = 0,30). Seksjonen er 2,4 m høy og 1,0 m bred. Du bruker overfallssurring med 85° vinkel, og lasten er ikke blokkert sidevegs.', steg:[
+        { q:'Steg 1: Hele seksjonen mot å gli sidevegs. Én stropp holder 6,4 t ved µ = 0,45. Hvor mange?', valg:[
+          { t:'1', ok:true, f:'4 ÷ 6,4 = 0,63 → 1.' },
+          { t:'2', ok:false, f:'4 ÷ 6,4 er mindre enn 1.' },
+          { t:'0', ok:false, f:'Du runder alltid opp – minst 1.' }
+        ]},
+        { q:'Steg 2: Øvre lag mot å gli. Én stropp holder 1,1 t ved µ = 0,30. Hvor mange?', valg:[
+          { t:'2', ok:true, f:'2 ÷ 1,1 = 1,82 → 2. Det er friksjonen mellom lagene som teller for øvre lag.' },
+          { t:'1', ok:false, f:'1,1 t er mindre enn 2 t.' },
+          { t:'4', ok:false, f:'Her regner du bare øvre lag: 2 tonn.' }
+        ]},
+        { q:'Steg 3: Hele seksjonen mot å tippe. H/B = 2,4, 1 rad: én stropp holder 3,3 t. Hvor mange?', valg:[
+          { t:'2', ok:true, f:'4 ÷ 3,3 = 1,21 → 2. Høy last gir ofte flere surringer mot tipping.' },
+          { t:'1', ok:false, f:'3,3 t er mindre enn 4 t.' },
+          { t:'Ingen', ok:false, f:'Ved H/B 2,4 kan seksjonen tippe.' }
+        ]},
+        { q:'Steg 4: Hvor mange overfallssurringer bruker du per seksjon?', valg:[
+          { t:'2 – det høyeste av de tre utregningene', ok:true, f:'1, 2 og 2 → 2.' },
+          { t:'5 – summen', ok:false, f:'Tallene legges ikke sammen.' },
+          { t:'1 – det laveste', ok:false, f:'Det høyeste antallet gjelder.' }
+        ]}
+      ]},
+      { type:'case', id:'t7-case5', nivaa:3, tittel:'Case: Glatte plastpaller', intro:'Du skal frakte 4 tonn varer på plastpaller på et lasteplan av riflet aluminium. Pallene står ikke inntil frontveggen. Du har overfallssurringer og noen friksjonsmatter av gummi i bilen.', steg:[
+        { q:'Ved µ = 0,15 holder én overfallssurring 0,31 t sidevegs. Hvor mange trenger du sidevegs?', valg:[
+          { t:'13', ok:true, f:'4 ÷ 0,31 = 12,9 → 13. Framover blir det enda verre: 4 ÷ 0,15 = 27.' },
+          { t:'2', ok:false, f:'Del lastens vekt på 0,31.' },
+          { t:'4', ok:false, f:'Hver stropp holder bare 0,31 t.' }
+        ]},
+        { q:'Hva er det smarteste tiltaket?', valg:[
+          { t:'Legge friksjonsmatter under pallene (µ = 0,60)', ok:true, f:'Med gummimatter glir lasten ikke sidevegs og bakover etter tabellen.' },
+          { t:'Bruke 27 stropper', ok:false, f:'Det finnes ikke så mange surrefester – og det tar altfor lang tid.' },
+          { t:'Kjøre ekstra forsiktig', ok:false, f:'Lasten må være sikret etter kravene uansett.' }
+        ]},
+        { q:'Med matter (µ = 0,60) holder én overfallssurring 1,9 t framover. Hvor mange trenger du framover?', valg:[
+          { t:'2', ok:false, f:'2 × 1,9 = 3,8 t er mindre enn 4 t.' },
+          { t:'3', ok:true, f:'4 ÷ 1,9 = 2,1 → 3. Alternativt: flytt pallene inntil frontveggen. Da holder det med 1 per 4 tonn.' },
+          { t:'1', ok:false, f:'1,9 t er mindre enn 4 t.' }
+        ]}
+            ]},
+      { type:'case', id:'t7-case6', nivaa:2, tittel:'Case: Les merkelappen', intro:'Merkelappen på stroppen viser: LC 1 700 daN, S_HF 50 daN, S_TF 400 daN. Under «Lokale regler» står det 4 000 kg for Norge og Sverige. Heftet regner med LC 1 600 daN og S_TF 400 daN.', steg:[
+        { q:'Hva er stroppens sikringskapasitet (LC)?', valg:[
+          { t:'1 700 daN', ok:true, f:'LC er det du regner med.' },
+          { t:'4 000 kg', ok:false, f:'Det er bruddstyrken. Den må ikke forveksles med LC.' },
+          { t:'400 daN', ok:false, f:'Det er forspenningen S_TF.' }
+        ]},
+        { q:'Hvilken omregningsfaktor gjelder for direktesurring?', valg:[
+          { t:'Omtrent 1,06 (1 700 ÷ 1 600)', ok:true, f:'Direktesurring, loopsurring og grime regnes om med LC.' },
+          { t:'1,0 (400 ÷ 400)', ok:false, f:'Forspenningen brukes for overfallssurring mot å gli.' },
+          { t:'2,5 (4 000 ÷ 1 600)', ok:false, f:'4 000 kg er bruddstyrken, ikke LC.' }
+        ]},
+        { q:'Hvilken omregningsfaktor gjelder for overfallssurring mot å gli?', valg:[
+          { t:'1,0 (400 ÷ 400)', ok:true, f:'Stroppen er like god som tabellstroppen mot glidning.' },
+          { t:'Omtrent 1,06 (1 700 ÷ 1 600)', ok:false, f:'Mot glidning er det forspenningen S_TF som teller.' },
+          { t:'0,125 (50 ÷ 400)', ok:false, f:'50 daN er håndkraften S_HF.' }
+        ]}
+      ]},
+      { type:'case', id:'t7-case7', nivaa:3, tittel:'Case: Velg og begrunn opplegget', intro:'Du skal frakte 8 tonn kartonger på trepaller (sagd tre) på plywood. Lasten fyller hele planet og står inntil frontveggen og sideveggene. Én overfallssurring holder bare 0,81 t framover ved µ = 0,45.', steg:[
+        { q:'Hvilket opplegg er best?', valg:[
+          { t:'Blokkering mot frontvegg og sider, pluss overfallssurringer mot risting', ok:true, f:'Blokkeringen tar de store kreftene. Surringene holder lasten nede.' },
+          { t:'10 overfallssurringer uten å bruke blokkeringen', ok:false, f:'8 ÷ 0,81 = 9,9 → 10 stropper. Det er unødvendig mye arbeid når lasten allerede er blokkert.' },
+          { t:'Ingen sikring – lasten er tung nok', ok:false, f:'Tung last glir like lett som lett last. Den trenger bare større kraft for å stoppe.' }
+        ]},
+        { q:'Lasten verken glir eller tipper etter tabellene. Hvor mange surringer anbefaler heftet mot risting?', valg:[
+          { t:'2', ok:true, f:'Én per 4 tonn: 8 ÷ 4 = 2.' },
+          { t:'0', ok:false, f:'Det er lov, men risting kan få lasten til å vandre. Heftet anbefaler én per 4 tonn.' },
+          { t:'8', ok:false, f:'Anbefalingen er én per 4 tonn, ikke én per tonn.' }
+        ]},
+        { q:'Hvordan begrunner du valget overfor sjåføren?', valg:[
+          { t:'Blokkering er heftets førstevalg, sparer stropper og tid – og surringene sikrer mot risting', ok:true, f:'En god begrunnelse viser til regelverket og forklarer hvorfor metoden passer lasten.' },
+          { t:'Sånn har vi alltid gjort det', ok:false, f:'Vane er ingen faglig begrunnelse.' },
+          { t:'Det ser stødig ut', ok:false, f:'Magefølelse er ikke nok. Regn det ut eller slå det opp.' }
+        ]}
+      ]}
+    ]
+  }
   ]
 });
 })();
