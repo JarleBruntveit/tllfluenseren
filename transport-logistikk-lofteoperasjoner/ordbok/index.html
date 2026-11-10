@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ordbok og stikkord – Transport, logistikk og løfteoperasjoner – TLLfluenseren</title>
-<meta name="description" content="Søkbar ordbok og stikkordregister for Vg2 transport, logistikk og løfteoperasjoner: forklaringer med egne ord, sidetall i læreboka og lenker til NDLA.">
+<title>Ordbok og stikkord – TLL og bransjelære – TLLfluenseren</title>
+<meta name="description" content="Søkbar ordbok og stikkordregister for Vg2 transport og logistikk (TLL og bransjelære): forklaringer med egne ord, sidetall i lærebøkene og lenker til NDLA.">
 <link rel="icon" href="/favicon.ico?v=1" sizes="any">
 <link rel="icon" href="/favicon.svg?v=1" type="image/svg+xml">
 <link rel="icon" href="/favicon-32x32.png?v=1" type="image/png" sizes="32x32">
@@ -49,6 +49,7 @@
 .meta{display:flex;flex-wrap:wrap;gap:6px;font-size:13px}
 .tag{padding:3px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
 .tag.bok{border-color:#5d7f9a;color:#bcd6ea}
+.tag.bok.bl{border-color:#5f8f62;color:#c4e6c6}
 .tag.kilde{border-style:dashed}
 .sok-ord{display:flex;flex-wrap:wrap;gap:6px}
 .sok-ord button{font:inherit;font-size:13px;padding:2px 9px;border-radius:999px;border:0;background:var(--panel2);color:var(--muted);cursor:pointer}
@@ -74,19 +75,20 @@ details.hjelp ul{margin:10px 0 0;color:var(--muted);line-height:1.6}
 
 <main id="tll-main" tabindex="-1">
 <section class="ordIntro">
-  <div class="kicker"><a href="../" style="color:inherit">Transport, logistikk og løfteoperasjoner</a> · Oppslag</div>
+  <div class="kicker"><a href="../" style="color:inherit">TLL</a> · <a href="/bransjelaere/" style="color:inherit">Bransjelære</a> · Oppslag</div>
   <h1>Ordbok og stikkord</h1>
-  <p>Søk etter et fagord, en forkortelse eller et tema. Du får en kort forklaring, hvor i læreboka du finner ordet, og lenker til NDLA.</p>
+  <p>Søk etter et fagord, en forkortelse eller et tema fra TLL-boka og bransjelære-boka. Du får en kort forklaring, hvor i boka du finner ordet, og lenker til NDLA.</p>
   <div class="snarveier">
     <a class="hoved" href="oppgaver/">Oppgaver med ordboka →</a>
     <a href="https://ndla.no/nb/f/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/636ca61808a8" target="_blank" rel="noopener">TLL på NDLA ↗</a>
+    <a href="https://ndla.no/f/bransjelare-tp-tol-vg2---ressurssamling/5c1eeb1e84d6" target="_blank" rel="noopener">Bransjelære på NDLA ↗</a>
     <a href="https://ndla.no/nb/r/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/ordliste-for-lager-og-logistikk/0924071fc5" target="_blank" rel="noopener">NDLA: Ordliste for lager og logistikk ↗</a>
   </div>
   <details class="hjelp">
-    <summary>Slik bruker du ordboka og stikkordregisteret</summary>
+    <summary>Slik bruker du ordboka og stikkordregistrene</summary>
     <ul>
-      <li><b>Ordboka</b> forklarer hva et ord betyr. Kortene merket «Ordboka» finner du også i ordboka bakerst i læreboka.</li>
-      <li><b>Stikkordregisteret</b> forteller hvor i læreboka ordet blir brukt. Merket «Kap. 5 · s. 135–148» betyr at du kan slå opp på de sidene og lese mer.</li>
+      <li><b>Ordboka</b> forklarer hva et ord betyr. Kortene merket «Ordboka» finner du også i ordboka bakerst i TLL-boka.</li>
+      <li><b>Stikkordregisteret</b> forteller hvor i boka ordet blir brukt. 📖 er TLL-boka og 📗 er bransjelære-boka. «📗 Bransjelære kap. 7 · s. 194–195» betyr at du kan slå opp på de sidene i bransjelære-boka.</li><li>Mange ord står i <b>begge bøkene</b>. Da viser kortet sidetall fra begge.</li>
       <li><b>NDLA</b> gir deg fagstoff, filmer og oppgaver. Trykk «Søk på NDLA» for å finne mer om akkurat det ordet.</li>
       <li>Du kan søke på forkortelser (ADR, FIFO), deler av ord (surr) og andre skrivemåter (container). Trykk på de grå søkeordene for å finne beslektede ord.</li>
       <li>Forklaringene er korte og skrevet med egne ord. Sjekk alltid læreboka eller NDLA når du skal bruke ordet i en innlevering.</li>
@@ -104,11 +106,12 @@ details.hjelp ul{margin:10px 0 0;color:var(--muted);line-height:1.6}
     <div class="verktoy">
       <label class="sr" for="kap">Kapittel i læreboka</label>
       <select id="kap"><option value="">Alle kapitler</option></select>
-      <label class="sr" for="kilde">Kilde</label>
-      <select id="kilde">
-        <option value="">Ordbok og stikkord</option>
-        <option value="O">Bare ordboka</option>
-        <option value="S">Bare stikkord med sidetall</option>
+      <label class="sr" for="bok">Bok</label>
+      <select id="bok">
+        <option value="">Begge bøkene</option>
+        <option value="tll">TLL-boka</option>
+        <option value="O">Bare ordboka i TLL-boka</option>
+        <option value="bl">Bransjelære-boka</option>
       </select>
       <label class="avkrys"><input type="checkbox" id="fork"> Bare forkortelser</label>
       <button type="button" id="tilfeldig">🎲 Tilfeldig ord</button>
@@ -124,13 +127,14 @@ details.hjelp ul{margin:10px 0 0;color:var(--muted);line-height:1.6}
 <button type="button" class="vis-mer" id="visMer" hidden>Vis flere ord</button>
 </main>
 
-<footer class="homeFooter"><span>Forklaringene er egenprodusert for TLLfluenseren. Oppslagsord og sidetall viser til ordboka og stikkordregisteret i elevens egen lærebok. Fagstoff fra NDLA er lenket til, ikke kopiert.</span><a href="../">Tilbake til faget</a></footer>
+<footer class="homeFooter"><span>Forklaringene er egenprodusert for TLLfluenseren. Oppslagsord og sidetall viser til ordboka og stikkordregistrene i elevens egne lærebøker i TLL og bransjelære. Fagstoff fra NDLA er lenket til, ikke kopiert.</span><a href="../">Tilbake til faget</a></footer>
 </div>
 
 <script src="ord.js"></script>
+<script src="ord-bransjelaere.js"></script>
 <script>
 (function(){
-const T = window.TLLORD, ALLE = T.ORD.slice().sort((a,b) => a.ord.localeCompare(b.ord, 'nb', {sensitivity:'base'}));
+const T = window.TLLORD, ALLE = T.bygg().slice().sort((a,b) => a.ord.localeCompare(b.ord, 'nb', {sensitivity:'base'}));
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[\s\-–.()\/]/g,'');
@@ -140,10 +144,12 @@ const forbokstav = o => { const c = o.ord.trim()[0].toUpperCase(); return /[A-Z�
 ALLE.forEach(o => { o.id = slug(o.ord); o.nOrd = norm(o.ord); o.nSok = o.sok.map(norm); o.nTekst = norm(o.forklaring); o.fork = erFork(o); o.bokstav = forbokstav(o); });
 
 const BOKSTAVER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ'.split('');
-const S = { q:'', tema:'', kap:'', kilde:'', fork:false, bokstav:'', vis:60 };
+const S = { q:'', tema:'', kap:'', bok:'', fork:false, bokstav:'', vis:60 };
+const passerBok = o => !S.bok || (S.bok === 'O' ? o.kilde.includes('O') : o.boker.includes(S.bok));
+const passerKap = o => { if (!S.kap) return true; const [b, n] = S.kap.split(':'); return o.refs.some(r => r.bok === b && r.kap.includes(+n)); };
 
 /* ---------- Bygg filtre ---------- */
-T.KAPITLER.forEach(k => $('#kap').insertAdjacentHTML('beforeend', `<option value="${k.nr}">Kap. ${k.nr} ${esc(k.tittel)}</option>`));
+Object.entries(T.BOKER).forEach(([id, b]) => $('#kap').insertAdjacentHTML('beforeend', `<optgroup label="${esc(b.lang)}">${b.kapitler.map(k => `<option value="${id}:${k.nr}">${esc(b.navn)} kap. ${k.nr} ${esc(k.tittel)}</option>`).join('')}</optgroup>`));
 $('#temaer').innerHTML = `<button type="button" class="chip" data-tema="" aria-pressed="true">Alle tema</button>` +
   Object.entries(T.TEMA).map(([k,t]) => `<button type="button" class="chip" data-tema="${k}" aria-pressed="false">${esc(t.navn)}</button>`).join('');
 $('#bokstaver').innerHTML = BOKSTAVER.map(b => `<button type="button" class="bokstav" data-b="${b}" aria-pressed="false" aria-label="Ord på ${b}">${b}</button>`).join('');
@@ -166,8 +172,7 @@ function filtrer(){
   const ord = S.q.split(/\s+/).map(norm).filter(Boolean);
   let r = ALLE.filter(o =>
     (!S.tema || o.tema === S.tema) &&
-    (!S.kap || o.kap.includes(+S.kap)) &&
-    (!S.kilde || o.kilde.includes(S.kilde)) &&
+    passerKap(o) && passerBok(o) &&
     (!S.fork || o.fork) &&
     (!S.bokstav || o.bokstav === S.bokstav));
   if (ord.length){
@@ -182,14 +187,14 @@ function uthev(tekst){
   return t;
 }
 function sideTekst(o){
-  if (!o.sider) return '';
-  const kap = o.kap.length ? 'Kap. ' + o.kap.join(', ') + ' · ' : '';
-  return `<span class="tag bok" title="Sidetall i læreboka">📖 ${kap}s. ${esc(o.sider)}</span>`;
+  return o.refs.map(r => { const b = T.BOKER[r.bok];
+    return `<span class="tag bok${r.bok === 'bl' ? ' bl' : ''}" title="Sidetall i ${esc(b.lang)}-boka">${b.ikon} ${esc(b.navn)}${r.kap.length ? ' kap. ' + r.kap.join(', ') : ''} · s. ${esc(r.sider)}</span>`; }).join('');
 }
 function kort(o){
   const tema = T.TEMA[o.tema];
-  const kilder = o.kilde === 'OS' ? 'Ordboka · Stikkord' : o.kilde === 'O' ? 'Ordboka' : 'Stikkord';
-  const kapLenke = o.kap.map(n => T.KAPITLER.find(k => k.nr === n)).filter(k => k && k.sti)
+  const kilder = [o.kilde.includes('O') ? 'Ordboka' : '', /[SB]/.test(o.kilde) ? 'Stikkord' : ''].filter(Boolean).join(' · ');
+  const tllKap = (o.refs.find(r => r.bok === 'tll') || { kap: [] }).kap;
+  const kapLenke = tllKap.map(n => T.KAPITLER.find(k => k.nr === n)).filter(k => k && k.sti)
     .map(k => `<a href="${k.sti}">Oppgaver kap. ${k.nr} →</a>`).join('');
   return `<li class="ordKort" id="${o.id}">
     <h2><a href="#${o.id}">${uthev(o.ord)}</a></h2>
@@ -207,15 +212,14 @@ function tegn(){
   const r = filtrer();
   const vis = r.slice(0, S.vis);
   $('#liste').innerHTML = vis.map(kort).join('');
-  const filter = S.q || S.tema || S.kap || S.kilde || S.fork || S.bokstav;
-  $('#treff').textContent = r.length ? `${r.length} ${r.length === 1 ? 'ord' : 'ord'}${filter ? ' passer' : ' i ordboka og stikkordregisteret'}${r.length > vis.length ? ` – viser de ${vis.length} første` : ''}.` : '';
+  const filter = S.q || S.tema || S.kap || S.bok || S.fork || S.bokstav;
+  $('#treff').textContent = r.length ? `${r.length} ${r.length === 1 ? 'ord' : 'ord'}${filter ? ' passer' : ' i ordboka og stikkordregistrene'}${r.length > vis.length ? ` – viser de ${vis.length} første` : ''}.` : '';
   if (!r.length){
     $('#liste').innerHTML = `<li class="tomt">Fant ingen ord som passer${S.q ? ` med «${esc(S.q)}»` : ''}. Prøv et kortere ord, fjern et filter – eller <a href="${T.NDLA_SOK + encodeURIComponent(S.q)}" target="_blank" rel="noopener">søk på NDLA ↗</a>.</li>`;
   }
   $('#visMer').hidden = r.length <= vis.length;
   // Forbokstaver uten treff (med de andre filtrene) blir grået ut
-  const utenBokstav = Object.assign({}, S, { bokstav:'' });
-  const finnes = new Set(ALLE.filter(o => (!utenBokstav.tema || o.tema === utenBokstav.tema) && (!utenBokstav.kap || o.kap.includes(+utenBokstav.kap)) && (!utenBokstav.kilde || o.kilde.includes(utenBokstav.kilde)) && (!utenBokstav.fork || o.fork)).map(o => o.bokstav));
+  const finnes = new Set(ALLE.filter(o => (!S.tema || o.tema === S.tema) && passerKap(o) && passerBok(o) && (!S.fork || o.fork)).map(o => o.bokstav));
   document.querySelectorAll('.bokstav').forEach(b => { b.disabled = !finnes.has(b.dataset.b); b.setAttribute('aria-pressed', String(b.dataset.b === S.bokstav)); });
   document.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', String(c.dataset.tema === S.tema)));
   lagreUrl();
@@ -225,19 +229,19 @@ function tegn(){
 function lagreUrl(){
   const p = new URLSearchParams();
   if (S.q) p.set('q', S.q); if (S.tema) p.set('tema', S.tema); if (S.kap) p.set('kap', S.kap);
-  if (S.kilde) p.set('kilde', S.kilde); if (S.fork) p.set('fork', '1'); if (S.bokstav) p.set('b', S.bokstav);
+  if (S.bok) p.set('bok', S.bok); if (S.fork) p.set('fork', '1'); if (S.bokstav) p.set('b', S.bokstav);
   const ny = location.pathname + (p.toString() ? '?' + p : '') + location.hash;
   try { history.replaceState(null, '', ny); } catch(e) {}
 }
 function lesUrl(){
   const p = new URLSearchParams(location.search);
   S.q = p.get('q') || ''; S.tema = T.TEMA[p.get('tema')] ? p.get('tema') : ''; S.kap = p.get('kap') || '';
-  S.kilde = p.get('kilde') || ''; S.fork = p.get('fork') === '1'; S.bokstav = p.get('b') || '';
-  $('#sok').value = S.q; $('#kap').value = S.kap; $('#kilde').value = S.kilde; $('#fork').checked = S.fork;
+  S.bok = p.get('bok') || ''; S.fork = p.get('fork') === '1'; S.bokstav = p.get('b') || '';
+  $('#sok').value = S.q; $('#kap').value = S.kap; $('#bok').value = S.bok; $('#fork').checked = S.fork;
 }
 function visOrd(id){
   const o = ALLE.find(x => x.id === id); if (!o) return;
-  if (!document.getElementById(id)){ Object.assign(S, { q:'', tema:'', kap:'', kilde:'', fork:false, bokstav:o.bokstav, vis:999 }); $('#sok').value=''; $('#kap').value=''; $('#kilde').value=''; $('#fork').checked=false; tegn(); }
+  if (!document.getElementById(id)){ Object.assign(S, { q:'', tema:'', kap:'', bok:'', fork:false, bokstav:o.bokstav, vis:999 }); $('#sok').value=''; $('#kap').value=''; $('#bok').value=''; $('#fork').checked=false; tegn(); }
   const el = document.getElementById(id);
   document.querySelectorAll('.ordKort.mark').forEach(k => k.classList.remove('mark'));
   if (el){ el.classList.add('mark'); el.scrollIntoView({ behavior:'smooth', block:'start' }); el.querySelector('h2 a').focus({ preventScroll:true }); }
@@ -246,12 +250,12 @@ function visOrd(id){
 /* ---------- Hendelser ---------- */
 let t; $('#sok').addEventListener('input', e => { clearTimeout(t); t = setTimeout(() => { S.q = e.target.value.trim(); S.bokstav = ''; S.vis = 60; tegn(); }, 120); });
 $('#kap').onchange = e => { S.kap = e.target.value; S.vis = 60; tegn(); };
-$('#kilde').onchange = e => { S.kilde = e.target.value; S.vis = 60; tegn(); };
+$('#bok').onchange = e => { S.bok = e.target.value; S.vis = 60; tegn(); };
 $('#fork').onchange = e => { S.fork = e.target.checked; S.vis = 60; tegn(); };
 $('#temaer').onclick = e => { const c = e.target.closest('.chip'); if (!c) return; S.tema = c.dataset.tema; S.vis = 60; tegn(); };
 $('#bokstaver').onclick = e => { const b = e.target.closest('.bokstav'); if (!b) return; S.bokstav = S.bokstav === b.dataset.b ? '' : b.dataset.b; S.vis = 60; tegn(); };
 $('#visMer').onclick = () => { S.vis += 60; tegn(); };
-$('#nullstill').onclick = () => { Object.assign(S, { q:'', tema:'', kap:'', kilde:'', fork:false, bokstav:'', vis:60 }); $('#sok').value=''; $('#kap').value=''; $('#kilde').value=''; $('#fork').checked=false; history.replaceState(null,'',location.pathname); tegn(); $('#sok').focus(); };
+$('#nullstill').onclick = () => { Object.assign(S, { q:'', tema:'', kap:'', bok:'', fork:false, bokstav:'', vis:60 }); $('#sok').value=''; $('#kap').value=''; $('#bok').value=''; $('#fork').checked=false; history.replaceState(null,'',location.pathname); tegn(); $('#sok').focus(); };
 $('#tilfeldig').onclick = () => { const o = ALLE[Math.floor(Math.random()*ALLE.length)]; location.hash = o.id; };
 $('#liste').onclick = e => { const b = e.target.closest('[data-sok]'); if (!b) return; S.q = b.dataset.sok; S.bokstav=''; $('#sok').value = S.q; S.vis = 60; tegn(); window.scrollTo({ top: $('.sokPanel').offsetTop, behavior:'smooth' }); };
 window.addEventListener('hashchange', () => visOrd(location.hash.slice(1)));

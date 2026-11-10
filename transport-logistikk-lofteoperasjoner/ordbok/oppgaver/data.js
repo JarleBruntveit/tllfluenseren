@@ -19,6 +19,8 @@ const NDLA_TERMINAL = 'https://ndla.no/nb/r/transport-logistikk-og-lofteoperasjo
 const NDLA_LAGERSTYRING = 'https://ndla.no/nb/r/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/hva-er-lagerstyring/e0fce0eef4';
 const NDLA_BEGREPER = 'https://ndla.no/nb/r/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/begreper-i-lastsikring/373cb41de2';
 const NDLA_FRIKSJON = 'https://ndla.no/nb/r/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/friksjon/97a407eb6d';
+const NDLA_BL = 'https://ndla.no/f/bransjelare-tp-tol-vg2---ressurssamling/5c1eeb1e84d6';
+const NDLA_BL_E = 'https://ndla.no/e/bransjelare-tp-tol-vg2---ressurssamling/';
 const NDLA_SOK = q => 'https://ndla.no/search?query=' + encodeURIComponent(q);
 
 const LENKE_ORDBOK = `<p style="margin:0"><a class="btn" href="${ORDBOK}" target="_blank" rel="noopener">Åpne ordboka og stikkordregisteret i ny fane →</a></p>
@@ -43,16 +45,19 @@ TLL.registrer({
   prove: false,
   ressursomrade: false,
   tittel: 'Fagord, stikkord og NDLA',
-  ingress: 'Lær deg å slå opp, forstå og bruke fagordene i transport og logistikk – med ordboka, stikkordregisteret og NDLA.',
+  ingress: 'Lær deg å slå opp, forstå og bruke fagordene i transport og logistikk – med ordboka, stikkordregistrene i TLL og bransjelære, og NDLA.',
   kompetansemal: [
     { kode: 'TOL02-01', tekst: 'gjøre rede for grunnleggende prinsipper for effektiv drift av lager og terminal' },
     { kode: 'TOL02-01', tekst: 'planlegge, gjennomføre og dokumentere logistikk-, transport- og løfteoppdrag etter gjeldende regelverk' },
-    { kode: 'TOL02-01', tekst: 'bruke ulike metoder og utstyr for å utføre sikre laste-, losse- og løfteoperasjoner' }
+    { kode: 'TOL02-01', tekst: 'bruke ulike metoder og utstyr for å utføre sikre laste-, losse- og løfteoperasjoner' },
+    { kode: 'TOL02-01 · bransjelære', tekst: 'forklare prosedyrer ved transport over landegrenser' },
+    { kode: 'TOL02-01 · bransjelære', tekst: 'gjøre enkle økonomiske beregninger og vurdere hvilke faktorer som har betydning for prisfastsettelse av oppdrag' }
   ],
-  fotnote: 'Transport, logistikk og løfteoperasjoner · Oppgaver med ordboka. Tekster og oppgaver er egenprodusert. <a href="' + ORDBOK + '">Ordboka</a> viser til oppslagsord og sidetall i elevens egen lærebok. Fagstoff fra <a href="' + NDLA_FAG + '" target="_blank" rel="noopener">NDLA</a> er lenket til, ikke kopiert. Kompetansemål fra Utdanningsdirektoratet (NLOD). Resultater lagres bare i nettleseren på denne enheten – <a href="#/lagring">les om lagring</a> · <a href="#/rapport">lever fremdrift</a>.',
+  fotnote: 'Transport, logistikk og løfteoperasjoner · Oppgaver med ordboka. Tekster og oppgaver er egenprodusert. <a href="' + ORDBOK + '">Ordboka</a> viser til oppslagsord og sidetall i elevens egne lærebøker i TLL og bransjelære. Fagstoff fra <a href="' + NDLA_FAG + '" target="_blank" rel="noopener">NDLA</a> er lenket til, ikke kopiert. Kompetansemål fra Utdanningsdirektoratet (NLOD). Resultater lagres bare i nettleseren på denne enheten – <a href="#/lagring">les om lagring</a> · <a href="#/rapport">lever fremdrift</a>.',
   ressurser: {
     presentasjon: '',
-    laerebok: 'Læreboka: ordboka (s. 231 og utover) og stikkordregisteret (s. 245 og utover)',
+    laerebok: 'TLL-boka: ordboka (s. 231 og utover) og stikkordregisteret (s. 245 og utover)',
+    arbeidsbok: 'Bransjelære-boka: stikkordregisteret (s. 294 og utover)',
     ndlaEmne: NDLA_FAG,
     ndlaEmneNavn: 'Transport, logistikk og løfteoperasjonar (TP-TOL vg2) på NDLA',
     ordliste: NDLA_ORDLISTE
@@ -322,6 +327,7 @@ TLL.registrer({
       'Filtrer på tema <a href="' + ORDBOK + '?tema=I">Internasjonal handel og toll</a> i ordboka.'
     ],
     ndla: [
+      ['Internasjonale transporter (Bransjelære)', NDLA_BL_E + 'internasjonale-transporter/9fc6c63b95', 'Emne'],
       ['Søk på NDLA: Incoterms', NDLA_SOK('Incoterms'), 'Søk'],
       ['Søk på NDLA: fortolling', NDLA_SOK('fortolling'), 'Søk'],
       ['Godshåndtering (Planlegging av oppdrag)', NDLA_GODS, 'Oppgave']
@@ -449,7 +455,147 @@ TLL.registrer({
         'Jeg har tatt med minst ett HMS-råd.'
       ]}
     ]
+  },
+  /* ================================================================ T7 */
+  {
+    id: 't7', lok: 'O-07', tittel: 'Bransjelære: bedrift, økonomi og forsikring',
+    kort: 'Selskapsformer, budsjett, lån, kalkyler og forsikringer – ordene du trenger for å starte og drive en transportbedrift.',
+    mal: ['forklare forskjellen på de vanligste selskapsformene','skille mellom resultatbudsjett, likviditetsbudsjett og balansebudsjett','bruke riktige fagord om lån, kalkyler og forsikring'],
+    punkter: [
+      'Vanlige <b>selskapsformer</b> er <b>enkeltpersonforetak</b> (én eier med personlig ansvar), <b>ansvarlig selskap</b> (flere eiere med personlig ansvar) og <b>aksjeselskap</b> (eierne kan bare tape det de har skutt inn).',
+      'En <b>forretningsplan</b> beskriver idé, marked, økonomi og organisering. <b>Finansieringsplanen</b> viser hvor pengene kommer fra: <b>egenkapital</b> og lån.',
+      '<b>Resultatbudsjettet</b> viser om bedriften går med overskudd. <b>Likviditetsbudsjettet</b> viser om den kan betale regningene i tide. <b>Balansebudsjettet</b> viser hva den eier og skylder.',
+      'Ved <b>annuitetslån</b> er terminbeløpet likt hele tiden. Ved <b>serielån</b> er avdraget likt, og terminbeløpet synker.',
+      'En <b>selvkostkalkyle</b> dekker alle kostnader pluss fortjeneste. En <b>bidragskalkyle</b> dekker de variable kostnadene og en del av de faste.',
+      '<b>Trafikkforsikring</b> er lovpålagt for alle motorvogner. <b>Kasko</b> og <b>delkasko</b> dekker mer. <b>Yrkesskadeforsikring</b> må alle arbeidsgivere ha.',
+      'Filtrer på <a href="' + ORDBOK + '?bok=bl&tema=B">Bransjelære og tema «Etablering og drift av bedrift»</a> i ordboka.'
+    ],
+    ndla: [
+      ['Bransjelære – fagsiden', NDLA_BL, 'Fag'],
+      ['Etablering og drift av virksomhet', NDLA_BL_E + 'etablering-og-drift-av-virksomhet/a5b7718286', 'Emne'],
+      ['Økonomiske kalkyler og prisberegninger', NDLA_BL_E + 'okonomiske-kalkyler-og-prisberegninger/a36ee8e1da', 'Emne'],
+      ['Prising av persontransport', 'https://ndla.no/r/bransjelare-tp-tol-vg2---ressurssamling/prising-av-persontransport/7a69fca1dd', 'Fagstoff']
+    ],
+    aktiviteter: [
+      { type:'flash', id:'t7-flash', tittel:'Begrepskort: bedrift og økonomi', kort:[
+        ['Forretningsidé','Kort beskrivelse av hva bedriften skal tilby, til hvem, og hvordan den skiller seg fra andre.'],
+        ['Egenkapital','Pengene eierne selv har skutt inn i bedriften.'],
+        ['Gjeld','Penger bedriften skylder andre, for eksempel banken.'],
+        ['Anleggsmidler','Ting bedriften eier og bruker lenge, for eksempel en lastebil.'],
+        ['Omløpsmidler','Eiendeler som raskt blir til penger eller blir brukt opp, for eksempel varelager.'],
+        ['Likviditet','Evnen til å betale regningene når de forfaller.'],
+        ['Kassekreditt','Lånekonto der bedriften kan bruke penger opp til en avtalt grense.'],
+        ['Dekningsbidrag','Det som er igjen av prisen når de variable kostnadene er trukket fra.'],
+        ['Forsikringspremie','Det du betaler for en forsikring.'],
+        ['Arbeidsgiveravgift','Avgift arbeidsgiveren betaler til staten, beregnet av lønnen.']
+      ]},
+      { type:'match', id:'t7-m1', nivaa:1, tittel:'Selskapsformer', instr:'Koble selskapsformen med riktig beskrivelse.', par:[
+        ['Enkeltpersonforetak','Én eier som har personlig ansvar for all gjeld'],
+        ['Ansvarlig selskap','Flere eiere som har personlig ansvar for gjelden'],
+        ['Aksjeselskap','Eierne kan bare tape det de har skutt inn'],
+        ['Forretningsplan','Plan for idé, marked, økonomi og organisering'],
+        ['Samordnet registermelding','Skjemaet du registrerer bedriften med i Altinn']
+      ]},
+      { type:'sort', id:'t7-s1', nivaa:2, tittel:'Hvilket budsjett?', instr:'Hvilket budsjett gir svar på spørsmålet?', kat:['Resultatbudsjett','Likviditetsbudsjett','Balansebudsjett'], items:[
+        ['Går bedriften med overskudd i år?', 0, 'Resultatbudsjettet sammenligner inntekter og kostnader.'],
+        ['Har vi penger på konto til å betale lønn 15. mars?', 1, 'Likviditetsbudsjettet viser når pengene kommer inn og går ut.'],
+        ['Hvor mye eier bedriften ved årsslutt?', 2, 'Balansebudsjettet viser eiendeler, gjeld og egenkapital.'],
+        ['Må vi bruke kassekreditten i januar før kundene har betalt?', 1, 'Det handler om tidspunktet for innbetalinger og utbetalinger.'],
+        ['Blir inntektene fra transportoppdragene større enn kostnadene til drivstoff, lønn og vedlikehold?', 0, 'Det er et spørsmål om overskudd eller underskudd.'],
+        ['Hvor stor gjeld har bedriften etter at lastebilen er kjøpt?', 2, 'Gjeld og eiendeler står i balansen.']
+      ]},
+      { type:'quiz', id:'t7-q1', nivaa:2, tittel:'Lån, kalkyler og forsikring', sp:[
+        { q:'Du vil betale det samme beløpet hver måned i hele lånets løpetid. Hvilken lånetype velger du?', a:['Annuitetslån','Serielån','Kassekreditt','Pantelån'], r:0, f:'Ved annuitetslån er terminbeløpet likt. Ved serielån er avdraget likt.' },
+        { q:'Hvilken forsikring må alle motorvogner ha etter loven?', a:['Trafikkforsikring','Kasko','Reiseforsikring','Livsforsikring'], r:0, f:'Trafikkforsikringen er lovpålagt (bilansvarsloven).' },
+        { q:'En bil skal hjem tom fra Bergen. Bedriften tar et billig oppdrag som dekker drivstoff og sjåførlønn, men ikke hele kostnaden til bilen. Hvilken kalkyle er brukt?', a:['Bidragskalkyle','Selvkostkalkyle','Resultatbudsjett','Balansebudsjett'], r:0, f:'Bidragskalkylen dekker de variable kostnadene og bare en del av de faste.' },
+        { q:'Hvilken forsikring må alle arbeidsgivere tegne for de ansatte?', a:['Yrkesskadeforsikring','Kasko','Reiseforsikring','Flåteforsikring'], r:0, f:'Yrkesskadeforsikring er lovpålagt for arbeidsgivere.' },
+        { q:'En pall tar 0,4 lastemeter. Hvor mange lastemeter tar fem paller?', a:['2,0','0,8','4,0','1,2'], r:0, f:'5 × 0,4 = 2,0 lastemeter.' }
+      ]},
+      { type:'fill', id:'t7-fill', nivaa:2, tittel:'Fyll inn: Emma starter transportbedrift', tekst:'Emma vil starte en budbilbedrift. Hun skriver en [[forretningsplan]] og registrerer bedriften med en samordnet registermelding. Hun velger [[enkeltpersonforetak]], fordi hun er eneste eier. Hun har 100 000 kroner i [[egenkapital]] og låner resten i banken. Før hun begynner å kjøre, må hun ha [[løyve]] og [[trafikkforsikring]] på bilen. For å se om hun får betalt regningene i tide, lager hun et [[likviditetsbudsjett]].', ekstra:['aksjeselskap','balansebudsjett','kasko','tollager'], f:'Alle ordene finner du i ordboka. Velg «Bransjelære-boka» i nedtrekkslista.' },
+      { type:'reflect', id:'t7-r1', nivaa:3, tittel:'Min egen transportbedrift', q:'Tenk deg at du skal starte en liten bedrift innen transport eller logistikk. Skriv en kort forretningsidé (2–3 setninger). Forklar så hvilken selskapsform du velger, hvordan du vil finansiere oppstarten, og hvilke forsikringer bedriften trenger. Bruk minst seks fagord fra bransjelære-delen av ordboka, og sjekk minst ett av dem på NDLA.', punkter:[
+        'Forretningsideen sier hva jeg skal tilby og til hvem.',
+        'Jeg har valgt og begrunnet selskapsform.',
+        'Jeg har forklart hvordan oppstarten skal finansieres.',
+        'Jeg har nevnt minst to forsikringer og forklart hvorfor.',
+        'Jeg har brukt minst seks fagord riktig.',
+        'Jeg har oppgitt én NDLA-ressurs jeg har brukt.'
+      ]}
+    ]
+  },
+  /* ================================================================ T8 */
+  {
+    id: 't8', lok: 'O-08', tittel: 'Bransjelære: arbeidsliv, miljø og samferdsel',
+    kort: 'Rettigheter og plikter på jobben, bærekraft og avfall, og hvordan transportsystemet i Norge henger sammen.',
+    mal: ['bruke riktige fagord om rettigheter og plikter i arbeidslivet','forklare ord om bærekraft, utslipp og avfall','beskrive transportsystemet med ord som knutepunkt, lenke og infrastruktur'],
+    punkter: [
+      '<b>Arbeidsmiljøloven</b> gir regler om arbeidsmiljø, arbeidstid, <b>oppsigelse</b> og <b>avskjed</b>. Du har rett til å <b>varsle</b> om kritikkverdige forhold.',
+      'En <b>individuell arbeidsavtale</b> gjelder deg. En <b>tariffavtale</b> (kollektiv avtale) gjelder mange og er inngått mellom fagforening og arbeidsgiver.',
+      '<b>Bærekraftig utvikling</b> handler om å dekke behovene i dag uten å ødelegge for dem som kommer etter oss. <b>Karbonavtrykk</b> og <b>CO₂-ekvivalenter</b> brukes til å måle klimautslipp.',
+      'Avfall deles i blant annet <b>husholdningsavfall</b>, <b>næringsavfall</b>, <b>farlig avfall</b> og <b>restavfall</b>. Mye kan gå til <b>gjenvinning</b>.',
+      '<b>Transportsystemet</b> består av <b>knutepunkter</b> (terminaler, havner, stasjoner) og <b>lenker</b> (veger, jernbane, farleder) – til sammen <b>infrastrukturen</b>. <b>NTP</b> er planen for hvordan den skal bygges ut.',
+      'Filtrer på tema <a href="' + ORDBOK + '?tema=A">Arbeidsliv, lover og etikk</a>, <a href="' + ORDBOK + '?tema=M">Miljø og avfall</a> eller <a href="' + ORDBOK + '?tema=N">Samferdsel og infrastruktur</a>.'
+    ],
+    ekstra: NDLA_INSTRUKS,
+    ndla: [
+      ['Plikter og rettigheter i arbeidslivet', NDLA_BL_E + 'plikter-og-rettigheter-i-arbeidslivet/e7ae78ef91', 'Emne'],
+      ['Likeverd og inkludering i arbeidslivet', 'https://ndla.no/r/bransjelare-tp-tol-vg2---ressurssamling/likeverd-og-inkludering-i-arbeidslivet/bb1788fd77', 'Fagstoff'],
+      ['Yrkesetikk', NDLA_BL_E + 'yrkesetikk/9c95f7712c', 'Emne'],
+      ['Kosthold og helse', NDLA_BL_E + 'kosthold-og-helse/2a9ef4cddb', 'Emne'],
+      ['Søk på NDLA: bærekraftig utvikling', NDLA_SOK('bærekraftig utvikling grønn logistikk'), 'Søk']
+    ],
+    aktiviteter: [
+      { type:'match', id:'t8-m1', nivaa:1, tittel:'Ord fra arbeidslivet', instr:'Koble ordet med riktig forklaring.', par:[
+        ['Oppsigelse','Arbeidsforholdet avsluttes med en oppsigelsestid'],
+        ['Avskjed','Arbeidsforholdet avsluttes med en gang etter et grovt brudd'],
+        ['Tariffavtale','Avtale mellom fagforening og arbeidsgiver om lønn og vilkår'],
+        ['Varsling','Å si fra om kritikkverdige forhold på jobben'],
+        ['Hersketeknikker','Måter å gjøre andre små på'],
+        ['Feriepenger','Penger til ferien, beregnet av fjorårets lønn']
+      ]},
+      { type:'sort', id:'t8-s1', nivaa:1, tittel:'Hvor skal avfallet?', instr:'Sorter avfallet fra en transportbedrift.', kat:['Farlig avfall','Kan gjenvinnes (papp, plast, metall)','Restavfall'], items:[
+        ['Spillolje fra verkstedet', 0, 'Spillolje er farlig avfall og skal leveres til godkjent mottak.'],
+        ['Brukte batterier', 0, 'Batterier inneholder stoffer som er farlige for miljøet.'],
+        ['Emballasjekartong fra varemottaket', 1, 'Papp kan materialgjenvinnes.'],
+        ['Rene plastfilmer fra pallene', 1, 'Ren plastemballasje kan gjenvinnes.'],
+        ['Rester av malingsspann med maling i', 0, 'Maling er farlig avfall.'],
+        ['Skitten, sammensatt emballasje som ikke kan sorteres', 2, 'Det som ikke kan sorteres ut, går i restavfallet.']
+      ]},
+      { type:'tf', id:'t8-tf', nivaa:2, tittel:'Sant eller usant: miljø og samferdsel', ps:[
+        ['En batterielektrisk lastebil har ikke utslipp fra eksosrøret.', true, 'Men produksjonen av bil og batteri gir utslipp.'],
+        ['Euro VI er en strengere utslippsklasse enn Euro III.', true, 'Jo høyere euroklasse, jo renere motor.'],
+        ['Et knutepunkt er en strekning mellom to byer.', false, 'Strekningen kalles en lenke. Knutepunktet er stedet der linjer møtes, for eksempel en terminal.'],
+        ['NTP er planen for utbygging av veg, bane, sjø og luftfart.', true, 'Nasjonal transportplan lages på nytt hvert fjerde år.'],
+        ['Svevestøv er ufarlig å puste inn.', false, 'Små partikler i lufta kan gi helseplager, særlig for luftveiene.'],
+        ['Allmenningens tragedie betyr at en felles ressurs blir ødelagt når ingen tar ansvar.', true, 'Eksempler er overfiske og luftforurensning.']
+      ]},
+      { type:'case', id:'t8-case', nivaa:2, tittel:'Case: Noe er galt på lageret', intro:'Jonas er lærling på et oppdiktet lager. Han ser at en kollega kjører truck uten kompetansebevis, og at nødutgangen ofte er blokkert av paller.', steg:[
+        { q:'Hva bør Jonas gjøre først?', valg:[
+          { t:'Si fra til nærmeste leder eller verneombudet', ok:true, f:'Riktig. Kritikkverdige forhold skal meldes til noen som kan gjøre noe med dem.' },
+          { t:'Legge ut bilder på sosiale medier', ok:false, f:'Det kan skade bedriften og andre. Varsle internt først.' },
+          { t:'Ikke gjøre noe – han er bare lærling', ok:false, f:'Alle ansatte har rett, og noen ganger plikt, til å si fra om farlige forhold.' }
+        ]},
+        { q:'Hvordan kan Jonas melde fra skriftlig?', valg:[
+          { t:'Skrive en avviksrapport', ok:true, f:'Riktig. Avviket blir registrert og skal følges opp.' },
+          { t:'Skrive en oppsigelse', ok:false, f:'En oppsigelse avslutter arbeidsforholdet. Det har ingenting med saken å gjøre.' },
+          { t:'Sende en faktura', ok:false, f:'En faktura brukes når bedriften skal ha betalt.' }
+        ]},
+        { q:'Kan Jonas bli straffet av arbeidsgiveren for å ha varslet på en forsvarlig måte?', valg:[
+          { t:'Nei, arbeidsmiljøloven beskytter den som varsler mot gjengjeldelse', ok:true, f:'Riktig. Varslingsreglene gir vern mot gjengjeldelse.' },
+          { t:'Ja, lærlinger har ikke lov til å varsle', ok:false, f:'Varslingsreglene gjelder også lærlinger.' },
+          { t:'Ja, hvis sjefen blir sur', ok:false, f:'Gjengjeldelse mot en som varsler forsvarlig, er forbudt.' }
+        ]}
+      ]},
+      { type:'reflect', id:'t8-r1', nivaa:3, vis: NDLA_INSTRUKS, fase:'ov', tittel:'Ordjeger i bransjelære', q:'Velg tre ord fra bransjelære-delen av ordboka – ett om arbeidsliv, ett om miljø og ett om samferdsel. Søk opp hvert ord på NDLA, gjerne i faget Bransjelære (TP-TOL vg2). Skriv for hvert ord: en forklaring med egne ord, et eksempel fra en transport- eller logistikkbedrift, og tittelen på NDLA-ressursen.', punkter:[
+        'Jeg har valgt ett ord om arbeidsliv, ett om miljø og ett om samferdsel.',
+        'Hver forklaring er skrevet med egne ord.',
+        'Hvert ord har et eksempel fra en transport- eller logistikkbedrift.',
+        'Jeg har oppgitt tittelen på NDLA-ressursen for hvert ord.',
+        'Jeg har sjekket sidetallet i bransjelære-boka for minst ett av ordene.'
+      ]},
+      { type:'voks', id:'t8-voks', tittel:'Du har rettigheter – og ansvar', tekst:['Som lærling er det lett å tenke at du bare skal gjøre som du får beskjed om. Men arbeidslivet i Norge bygger på at også de ansatte sier fra.','Når du kjenner rettighetene dine, er det lettere å si nei til noe som er farlig – og lettere å stå opp for en kollega.','Samtidig har du plikter: å møte presist, følge sikkerhetsreglene og behandle andre med respekt.'], sporsmal:['Hvilken rettighet i arbeidslivet synes du er viktigst?','Hvem på arbeidsplassen din kan du gå til hvis noe er galt?'], handling:'Finn ut hvem som er verneombud eller tillitsvalgt der du har praksis.' }
+    ]
   }
+
   ]
 });
 })();

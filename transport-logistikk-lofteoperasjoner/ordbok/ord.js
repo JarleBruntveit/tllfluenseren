@@ -8,6 +8,7 @@
      Tema:   se TEMA under
      Sider:  «24» eller «122, 135–148» (tomt = ingen sidehenvisning)
      Kilde:  O = ordboka bakerst i boka, S = stikkordregisteret, OS = begge
+             (B legges til automatisk når ordet også står i stikkordregisteret i Bransjelære)
      Søkeord: andre ord og skrivemåter, skilt med komma
    Legg til nye ord ved å skrive en ny linje. Rekkefølgen spiller ingen rolle.
    ===================================================================== */
@@ -21,14 +22,18 @@ TLLORD.TEMA = {
   S: { navn: 'Lastsikring og krefter', ndla: ['Sikring av last', 'https://ndla.no/nb/e/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/sikring-av-last/63c9b82c0d'] },
   U: { navn: 'Lasting, utstyr og truck', ndla: ['Tekniske hjelpemidler (Lasting og lossing)', 'https://ndla.no/r/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/tekniske-hjelpemidler/14bfa0c7a3'] },
   F: { navn: 'Førstehjelp og HMS', ndla: ['Førstehjelp og skadestedsledelse', 'https://ndla.no/r/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/forstehjelp-ved-hodeskader/c472da26b3'] },
-  I: { navn: 'Internasjonal handel og toll' },
-  K: { navn: 'Økonomi, forsikring og avtaler' },
+  I: { navn: 'Internasjonal handel og toll', ndla: ['Internasjonale transporter', 'https://ndla.no/e/bransjelare-tp-tol-vg2---ressurssamling/internasjonale-transporter/9fc6c63b95'] },
+  K: { navn: 'Økonomi, forsikring og avtaler', ndla: ['Økonomiske kalkyler og prisberegninger', 'https://ndla.no/e/bransjelare-tp-tol-vg2---ressurssamling/okonomiske-kalkyler-og-prisberegninger/a36ee8e1da'] },
+  B: { navn: 'Etablering og drift av bedrift', ndla: ['Etablering og drift av virksomhet', 'https://ndla.no/e/bransjelare-tp-tol-vg2---ressurssamling/etablering-og-drift-av-virksomhet/a5b7718286'] },
+  A: { navn: 'Arbeidsliv, lover og etikk', ndla: ['Plikter og rettigheter i arbeidslivet', 'https://ndla.no/e/bransjelare-tp-tol-vg2---ressurssamling/plikter-og-rettigheter-i-arbeidslivet/e7ae78ef91'] },
+  H: { navn: 'Helse og livsstil', ndla: ['Kosthold og helse', 'https://ndla.no/e/bransjelare-tp-tol-vg2---ressurssamling/kosthold-og-helse/2a9ef4cddb'] },
+  N: { navn: 'Samferdsel og infrastruktur' },
   D: { navn: 'Digitale systemer og sporing' },
   M: { navn: 'Miljø og avfall' },
   O: { navn: 'Organisasjoner og standarder' }
 };
 
-/* Kapitlene i læreboka (sideintervaller brukes til å finne kapittel ut fra sidetall). */
+/* Kapitlene i lærebøkene (sideintervaller brukes til å finne kapittel ut fra sidetall). */
 TLLORD.KAPITLER = [
   { nr: 1, fra: 1,   til: 38,  tittel: 'Grunnleggende prinsipper ved lager- og terminalarbeid', sti: '../kap1/' },
   { nr: 2, fra: 39,  til: 71,  tittel: 'Planlegging av oppdrag' },
@@ -40,6 +45,25 @@ TLLORD.KAPITLER = [
   { nr: 8, fra: 201, til: 214, tittel: 'Sikring av skadested og førstehjelp' },
   { nr: 9, fra: 215, til: 230, tittel: 'Håndtering og transport av varer med truck' }
 ];
+
+TLLORD.KAPITLER_BL = [
+  { nr: 1,  fra: 1,   til: 46,  tittel: 'Etablering, ledelse og økonomisk styring' },
+  { nr: 2,  fra: 47,  til: 76,  tittel: 'Lover, regler, forsikringsordninger og yrkesetiske normer' },
+  { nr: 3,  fra: 77,  til: 96,  tittel: 'Bærekraftig utvikling, miljøvennlig drift og grønn logistikk' },
+  { nr: 4,  fra: 97,  til: 122, tittel: 'Helse-, miljø-, sikkerhets- og kvalitetsarbeid' },
+  { nr: 5,  fra: 123, til: 134, tittel: 'Kosthold, fysisk helse og livsstilsykdommer' },
+  { nr: 6,  fra: 135, til: 180, tittel: 'Transport- og logistikkbransjens grunnelementer' },
+  { nr: 7,  fra: 181, til: 216, tittel: 'Prosedyrer ved internasjonale transportoppdrag' },
+  { nr: 8,  fra: 217, til: 256, tittel: 'Verdikjede fra produksjon til sluttbruker – og gjenvinning' },
+  { nr: 9,  fra: 257, til: 270, tittel: 'Økonomiske kalkyler og prisberegninger' },
+  { nr: 10, fra: 271, til: 293, tittel: 'Et likeverdig og inkluderende yrkesfellesskap' }
+];
+
+TLLORD.BOKER = {
+  tll: { navn: 'TLL', lang: 'Transport, logistikk og løfteoperasjoner', ikon: '📖', kapitler: TLLORD.KAPITLER },
+  bl:  { navn: 'Bransjelære', lang: 'Bransjelære', ikon: '📗', kapitler: TLLORD.KAPITLER_BL,
+         ndlaFag: 'https://ndla.no/f/bransjelare-tp-tol-vg2---ressurssamling/5c1eeb1e84d6' }
+};
 
 TLLORD.NDLA_SOK = 'https://ndla.no/search?query=';
 TLLORD.NDLA_FAG = 'https://ndla.no/nb/f/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/636ca61808a8';
@@ -497,13 +521,33 @@ YTF|Yrkestrafikkforbundet: fagforbund for arbeidstakere i transport.|O||O|fagfor
 ÅDT|Årsdøgntrafikk: gjennomsnittlig antall kjøretøy per døgn på en veg gjennom året.|T||O|trafikk
 `;
 
-/* ---------- Gjør om rådata til objekter ---------- */
-(function(){
-  const kapAv = side => (TLLORD.KAPITLER.find(k => side >= k.fra && side <= k.til) || {}).nr;
-  TLLORD.ORD = TLLORD.RAA.trim().split('\n').filter(l => l.trim()).map(l => {
-    const [ord, forklaring, tema, sider, kilde, sok] = l.split('|').map(s => (s || '').trim());
-    const startsider = (sider.match(/\d+(?=\s*(?:–|-|,|$))/g) || []).map(Number);
-    const kap = Array.from(new Set((sider.match(/\d+/g) || []).map(Number).map(kapAv).filter(Boolean))).sort((a,b)=>a-b);
-    return { ord, forklaring, tema, sider, kilde, sok: sok ? sok.split(',').map(s => s.trim()).filter(Boolean) : [], kap, forsteSide: startsider[0] || null };
+/* ---------- Gjør om rådata til objekter ----------
+   Kalles av siden etter at ord.js og ord-bransjelaere.js er lastet.
+   Hvert ord får en liste med henvisninger: [{ bok:'tll'|'bl', sider, kap:[...] }]. */
+TLLORD.bygg = function(){
+  if (TLLORD.ORD) return TLLORD.ORD;
+  const kapAv = (bok, side) => (TLLORD.BOKER[bok].kapitler.find(k => side >= k.fra && side <= k.til) || {}).nr;
+  const les = raa => raa.trim().split('\n').filter(l => l.trim()).map(l => {
+    const [ord, forklaring, tema, sider, kilde, sok] = l.split('|').map(x => (x || '').trim());
+    return { ord, forklaring, tema, sider, kilde, sok: sok ? sok.split(',').map(x => x.trim()).filter(Boolean) : [] };
   });
-})();
+  const ref = (bok, sider) => ({ bok, sider, kap: Array.from(new Set((sider.match(/\d+/g) || []).map(Number).map(n => kapAv(bok, n)).filter(Boolean))).sort((a,b)=>a-b) });
+  const ORD = les(TLLORD.RAA).map(o => Object.assign(o, { refs: o.sider ? [ref('tll', o.sider)] : [] }));
+  const finn = {}; ORD.forEach(o => finn[o.ord.toLowerCase()] = o);
+  TLLORD.MANGLER = [];
+  les(TLLORD.RAA_BL || '').forEach(o => {
+    if (o.forklaring === '='){
+      const t = finn[o.ord.toLowerCase()];
+      if (!t){ TLLORD.MANGLER.push(o.ord); return; }
+      if (o.sider) t.refs.push(ref('bl', o.sider));
+      if (!t.kilde.includes('B')) t.kilde += 'B';
+      o.sok.forEach(x => { if (!t.sok.includes(x)) t.sok.push(x); });
+    } else {
+      o.kilde = 'B'; o.refs = o.sider ? [ref('bl', o.sider)] : [];
+      if (finn[o.ord.toLowerCase()]) TLLORD.MANGLER.push('dobbel: ' + o.ord);
+      finn[o.ord.toLowerCase()] = o; ORD.push(o);
+    }
+  });
+  ORD.forEach(o => { o.boker = Array.from(new Set(o.refs.map(r => r.bok).concat(/[OS]/.test(o.kilde) ? ['tll'] : []))); });
+  return (TLLORD.ORD = ORD);
+};
