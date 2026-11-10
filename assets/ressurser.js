@@ -56,20 +56,27 @@
       node.innerHTML = `<h2>Se og lær – flere kilder</h2><p>Fordypning og alternative forklaringer til temaet.</p>${resources.length ? `<div class="rb-grid">${resources.map(r => card(r, data)).join('')}</div>` : '<p class="rb-empty">Ingen tilleggskilder er lagt til her ennå.</p>'}<a href="/ressursbank/${bankQuery.size ? '?' + bankQuery : ''}">Utforsk ressursbanken →</a>`;
     } catch { node.innerHTML = '<p>Tilleggskildene kunne ikke lastes. <a href="/ressursbank/">Prøv ressursbanken</a>.</p>'; }
   }
-  const intro = `<section class="rb-intro"><div class="kicker">Se og lær – flere kilder</div><h1>Flere veier til forståelse.</h1><p>Filmer, artikler og andre forklaringer, samlet etter tema. Bruk dem til fordypning og repetisjon sammen med lærestoffet.</p></section>`;
+  const intro = `<section class="rb-intro"><div class="kicker">Se og lær – flere kilder</div><h1>Flere veier til forståelse.</h1><p>Filmer, artikler og andre forklaringer, samlet etter fagområde. Bruk dem til fordypning og repetisjon sammen med lærestoffet.</p></section>`;
   function publicPage(root, data) {
     const params = new URLSearchParams(location.search);
     const state = {q:params.get('q') || '', area:params.get('area') || '', topic:params.get('topic') || '', type:params.get('type') || ''};
     if (!data.areas.some(a => a.id === state.area)) state.area = '';
     if (!data.topics.some(t => t.id === state.topic)) state.topic = '';
     if (!types.includes(state.type)) state.type = '';
+    const topicAreas = new Map(data.topics.map(t => [t.id, t.area]));
     root.classList.add('rb');
     root.innerHTML = intro + `<div class="rb-filters" role="search" aria-label="Finn ressurser"><label class="rb-field">Søk<input id="rb-q" type="search" value="${esc(state.q)}" placeholder="Søk etter tema, tittel eller avsender"></label><label class="rb-field">Fagområde<select id="rb-area"><option value="">Alle fagområder</option>${options(data.areas, state.area)}</select></label><label class="rb-field">Tema<select id="rb-topic"></select></label><label class="rb-field">Type<select id="rb-type"><option value="">Alle typer</option>${types.map(x => `<option ${x === state.type ? 'selected' : ''}>${x}</option>`).join('')}</select></label></div><div class="rb-actions"><button id="rb-clear">Nullstill filtre</button></div><p id="rb-count" role="status" aria-live="polite"></p><div id="rb-results"></div>`;
     const updateTopics = () => { root.querySelector('#rb-topic').innerHTML = '<option value="">Alle temaer</option>' + options(data.topics.filter(t => !state.area || t.area === state.area), state.topic); };
     const update = () => {
       const rows = filter(data, state);
+      const selectedArea = state.area || topicAreas.get(state.topic);
+      const groups = data.areas.filter(area => !selectedArea || area.id === selectedArea).map(area => {
+        const resources = rows.filter(r => r.topics.some(id => topicAreas.get(id) === area.id));
+        if (!resources.length) return '';
+        return `<section class="rb-section"><h2>${esc(area.title)}</h2><div class="rb-grid">${resources.map(r => card(r, data)).join('')}</div></section>`;
+      });
       root.querySelector('#rb-count').textContent = `${rows.length} ${rows.length === 1 ? 'ressurs' : 'ressurser'} funnet`;
-      root.querySelector('#rb-results').innerHTML = rows.length ? `<div class="rb-grid">${rows.map(r => card(r, data)).join('')}</div>` : '<p class="rb-empty">Ingen treff. Prøv et annet søkeord eller fjern et filter.</p>';
+      root.querySelector('#rb-results').innerHTML = rows.length ? groups.join('') : '<p class="rb-empty">Ingen treff. Prøv et annet søkeord eller fjern et filter.</p>';
       const query = new URLSearchParams(Object.entries(state).filter(([,v]) => v));
       history.replaceState(null, '', location.pathname + (query.size ? '?' + query : '') + location.hash);
     };
