@@ -1,6 +1,249 @@
-<!doctype html><html lang="nb"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dokumenter | TLLfluenseren</title><style>:root{font-family:Arial,sans-serif;color:#163d46;background:#f4f8f9}*{box-sizing:border-box}body{margin:0}header{background:#123e4a;color:white;padding:20px}main{max-width:1040px;margin:25px auto;padding:0 16px}.panel{background:white;border:1px solid #d4e3e7;border-radius:12px;padding:22px;margin:16px 0}h1,h2{margin:0 0 12px}label{display:block;font-size:13px;font-weight:bold;margin:10px 0 4px}input,select{width:100%;padding:10px;border:1px solid #a9c5cd;border-radius:5px;font:inherit}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 18px}button{background:#117e91;color:white;border:0;padding:11px 18px;border-radius:7px;cursor:pointer;margin:8px 6px 8px 0}button.secondary{background:#35545c}.note{font-size:13px;color:#49626a}#preview{display:none;color:#222}.paper{background:white;padding:22px;min-height:900px}.paper h2{color:#163d46;border-bottom:3px solid #178da1;padding-bottom:12px}.line{padding:9px 0;border-bottom:1px solid #9ab3b8}.signature{height:90px;border-bottom:1px solid #888;margin-top:20px}.two{display:grid;grid-template-columns:1fr 1fr;gap:25px}.pagebreak{break-before:page}.small{font-size:12px}a{color:#0a8096}@media(max-width:650px){.grid,.two{grid-template-columns:1fr}}@media print{@page{size:A4;margin:16mm}header,.editor,.no-print{display:none!important}body{background:white}main{max-width:none;margin:0;padding:0}.panel{border:0;padding:0;margin:0}#preview{display:block!important}.paper{min-height:0;padding:0}.pagebreak{page-break-before:always}}</style><link rel="stylesheet" href="/assets/elevflyt.css"></head><body><a class="tll-skip" href="#tll-main">Hopp til innhold</a><nav class="tll-site-nav tll-standalone-nav" aria-label="Hovedmeny"><a href="/">Forside</a><a href="/#fag">Fagområder</a><a href="/ressursbank/">Ressursbank</a><a href="/assistent/">TLL-assistenten</a><a href="/laererrom/">Lærerrom</a><a href="/om/">Om</a></nav><header><strong>TLLfluenseren · Lærerrom / Dokumenter</strong></header><main id="tll-main" tabindex="-1"><div class="panel editor"><h1>Utfyllbare avtaler</h1><p>Velg mal, fyll ut og skriv ut. Opplysninger lagres ikke på nettsiden. Lukk fanen for å tømme skjemaet.</p><label for="kind">Dokument</label><select id="kind"><option value="yff">Avtale om YFF-plass</option><option value="fadder">Fadderavtale – praktisk truckopplæring</option></select><form id="form"><div class="grid" id="fields"></div></form><button id="show" type="button">Forhåndsvis</button><button id="print" type="button">Skriv ut / Lagre som PDF</button><button class="secondary" id="reset" type="button">Tøm feltene</button><p class="note">Avtalene må gjennomgås og signeres av partene. Skjemaet er en utfyllingshjelp, ikke digital signering. Personopplysninger sendes ikke til server av denne siden.</p></div><div id="preview" class="panel"><div id="pages"></div><button class="no-print" onclick="window.print()">Skriv ut</button></div></main><script>
-const templates={
-yff:[['elev','Elevens navn'],['bedrift','Bedriftens navn'],['kontakt','Kontaktperson i bedriften'],['telefon','Telefon'],['epost','E-post'],['representant','Bedriftens representant'],['sted','Sted'],['dato','Dato']],
-fadder:[['kandidat','Kandidatens navn'],['fodt','Fødselsdato'],['bedrift','Opplæringsbedrift'],['orgnr','Organisasjonsnummer'],['adresse','Bedriftens adresse'],['ansvarlig','Ansvarlig person'],['fadder','Godkjent fadder'],['verneombud','Verneombud'],['faglig','Faglig leder'],['sertifikat','Sertifikatnummer'],['utstyr','Type arbeidsutstyr / truckklasse'],['modul','Opplæringsplan (modul)'],['fra','Fra dato'],['til','Til dato'],['sted','Sted'],['dato','Signeringsdato']]
-};const kind=document.getElementById('kind'),fields=document.getElementById('fields'),preview=document.getElementById('preview'),pages=document.getElementById('pages');function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function val(k){const el=document.getElementById(k);if(k==='dato'&&el?.value){const [y,m,d]=el.value.split('-');return `${d}.${m}.${y}`}return el?.value.trim()||'________________________'}function row(label,v){return '<div class="line"><strong>'+escapeHTML(label)+':</strong> '+escapeHTML(v)+'</div>'}function rebuild(){fields.innerHTML=templates[kind.value].map(([id,name])=>'<div><label for="'+id+'">'+name+'</label><input id="'+id+'" autocomplete="off"></div>').join('');const dateField=document.getElementById('dato');if(dateField){dateField.type='date';const d=new Date();const local=new Date(d.getTime()-d.getTimezoneOffset()*60000);dateField.value=local.toISOString().slice(0,10)}preview.style.display='none'}function render(){let y=kind.value==='yff',head='<div class="small">Haugaland videregående skole · '+(y?'VG2 Transport og logistikk 2026–2027':'Modul 4.2 truck')+'</div>';let html;if(y){html='<section class="paper">'+head+'<h2>Yrkesfaglig fordypning</h2><p><strong>Informasjon om YFF-plass</strong></p><p>Eleven utplasseres normalt hver tirsdag, én dag i uken, uten lønn. Eleven følger så langt som mulig bedriftens arbeidstider og dokumenterer læringen. Skolen følger opp eleven.</p><p>Eleven skal ikke bruke truck eller kran i YFF-tiden uten særskilt avtale om godkjent opplæring.</p><p>Kontakt: Haugaland videregående skole.</p></section><section class="paper pagebreak">'+head+'<h2>Avtale om YFF-plass</h2><p>Intensjonsavtale mellom bedrift og Haugaland videregående skole.</p>'+row('Elev',val('elev'))+row('Bedrift',val('bedrift'))+row('Kontaktperson',val('kontakt'))+row('Telefon',val('telefon'))+row('E-post',val('epost'))+'<h3>Avtalevilkår</h3><p>Eleven deltar i yrkesfaglig fordypning i gjennomsnitt én arbeidsdag per uke i skoleåret. Opplæringen følger skolens YFF-plan. Eleven har møteplikt, og bedriften varsler skolen ved uvarslet fravær. Avtalen kan avsluttes av partene.</p>'+row('Sted',val('sted'))+row('Dato',val('dato'))+'<div class="two"><div class="signature">Faglærer / skolen</div><div class="signature">'+escapeHTML(val('representant'))+' / bedriften</div></div></section>'}else{html='<section class="paper">'+head+'<h2>Fadderavtale</h2><p>Avtale om praktisk kjøreopplæring i bedrift. Alle parter skal signere før opplæringen starter.</p><h3>Forutsetninger</h3><p>Bedriften velger en skikket fadder med kompetansebevis og dokumentert praksis. Opplæringen skal være risikovurdert og gjennomføres i henhold til aktuell opplæringsplan, bruksanvisning og bedriftens HMS-system. Fadder følger opp og attesterer opplæringen. Sertifisert opplæringsvirksomhet gjennomfører avsluttende praktisk prøve.</p><p>Arbeidsutstyret skal være egnet, vedlikeholdt og kontrollert. Opplæringen skal foregå på et trygt område.</p></section><section class="paper pagebreak">'+head+'<h2>Avtale – praktisk opplæring</h2>'+row('Kandidat',val('kandidat'))+row('Fødselsdato',val('fodt'))+row('Opplæringsvirksomhet','Haugaland videregående skole')+row('Adresse','Spannavegen 38, Haugesund')+row('Faglig leder',val('faglig'))+row('Sertifikatnummer',val('sertifikat'))+row('Bedrift',val('bedrift'))+row('Organisasjonsnummer',val('orgnr'))+row('Adresse',val('adresse'))+row('Ansvarlig person',val('ansvarlig'))+row('Fadder',val('fadder'))+row('Verneombud',val('verneombud'))+row('Utstyr',val('utstyr'))+row('Opplæringsplan',val('modul'))+row('Periode',val('fra')+' – '+val('til'))+row('Forsikring','Dekkes av opplæringsbedrift')+row('Sted og dato',val('sted')+' '+val('dato'))+'<h3>Underskrifter</h3><div class="two">'+['Kandidat','Faglig leder','Bedriftens ansvarlige','Fadder','Verneombud'].map(x=>'<div class="signature">'+x+'</div>').join('')+'</div></section>'}pages.innerHTML=html;preview.style.display='block';preview.scrollIntoView({behavior:'smooth'})}kind.addEventListener('change',rebuild);document.getElementById('show').onclick=render;document.getElementById('print').onclick=()=>{render();window.print()};document.getElementById('reset').onclick=rebuild;rebuild();
-</script></body></html>
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dokumenter | TLLfluenseren</title>
+<link rel="icon" href="/favicon.ico">
+<link rel="stylesheet" href="/assets/elevflyt.css">
+<link rel="stylesheet" href="/assets/global-footer.css">
+<script defer src="/assets/global-footer.js"></script>
+<style>
+:root{--ink:#163d46;--teal:#1a8fa6;--teal-d:#117e91;--line:#cfe0e5;--soft:#eef6f8;--muted:#4f666d;font-family:Calibri,Carlito,"Segoe UI",Arial,sans-serif;color:var(--ink);background:#f4f8f9}
+*{box-sizing:border-box}body{margin:0;background:#f4f8f9}
+header.top{background:#123e4a;color:#fff;padding:18px 20px}
+main{max-width:980px;margin:24px auto 60px;padding:0 16px}
+h1{margin:0 0 6px;font-size:30px}.lead{margin:0 0 18px;color:var(--muted);line-height:1.5}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 18px}
+.tab{flex:1 1 260px;text-align:left;background:#fff;border:2px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer;font:inherit;color:inherit}
+.tab b{display:block;font-size:18px}.tab span{font-size:14px;color:var(--muted)}
+.tab[aria-selected="true"]{border-color:var(--teal);box-shadow:0 0 0 3px #1a8fa622;background:#fbfeff}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:0 0 16px}
+fieldset{border:0;margin:0 0 6px;padding:0}
+legend{font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.06em;font-size:14px;padding:0;margin:0 0 8px;border-bottom:2px solid var(--teal);width:100%;padding-bottom:6px}
+.sub{font-weight:700;color:var(--teal);margin:12px 0 2px;font-size:15px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 18px;margin-bottom:12px}
+.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+label.f{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:0 0 4px}
+input[type=text],input[type=date],input[type=tel],input[type=email]{width:100%;padding:10px;border:1px solid #a9c5cd;border-radius:6px;font:inherit;font-size:16px;background:#fff;color:inherit}
+input:focus{outline:3px solid #1a8fa655;border-color:var(--teal)}
+input[readonly]{background:var(--soft);color:var(--muted)}
+.checks{display:flex;flex-wrap:wrap;gap:8px 22px;margin:4px 0 12px}
+.checks label{display:flex;align-items:center;gap:8px;font-size:16px;cursor:pointer}
+.checks input{width:18px;height:18px;accent-color:var(--teal)}
+details{margin:6px 0 4px}summary{cursor:pointer;color:var(--teal-d);font-weight:700}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;position:sticky;bottom:0;background:#f4f8f9;padding:12px 0}
+button.btn{background:var(--teal-d);color:#fff;border:0;padding:12px 20px;border-radius:8px;cursor:pointer;font:inherit;font-weight:700;font-size:16px}
+button.btn:hover{background:#0d6c7d}button.btn.secondary{background:#fff;color:var(--ink);border:1px solid #a9c5cd;font-weight:400}
+button.btn:disabled{opacity:.6;cursor:wait}
+.status{font-size:14px;color:var(--muted)}
+.note{font-size:13px;color:var(--muted);line-height:1.5}
+.hint{font-size:13px;color:var(--muted);margin:-4px 0 10px}
+[hidden]{display:none!important}
+@media(max-width:650px){.grid,.grid.three{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<a class="tll-skip" href="#tll-main">Hopp til innhold</a>
+<nav class="tll-site-nav tll-standalone-nav" aria-label="Hovedmeny"><a href="/">Forside</a><a href="/#fag">Fagområder</a><a href="/ressursbank/">Ressursbank</a><a href="/assistent/">TLL-assistenten</a><a href="/laererrom/" aria-current="page">Lærerrom</a><a href="/om/">Om</a></nav>
+<header class="top"><strong>TLLfluenseren · Lærerrom / Dokumenter</strong></header>
+
+<main id="tll-main" tabindex="-1">
+  <h1>Utfyllbare avtaler</h1>
+  <p class="lead">Velg avtale, fyll inn feltene og last ned en ferdig Word-fil. Felt du lar stå tomme, blir tomme linjer i dokumentet, så de kan fylles ut for hånd. Opplysningene lagres ikke og sendes ikke noe sted – filen lages i din egen nettleser.</p>
+
+  <div class="tabs" role="tablist" aria-label="Velg avtale">
+    <button class="tab" role="tab" id="tab-fadder" aria-controls="form-fadder" aria-selected="true"><b>Fadderavtale</b><span>Praktisk truckopplæring i bedrift · modul 4.2</span></button>
+    <button class="tab" role="tab" id="tab-yff" aria-controls="form-yff" aria-selected="false"><b>Avtale om YFF-plass</b><span>Yrkesfaglig fordypning · Vg2 TLL</span></button>
+  </div>
+
+  <!-- ================= FADDERAVTALE ================= -->
+  <form id="form-fadder" role="tabpanel" aria-labelledby="tab-fadder" autocomplete="off">
+    <div class="card">
+      <fieldset>
+        <legend>2 · Opplæringen</legend>
+        <div class="checks" role="group" aria-label="Type arbeidsutstyr">
+          <label><input type="checkbox" name="utstyr" value="truck" checked> Truck</label>
+          <label><input type="checkbox" name="utstyr" value="kran"> Kran</label>
+          <label><input type="checkbox" name="utstyr" value="masse"> Masseforflytningsmaskin</label>
+        </div>
+        <div class="grid"><div><label class="f" for="f-modul">Opplæringsplan – modul 4.</label><input type="text" id="f-modul" name="modul" value="2" inputmode="numeric" maxlength="2"></div></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>3 · Parter</legend>
+        <div class="sub">Kandidat</div>
+        <div class="grid">
+          <div><label class="f" for="f-kandidat">Navn</label><input type="text" id="f-kandidat" name="kandidat"></div>
+          <div><label class="f" for="f-fodt">Fødselsdato</label><input type="date" id="f-fodt" name="fodt"></div>
+        </div>
+        <div class="sub">Opplæringsvirksomhet</div>
+        <div class="grid">
+          <div><label class="f" for="f-skole">Navn</label><input type="text" id="f-skole" value="Haugaland videregående skole" readonly></div>
+          <div><label class="f" for="f-skoleadr">Adresse</label><input type="text" id="f-skoleadr" value="Spannavegen 38, Haugesund" readonly></div>
+          <div><label class="f" for="f-faglig">Faglig leder</label><input type="text" id="f-faglig" name="faglig"></div>
+          <div><label class="f" for="f-sertifikat">Sertifikatnr.</label><input type="text" id="f-sertifikat" name="sertifikat"></div>
+        </div>
+        <div class="sub">Opplæringsbedrift</div>
+        <div class="grid">
+          <div><label class="f" for="f-bedrift">Bedriftens navn</label><input type="text" id="f-bedrift" name="bedrift"></div>
+          <div><label class="f" for="f-orgnr">Org.nr.</label><input type="text" id="f-orgnr" name="orgnr" inputmode="numeric"></div>
+          <div><label class="f" for="f-adresse">Adresse</label><input type="text" id="f-adresse" name="adresse"></div>
+          <div><label class="f" for="f-ansvarlig">Ansvarlig person</label><input type="text" id="f-ansvarlig" name="ansvarlig"></div>
+          <div><label class="f" for="f-fadder">Godkjent fadder</label><input type="text" id="f-fadder" name="fadder"></div>
+          <div><label class="f" for="f-verneombud">Verneombud</label><input type="text" id="f-verneombud" name="verneombud"></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>4 · Periode</legend>
+        <div class="grid">
+          <div><label class="f" for="f-fra">Fra dato</label><input type="date" id="f-fra" name="fra"></div>
+          <div><label class="f" for="f-til">Til dato</label><input type="date" id="f-til" name="til"></div>
+        </div>
+        <p class="hint">Forsikring står fast i avtalen: «Dekkes av opplæringsbedrift». Kjøreopplæringen skal være gjennomført innen ett år.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend>5 · Underskrifter</legend>
+        <p class="hint">Valgfritt: fyll inn sted og dato hvis alle signerer samtidig. Ellers blir feltene tomme.</p>
+        <div class="grid">
+          <div><label class="f" for="f-sted">Sted</label><input type="text" id="f-sted" name="sted"></div>
+          <div><label class="f" for="f-dato">Dato</label><input type="date" id="f-dato" name="dato"></div>
+        </div>
+      </fieldset>
+    </div>
+  </form>
+
+  <!-- ================= YFF ================= -->
+  <form id="form-yff" role="tabpanel" aria-labelledby="tab-yff" autocomplete="off" hidden>
+    <div class="card">
+      <fieldset>
+        <legend>1 · Parter</legend>
+        <div class="grid">
+          <div><label class="f" for="y-bedrift">Bedrift</label><input type="text" id="y-bedrift" name="bedrift"></div>
+          <div><label class="f" for="y-elev">Elevens navn</label><input type="text" id="y-elev" name="elev"></div>
+          <div><label class="f" for="y-kontakt">Kontaktperson i bedriften</label><input type="text" id="y-kontakt" name="kontakt"></div>
+          <div><label class="f" for="y-telefon">Telefon</label><input type="tel" id="y-telefon" name="telefon"></div>
+          <div><label class="f" for="y-epost">E-post</label><input type="email" id="y-epost" name="epost"></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>3 · Underskrifter</legend>
+        <div class="grid three">
+          <div><label class="f" for="y-sted">Sted</label><input type="text" id="y-sted" name="sted" value="Haugesund"></div>
+          <div><label class="f" for="y-dato">Dato</label><input type="date" id="y-dato" name="dato"></div>
+          <div><label class="f" for="y-representant">Bedriftens representant</label><input type="text" id="y-representant" name="representant"></div>
+        </div>
+        <p class="hint">Tom dato gir «____ / ____» i avtalen, slik at datoen kan skrives for hånd.</p>
+      </fieldset>
+
+      <details>
+        <summary>Skoleår og kontaktpersoner på skolen</summary>
+        <div class="grid" style="margin-top:12px">
+          <div><label class="f" for="y-skoleaar">Skoleår</label><input type="text" id="y-skoleaar" name="skoleaar"></div>
+          <div><label class="f" for="y-faglaerer">Faglærer</label><input type="text" id="y-faglaerer" name="faglaerer" value="Jarle Bruntveit"></div>
+          <div><label class="f" for="y-faglaererTlf">Faglærers telefon</label><input type="tel" id="y-faglaererTlf" name="faglaererTlf" value="916 37 356"></div>
+          <div><label class="f" for="y-avdelingsleder">Avdelingsleder</label><input type="text" id="y-avdelingsleder" name="avdelingsleder" value="Espen Helgeland"></div>
+        </div>
+      </details>
+    </div>
+  </form>
+
+  <div class="actions">
+    <button class="btn" id="download" type="button">Last ned Word-fil (.docx)</button>
+    <button class="btn secondary" id="blank" type="button">Last ned tom mal</button>
+    <button class="btn secondary" id="reset" type="button">Tøm feltene</button>
+    <span class="status" id="status" role="status" aria-live="polite"></span>
+  </div>
+
+  <p class="note">Avtalene må gjennomgås og signeres av partene – skjemaet er en utfyllingshjelp, ikke digital signering. Trenger du PDF, åpne Word-filen og velg <em>Lagre som PDF</em>.</p>
+</main>
+
+<script src="/assets/vendor/docx/docx.iife.min.js"></script>
+<script src="/assets/avtaler/avtaler.js"></script>
+<script>
+(function () {
+  const tabs = { fadder: document.getElementById('tab-fadder'), yff: document.getElementById('tab-yff') };
+  const forms = { fadder: document.getElementById('form-fadder'), yff: document.getElementById('form-yff') };
+  const status = document.getElementById('status');
+  let current = 'fadder';
+  let logoPromise = null;
+
+  // Skoleår: høst → inneværende/neste år, vår → forrige/inneværende år
+  function defaultSkoleaar() {
+    const d = new Date(), y = d.getFullYear();
+    return d.getMonth() >= 6 ? y + '–' + (y + 1) : (y - 1) + '–' + y;
+  }
+  function setDefaults() {
+    document.getElementById('y-skoleaar').value = defaultSkoleaar();
+  }
+
+  function select(kind) {
+    current = kind;
+    for (const k of Object.keys(tabs)) {
+      tabs[k].setAttribute('aria-selected', String(k === kind));
+      forms[k].hidden = k !== kind;
+    }
+    status.textContent = '';
+  }
+  tabs.fadder.addEventListener('click', () => select('fadder'));
+  tabs.yff.addEventListener('click', () => select('yff'));
+
+  const fmtDate = (s) => { if (!s) return ''; const [y, m, d] = s.split('-'); return d + '.' + m + '.' + y; };
+
+  function values(form) {
+    const v = {};
+    for (const el of form.querySelectorAll('input[name]')) {
+      if (el.type === 'checkbox') continue;
+      v[el.name] = el.type === 'date' ? fmtDate(el.value) : el.value.trim();
+    }
+    if (form === forms.fadder) v.utstyr = [...form.querySelectorAll('input[name=utstyr]:checked')].map((c) => c.value);
+    return v;
+  }
+
+  function logo() {
+    if (!logoPromise) logoPromise = fetch('/assets/avtaler/haugaland-logo.jpg').then((r) => r.ok ? r.arrayBuffer() : null).catch(() => null);
+    return logoPromise;
+  }
+
+  const safe = (s) => (s || '').normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[æÆ]/g, 'ae').replace(/[øØ]/g, 'o').replace(/[åÅ]/g, 'a').replace(/[^\w-]+/g, '_').replace(/^_+|_+$/g, '');
+
+  async function download(blank) {
+    const btns = document.querySelectorAll('.actions button');
+    btns.forEach((b) => (b.disabled = true));
+    status.textContent = 'Lager dokumentet …';
+    try {
+      const v = blank ? (current === 'yff' ? { skoleaar: document.getElementById('y-skoleaar').value } : {}) : values(forms[current]);
+      const img = await logo();
+      const doc = TLLAvtaler[current](docx, img ? new Uint8Array(img) : null, v);
+      const blob = await docx.Packer.toBlob(doc);
+      const who = blank ? 'tom' : safe(current === 'yff' ? v.elev : v.kandidat);
+      const name = (current === 'yff' ? 'Avtale_om_YFF-plass' : 'Fadderavtale') + (who ? '_' + who : '') + '.docx';
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = name;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+      status.textContent = 'Lastet ned: ' + name;
+    } catch (e) {
+      console.error(e);
+      status.textContent = 'Noe gikk galt da dokumentet skulle lages. Prøv å laste siden på nytt.';
+    } finally {
+      btns.forEach((b) => (b.disabled = false));
+    }
+  }
+
+  document.getElementById('download').addEventListener('click', () => download(false));
+  document.getElementById('blank').addEventListener('click', () => download(true));
+  document.getElementById('reset').addEventListener('click', () => {
+    forms[current].reset(); if (current === 'yff') setDefaults(); status.textContent = 'Feltene er tømt.';
+  });
+
+  setDefaults();
+  if (location.hash === '#yff') select('yff');
+})();
+</script>
+</body>
+</html>
