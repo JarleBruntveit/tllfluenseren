@@ -312,3 +312,9 @@ input.sel{font:inherit;padding:8px 10px;border:2px solid var(--line);border-radi
 .row label{display:flex;gap:6px;align-items:center;flex-wrap:wrap;max-width:100%}
 #kapsel{width:min(340px,calc(100vw - 110px))}
 .section-h .row{max-width:100%}
+
+/* Tydelig navigasjon mellom aktiviteter */
+.activity-nav{margin-top:24px;padding-top:16px;border-top:1px solid var(--line)}
+.activity-nav .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;text-decoration:none;line-height:1.4;text-align:center}
+.activity-nav .btn:hover{filter:brightness(1.08)}
+@media(max-width:600px){.activity-nav{display:grid;grid-template-columns:1fr 1fr;gap:10px}.activity-nav .spacer{display:none}.activity-nav .btn{padding:12px 10px;min-width:0}.activity-nav .activity-nav-next{grid-column:2}.activity-nav .activity-nav-back{grid-column:1}}
