@@ -48,8 +48,12 @@
       const data = await dataPromise;
       if (!node.isConnected) return;
       const topic = node.dataset.resourceTopic || '', area = node.dataset.resourceArea || '';
-      const resources = filter(data, {topic, area});
-      node.innerHTML = `<h2>Se og lær – flere kilder</h2><p>Fordypning og alternative forklaringer til temaet.</p>${resources.length ? `<div class="rb-grid">${resources.map(r => card(r, data)).join('')}</div>` : '<p class="rb-empty">Ingen tilleggskilder er lagt til her ennå.</p>'}<a href="/ressursbank/?${new URLSearchParams(topic ? {topic} : area ? {area} : {})}">Utforsk ressursbanken →</a>`;
+      const chapter = node.dataset.resourceChapter;
+      const resources = filter(data, {topic, area}).filter(r =>
+        !chapter || r.topics.some(id => id.startsWith(chapter + '-'))
+      );
+      const bankQuery = new URLSearchParams(topic ? {topic} : area ? {area} : {});
+      node.innerHTML = `<h2>Se og lær – flere kilder</h2><p>Fordypning og alternative forklaringer til temaet.</p>${resources.length ? `<div class="rb-grid">${resources.map(r => card(r, data)).join('')}</div>` : '<p class="rb-empty">Ingen tilleggskilder er lagt til her ennå.</p>'}<a href="/ressursbank/${bankQuery.size ? '?' + bankQuery : ''}">Utforsk ressursbanken →</a>`;
     } catch { node.innerHTML = '<p>Tilleggskildene kunne ikke lastes. <a href="/ressursbank/">Prøv ressursbanken</a>.</p>'; }
   }
   const intro = `<section class="rb-intro"><div class="kicker">Se og lær – flere kilder</div><h1>Flere veier til forståelse.</h1><p>Filmer, artikler og andre forklaringer, samlet etter tema. Bruk dem til fordypning og repetisjon sammen med lærestoffet.</p></section>`;
@@ -132,7 +136,7 @@
     return () => { if (!abandon()) return false; window.removeEventListener('beforeunload', beforeUnload); return true; };
   }
   window.TLLResources = {validate, filter, safeURL, card, mount};
-  function scan() { document.querySelectorAll('[data-resource-topic],[data-resource-area]').forEach(mount); }
+  function scan() { document.querySelectorAll('[data-resource-topic],[data-resource-area],[data-resource-chapter]').forEach(mount); }
   const observer = new MutationObserver(scan); observer.observe(document.body, {childList:true, subtree:true}); scan();
   const root = document.getElementById('resource-bank');
   if (root) {

@@ -82,6 +82,11 @@ TLL.registrer({
   tittel: 'Grunnleggende prinsipper ved lager- og terminalarbeid',
   ingress: 'Hvordan varer og gods flyter fra fabrikk til kunde – og hva du gjør på lageret og terminalen for at det skal gå effektivt og riktig.',
   kompetansemal: { kode: 'TOL02-01 · KV427', tekst: 'gjøre rede for grunnleggende prinsipper for effektiv drift av lager og terminal' },
+  visKapittelkilder: true,
+  filmLenker: [
+    { type: 'Fagfilm', tittel: 'Se fagfilmen om lager- og terminalarbeid (ca. 8 minutter)', url: '/video/#lager-terminal-film' },
+    { type: '3D', tittel: 'Utforsk lager og terminal i 3D', url: '../3d/lager-terminal/' }
+  ],
   ressurser: {
     // KUN egenprodusert materiell her (f.eks. egne lysark). IKKE last opp forlagets presentasjon eller PDF-er.
     presentasjon: '',
