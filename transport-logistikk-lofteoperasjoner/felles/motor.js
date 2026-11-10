@@ -642,8 +642,15 @@ function bootKapittel(){
           <div class="body"><h3>Lever fremdrift</h3><p>Last ned en rapport over det du har gjort, og lever den i Teams.</p></div>
         </a>
       </div>
-      ${K.ressursomrade === false ? '' : `<section data-resource-area="${esc(K.ressursomrade || 'tll')}"></section>`}
+      ${K.visKapittelkilder || K.ressursomrade === false ? '' : `<section data-resource-area="${esc(K.ressursomrade || 'tll')}"></section>`}
       <div id="podlist" hidden><div class="section-h"><h2>Podkast</h2><span class="muted small">Hør teorien – én episode per tema</span></div><div class="panel"><ul class="reslist" id="podul"></ul></div></div>
+      ${K.filmLenker?.length ? `<section aria-labelledby="kapittelfilm-heading">
+        <div class="section-h"><h2 id="kapittelfilm-heading">Fagfilm og 3D</h2></div>
+        <div class="panel"><ul class="reslist">
+          ${K.filmLenker.map(film => `<li><span class="tag">${esc(film.type)}</span><a href="${esc(film.url)}">${esc(film.tittel)} →</a></li>`).join('')}
+        </ul></div>
+      </section>` : ''}
+      ${K.visKapittelkilder ? `<section data-resource-chapter="${esc(K.id)}"></section>` : ''}
       <div class="section-h"><h2>Ressurser</h2></div>
       <div class="panel"><ul class="reslist">
         ${r.presentasjon ? `<li><span class="tag">Lysark</span><a href="${esc(r.presentasjon)}" target="_blank" rel="noopener">Lysark til kapittel ${K.nr}</a></li>` : ''}
