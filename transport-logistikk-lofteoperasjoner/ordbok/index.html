@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ordbok og stikkord – TLL og bransjelære – TLLfluenseren</title>
+<meta name="description" content="Søkbar ordbok og stikkordregister for Vg2 transport og logistikk (TLL og bransjelære): forklaringer med egne ord, sidetall i lærebøkene og lenker til NDLA.">
+<link rel="icon" href="/favicon.ico?v=1" sizes="any">
+<link rel="icon" href="/favicon.svg?v=1" type="image/svg+xml">
+<link rel="icon" href="/favicon-32x32.png?v=1" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=1" sizes="180x180">
+<link rel="stylesheet" href="../../assets/styles.css">
+<link rel="stylesheet" href="/assets/elevflyt.css">
+<style>
+.ordIntro{padding:60px 0 22px}
+.ordIntro h1{font-size:clamp(34px,6vw,60px);margin:10px 0}
+.ordIntro p{font-size:18px;color:var(--muted);max-width:720px;margin:0 0 14px}
+.snarveier{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 0}
+.snarveier a{display:inline-flex;align-items:center;gap:6px;padding:10px 16px;border:1px solid var(--line);border-radius:999px;color:var(--text);text-decoration:none;font-weight:700;background:var(--panel)}
+.snarveier a.hoved{background:var(--accent);border-color:var(--accent);color:#1b1404}
+.snarveier a:hover{border-color:var(--accent)}
+.snarveier a:focus-visible,.ordKort a:focus-visible,.chip:focus-visible,.bokstav:focus-visible,.verktoy button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
+.sokPanel{position:sticky;top:0;z-index:5;background:var(--bg);padding:14px 0 12px;border-bottom:1px solid var(--line)}
+.sokRad{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.sokFelt{flex:1 1 320px;position:relative}
+.sokFelt input{width:100%;box-sizing:border-box;font:inherit;font-size:19px;padding:15px 18px 15px 48px;border-radius:14px;border:2px solid var(--line);background:var(--panel);color:var(--text)}
+.sokFelt input:focus{outline:none;border-color:var(--accent)}
+.sokFelt svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.verktoy{display:flex;gap:8px;flex-wrap:wrap}
+.verktoy select,.verktoy button{font:inherit;font-size:15px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--text);cursor:pointer}
+.verktoy label.avkrys{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel);font-size:15px;cursor:pointer}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.chip{font:inherit;font-size:14px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#1b1404;font-weight:800}
+.bokstaver{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}
+.bokstav{font:inherit;font-weight:800;min-width:34px;padding:6px 0;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--text);cursor:pointer}
+.bokstav[aria-pressed="true"]{background:var(--accent);color:#1b1404;border-color:var(--accent)}
+.bokstav:disabled{opacity:.3;cursor:default}
+.treff{color:var(--muted);margin:16px 0 6px;font-size:15px}
+
+.ordListe{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px;margin:8px 0 40px;padding:0;list-style:none}
+.ordKort{padding:20px 22px;border:1px solid var(--line);border-radius:18px;background:var(--panel);display:flex;flex-direction:column;gap:10px;scroll-margin-top:220px}
+.ordKort.mark{border-color:var(--accent);box-shadow:0 0 0 3px rgba(242,184,75,.35)}
+.ordKort h2{font-size:22px;margin:0;line-height:1.2;word-break:break-word}
+.ordKort h2 a{color:inherit;text-decoration:none}
+.ordKort h2 a:hover{text-decoration:underline}
+.ordKort p{margin:0;color:var(--text);line-height:1.5}
+.meta{display:flex;flex-wrap:wrap;gap:6px;font-size:13px}
+.tag{padding:3px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.tag.bok{border-color:#5d7f9a;color:#bcd6ea}
+.tag.bok.bl{border-color:#5f8f62;color:#c4e6c6}
+.tag.kilde{border-style:dashed}
+.sok-ord{display:flex;flex-wrap:wrap;gap:6px}
+.sok-ord button{font:inherit;font-size:13px;padding:2px 9px;border-radius:999px;border:0;background:var(--panel2);color:var(--muted);cursor:pointer}
+.sok-ord button:hover{color:var(--text)}
+.lenker{display:flex;flex-wrap:wrap;gap:12px;margin-top:auto;padding-top:6px;border-top:1px solid var(--line);font-size:14px}
+.lenker a{color:var(--accent);font-weight:700}
+mark{background:rgba(242,184,75,.35);color:inherit;border-radius:3px;padding:0 1px}
+.tomt{padding:30px;border:1px dashed var(--line);border-radius:18px;text-align:center;color:var(--muted)}
+.tomt a{color:var(--accent);font-weight:700}
+details.hjelp{margin:18px 0 0;padding:16px 20px;border:1px solid var(--line);border-radius:16px;background:var(--panel)}
+details.hjelp summary{cursor:pointer;font-weight:800}
+details.hjelp ul{margin:10px 0 0;color:var(--muted);line-height:1.6}
+.vis-mer{display:block;margin:0 auto 50px;font:inherit;font-weight:800;padding:12px 22px;border-radius:999px;border:1px solid var(--accent);background:transparent;color:var(--accent);cursor:pointer}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (max-width:760px){.sokPanel{position:static}.ordKort{scroll-margin-top:20px}}
+@media print{.sokPanel,.snarveier,.lenker,.vis-mer,.tll-site-nav,details.hjelp{display:none}.ordKort{break-inside:avoid;border-color:#999}}
+</style>
+</head>
+<body class="homePage">
+<a class="tll-skip" href="#sok">Hopp til søket</a>
+<div class="wrap">
+<header class="topbar homeTopbar"><a class="brand" href="/"><span class="brandmark">TLL</span><span>TLLfluenseren <small>Transport · Logistikk · Løfteoperasjoner · Livet</small></span></a><nav class="tll-site-nav" aria-label="Hovedmeny"><a href="/">Forside</a><a href="/#fag">Fagområder</a><a href="/yrkesretninger/">Yrkesretninger</a><a href="/ressursbank/">Ressursbank</a><a href="/assistent/">TLL-assistenten</a><a href="/laererrom/">Lærerrom</a><a href="/om/">Om</a></nav></header>
+
+<main id="tll-main" tabindex="-1">
+<section class="ordIntro">
+  <div class="kicker"><a href="../" style="color:inherit">TLL</a> · <a href="/bransjelaere/" style="color:inherit">Bransjelære</a> · Oppslag</div>
+  <h1>Ordbok og stikkord</h1>
+  <p>Søk etter et fagord, en forkortelse eller et tema fra TLL-boka og bransjelære-boka. Du får en kort forklaring, hvor i boka du finner ordet, og lenker til NDLA.</p>
+  <div class="snarveier">
+    <a class="hoved" href="oppgaver/">Oppgaver med ordboka →</a>
+    <a href="https://ndla.no/nb/f/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/636ca61808a8" target="_blank" rel="noopener">TLL på NDLA ↗</a>
+    <a href="https://ndla.no/f/bransjelare-tp-tol-vg2---ressurssamling/5c1eeb1e84d6" target="_blank" rel="noopener">Bransjelære på NDLA ↗</a>
+    <a href="https://ndla.no/nb/r/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/ordliste-for-lager-og-logistikk/0924071fc5" target="_blank" rel="noopener">NDLA: Ordliste for lager og logistikk ↗</a>
+  </div>
+  <details class="hjelp">
+    <summary>Slik bruker du ordboka og stikkordregistrene</summary>
+    <ul>
+      <li><b>Ordboka</b> forklarer hva et ord betyr. Kortene merket «Ordboka» finner du også i ordboka bakerst i TLL-boka.</li>
+      <li><b>Stikkordregisteret</b> forteller hvor i boka ordet blir brukt. 📖 er TLL-boka og 📗 er bransjelære-boka. «📗 Bransjelære kap. 7 · s. 194–195» betyr at du kan slå opp på de sidene i bransjelære-boka.</li><li>Mange ord står i <b>begge bøkene</b>. Da viser kortet sidetall fra begge.</li>
+      <li><b>NDLA</b> gir deg fagstoff, filmer og oppgaver. Trykk «Søk på NDLA» for å finne mer om akkurat det ordet.</li>
+      <li>Du kan søke på forkortelser (ADR, FIFO), deler av ord (surr) og andre skrivemåter (container). Trykk på de grå søkeordene for å finne beslektede ord.</li>
+      <li>Forklaringene er korte og skrevet med egne ord. Sjekk alltid læreboka eller NDLA når du skal bruke ordet i en innlevering.</li>
+    </ul>
+  </details>
+</section>
+
+<section class="sokPanel" aria-label="Søk og filter">
+  <div class="sokRad">
+    <div class="sokFelt">
+      <label class="sr" for="sok">Søk i ordbok og stikkordregister</label>
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <input id="sok" type="search" placeholder="Søk, for eksempel «surring», «FIFO» eller «pall»" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="verktoy">
+      <label class="sr" for="kap">Kapittel i læreboka</label>
+      <select id="kap"><option value="">Alle kapitler</option></select>
+      <label class="sr" for="bok">Bok</label>
+      <select id="bok">
+        <option value="">Begge bøkene</option>
+        <option value="tll">TLL-boka</option>
+        <option value="O">Bare ordboka i TLL-boka</option>
+        <option value="bl">Bransjelære-boka</option>
+      </select>
+      <label class="avkrys"><input type="checkbox" id="fork"> Bare forkortelser</label>
+      <button type="button" id="tilfeldig">🎲 Tilfeldig ord</button>
+      <button type="button" id="nullstill">Nullstill</button>
+    </div>
+  </div>
+  <div class="chips" id="temaer" role="group" aria-label="Velg tema"></div>
+  <div class="bokstaver" id="bokstaver" role="group" aria-label="Velg forbokstav"></div>
+</section>
+
+<p class="treff" id="treff" aria-live="polite"></p>
+<ul class="ordListe" id="liste"></ul>
+<button type="button" class="vis-mer" id="visMer" hidden>Vis flere ord</button>
+</main>
+
+<footer class="homeFooter"><span>Forklaringene er egenprodusert for TLLfluenseren. Oppslagsord og sidetall viser til ordboka og stikkordregistrene i elevens egne lærebøker i TLL og bransjelære. Fagstoff fra NDLA er lenket til, ikke kopiert.</span><a href="../">Tilbake til faget</a></footer>
+</div>
+
+<script src="ord.js"></script>
+<script src="ord-bransjelaere.js"></script>
+<script>
+(function(){
+const T = window.TLLORD, ALLE = T.bygg().slice().sort((a,b) => a.ord.localeCompare(b.ord, 'nb', {sensitivity:'base'}));
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[\s\-–.()\/]/g,'');
+const slug = s => String(s).toLowerCase().replace(/æ/g,'ae').replace(/ø/g,'o').replace(/å/g,'a').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const erFork = o => /^[A-ZÆØÅ0-9][A-ZÆØÅ0-9\-\/]{1,}(\s|$|\/)/.test(o.ord) && !/[a-zæøå]{3}/.test(o.ord.split(' ')[0]);
+const forbokstav = o => { const c = o.ord.trim()[0].toUpperCase(); return /[A-ZÆØÅ]/.test(c) ? c : '#'; };
+ALLE.forEach(o => { o.id = slug(o.ord); o.nOrd = norm(o.ord); o.nSok = o.sok.map(norm); o.nTekst = norm(o.forklaring); o.fork = erFork(o); o.bokstav = forbokstav(o); });
+
+const BOKSTAVER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ'.split('');
+const S = { q:'', tema:'', kap:'', bok:'', fork:false, bokstav:'', vis:60 };
+const passerBok = o => !S.bok || (S.bok === 'O' ? o.kilde.includes('O') : o.boker.includes(S.bok));
+const passerKap = o => { if (!S.kap) return true; const [b, n] = S.kap.split(':'); return o.refs.some(r => r.bok === b && r.kap.includes(+n)); };
+
+/* ---------- Bygg filtre ---------- */
+Object.entries(T.BOKER).forEach(([id, b]) => $('#kap').insertAdjacentHTML('beforeend', `<optgroup label="${esc(b.lang)}">${b.kapitler.map(k => `<option value="${id}:${k.nr}">${esc(b.navn)} kap. ${k.nr} ${esc(k.tittel)}</option>`).join('')}</optgroup>`));
+$('#temaer').innerHTML = `<button type="button" class="chip" data-tema="" aria-pressed="true">Alle tema</button>` +
+  Object.entries(T.TEMA).map(([k,t]) => `<button type="button" class="chip" data-tema="${k}" aria-pressed="false">${esc(t.navn)}</button>`).join('');
+$('#bokstaver').innerHTML = BOKSTAVER.map(b => `<button type="button" class="bokstav" data-b="${b}" aria-pressed="false" aria-label="Ord på ${b}">${b}</button>`).join('');
+
+/* ---------- Søk og rangering ---------- */
+function poeng(o, ord){
+  let p = 0;
+  for (const w of ord){
+    if (o.nOrd === w) p += 100;
+    else if (o.nOrd.startsWith(w)) p += 60;
+    else if (o.nOrd.includes(w)) p += 40;
+    else if (o.nSok.some(s => s === w)) p += 35;
+    else if (o.nSok.some(s => s.includes(w))) p += 25;
+    else if (o.nTekst.includes(w)) p += 8;
+    else return 0;
+  }
+  return p;
+}
+function filtrer(){
+  const ord = S.q.split(/\s+/).map(norm).filter(Boolean);
+  let r = ALLE.filter(o =>
+    (!S.tema || o.tema === S.tema) &&
+    passerKap(o) && passerBok(o) &&
+    (!S.fork || o.fork) &&
+    (!S.bokstav || o.bokstav === S.bokstav));
+  if (ord.length){
+    r = r.map(o => [o, poeng(o, ord)]).filter(x => x[1] > 0).sort((a,b) => b[1]-a[1] || a[0].ord.localeCompare(b[0].ord,'nb')).map(x => x[0]);
+  }
+  return r;
+}
+function uthev(tekst){
+  const ord = S.q.split(/\s+/).filter(w => w.length > 1);
+  let t = esc(tekst);
+  ord.forEach(w => { const re = new RegExp('(' + w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi'); t = t.replace(re, '<mark>$1</mark>'); });
+  return t;
+}
+function sideTekst(o){
+  return o.refs.map(r => { const b = T.BOKER[r.bok];
+    return `<span class="tag bok${r.bok === 'bl' ? ' bl' : ''}" title="Sidetall i ${esc(b.lang)}-boka">${b.ikon} ${esc(b.navn)}${r.kap.length ? ' kap. ' + r.kap.join(', ') : ''} · s. ${esc(r.sider)}</span>`; }).join('');
+}
+function kort(o){
+  const tema = T.TEMA[o.tema];
+  const kilder = [o.kilde.includes('O') ? 'Ordboka' : '', /[SB]/.test(o.kilde) ? 'Stikkord' : ''].filter(Boolean).join(' · ');
+  const tllKap = (o.refs.find(r => r.bok === 'tll') || { kap: [] }).kap;
+  const kapLenke = tllKap.map(n => T.KAPITLER.find(k => k.nr === n)).filter(k => k && k.sti)
+    .map(k => `<a href="${k.sti}">Oppgaver kap. ${k.nr} →</a>`).join('');
+  return `<li class="ordKort" id="${o.id}">
+    <h2><a href="#${o.id}">${uthev(o.ord)}</a></h2>
+    <p>${uthev(o.forklaring)}</p>
+    <div class="meta">${sideTekst(o)}<span class="tag">${esc(tema.navn)}</span><span class="tag kilde">${kilder}</span></div>
+    ${o.sok.length ? `<div class="sok-ord" aria-label="Beslektede søkeord">${o.sok.map(s => `<button type="button" data-sok="${esc(s)}">${esc(s)}</button>`).join('')}</div>` : ''}
+    <div class="lenker">
+      <a href="${T.NDLA_SOK + encodeURIComponent(o.ord.replace(/\s*\(.*\)$/,''))}" target="_blank" rel="noopener">Søk på NDLA ↗</a>
+      ${tema.ndla ? `<a href="${tema.ndla[1]}" target="_blank" rel="noopener">NDLA: ${esc(tema.ndla[0])} ↗</a>` : ''}
+      ${kapLenke}
+    </div>
+  </li>`;
+}
+function tegn(){
+  const r = filtrer();
+  const vis = r.slice(0, S.vis);
+  $('#liste').innerHTML = vis.map(kort).join('');
+  const filter = S.q || S.tema || S.kap || S.bok || S.fork || S.bokstav;
+  $('#treff').textContent = r.length ? `${r.length} ${r.length === 1 ? 'ord' : 'ord'}${filter ? ' passer' : ' i ordboka og stikkordregistrene'}${r.length > vis.length ? ` – viser de ${vis.length} første` : ''}.` : '';
+  if (!r.length){
+    $('#liste').innerHTML = `<li class="tomt">Fant ingen ord som passer${S.q ? ` med «${esc(S.q)}»` : ''}. Prøv et kortere ord, fjern et filter – eller <a href="${T.NDLA_SOK + encodeURIComponent(S.q)}" target="_blank" rel="noopener">søk på NDLA ↗</a>.</li>`;
+  }
+  $('#visMer').hidden = r.length <= vis.length;
+  // Forbokstaver uten treff (med de andre filtrene) blir grået ut
+  const finnes = new Set(ALLE.filter(o => (!S.tema || o.tema === S.tema) && passerKap(o) && passerBok(o) && (!S.fork || o.fork)).map(o => o.bokstav));
+  document.querySelectorAll('.bokstav').forEach(b => { b.disabled = !finnes.has(b.dataset.b); b.setAttribute('aria-pressed', String(b.dataset.b === S.bokstav)); });
+  document.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', String(c.dataset.tema === S.tema)));
+  lagreUrl();
+}
+
+/* ---------- Adresselinja: del et søk eller et ord ---------- */
+function lagreUrl(){
+  const p = new URLSearchParams();
+  if (S.q) p.set('q', S.q); if (S.tema) p.set('tema', S.tema); if (S.kap) p.set('kap', S.kap);
+  if (S.bok) p.set('bok', S.bok); if (S.fork) p.set('fork', '1'); if (S.bokstav) p.set('b', S.bokstav);
+  const ny = location.pathname + (p.toString() ? '?' + p : '') + location.hash;
+  try { history.replaceState(null, '', ny); } catch(e) {}
+}
+function lesUrl(){
+  const p = new URLSearchParams(location.search);
+  S.q = p.get('q') || ''; S.tema = T.TEMA[p.get('tema')] ? p.get('tema') : ''; S.kap = p.get('kap') || '';
+  S.bok = p.get('bok') || ''; S.fork = p.get('fork') === '1'; S.bokstav = p.get('b') || '';
+  $('#sok').value = S.q; $('#kap').value = S.kap; $('#bok').value = S.bok; $('#fork').checked = S.fork;
+}
+function visOrd(id){
+  const o = ALLE.find(x => x.id === id); if (!o) return;
+  if (!document.getElementById(id)){ Object.assign(S, { q:'', tema:'', kap:'', bok:'', fork:false, bokstav:o.bokstav, vis:999 }); $('#sok').value=''; $('#kap').value=''; $('#bok').value=''; $('#fork').checked=false; tegn(); }
+  const el = document.getElementById(id);
+  document.querySelectorAll('.ordKort.mark').forEach(k => k.classList.remove('mark'));
+  if (el){ el.classList.add('mark'); el.scrollIntoView({ behavior:'smooth', block:'start' }); el.querySelector('h2 a').focus({ preventScroll:true }); }
+}
+
+/* ---------- Hendelser ---------- */
+let t; $('#sok').addEventListener('input', e => { clearTimeout(t); t = setTimeout(() => { S.q = e.target.value.trim(); S.bokstav = ''; S.vis = 60; tegn(); }, 120); });
+$('#kap').onchange = e => { S.kap = e.target.value; S.vis = 60; tegn(); };
+$('#bok').onchange = e => { S.bok = e.target.value; S.vis = 60; tegn(); };
+$('#fork').onchange = e => { S.fork = e.target.checked; S.vis = 60; tegn(); };
+$('#temaer').onclick = e => { const c = e.target.closest('.chip'); if (!c) return; S.tema = c.dataset.tema; S.vis = 60; tegn(); };
+$('#bokstaver').onclick = e => { const b = e.target.closest('.bokstav'); if (!b) return; S.bokstav = S.bokstav === b.dataset.b ? '' : b.dataset.b; S.vis = 60; tegn(); };
+$('#visMer').onclick = () => { S.vis += 60; tegn(); };
+$('#nullstill').onclick = () => { Object.assign(S, { q:'', tema:'', kap:'', bok:'', fork:false, bokstav:'', vis:60 }); $('#sok').value=''; $('#kap').value=''; $('#bok').value=''; $('#fork').checked=false; history.replaceState(null,'',location.pathname); tegn(); $('#sok').focus(); };
+$('#tilfeldig').onclick = () => { const o = ALLE[Math.floor(Math.random()*ALLE.length)]; location.hash = o.id; };
+$('#liste').onclick = e => { const b = e.target.closest('[data-sok]'); if (!b) return; S.q = b.dataset.sok; S.bokstav=''; $('#sok').value = S.q; S.vis = 60; tegn(); window.scrollTo({ top: $('.sokPanel').offsetTop, behavior:'smooth' }); };
+window.addEventListener('hashchange', () => visOrd(location.hash.slice(1)));
+document.addEventListener('keydown', e => { if (e.key === '/' && document.activeElement !== $('#sok') && !/input|select|textarea/i.test(document.activeElement.tagName)){ e.preventDefault(); $('#sok').focus(); } });
+
+lesUrl(); tegn();
+if (location.hash.length > 1) setTimeout(() => visOrd(decodeURIComponent(location.hash.slice(1))), 50);
+})();
+</script>
+</body>
+</html>
