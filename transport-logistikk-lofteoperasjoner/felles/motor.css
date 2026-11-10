@@ -324,3 +324,11 @@ input.sel{font:inherit;padding:8px 10px;border:2px solid var(--line);border-radi
 .topic-nav .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 18px;text-decoration:none;text-align:center;line-height:1.4;white-space:normal;max-width:100%}
 .topic-nav .topic-nav-next{margin-left:auto}
 @media(max-width:700px){.topic-nav{display:grid;grid-template-columns:1fr;gap:10px}.topic-nav .btn{width:100%;margin:0}.topic-nav .topic-nav-next{margin-left:0}}
+
+/* Forrige / neste side om side, også på mobil */
+.activity-nav{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;align-items:stretch}
+.activity-nav .spacer{display:none}
+.activity-nav .btn{width:100%;min-width:0;min-height:54px;white-space:normal;overflow-wrap:anywhere;padding:12px 14px}
+.activity-nav .activity-nav-back{grid-column:1}
+.activity-nav .activity-nav-next{grid-column:2}
+@media(max-width:600px){.activity-nav{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}.activity-nav .btn{padding:10px 8px;font-size:14px;line-height:1.3}}
