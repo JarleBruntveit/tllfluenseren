@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KJT: Bensinmotor og elmotor i sprengskisse – TLLfluenseren</title>
+<meta name="description" content="Gjestefag KJT (kjøretøy): Interaktiv 3D-sprengskisse av en bensinmotor og en elmotor. Trykk på alle delene, gå gjennom motoren del for del og test deg selv.">
+<link rel="icon" href="/favicon.ico?v=1" sizes="any">
+<link rel="icon" href="/favicon.svg?v=1" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/styles.css">
+<link rel="stylesheet" href="/assets/elevflyt.css">
+<link rel="stylesheet" href="/assets/global-footer.css">
+<script defer src="/assets/global-footer.js"></script>
+<style>
+  .intro{padding:40px 0 10px}
+  .intro h1{font-size:clamp(32px,5.5vw,56px);margin:10px 0 14px}
+  .intro p{color:var(--muted);font-size:18px;line-height:1.6;max-width:780px}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
+  .stepc{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+  .stepc b{color:var(--accent);letter-spacing:.12em;text-transform:uppercase;font-size:13px}
+  .stepc p{margin:6px 0 0;color:var(--muted);line-height:1.5}
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0}
+  .toolbar .btn{padding:10px 14px;font-size:15px}
+  .btn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#111820}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .explode{display:flex;align-items:center;gap:8px;color:var(--muted);font-weight:700}
+  .explode input{width:150px}
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px;align-items:start}
+  .viewer{position:relative;height:min(70vh,660px);min-height:400px;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#0b1117;touch-action:none}
+  .viewer canvas{display:block;cursor:grab}
+  .viewer.hoverPart canvas{cursor:pointer}
+  .tip{position:absolute;pointer-events:none;font:700 13px/1.2 Inter,system-ui,sans-serif;background:rgba(17,26,35,.92);border:1px solid var(--line);padding:5px 9px;border-radius:8px;white-space:nowrap;display:none;z-index:3}
+  .hint{position:absolute;right:12px;bottom:10px;color:var(--muted);font-size:12px;background:rgba(17,26,35,.75);padding:4px 8px;border-radius:8px}
+  .hud{position:absolute;left:12px;top:12px;background:rgba(17,26,35,.88);border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:13px;display:none;min-width:190px}
+  .hud table{border-collapse:collapse}
+  .hud td{padding:2px 8px 2px 0}
+  .hud .st{font-weight:800}
+  .st-arbeid{color:#ff8a4c}.st-kompresjon{color:#f2b84b}.st-innsug{color:#71c5dc}.st-eksos{color:#aab7c4}
+  .phase{display:flex;align-items:center;gap:8px;margin:3px 0}
+  .phase span{width:18px;font-weight:800}
+  .phase i{display:block;height:8px;border-radius:4px;background:#d9822b;width:0}
+  .side{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px;max-height:min(70vh,660px);min-height:400px;overflow:auto}
+  .side h2{font-size:22px;margin:4px 0 8px}
+  .side .omr{color:var(--accent);text-transform:uppercase;letter-spacing:.12em;font-size:12px;font-weight:900}
+  .side p,.side li{color:var(--muted);line-height:1.55}
+  .side ul{padding-left:18px}
+  .nav2{display:flex;gap:8px;margin:12px 0}
+  .nav2 .btn{flex:1;padding:10px;font-size:15px}
+  .progress{height:8px;background:var(--panel2);border-radius:6px;overflow:hidden;margin:6px 0 4px}
+  .progress i{display:block;height:100%;background:var(--ok);width:0;transition:width .3s}
+  .plist{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:4px}
+  .plist button{width:100%;text-align:left;background:transparent;border:1px solid transparent;color:var(--text);padding:7px 10px;border-radius:10px;font:600 14px/1.3 inherit;cursor:pointer;display:flex;gap:8px;align-items:center}
+  .plist button:hover,.plist button:focus-visible{border-color:var(--line);background:var(--panel2)}
+  .plist button[aria-current="true"]{border-color:var(--accent);background:var(--panel2)}
+  .plist .ck{width:18px;color:var(--ok);font-weight:900}
+  .plist .nr{color:var(--muted);width:22px;font-size:12px}
+  .done{background:#16302a;border:1px solid #2f6b55;border-radius:12px;padding:10px 12px;color:#bfeed6;margin-top:10px;display:none}
+  .q{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:10px 0}
+  .q summary{cursor:pointer;font-weight:800;line-height:1.5}
+  .q p{color:var(--muted);line-height:1.6;margin:10px 0 0}
+  .q textarea{width:100%;min-height:70px;margin-top:10px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit}
+  .safety{border-left:6px solid #e8762d;background:#2a1a10;border-radius:12px;padding:12px 16px;margin:18px 0;line-height:1.6}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .noWebgl{padding:30px;color:var(--muted)}
+  h2.sec{font-size:30px;margin:48px 0 6px}
+  .sub{color:var(--muted);margin:0 0 12px;line-height:1.6}
+  .quizPanel{background:var(--accent);color:#111820;border-radius:14px;padding:12px 16px;font-weight:800;margin:0 0 12px;line-height:1.5}
+  .quizPanel.ok{background:#8cd6ae}.quizPanel.feil{background:#ffb3b3}
+  .quizPanel small{display:block;font-weight:600}
+  .quizPanel .opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+  .quizPanel .btn{background:#111820;color:#fff;border-color:#111820;padding:10px 14px;font-size:15px}
+  .chk{display:flex;align-items:center;gap:8px;color:var(--muted);font-weight:700;margin-left:6px}.chk input{width:20px;height:20px}
+  .btn.small{padding:6px 10px;font-size:13px;margin-bottom:4px}
+  .ord{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:10px;font-size:14px;color:var(--muted);line-height:1.5}
+  .ord b{color:var(--text)}
+  .mobBar{display:none;position:absolute;left:8px;right:8px;top:8px;z-index:2;align-items:center;gap:8px;background:rgba(17,26,35,.9);border:1px solid var(--line);border-radius:12px;padding:6px;font-weight:800}
+  .mobBar span{flex:1;text-align:center;font-size:14px}
+  .mobBar .btn{padding:8px 14px}
+  .hTouch{display:none}
+  @media (pointer:coarse){.hTouch{display:inline}.hMouse{display:none}}
+  .kvitt{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}
+  .kvitt pre{white-space:pre-wrap;font:14px/1.55 ui-monospace,Consolas,monospace;color:var(--text);margin:0}
+  .msg{color:#ffb3b3;font-weight:700;margin-top:6px}
+  @media print{body *{visibility:hidden}#kvitt,#kvitt *{visibility:visible}#kvitt{position:absolute;left:0;top:0;width:100%;background:#fff;border:0}#kvitt pre{color:#000}#kvitt .toolbar{display:none}}
+  @media (max-width:900px){
+    .mobBar{display:flex}
+    .hud{top:62px}
+    .layout{grid-template-columns:1fr}
+    .side{max-height:none;min-height:0}
+    .steps{grid-template-columns:1fr}
+    .viewer{height:52vh;min-height:320px}
+  }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "/assets/vendor/three/three.module.min.js",
+  "three/addons/": "/assets/vendor/three/addons/"
+} }
+</script>
+</head>
+<body>
+<a class="tll-skip" href="#tll-main">Hopp til innhold</a>
+<div class="wrap">
+<header class="topbar homeTopbar"><a class="brand" href="/"><span class="brandmark">TLL</span><span>TLLfluenseren <small>Transport · Logistikk · Løfteoperasjoner · Livet</small></span></a><nav class="tll-site-nav" aria-label="Hovedmeny"><a href="/">Forside</a><a href="/#fag">Fagområder</a><a href="/yrkesretninger/">Yrkesretninger</a><a href="/ressursbank/">Ressursbank</a><a href="/assistent/">TLL-assistenten</a><a href="/laererrom/">Lærerrom</a><a href="/om/">Om</a></nav></header>
+
+<main id="tll-main" tabindex="-1">
+<a href="/laererrom/#gjestefag" style="color:var(--accent)">← Gjestefag i Lærerrom</a>
+<section class="intro">
+  <div class="kicker">Gjestefag KJT · Lær · Øv · Tenk · 3D</div>
+  <h1>Motoren i biter</h1>
+  <p>Hva er det egentlig som skjer under panseret? Her er en <b>bensinmotor</b> og en <b>elmotor</b> tatt fra hverandre i en sprengskisse. Trykk på alle delene, gå gjennom motoren del for del og test deg selv. Som sjåfør, lagerarbeider eller berger møter du begge motortypene hver dag.</p>
+</section>
+
+<div class="steps">
+  <div class="stepc"><b>1 · Lær</b><p>Trykk «Gå gjennom delene» og bla med «Neste». Les om hver del. Alle delene skal få en grønn hake.</p></div>
+  <div class="stepc"><b>2 · Øv</b><p>Ta de to testene: «Finn delen» (klikk på delen i modellen) og «Hva heter delen?» (velg riktig navn).</p></div>
+  <div class="stepc"><b>3 · Tenk</b><p>Svar på spørsmålene under modellen. Til slutt viser du kvitteringen til læreren.</p></div>
+</div>
+<p class="sub"><b>Makkerpar:</b> Én styrer modellen, den andre leser høyt og sier hvilken del dere ser på. Bytt roller når dere bytter motor.</p>
+
+<details class="q" id="oppdragBox" open><summary>Ditt oppdrag – <span id="oppdragSum">0 av 7 fullført</span></summary><ul id="oppdrag" class="plist" style="margin-top:8px"></ul></details>
+
+<div class="toolbar" role="group" aria-label="Velg motor og visning">
+  <button class="btn" type="button" data-model="bensin" aria-pressed="true">⛽ Bensinmotor</button>
+  <button class="btn" type="button" data-model="el" aria-pressed="false">⚡ Elmotor</button>
+  <button class="btn" type="button" id="explodeBtn">Ta fra hverandre</button>
+  <label class="explode">Sprengning <input id="explode" type="range" min="0" max="1" step="0.01" value="0" aria-label="Hvor mye motoren er tatt fra hverandre"></label>
+  <button class="btn" type="button" id="runBtn" aria-pressed="false">▶ Kjør motor</button>
+  <button class="btn" type="button" id="fitBtn">Tilpass visning</button>
+</div>
+<div class="toolbar" role="group" aria-label="Oppgaver">
+  <button class="btn primary" type="button" id="tourBtn">Gå gjennom delene</button>
+  <button class="btn" type="button" id="quizBtn" data-type="finn">Test 1: Finn delen</button>
+  <button class="btn" type="button" id="quiz2Btn" data-type="navn">Test 2: Hva heter delen?</button>
+  <label class="chk"><input type="checkbox" id="taleAuto"> 🔊 Les opp automatisk</label>
+</div>
+
+<div class="quizPanel" id="quizBar" aria-live="polite" hidden></div>
+
+<div class="layout">
+  <div class="viewer" id="scene" role="region" aria-label="3D-modell av motoren. Med tastatur bruker du listen over deler ved siden av.">
+    <div class="tip" id="tip"></div>
+    <div class="hud" id="hud" aria-hidden="true"></div>
+    <div class="mobBar" id="mobBar"><button class="btn" type="button" id="mPrev" aria-label="Forrige del">←</button><span id="mName">Trykk på en del</span><button class="btn" type="button" id="mNext" aria-label="Neste del">→</button></div>
+    <div class="hint"><span class="hMouse">Klikk på en del · dra for å rotere · høyreklikk for å flytte · scroll for å zoome</span><span class="hTouch">Trykk på en del · én finger roterer · to fingre zoomer</span></div>
+    <noscript><p class="noWebgl">3D-modellen trenger JavaScript.</p></noscript>
+  </div>
+
+  <aside class="side" aria-label="Informasjon om delene">
+    <div id="info" aria-live="polite">
+      <div class="omr" id="infoOmr">Velg en del</div>
+      <h2 id="infoNavn">Motor</h2>
+      <button class="btn small" type="button" id="lesBtn">🔊 Les opp</button>
+      <p id="infoTekst"></p>
+      <ul id="infoFakta"></ul>
+      <div class="ord" id="infoOrd" hidden></div>
+    </div>
+    <div class="nav2">
+      <button class="btn" type="button" id="prevBtn">← Forrige</button>
+      <button class="btn" type="button" id="nextBtn">Neste →</button>
+    </div>
+    <div><b id="progText">0 av 0 deler utforsket</b></div>
+    <div class="progress" aria-hidden="true"><i id="progBar"></i></div>
+    <div class="done" id="doneBox">Bra! Du har utforsket alle delene. Ta testene, og bytt så til den andre motoren.</div>
+    <h3 style="margin:16px 0 0;font-size:15px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em">Alle deler</h3>
+    <ul class="plist" id="plist"></ul>
+  </aside>
+</div>
+
+<div class="safety"><b>⚠ HMS – høyvolt og varme motorer</b><br>
+• Oransje kabler og komponenter i elbiler og elektriske lastebiler har livsfarlig spenning. Du skal aldri berøre, kutte eller åpne dem. Bare personell med riktig opplæring for arbeid på høyvoltsystemer i kjøretøy skal jobbe med dette.<br>
+• En elbil er nesten lydløs og kan stå klar til å kjøre (READY) uten at du hører det. Slå av bilen, legg nøkkelen langt unna, sett den i P og sett på parkeringsbremsen før du jobber ved den.<br>
+• På en bensin- eller dieselmotor er eksosanlegget, kjølesystemet og oljen svært varme etter kjøring. Kjølesystemet står under trykk: åpne aldri lokket på ekspansjonstanken når motoren er varm. Kjøleviften kan starte av seg selv selv om motoren er slått av.</div>
+
+<h2 class="sec">Tenk</h2>
+<p class="sub">Svar først selv eller sammen med makkeren din: Én forklarer, den andre sjekker i modellen. Bytt roller for hvert spørsmål. Åpne løsningsforslaget etterpå og sammenlign.</p>
+<div id="tenk"></div>
+
+<h2 class="sec">Kvittering til læreren</h2>
+<p class="sub">Når du er ferdig: skriv navnet ditt, trykk «Lag kvittering» og lever slik læreren sier (kopier og lim inn, eller skriv ut / lagre som PDF). Ingenting sendes fra denne siden.</p>
+<div class="toolbar"><label class="explode">Navn <input id="elevNavn" type="text" autocomplete="off" style="padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text)"></label>
+<button class="btn primary" type="button" id="kvittBtn">Lag kvittering</button></div>
+<div id="kvitt" class="kvitt" hidden><pre id="kvittTekst"></pre><div class="toolbar"><button class="btn" type="button" id="kopierBtn">Kopier tekst</button><button class="btn" type="button" onclick="window.print()">Skriv ut / PDF</button><span id="kopiert" style="color:var(--ok)"></span></div></div>
+
+<p class="sub" style="margin-top:40px;font-size:14px">Modellene er forenklede og laget for undervisning. De er ikke i riktig målestokk. Innhold og 3D-modeller er laget for TLLfluenseren.</p>
+</main>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/OrbitControls.js';
+import { MODELLER, TENK, ORD } from './deler.js';
+
+const $ = id => document.getElementById(id);
+const host = $('scene');
+const store = { get(k,d){ try{ return JSON.parse(localStorage.getItem(k)) ?? d; }catch(e){ return d; } }, set(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} } };
+
+// ---------- Opplesning (nettleserens innebygde tale) ----------
+let stemme=null;
+function velgStemme(){ if(!('speechSynthesis' in window)) return; const v=speechSynthesis.getVoices(); stemme=v.find(x=>/^(nb|no|nn)/i.test(x.lang)&&/natural|online/i.test(x.name))||v.find(x=>/^(nb|no|nn)/i.test(x.lang))||null; }
+if('speechSynthesis' in window){ velgStemme(); speechSynthesis.onvoiceschanged=velgStemme; }
+function les(tekst){ if(!('speechSynthesis' in window)) return; speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(tekst); u.lang='nb-NO'; u.rate=0.9; if(stemme) u.voice=stemme; speechSynthesis.speak(u); }
+const auto=()=>$('taleAuto').checked;
+
+// ---------- Tenk-spørsmål (svar lagres i nettleseren) ----------
+const tenkSvar = store.get('kjt-motor-tenk', {});
+$('tenk').innerHTML = TENK.map((t,i)=>`<details class="q"><summary>${i+1}. ${t.q}</summary><button class="btn small" type="button" data-les="${i}">🔊 Les spørsmålet</button><label class="sr" for="svar${i}">Ditt svar</label><textarea id="svar${i}" placeholder="Skriv svaret ditt her før du ser løsningsforslaget …"></textarea><div class="msg" hidden>Skriv minst én hel setning først.</div><p><b>Løsningsforslag:</b> ${t.a}</p></details>`).join('');
+document.querySelectorAll('#tenk .q').forEach((d,i)=>{
+  const p=d.querySelector('p'), ta=d.querySelector('textarea'), msg=d.querySelector('.msg');
+  ta.value = tenkSvar[i]||'';
+  ta.addEventListener('input',()=>{ tenkSvar[i]=ta.value; store.set('kjt-motor-tenk',tenkSvar); msg.hidden=true; renderOppdrag(); });
+  d.querySelector('[data-les]').onclick=()=>les(TENK[i].q);
+  const btn=document.createElement('button'); btn.type='button'; btn.className='btn'; btn.style.marginTop='10px'; btn.textContent='Vis løsningsforslag';
+  p.hidden=true; p.before(btn);
+  btn.onclick=()=>{ if(ta.value.trim().length<15){ msg.hidden=false; ta.focus(); return; } p.hidden=false; btn.remove(); };
+});
+
+// ---------- WebGL ----------
+let renderer;
+try { renderer = new THREE.WebGLRenderer({antialias:true}); }
+catch(e){ const m=document.createElement('p'); m.className='noWebgl'; m.textContent='Nettleseren din klarer ikke å vise 3D (WebGL). Prøv en annen nettleser eller PC. Du kan fortsatt bruke listen over deler og test 2.'; host.append(m); }
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0b1117);
+const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 200);
+camera.position.set(9, 6, 11);
+let controls;
+if (renderer){
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  host.prepend(renderer.domElement);
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.target.set(0,1,0);
+}
+scene.add(new THREE.HemisphereLight(0xdfefff, 0x1b2430, 1.6));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(6,12,8); scene.add(sun);
+const fill = new THREE.DirectionalLight(0x9fc7ff, 0.8); fill.position.set(-8,4,-6); scene.add(fill);
+const grid = new THREE.GridHelper(40, 40, 0x24323f, 0x18222c); grid.position.y=-5; scene.add(grid);
+
+// ---------- Hjelpere ----------
+const C = { stål:0x9aa6b2, mørk:0x3a434d, alu:0xc3ccd4, kobber:0xc8763a, svart:0x22272d, rust:0x8a5a44, hvit:0xeeeeee, gull:0xd8b45a, oransje:0xff7a1a, blå:0x2f6fd6, rød:0xd23b3b, grønn:0x3f8f6a };
+function mat(color, o={}){
+  const m = new THREE.MeshStandardMaterial({color, metalness:o.metal??0.55, roughness:o.rough??0.45, transparent:(o.opacity??1)<1, opacity:o.opacity??1, side:o.side??THREE.FrontSide, depthWrite:(o.opacity??1)>=1});
+  m.userData.baseOpacity = o.opacity??1;
+  return m;
+}
+function mesh(geo, color, pos=[0,0,0], rot=[0,0,0], o={}){
+  const m = new THREE.Mesh(geo, mat(color,o)); m.position.set(...pos); m.rotation.set(...rot); return m;
+}
+const X90 = [0,0,Math.PI/2]; // sylinder langs x-aksen
+function cylX(r, len, color, pos, o){ return mesh(new THREE.CylinderGeometry(r,r,len,32), color, pos, X90, o); }
+function gearGeo(r, teeth, depth){
+  const s = new THREE.Shape(), n = teeth*4;
+  for(let i=0;i<=n;i++){ const a=i/n*Math.PI*2, rr=(i%4<2)?r:r*0.86; const p=[Math.cos(a)*rr, Math.sin(a)*rr]; i?s.lineTo(...p):s.moveTo(...p); }
+  const g = new THREE.ExtrudeGeometry(s,{depth,bevelEnabled:false,curveSegments:2});
+  g.translate(0,0,-depth/2); g.rotateY(Math.PI/2); return g;
+}
+
+// ---------- Bygg bensinmotor ----------
+const CX=[-1.5,-0.5,0.5,1.5], R=0.4, L=1.3;
+const PIN_SIGN=[1,-1,-1,1];       // veivtapp-retning syl 1-4
+const FIRE=[0,540,180,360];       // tenningsvinkel (720°) syl 1-4 → rekkefølge 1-3-4-2
+function buildBensin(){
+  const P = {}; const add=(id,offset)=>{ const g=new THREE.Group(); g.userData={id,offset:new THREE.Vector3(...offset)}; P[id]=g; return g; };
+
+  const blokk = add('motorblokk',[0,0,0]);
+  blokk.add(mesh(new THREE.BoxGeometry(4.2,2.1,1.5), C.alu, [0,1.05,0],[0,0,0],{opacity:0.28,metal:0.3}));
+  CX.forEach(x=>blokk.add(mesh(new THREE.CylinderGeometry(0.42,0.42,2.1,32,1,true), C.stål,[x,1.05,0],[0,0,0],{opacity:0.35,side:THREE.DoubleSide})));
+
+  const pakn = add('toppakning',[0,1.4,0]);
+  pakn.add(mesh(new THREE.BoxGeometry(4.2,0.05,1.5), C.mørk,[0,2.125,0],[0,0,0],{metal:0.2}));
+  CX.forEach(x=>pakn.add(mesh(new THREE.TorusGeometry(0.42,0.03,8,32), C.stål,[x,2.155,0],[Math.PI/2,0,0])));
+
+  const topp = add('sylindertopp',[0,2.3,0]);
+  topp.add(mesh(new THREE.BoxGeometry(4.2,0.7,1.5), C.alu,[0,2.5,0],[0,0,0],{opacity:0.45,metal:0.3}));
+
+  const vent = add('ventiler',[0,3.3,0]);
+  CX.forEach(x=>[-0.17,0.17].forEach(dx=>[0.3,-0.3].forEach(z=>{
+    const inn = z>0, rr = inn?0.14:0.12;
+    vent.add(mesh(new THREE.CylinderGeometry(rr,rr*0.7,0.05,20), inn?C.stål:C.rust,[x+dx,2.22,z]));
+    vent.add(mesh(new THREE.CylinderGeometry(0.025,0.025,0.75,8), C.stål,[x+dx,2.6,z]));
+    vent.add(mesh(new THREE.CylinderGeometry(0.06,0.06,0.2,10), C.grønn,[x+dx,2.88,z],[0,0,0],{metal:0.2}));
+  })));
+
+  const kam = add('kamaksler',[0,4.3,0]);
+  const cams=[];
+  [0.32,-0.32].forEach(z=>{
+    const g=new THREE.Group(); g.position.set(0,3.05,z);
+    g.add(cylX(0.06,4.6,C.stål,[0,0,0]));
+    CX.forEach(x=>[-0.17,0.17].forEach(dx=>g.add(mesh(new THREE.CylinderGeometry(0.1,0.1,0.1,20),C.stål,[x+dx,0.04,0],X90))));
+    kam.add(g); cams.push(g);
+  });
+
+  const deksel = add('ventildeksel',[0,5.3,0]);
+  deksel.add(mesh(new THREE.BoxGeometry(4.3,0.35,1.45), C.svart,[0,3.38,0],[0,0,0],{metal:0.3,rough:0.6}));
+  deksel.add(mesh(new THREE.CylinderGeometry(0.16,0.16,0.08,24), C.gull,[1.6,3.6,0.45],[0,0,0],{metal:0.2}));
+
+  const plugg = add('tennplugger',[0,6.4,0]);
+  const plugTips=[];
+  CX.forEach(x=>{
+    plugg.add(mesh(new THREE.CylinderGeometry(0.035,0.035,0.8,10), C.stål,[x,2.65,0]));
+    plugg.add(mesh(new THREE.CylinderGeometry(0.07,0.07,0.12,6), C.stål,[x,3.1,0]));
+    plugg.add(mesh(new THREE.CylinderGeometry(0.055,0.055,0.55,16), C.hvit,[x,3.45,0],[0,0,0],{metal:0}));
+    const tip=mesh(new THREE.SphereGeometry(0.06,12,8), C.mørk,[x,2.24,0]); plugg.add(tip); plugTips.push(tip);
+  });
+
+  const innsug = add('innsug',[0,0,2.2]);
+  CX.forEach(x=>innsug.add(mesh(new THREE.CylinderGeometry(0.12,0.12,0.8,16),C.svart,[x,2.5,1.15],[Math.PI/2,0,0],{metal:0.1,rough:0.7})));
+  innsug.add(cylX(0.3,4.0,C.svart,[0,2.5,1.75],{metal:0.1,rough:0.7}));
+  innsug.add(cylX(0.22,0.4,C.alu,[-2.2,2.5,1.75]));
+
+  const inj = add('injektorer',[0,1.3,2.4]);
+  CX.forEach(x=>{ inj.add(mesh(new THREE.CylinderGeometry(0.045,0.03,0.38,12),C.blå,[x,2.78,1.0],[0.5,0,0],{metal:0.2})); inj.add(mesh(new THREE.BoxGeometry(0.1,0.08,0.1),C.svart,[x,2.95,0.92],[0.5,0,0])); });
+
+  const eksos = add('eksos',[0,0,-2.2]);
+  CX.forEach(x=>{
+    const c=new THREE.CubicBezierCurve3(new THREE.Vector3(x,2.5,-0.75),new THREE.Vector3(x,2.5,-1.3),new THREE.Vector3(x*0.4,1.8,-1.45),new THREE.Vector3(0,1.3,-1.5));
+    eksos.add(mesh(new THREE.TubeGeometry(c,24,0.11,12), C.rust,[0,0,0],[0,0,0],{metal:0.6,rough:0.7}));
+  });
+  eksos.add(mesh(new THREE.CylinderGeometry(0.17,0.17,1.1,16), C.rust,[0,0.8,-1.5],[0,0,0],{metal:0.6,rough:0.7}));
+
+  const reim = add('registerreim',[-2.0,0,0]);
+  reim.add(cylX(0.28,0.16,C.mørk,[-2.45,0,0]));
+  [0.32,-0.32].forEach(z=>reim.add(cylX(0.3,0.16,C.mørk,[-2.45,3.05,z])));
+  const pts=[[-0.3,0],[0,0.3],[3.05,0.64],[3.38,0.32],[3.38,-0.32],[3.05,-0.64],[0,-0.3]].map(([y,z])=>new THREE.Vector3(-2.45,y,z));
+  reim.add(mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts,true),80,0.035,6,true), C.svart,[0,0,0],[0,0,0],{metal:0,rough:0.9}));
+
+  // Bevegelige deler
+  const stemp = add('stempler',[0,0.9,0]);
+  const pistons = CX.map(x=>{ const g=new THREE.Group(); g.position.x=x;
+    g.add(mesh(new THREE.CylinderGeometry(0.39,0.39,0.5,32), C.alu,[0,0.1,0],[0,0,0],{metal:0.4}));
+    [0.28,0.2,0.12].forEach(y=>g.add(mesh(new THREE.TorusGeometry(0.392,0.012,6,32),C.mørk,[0,y,0],[Math.PI/2,0,0])));
+    stemp.add(g); return g; });
+
+  const stang = add('veivstenger',[0,0.45,0]);
+  const rods = CX.map(x=>{ const g=new THREE.Group(); g.position.x=x;
+    const sh=mesh(new THREE.BoxGeometry(0.08,L,0.12), C.stål,[0,L/2,0]); g.add(sh);
+    g.add(cylX(0.13,0.14,C.stål,[0,0,0])); g.add(cylX(0.08,0.12,C.stål,[0,L,0]));
+    stang.add(g); return g; });
+
+  const veiv = add('veivaksel',[0,-1.3,0]);
+  const crank = new THREE.Group(); veiv.add(crank);
+  [-2.0,-1.0,0,1.0,2.0].forEach(x=>crank.add(cylX(0.16,0.25,C.stål,[x,0,0])));
+  crank.add(cylX(0.12,0.5,C.stål,[-2.35,0,0]));
+  CX.forEach((x,i)=>{ const s=PIN_SIGN[i];
+    crank.add(cylX(0.13,0.3,C.stål,[x,s*R,0]));
+    [-0.2,0.2].forEach(dx=>crank.add(mesh(new THREE.BoxGeometry(0.1,R+0.5,0.55),C.mørk,[x+dx,s*R/2-s*0.08,0])));
+  });
+
+  const sving = add('svinghjul',[1.8,-1.3,0]);
+  const fly = new THREE.Group(); fly.position.x=2.35; sving.add(fly);
+  fly.add(cylX(1.0,0.14,C.mørk,[0,0,0]));
+  fly.add(mesh(gearGeo(1.08,48,0.08), C.stål));
+  fly.add(cylX(0.2,0.16,C.stål,[0.02,0.5,0]));
+
+  const bunn = add('bunnpanne',[0,-2.6,0]);
+  bunn.add(mesh(new THREE.BoxGeometry(4.2,1.1,1.45), C.mørk,[0,-0.55,0],[0,0,0],{opacity:0.55,metal:0.4}));
+  bunn.add(mesh(new THREE.CylinderGeometry(0.07,0.07,0.08,6), C.gull,[1.2,-1.12,0.3]));
+
+  // Animasjon av stempler/veivstenger
+  const anim = { angle:0, hud:'' };
+  function pose(theta){
+    crank.rotation.x = theta; fly.rotation.x = theta;
+    cams.forEach(c=>c.rotation.x = theta/2);
+    CX.forEach((x,i)=>{
+      const a = theta + (PIN_SIGN[i]<0?Math.PI:0);
+      const py = R*Math.cos(a), pz = R*Math.sin(a);
+      const pinY = py + Math.sqrt(L*L - pz*pz);
+      pistons[i].position.y = pinY;
+      rods[i].position.set(x, py, pz);
+      rods[i].rotation.x = Math.atan2(-pz, pinY-py);
+    });
+  }
+  function stroke(i, theta){
+    const deg = ((theta*180/Math.PI - FIRE[i]) % 720 + 720) % 720;
+    return deg<180?'arbeid':deg<360?'eksos':deg<540?'innsug':'kompresjon';
+  }
+  pose(0);
+  return { P, step(dt, running){
+      if(running){ anim.angle += dt*2.2; pose(anim.angle); }
+      const tags = CX.map((_,i)=>stroke(i,anim.angle));
+      plugTips.forEach((t,i)=>{ const deg=((anim.angle*180/Math.PI-FIRE[i])%720+720)%720; const on=running&&(deg>700||deg<12);
+        if(!t.userData.hl) t.material.emissive.setHex(on?0xff8a2a:0x000000); });
+      return running ? '<b>Firetakt – takten i hver sylinder</b><table>'+tags.map((s,i)=>`<tr><td>Syl ${i+1}</td><td class="st st-${s}">${s[0].toUpperCase()+s.slice(1)}</td></tr>`).join('')+'</table><small style="color:var(--muted)">Tenningsrekkefølge 1-3-4-2</small>' : '';
+    } };
+}
+
+// ---------- Bygg elmotor ----------
+function buildEl(){
+  const P = {}; const add=(id,offset)=>{ const g=new THREE.Group(); g.userData={id,offset:new THREE.Vector3(...offset)}; P[id]=g; return g; };
+  const Y0 = 0.6; // motoraksens høyde
+
+  const hus = add('motorhus',[0,0,-3.6]);
+  hus.add(mesh(new THREE.CylinderGeometry(1.72,1.72,2.5,48,1,true), C.alu,[0,Y0,0],X90,{opacity:0.3,side:THREE.DoubleSide,metal:0.3}));
+  [-1.0,-0.5,0,0.5,1.0].forEach(x=>hus.add(mesh(new THREE.TorusGeometry(1.74,0.04,8,48),C.alu,[x,Y0,0],[0,Math.PI/2,0],{opacity:0.6})));
+  [-0.8,0.8].forEach(x=>hus.add(mesh(new THREE.CylinderGeometry(0.12,0.12,0.5,16),C.blå,[x,Y0-0.4,-1.85],[Math.PI/2,0,0],{metal:0.2})));
+
+  const stator = add('stator',[0,-3.4,0]);
+  const ring = new THREE.Shape(); ring.absarc(0,0,1.5,0,Math.PI*2,false);
+  const hole = new THREE.Path(); hole.absarc(0,0,1.12,0,Math.PI*2,true); ring.holes.push(hole);
+  const rg = new THREE.ExtrudeGeometry(ring,{depth:2,bevelEnabled:false,curveSegments:48}); rg.translate(0,0,-1); rg.rotateY(Math.PI/2);
+  stator.add(mesh(rg, C.mørk,[0,Y0,0],[0,0,0],{metal:0.6,rough:0.5}));
+  for(let k=0;k<12;k++){ const a=k/12*Math.PI*2; const t=new THREE.Mesh(new THREE.BoxGeometry(2,0.3,0.14),mat(C.mørk)); t.position.set(0,Y0+Math.cos(a)*1.0,Math.sin(a)*1.0); t.rotation.x=a; stator.add(t);
+    const tip=new THREE.Mesh(new THREE.BoxGeometry(2,0.05,0.3),mat(C.mørk)); tip.position.set(0,Y0+Math.cos(a)*0.88,Math.sin(a)*0.88); tip.rotation.x=a; stator.add(tip); }
+
+  const vikl = add('viklinger',[0,0,0]);
+  const coils=[];
+  for(let k=0;k<12;k++){ const a=k/12*Math.PI*2; const c=new THREE.Mesh(new THREE.BoxGeometry(2.2,0.17,0.26),mat(C.kobber,{metal:0.8,rough:0.35})); c.position.set(0,Y0+Math.cos(a)*1.02,Math.sin(a)*1.02); c.rotation.x=a; c.userData.phase=k%3; vikl.add(c); coils.push(c); }
+
+  const rotorG = add('rotor',[3.3,0,0]);
+  const rotorSpin = new THREE.Group(); rotorSpin.position.y=Y0; rotorG.add(rotorSpin);
+  rotorSpin.add(cylX(0.78,1.9,C.stål,[0,0,0],{metal:0.7}));
+  rotorSpin.add(cylX(0.3,1.92,C.mørk,[0,0,0]));
+
+  const magn = add('magneter',[3.3,0,0]);
+  const magSpin = new THREE.Group(); magSpin.position.y=Y0; magn.add(magSpin);
+  for(let k=0;k<8;k++){ const a=k/8*Math.PI*2; const m=new THREE.Mesh(new THREE.BoxGeometry(1.8,0.07,0.5),mat(k%2?C.blå:C.rød,{metal:0.3})); m.position.set(0,Math.cos(a)*0.81,Math.sin(a)*0.81); m.rotation.x=a; m.userData.extra=new THREE.Vector3(0,Math.cos(a)*0.6,Math.sin(a)*0.6); m.userData.base=m.position.clone(); magSpin.add(m); }
+
+  const aksel = add('aksel',[3.3,-2.8,0]);
+  const shaftSpin = new THREE.Group(); shaftSpin.position.y=Y0; aksel.add(shaftSpin);
+  shaftSpin.add(cylX(0.12,4.4,C.stål,[0.6,0,0],{metal:0.8}));
+  shaftSpin.add(mesh(new THREE.BoxGeometry(0.3,0.04,0.06),C.mørk,[2.3,0.12,0]));
+
+  const lag = add('lagre',[0,0,0]);
+  [[1.31,3.9],[-1.31,-2.6]].forEach(([x,dx])=>{ const g=new THREE.Group(); g.position.set(x,Y0,0); g.userData.extra=new THREE.Vector3(dx,0,0); g.userData.base=g.position.clone();
+    g.add(cylX(0.26,0.14,C.stål,[0,0,0],{metal:0.8})); g.add(cylX(0.14,0.15,C.mørk,[0,0,0])); lag.add(g); });
+
+  const ende = add('endeskjold',[0,0,0]);
+  [[1.31,5.0],[-1.31,-3.5]].forEach(([x,dx])=>{ const g=new THREE.Group(); g.position.set(x,Y0,0); g.userData.extra=new THREE.Vector3(dx,0,0); g.userData.base=g.position.clone();
+    g.add(cylX(1.72,0.1,C.alu,[0,0,0],{opacity:0.75,metal:0.3}));
+    for(let k=0;k<6;k++){ const a=k/6*Math.PI*2; g.add(cylX(0.06,0.14,C.stål,[0,Math.cos(a)*1.55,Math.sin(a)*1.55])); }
+    ende.add(g); });
+
+  const res = add('resolver',[-4.6,0,0]);
+  res.add(mesh(new THREE.TorusGeometry(0.3,0.07,10,32),C.grønn,[-1.5,Y0,0],[0,Math.PI/2,0],{metal:0.3}));
+  res.add(mesh(new THREE.BoxGeometry(0.1,0.18,0.25),C.svart,[-1.5,Y0+0.42,0]));
+
+  const inv = add('inverter',[0,2.6,0]);
+  inv.add(mesh(new THREE.BoxGeometry(2.2,0.6,1.5),C.alu,[0,Y0+2.05,0],[0,0,0],{metal:0.4}));
+  inv.add(mesh(new THREE.BoxGeometry(2.24,0.08,1.54),C.svart,[0,Y0+2.38,0]));
+  [-0.5,0,0.5].forEach(x=>inv.add(mesh(new THREE.BoxGeometry(0.16,0.25,0.2),C.oransje,[x,Y0+1.65,0.55],[0,0,0],{metal:0.1})));
+
+  const hv = add('hvkabler',[0,3.4,-1.0]);
+  [-0.35,0.35].forEach(x=>{ const c=new THREE.CubicBezierCurve3(new THREE.Vector3(x,Y0+2.1,-0.75),new THREE.Vector3(x,Y0+2.1,-1.5),new THREE.Vector3(x,Y0+1.6,-1.9),new THREE.Vector3(x,Y0+1.2,-2.8));
+    hv.add(mesh(new THREE.TubeGeometry(c,24,0.08,10),C.oransje,[0,0,0],[0,0,0],{metal:0.1,rough:0.6})); });
+  hv.add(mesh(new THREE.BoxGeometry(1.0,0.3,0.15),C.oransje,[0,Y0+2.1,-0.8],[0,0,0],{metal:0.1}));
+
+  const gir = add('gir',[6.6,0,0]);
+  gir.add(mesh(new THREE.BoxGeometry(0.75,3.0,2.4),C.alu,[2.75,Y0-0.9,0],[0,0,0],{opacity:0.25,metal:0.3}));
+  const pin = mesh(gearGeo(0.32,12,0.3),C.gull,[2.6,Y0,0],[0,0,0],{metal:0.7}); gir.add(pin);
+  const big = mesh(gearGeo(0.92,36,0.3),C.stål,[2.6,Y0-1.24,0],[0,0,0],{metal:0.7}); gir.add(big);
+  gir.add(cylX(0.1,1.6,C.stål,[2.9,Y0-1.24,0]));
+
+  const anim={phi:0};
+  return { P, step(dt, running){
+    if(running) anim.phi += dt*6;
+    const rotA = anim.phi/4; // 8 poler = 4 polpar
+    rotorSpin.rotation.x = rotA; magSpin.rotation.x = rotA; shaftSpin.rotation.x = rotA;
+    pin.rotation.x = rotA; big.rotation.x = -rotA*12/36 + Math.PI/36;
+    const I=[0,1,2].map(p=>Math.max(0,Math.sin(anim.phi - p*2*Math.PI/3)));
+    coils.forEach(c=>{ if(c.userData.hl) return; const v=running?I[c.userData.phase]:0; c.material.emissive.setRGB(v*0.9,v*0.45,v*0.1); });
+    return running ? '<b>Tre faser – roterende felt</b>'+['U','V','W'].map((n,p)=>`<div class="phase"><span>${n}</span><i style="width:${Math.round(I[p]*120)}px"></i></div>`).join('')+'<small style="color:var(--muted)">Viklingene lyser når fasen får strøm</small>' : '';
+  } };
+}
+
+// ---------- Tilstand ----------
+const state = { model:'bensin', t:0, target:0, running:false, sel:null, quiz:null, visited:store.get('kjt-motor-besokt',{}), res:store.get('kjt-motor-res',{}) };
+const models = {};
+let cur = null;
+const root = new THREE.Group(); scene.add(root);
+
+function load(id){
+  stopQuiz(); state.model=id; state.sel=null;
+  if(!models[id]) models[id] = id==='bensin'?buildBensin():buildEl();
+  root.clear(); cur = models[id];
+  Object.values(cur.P).forEach(g=>root.add(g));
+  Object.entries(cur.P).forEach(([pid,g])=>g.traverse(o=>{ if(o.isMesh) o.userData.part=pid; }));
+  document.querySelectorAll('[data-model]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.model===id));
+  $('hud').style.display='none';
+  renderList(); showInfo(null); applyExplode(); highlight(); fitView(true, id==='bensin'?[0.65,0.45,0.75]:[0.3,0.32,1]);
+}
+
+function deler(m=state.model){ return MODELLER[m].deler; }
+function del(id){ return deler().find(d=>d.id===id); }
+function visited(m=state.model){ return state.visited[m] || (state.visited[m]=[]); }
+function res(m=state.model){ return state.res[m] || (state.res[m]={}); }
+
+function renderList(){
+  const v = visited(), skjul = state.quiz && state.quiz.type==='finn';
+  $('plist').innerHTML = deler().map((d,i)=>`<li><button type="button" data-part="${d.id}" ${state.sel===d.id?'aria-current="true"':''} ${skjul?'disabled':''}><span class="nr">${i+1}</span><span class="ck" aria-hidden="true">${v.includes(d.id)?'✓':''}</span>${skjul?'<span aria-label="Skjult del">• • •</span>':d.navn}${v.includes(d.id)?'<span class="sr"> (utforsket)</span>':''}</button></li>`).join('');
+  const n=v.filter(id=>del(id)).length, tot=deler().length;
+  $('progText').textContent = `${n} av ${tot} deler utforsket`;
+  $('progBar').style.width = (n/tot*100)+'%';
+  $('doneBox').style.display = n===tot?'block':'none';
+  renderOppdrag();
+}
+$('plist').addEventListener('click',e=>{ const b=e.target.closest('button[data-part]'); if(!b||state.quiz) return; select(b.dataset.part,true); });
+
+// ---------- Oppdrag ----------
+function oppdragListe(){
+  const l=[];
+  ['bensin','el'].forEach(m=>{ const n=visited(m).length, tot=deler(m).length; l.push([`${MODELLER[m].tittel}: utforsk alle delene (${Math.min(n,tot)}/${tot})`, n>=tot]); });
+  ['bensin','el'].forEach(m=>{ const r=res(m); l.push([`${MODELLER[m].tittel}: test 1 «Finn delen» – minst 6 av 8 (beste: ${r.finn??'–'})`, (r.finn??0)>=6]); l.push([`${MODELLER[m].tittel}: test 2 «Hva heter delen?» – minst 6 av 8 (beste: ${r.navn??'–'})`, (r.navn??0)>=6]); });
+  const besvart=TENK.filter((_,i)=>(tenkSvar[i]||'').trim().length>=15).length;
+  l.push([`Tenk: svar på alle spørsmålene (${besvart}/${TENK.length})`, besvart===TENK.length]);
+  return l;
+}
+function renderOppdrag(){
+  const l=oppdragListe(), n=l.filter(x=>x[1]).length;
+  $('oppdrag').innerHTML=l.map(([t,ok])=>`<li style="padding:4px 10px;color:${ok?'var(--ok)':'var(--muted)'}">${ok?'✓':'☐'} ${t}${ok?'<span class="sr"> – fullført</span>':''}</li>`).join('');
+  $('oppdragSum').textContent=`${n} av ${l.length} fullført`;
+}
+
+// ---------- Infopanel ----------
+function ordFor(tekst){ return Object.entries(ORD).filter(([o])=>new RegExp('(^|[^\\p{L}])'+o+'($|[^\\p{L}])','iu').test(tekst)); }
+function showInfo(id){
+  const m = MODELLER[state.model];
+  $('mName').textContent = id ? del(id).navn : 'Trykk på en del';
+  let tekst;
+  if(!id){ $('infoOmr').textContent='Velg en del'; $('infoNavn').textContent=m.tittel; $('infoTekst').innerHTML=`<i>${m.undertittel}.</i><br>${m.intro}`; $('infoFakta').innerHTML='<li>Trykk på en del i modellen, velg fra listen eller trykk «Gå gjennom delene».</li>'; tekst=m.undertittel+' '+m.intro; }
+  else { const d = del(id);
+    $('infoOmr').textContent = d.omrade; $('infoNavn').textContent = d.navn; $('infoTekst').textContent = d.tekst;
+    $('infoFakta').innerHTML = d.fakta.map(f=>`<li>${f}</li>`).join(''); tekst=[d.navn,d.tekst,...d.fakta].join(' '); }
+  const ord=ordFor(tekst);
+  $('infoOrd').hidden=!ord.length;
+  $('infoOrd').innerHTML='<b>Ord å kunne</b><br>'+ord.map(([o,f])=>`<b>${o}</b> – ${f}`).join('<br>');
+  $('lesBtn').onclick=()=>les(tekst);
+  if(id && auto()) les(tekst);
+}
+
+function select(id, focus){
+  state.sel=id;
+  if(id){ const v=visited(); if(!v.includes(id)){ v.push(id); store.set('kjt-motor-besokt',state.visited); } }
+  showInfo(id); highlight(); renderList();
+  if(id && focus) focusPart(id);
+}
+
+const ACC = new THREE.Color(0xf2b84b);
+function highlight(flashId, flashColor){
+  if(!cur) return;
+  Object.entries(cur.P).forEach(([pid,g])=>{
+    const on = pid===state.sel || pid===flashId;
+    const dim = (state.sel && !on && !state.quiz);
+    g.traverse(o=>{ if(!o.isMesh) return; const m=o.material;
+      o.userData.hl = on;
+      if(on) m.emissive.copy(pid===flashId&&flashColor?flashColor:ACC).multiplyScalar(0.45); else m.emissive.setHex(0);
+      const op = dim ? Math.min(0.18, m.userData.baseOpacity) : m.userData.baseOpacity;
+      m.opacity = op; m.transparent = op<1; m.depthWrite = op>=1; m.needsUpdate = true;
+    });
+  });
+}
+
+// ---------- Sprengning ----------
+const ease = t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+function applyExplode(){
+  if(!cur) return; const e=ease(state.t);
+  Object.values(cur.P).forEach(g=>{
+    g.position.copy(g.userData.offset).multiplyScalar(e);
+    g.traverse(o=>{ if(o!==g && o.userData.extra){ o.position.copy(o.userData.base).addScaledVector(o.userData.extra,e); } });
+  });
+  $('explode').value = state.t;
+  $('explodeBtn').textContent = state.target>0.5 ? 'Sett sammen' : 'Ta fra hverandre';
+}
+$('explodeBtn').onclick=()=>{ state.target = state.target>0.5?0:1; setTimeout(()=>fitView(),50); };
+$('explode').oninput=e=>{ state.t=state.target=+e.target.value; applyExplode(); };
+
+// ---------- Kamera ----------
+let camAnim=null;
+function boxOf(obj){ const b=new THREE.Box3(); obj.updateMatrixWorld(true); obj.traverse(o=>{ if(o.isMesh){ o.geometry.computeBoundingBox(); b.union(o.geometry.boundingBox.clone().applyMatrix4(o.matrixWorld)); } }); return b; }
+function flyTo(target, dist, instant){
+  if(!controls) return;
+  const dir = camera.position.clone().sub(controls.target).normalize();
+  const pos = target.clone().addScaledVector(dir, dist);
+  if(instant){ controls.target.copy(target); camera.position.copy(pos); return; }
+  camAnim={ t:0, fromT:controls.target.clone(), toT:target, fromP:camera.position.clone(), toP:pos };
+}
+function fitView(instant, dirPreset){
+  if(!cur || !controls) return;
+  if(dirPreset){ camera.position.copy(controls.target).add(new THREE.Vector3(...dirPreset).normalize()); }
+  const save=state.t; state.t=state.target; applyExplode();
+  const b=boxOf(root); state.t=save; applyExplode();
+  const s=b.getSize(new THREE.Vector3()), c=b.getCenter(new THREE.Vector3());
+  const r=Math.max(s.x,s.y,s.z)*0.5;
+  const vh=camera.fov*Math.PI/360, hh=Math.atan(Math.tan(vh)*camera.aspect);
+  flyTo(c, r/Math.sin(Math.min(vh,hh))*0.95+2, instant);
+}
+function focusPart(id){
+  if(!controls) return;
+  const g=cur.P[id]; const b=boxOf(g); const s=b.getSize(new THREE.Vector3());
+  flyTo(b.getCenter(new THREE.Vector3()), Math.max(4.5, Math.max(s.x,s.y,s.z)*1.6));
+}
+$('fitBtn').onclick=()=>fitView();
+
+// ---------- Kjør ----------
+$('runBtn').onclick=()=>{ state.running=!state.running; $('runBtn').setAttribute('aria-pressed',state.running); $('runBtn').textContent=state.running?'❚❚ Stopp motor':'▶ Kjør motor'; if(!state.running) $('hud').style.display='none'; };
+document.querySelectorAll('[data-model]').forEach(b=>b.onclick=()=>load(b.dataset.model));
+
+// ---------- Gå gjennom ----------
+function stepTour(dir){
+  if(state.quiz) return;
+  const ids=deler().map(d=>d.id); let i=ids.indexOf(state.sel);
+  i = i<0 ? (dir>0?0:ids.length-1) : (i+dir+ids.length)%ids.length;
+  if(state.target<0.5){ state.target=1; }
+  select(ids[i], true);
+}
+$('tourBtn').onclick=()=>{ state.sel=null; stepTour(1); };
+$('nextBtn').onclick=$('mNext').onclick=()=>stepTour(1);
+$('prevBtn').onclick=$('mPrev').onclick=()=>stepTour(-1);
+
+// ---------- Testene ----------
+// type 'finn': navnet vises, eleven klikker på delen i modellen.
+// type 'navn': delen lyser, eleven velger riktig navn blant tre (virker også med tastatur).
+const ANT=8;
+function stokk(a){ a=[...a]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+const quizBtns=[$('quizBtn'),$('quiz2Btn')];
+const quizTekst={finn:'Test 1: Finn delen', navn:'Test 2: Hva heter delen?'};
+function setLocked(on){ ['tourBtn','nextBtn','prevBtn','mNext','mPrev'].forEach(i=>$(i).disabled=on); }
+function startQuiz(type){
+  if(type==='finn' && !renderer){ return; }
+  state.quiz={type, ids:stokk(deler().map(d=>d.id)).slice(0,ANT), i:0, score:0, feil:[], runde:1, lock:false};
+  state.sel=null; state.target=1; setLocked(true);
+  quizBtns.forEach(b=>b.textContent = b.dataset.type===type ? 'Avslutt testen' : quizTekst[b.dataset.type]);
+  showInfo(null); highlight(); renderList(); askQuiz(); setTimeout(()=>fitView(),50);
+  $('quizBar').scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+function stopQuiz(){
+  if(state.quiz){ state.quiz=null; renderList(); highlight(); }
+  $('quizBar').hidden=true; setLocked(false);
+  quizBtns.forEach(b=>b.textContent=quizTekst[b.dataset.type]);
+}
+function askQuiz(){
+  const q=state.quiz, bar=$('quizBar'), id=q.ids[q.i], d=del(id); bar.className='quizPanel'; bar.hidden=false; q.lock=false;
+  const status=`<small>${q.runde>1?'Øvingsrunde: delene du bommet på · ':''}Spørsmål ${q.i+1} av ${q.ids.length}${q.runde===1?` · ${q.score} riktige`:''}</small>`;
+  if(q.type==='finn'){
+    highlight();
+    bar.innerHTML=`Klikk på: ${d.navn} <button class="btn small" type="button" id="qLes">🔊</button>${status}`;
+    if(auto()) les('Klikk på '+d.navn);
+  } else {
+    highlight(id); if(state.target>0.5) focusPart(id);
+    const valg=stokk([id,...stokk(deler().map(x=>x.id).filter(x=>x!==id)).slice(0,2)]);
+    bar.innerHTML=`Hva heter delen som lyser? <button class="btn small" type="button" id="qLes">🔊</button>${status}<div class="opts">${valg.map(v=>`<button class="btn" type="button" data-svar="${v}">${del(v).navn}</button>`).join('')}</div>`;
+    bar.querySelectorAll('[data-svar]').forEach(b=>b.onclick=()=>answerQuiz(b.dataset.svar));
+    bar.querySelector('[data-svar]').focus({preventScroll:true});
+    if(auto()) les('Hva heter delen som lyser? Er det '+valg.map(v=>del(v).navn).join(', eller ')+'?');
+  }
+  $('qLes').onclick=()=>les(q.type==='finn'?'Klikk på '+d.navn:'Hva heter delen som lyser?');
+}
+function answerQuiz(pid, hits){
+  const q=state.quiz; if(!q||q.lock) return;
+  const right=q.ids[q.i];
+  const ok = pid===right || (hits && hits[0]===right); // første treff teller også (f.eks. gjennomsiktig motorblokk)
+  q.lock=true;
+  const bar=$('quizBar');
+  if(ok){
+    if(q.runde===1) q.score++;
+    bar.className='quizPanel ok'; bar.innerHTML=`Riktig! Det er ${del(right).navn}.`;
+    highlight(right, new THREE.Color(0x8cd6ae));
+    setTimeout(()=>{ if(state.quiz===q) nextQuiz(); }, 1100);
+  } else {
+    if(!q.feil.includes(right)) q.feil.push(right);
+    bar.className='quizPanel feil';
+    const d=del(right), forste=d.tekst.split('. ')[0]+'.';
+    bar.innerHTML=`${q.type==='finn'&&pid?`Du trykket på ${del(pid).navn}. `:'Ikke riktig. '}Riktig svar er <u>${d.navn}</u> – den lyser grønt nå.<small>${forste}</small><div class="opts"><button class="btn" type="button" id="qNeste">Neste →</button></div>`;
+    highlight(right, new THREE.Color(0x8cd6ae)); if(state.target>0.5) focusPart(right);
+    $('qNeste').onclick=()=>nextQuiz(); $('qNeste').focus({preventScroll:true});
+    if(auto()) les('Riktig svar er '+d.navn+'. '+forste);
+  }
+}
+function nextQuiz(){
+  const q=state.quiz; q.i++;
+  if(q.i<q.ids.length) return askQuiz();
+  const bar=$('quizBar'); highlight();
+  if(q.runde===1){ const r=res(); r[q.type]=Math.max(r[q.type]??0,q.score); r[q.type+'Feil']=q.feil.map(id=>del(id).navn); store.set('kjt-motor-res',state.res); renderOppdrag(); }
+  if(q.feil.length){
+    const antall=q.feil.length;
+    bar.className='quizPanel'; bar.innerHTML=`${q.runde===1?`Du fikk ${q.score} av ${q.ids.length} riktige.`:'Bra jobbet!'} Nå øver vi på ${antall===1?'delen':'de '+antall+' delene'} du bommet på.<div class="opts"><button class="btn" type="button" id="qOv">Øv på ${antall===1?'den':'dem'} →</button></div>`;
+    $('qOv').onclick=()=>{ q.ids=stokk(q.feil); q.feil=[]; q.i=0; q.runde++; askQuiz(); }; $('qOv').focus({preventScroll:true});
+  } else {
+    bar.className='quizPanel ok';
+    bar.innerHTML = q.runde===1 ? `Full pott! ${q.score} av ${q.ids.length} riktige.<small>Prøv den andre testen, eller bytt motor.</small>` : `Nå kan du alle delene du bommet på! Resultatet fra første runde (${res()[q.type]} av ${ANT}) er lagret.<small>Ta testen på nytt for å forbedre resultatet.</small>`;
+    state.quiz=null; setLocked(false); renderList(); quizBtns.forEach(b=>b.textContent=quizTekst[b.dataset.type]);
+  }
+}
+quizBtns.forEach(b=>b.onclick=()=>{ if(state.quiz && state.quiz.type===b.dataset.type) stopQuiz(); else startQuiz(b.dataset.type); });
+if(!renderer) $('quizBtn').disabled=true;
+
+// ---------- Kvittering ----------
+$('kvittBtn').onclick=()=>{
+  const navn=$('elevNavn').value.trim()||'(navn ikke fylt inn)';
+  const t=new Date().toLocaleString('nb-NO',{dateStyle:'short',timeStyle:'short'});
+  const linjer=[`KVITTERING – Motoren i biter (gjestefag KJT)`,`Elev: ${navn}`,`Tidspunkt: ${t}`,'',`OPPDRAG`];
+  oppdragListe().forEach(([tx,ok])=>linjer.push(`${ok?'[x]':'[ ]'} ${tx}`));
+  ['bensin','el'].forEach(m=>{ const r=res(m); ['finn','navn'].forEach(ty=>{ if(r[ty+'Feil']?.length) linjer.push(`  ${MODELLER[m].tittel}, ${ty==='finn'?'test 1':'test 2'} – bommet på: ${r[ty+'Feil'].join(', ')}`); }); });
+  linjer.push('','TENK – MINE SVAR');
+  TENK.forEach((q,i)=>{ linjer.push(`${i+1}. ${q.q}`, `Svar: ${(tenkSvar[i]||'').trim()||'(ikke besvart)'}`, ''); });
+  $('kvittTekst').textContent=linjer.join('\n'); $('kvitt').hidden=false; $('kopiert').textContent='';
+};
+$('kopierBtn').onclick=async()=>{ try{ await navigator.clipboard.writeText($('kvittTekst').textContent); $('kopiert').textContent='Kopiert!'; }catch(e){ $('kopiert').textContent='Kunne ikke kopiere – merk teksten og kopier selv.'; } };
+
+// ---------- Peking ----------
+const ray=new THREE.Raycaster(), ptr=new THREE.Vector2(); let down=null, lastHits=[];
+function pick(ev){
+  const r=renderer.domElement.getBoundingClientRect();
+  ptr.set((ev.clientX-r.left)/r.width*2-1, -(ev.clientY-r.top)/r.height*2+1);
+  ray.setFromCamera(ptr,camera);
+  const hits=ray.intersectObjects(root.children,true);
+  lastHits=[...new Set(hits.map(h=>h.object.userData.part))];
+  // Treffer vi først et gjennomsiktig skall (f.eks. motorblokka), velg en ugjennomsiktig del bak det
+  const solid=(hits[0]&&hits[0].object.material.userData.baseOpacity<0.5)?hits.find(h=>h.object.material.userData.baseOpacity>=0.5):null;
+  return (solid||hits[0])?.object.userData.part || null;
+}
+if(renderer){
+  const cv=renderer.domElement, tip=$('tip');
+  cv.addEventListener('pointerdown',e=>down={x:e.clientX,y:e.clientY});
+  cv.addEventListener('pointerup',e=>{ if(!down) return; const moved=Math.hypot(e.clientX-down.x,e.clientY-down.y); down=null; if(moved>6) return;
+    const pid=pick(e); if(state.quiz){ if(state.quiz.type==='finn' && pid) answerQuiz(pid, lastHits); return; } select(pid,false); });
+  cv.addEventListener('pointermove',e=>{ if(e.pointerType!=='mouse'||down){ tip.style.display='none'; return; }
+    const pid=pick(e); host.classList.toggle('hoverPart',!!pid);
+    if(pid && (!state.quiz || state.quiz.type!=='finn')){ const r=host.getBoundingClientRect(); tip.textContent=del(pid).navn; tip.style.display='block'; tip.style.left=(e.clientX-r.left+14)+'px'; tip.style.top=(e.clientY-r.top+10)+'px'; } else tip.style.display='none'; });
+  cv.addEventListener('pointerleave',()=>tip.style.display='none');
+}
+
+// ---------- Løkke ----------
+function resize(){ if(!renderer) return; const w=host.clientWidth,h=host.clientHeight; renderer.setSize(w,h); camera.aspect=w/h; camera.updateProjectionMatrix(); }
+addEventListener('resize',resize);
+const clock=new THREE.Clock();
+function loop(){
+  const dt=Math.min(clock.getDelta(),0.05);
+  if(Math.abs(state.t-state.target)>0.001){ state.t+=Math.sign(state.target-state.t)*Math.min(Math.abs(state.target-state.t),dt*0.9); applyExplode(); }
+  if(camAnim){ camAnim.t=Math.min(1,camAnim.t+dt*1.6); const k=ease(camAnim.t); controls.target.lerpVectors(camAnim.fromT,camAnim.toT,k); camera.position.lerpVectors(camAnim.fromP,camAnim.toP,k); if(camAnim.t>=1) camAnim=null; }
+  if(cur){ const html=cur.step(dt,state.running); const hud=$('hud'); if(html){ hud.innerHTML=html; hud.style.display='block'; } }
+  if(controls) controls.update();
+  if(renderer) renderer.render(scene,camera);
+  requestAnimationFrame(loop);
+}
+resize(); load('bensin'); renderOppdrag(); if(renderer) loop();
+</script>
+</body>
+</html>
