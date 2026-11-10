@@ -554,7 +554,7 @@ function rapportSkjema(el, tilbake){
   const harMinne = Object.values(mem).some(m => Object.values(m || {}).some(v => v && v.trim()));
   el.innerHTML = `<div class="panel rap">
     <h3 style="font-size:22px">Lever fremdriften din til læreren</h3>
-    <p>Rapporten viser hvilke aktiviteter du har gjort, resultatene dine og prøvene du har tatt. Den lages her på PC-en og sendes ikke noe sted før du selv leverer den i Teams.</p>
+    <p>Rapporten viser hvilke aktiviteter du har gjort, hva som gjenstår, resultatene dine og prøvene du har tatt. Den lages her på PC-en og sendes ikke noe sted før du selv leverer den i Teams.</p>
     <label for="rn">Fornavn og første bokstav i etternavnet</label><input type="text" id="rn" value="${esc(navn)}" placeholder="F.eks. Ola N." autocomplete="off">
     <label for="rk">Klasse</label><input type="text" id="rk" value="${esc(klasse)}" placeholder="F.eks. 2TLLB" autocomplete="off">
     <div class="choice" style="margin-top:12px"><label><input type="checkbox" id="rt" checked><span><b>Ta med det jeg har skrevet</b> i skriveoppgaver og Voks${harMinne ? '' : ctx && ctx.store.saveText ? '' : ' (bare tekst som fortsatt er åpen på denne PC-en)'}.</span></label></div>
@@ -573,7 +573,7 @@ function rapportSkjema(el, tilbake){
     const n = $('#rn').value.trim(), k = $('#rk').value.trim();
     if (!n){ $('#rout').innerHTML = '<div class="fb bad" style="margin-top:10px">Skriv navnet ditt først, så læreren vet hvem rapporten er fra.</div>'; $('#rn').focus(); return null; }
     TLL.ls.set('tll-elev', JSON.stringify({ navn: n, klasse: k }));
-    return TLL.lagRapport({ navn: n, klasse: k, medTekst: $('#rt').checked, minne: mem });
+    return TLL.lagRapport({ navn: n, klasse: k, kapittelId: ctx?.kapId, medTekst: $('#rt').checked, minne: mem });
   };
   const nedlasting = $('#rdl'), tekstkode = $('#rcode'), status = $('#rout');
   nedlasting.onclick = async () => {

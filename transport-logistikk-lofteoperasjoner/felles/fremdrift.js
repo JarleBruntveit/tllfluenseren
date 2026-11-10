@@ -49,8 +49,9 @@ const kropp = r => JSON.stringify({ t: r.type, v: r.versjon, f: r.fag, n: r.navn
 TLL.sjekksum = r => fnv('tllfluenseren|' + kropp(r));
 
 /* minne: { kapId: { actId: tekst } } for tekster som bare ligger i minnet (delt PC) */
-TLL.lagRapport = ({ navn, klasse, medTekst, minne }) => {
+TLL.lagRapport = ({ navn, klasse, kapittelId, medTekst, minne }) => {
   const kapIds = new Set(Object.keys(TLL.kapitler));
+  if (kapittelId) kapIds.add(kapittelId);
   (TLL.KAPITLER || []).forEach(k => kapIds.add(k.id));
   ls.keys().forEach(k => { const m = /^tll-(kap\d+)$/.exec(k || ''); if (m) kapIds.add(m[1]); });
   const kapitler = {};
@@ -61,13 +62,18 @@ TLL.lagRapport = ({ navn, klasse, medTekst, minne }) => {
       const l = s.log[a] || {};
       res[a] = { best: s.best[a], sist: l.sist != null ? l.sist : s.best[a], n: l.n || 1, forste: l.forste || null, siste: l.siste || null };
     });
-    const tekster = {};
-    if (medTekst){
-      TLL.tekstNokler(id).forEach(k => { const v = ls.get(k); if (v && v.trim()) tekster[k.split('-txt-')[1]] = v.slice(0, 5000); });
-      const m = (minne && minne[id]) || {};
-      Object.keys(m).forEach(a => { if (m[a] && m[a].trim()) tekster[a] = m[a].slice(0, 5000); });
+    const tekster = {}, paabegynt = new Set();
+    const lesTekst = (a, tekst) => {
+      if (!tekst?.trim()) return;
+      if (!Object.hasOwn(res, a)) paabegynt.add(a);
+      if (medTekst) tekster[a] = tekst.slice(0, 5000);
+    };
+    TLL.tekstNokler(id).forEach(k => lesTekst(k.split('-txt-')[1], ls.get(k)));
+    Object.entries(minne?.[id] || {}).forEach(([a, tekst]) => lesTekst(a, tekst));
+    if (id === kapittelId || Object.keys(res).length || Object.keys(tekster).length || paabegynt.size) {
+      kapitler[id] = { niva: s.lvl || 0, resultater: res, tekster };
+      if (paabegynt.size) kapitler[id].paabegynt = [...paabegynt];
     }
-    if (Object.keys(res).length || Object.keys(tekster).length) kapitler[id] = { niva: s.lvl || 0, resultater: res, tekster };
   });
   const r = {
     type: 'tllfluenseren-fremdrift', versjon: 1, fag: (TLL.FAG && TLL.FAG.id) || 'tll',
@@ -80,7 +86,7 @@ TLL.lagRapport = ({ navn, klasse, medTekst, minne }) => {
 const slug = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/æ/g,'ae').replace(/ø/g,'o').replace(/å/g,'a').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'elev';
 TLL.filnavn = r => `fremdrift-${slug(r.navn)}-${r.laget.slice(0,10)}.pdf`;
 TLL.lastNed = async r => {
-  const { lagRapportPdf } = await import('/transport-logistikk-lofteoperasjoner/felles/rapport-pdf.js?v=1');
+  const { lagRapportPdf } = await import('/transport-logistikk-lofteoperasjoner/felles/rapport-pdf.js?v=gjenstar');
   const blob = await lagRapportPdf(r, TLL);
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob); a.download = TLL.filnavn(r);
