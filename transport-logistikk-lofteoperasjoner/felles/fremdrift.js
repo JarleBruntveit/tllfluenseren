@@ -78,9 +78,10 @@ TLL.lagRapport = ({ navn, klasse, medTekst, minne }) => {
   return r;
 };
 const slug = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/æ/g,'ae').replace(/ø/g,'o').replace(/å/g,'a').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'elev';
-TLL.filnavn = r => `fremdrift-${slug(r.navn)}-${r.laget.slice(0,10)}.json`;
-TLL.lastNed = r => {
-  const blob = new Blob([JSON.stringify(r, null, 1)], { type: 'application/json' });
+TLL.filnavn = r => `fremdrift-${slug(r.navn)}-${r.laget.slice(0,10)}.pdf`;
+TLL.lastNed = async r => {
+  const { lagRapportPdf } = await import('/transport-logistikk-lofteoperasjoner/felles/rapport-pdf.js?v=1');
+  const blob = await lagRapportPdf(r, TLL);
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob); a.download = TLL.filnavn(r);
   document.body.appendChild(a); a.click();
@@ -90,7 +91,7 @@ const b64e = s => btoa(unescape(encodeURIComponent(s)));
 const b64d = s => decodeURIComponent(escape(atob(s)));
 TLL.rapportKode = r => 'TLLRAPPORT:' + b64e(JSON.stringify(r));
 
-/* Leser én eller flere rapporter fra tekst (JSON eller TLLRAPPORT-koder). */
+/* PDF-er fra TLL har rapportkoden i dokumentets Keywords-felt. */
 TLL.lesRapporter = tekst => {
   const ut = [];
   const legg = (obj, kilde) => {
@@ -100,9 +101,13 @@ TLL.lesRapporter = tekst => {
   const t = String(tekst || '').trim();
   if (!t) return ut;
   if (t[0] === '{'){ try { legg(JSON.parse(t), 'fil'); } catch(e){ ut.push({ feil: 'Kunne ikke lese filen', kilde: 'fil' }); } return ut; }
-  const koder = t.match(/TLLRAPPORT:[A-Za-z0-9+/=]+/g) || [];
+  const pdf = t.startsWith('%PDF-');
+  const koder = pdf
+    ? Array.from(t.matchAll(/\/Keywords\s*\((TLLRAPPORT:[A-Za-z0-9+/=]+)\)/g), match => match[1])
+    : t.match(/TLLRAPPORT:[A-Za-z0-9+/=]+/g) || [];
   if (!koder.length) ut.push({ feil: 'Fant ingen rapportkode', kilde: 'tekst' });
-  koder.forEach(k => { try { legg(JSON.parse(b64d(k.slice(11))), 'kode'); } catch(e){ ut.push({ feil: 'Ødelagt rapportkode', kilde: 'kode' }); } });
+  const kilde = pdf ? 'fil' : 'kode';
+  koder.forEach(k => { try { legg(JSON.parse(b64d(k.slice(11))), kilde); } catch(e){ ut.push({ feil: 'Ødelagt rapportkode', kilde }); } });
   return ut;
 };
 

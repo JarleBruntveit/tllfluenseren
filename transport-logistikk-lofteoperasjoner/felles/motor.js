@@ -558,12 +558,12 @@ function rapportSkjema(el, tilbake){
     <label for="rn">Fornavn og første bokstav i etternavnet</label><input type="text" id="rn" value="${esc(navn)}" placeholder="F.eks. Ola N." autocomplete="off">
     <label for="rk">Klasse</label><input type="text" id="rk" value="${esc(klasse)}" placeholder="F.eks. 2TLLB" autocomplete="off">
     <div class="choice" style="margin-top:12px"><label><input type="checkbox" id="rt" checked><span><b>Ta med det jeg har skrevet</b> i skriveoppgaver og Voks${harMinne ? '' : ctx && ctx.store.saveText ? '' : ' (bare tekst som fortsatt er åpen på denne PC-en)'}.</span></label></div>
-    <div class="row" style="margin-top:10px"><button class="btn yellow" id="rdl">Last ned rapport (fil)</button><button class="btn ghost" id="rcode">Vis som tekstkode</button></div>
-    <div id="rout"></div>
+    <div class="row" style="margin-top:10px"><button class="btn yellow" id="rdl">Last ned rapport som PDF</button><button class="btn ghost" id="rcode">Vis som tekstkode</button></div>
+    <div id="rout" aria-live="polite"></div>
     <h4 style="margin:18px 0 4px">Slik leverer du i Teams</h4>
     <ol class="steps-teams">
       <li>Åpne oppgaven læreren har gitt i Teams (under <b>Oppgaver</b>).</li>
-      <li>Trykk <b>Legg til arbeid</b> og <b>Last opp fra denne enheten</b>. Velg filen som starter med «fremdrift-» (ligger i Nedlastinger).</li>
+      <li>Trykk <b>Legg til arbeid</b> og <b>Last opp fra denne enheten</b>. Velg PDF-en som starter med «fremdrift-» (ligger i Nedlastinger).</li>
       <li>Trykk <b>Lever inn</b>.</li>
       <li>Får du ikke lastet opp filen? Trykk «Vis som tekstkode», kopier koden og lim den inn i oppgaven eller i en melding til læreren.</li>
     </ol>
@@ -575,8 +575,21 @@ function rapportSkjema(el, tilbake){
     TLL.ls.set('tll-elev', JSON.stringify({ navn: n, klasse: k }));
     return TLL.lagRapport({ navn: n, klasse: k, medTekst: $('#rt').checked, minne: mem });
   };
-  $('#rdl').onclick = () => { const r = lag(); if (!r) return; TLL.lastNed(r);
-    $('#rout').innerHTML = `<div class="fb" style="margin-top:10px">Filen <b>${esc(TLL.filnavn(r))}</b> er lastet ned. Lever den i Teams slik det står nedenfor.</div>`; };
+  const nedlasting = $('#rdl'), tekstkode = $('#rcode'), status = $('#rout');
+  nedlasting.onclick = async () => {
+    const r = lag();
+    if (!r) return;
+    nedlasting.disabled = tekstkode.disabled = true;
+    status.textContent = 'Lager PDF …';
+    try {
+      await TLL.lastNed(r);
+      status.innerHTML = `<div class="fb" style="margin-top:10px">PDF-en <b>${esc(TLL.filnavn(r))}</b> er klar i Nedlastinger. Lever den i Teams slik det står nedenfor.</div>`;
+    } catch {
+      status.innerHTML = '<div class="fb bad" style="margin-top:10px">PDF-en kunne ikke lages. Prøv igjen, eller bruk «Vis som tekstkode».</div>';
+    } finally {
+      nedlasting.disabled = tekstkode.disabled = false;
+    }
+  };
   $('#rcode').onclick = () => { const r = lag(); if (!r) return;
     $('#rout').innerHTML = `<p class="small" style="margin-top:10px">Kopier hele koden og lim den inn i Teams:</p><textarea class="codebox" id="rc" readonly>${esc(TLL.rapportKode(r))}</textarea><div class="row"><button class="btn ghost" id="rcp">Kopier koden</button></div>`;
     $('#rcp').onclick = () => copyText($('#rc'), $('#rcp')); };
