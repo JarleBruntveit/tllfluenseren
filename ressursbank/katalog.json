@@ -106,6 +106,12 @@
       "url": "/transport-logistikk-lofteoperasjoner/kap5/#/t6"
     },
     {
+      "id": "kap5-t7",
+      "title": "Oppgavebank: regn med lastsikringsheftet",
+      "area": "tll",
+      "url": "/transport-logistikk-lofteoperasjoner/kap5/#/t7"
+    },
+    {
       "id": "truck",
       "title": "Truckopplæring",
       "area": "bransjeteknikk",
@@ -456,7 +462,8 @@
       "description": "Miniguide fra NLF med tabeller for friksjon, blokkering og overfalls-, loop-, grime- og direktesurring etter EN 12195-1. Brukes til å regne ut hvor mange surringer et kolli trenger.",
       "topics": [
         "kap5-t4",
-        "kap5-t6"
+        "kap5-t6",
+        "kap5-t7"
       ],
       "watchFor": "Les forutsetningene for tabellene først (surrefester, LC og forspenning). Finn friksjonstabellen og tabellene for å gli og å tippe for hver surringstype.",
       "questions": [
