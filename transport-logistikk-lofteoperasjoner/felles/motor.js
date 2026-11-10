@@ -381,7 +381,17 @@ const GEN = {
       ans:k*k, unit:'ganger', steps:[`Kraften utover i en sving øker med farten i andre (farten ganget med seg selv).`,`Farten øker ${v2} ÷ ${v1} = ${k} ganger`,`${k} × ${k} = <b>${k*k}</b> ganger så stor kraft`] }; },
   kloss(){ const t = KLOSS[rnd(0,KLOSS.length-1)], r = rnd(t.min,t.max)*15, ans = r/t.d;
     return { task:`Du skal sikre ${t.n}. Radien er <b>${r} cm</b>. Hvor høye må klossene minst være?`,
-      ans, unit:'cm', steps:[`Regel: ${t.regel}`,`${r} ÷ ${t.d} = <b>${ans}</b> cm`,'I tillegg må lasten surres.'] }; }
+      ans, unit:'cm', steps:[`Regel: ${t.regel}`,`${r} ÷ ${t.d} = <b>${ans}</b> cm`,'I tillegg må lasten surres.'] }; },
+  /* Antall surringer når tabellverdien fra lastsikringsheftet er oppgitt i oppgaven (a.oppslag: [metode, µ, retning, tonn per surring]).
+     Ikke bruk loopsurring her – den krever alltid minst to par, uansett utregning. */
+  antallStropper(a){ const L = a.oppslag; let o, halv, ans;
+    do { o = L[rnd(0,L.length-1)]; halv = rnd(4,48); ans = Math.ceil(Math.round(halv/2/o[3]*1e6)/1e6); } while (ans < 1 || ans > 10);
+    const t = halv/2, kvot = (t/o[3]).toLocaleString('nb-NO',{maximumFractionDigits:2});
+    return { task:`Lasten veier <b>${fmt(t)} tonn</b>. Du bruker ${o[0]}, og friksjonen er <b>µ = ${tidel2(o[1])}</b>. Heftet sier at én surring holder <b>${fmt(o[3])} tonn</b> ${o[2]}. Hvor mange trenger du mot å gli ${o[2]}?`,
+      ans, unit:'surringer', steps:[`Antall = lastens vekt ÷ det én surring holder`,`${fmt(t)} ÷ ${fmt(o[3])} = ${kvot} → rund alltid <b>opp</b>: <b>${ans}</b>`] }; },
+  perFireTonn(){ const t = rnd(3,30), ans = Math.ceil(t/4);
+    return { task:`Lasten er blokkert og kan verken gli eller tippe etter tabellene. Den veier <b>${t} tonn</b>. Heftet anbefaler likevel én surring per 4 tonn fordi risting kan få lasten til å vandre. Hvor mange surringer anbefales?`,
+      ans, unit:'surringer', steps:[`Antall = vekt ÷ 4, rundet opp`,`${t} ÷ 4 = ${(t/4).toLocaleString('nb-NO')} → <b>${ans}</b>`] }; }
 };
 const GODS = ['maskindeler','maling','fliser','sement','papir','motorolje','kopipapir','dekk'];
 const KJORETOY = [{n:'lastebil (N3)',f:8,min:20,max:180},{n:'lastebil (N2)',f:8,min:10,max:60},{n:'semitrailer (O4)',f:8,min:40,max:250},{n:'varebil (N1)',f:10,min:2,max:12},{n:'tilhenger på 3 000 kg tillatt totalvekt (O2) bak en personbil',f:10,min:2,max:20}];
