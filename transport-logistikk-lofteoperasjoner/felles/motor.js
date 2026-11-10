@@ -592,6 +592,7 @@ function bootKapittel(){
   const save = () => TLL.skrivLager(K.id, store);
   const KN = esc(K.kortnavn || ('Kap ' + K.nr));
   const visible = a => !a.nivaa || store.lvl === 0 || a.nivaa === store.lvl;
+  const temaNavn = t => `${esc(t.lok)} – ${esc(t.tittel)}`;
 
   const LEVEL_HELP = {0:'Alle: vis aktiviteter fra alle nivåene. Du kan velge ett nivå for å få færre aktiviteter om gangen.',1:'Nybegynner: bli kjent med begrepene.',2:'Trygg: bruk kunnskapen i praktiske oppgaver.',3:'Ekspert: begrunn valg og løs mer sammensatte oppgaver.'};
   function renderLevels(){
@@ -624,7 +625,7 @@ function bootKapittel(){
         <b>Lagring på denne PC-en:</b> Resultatene dine lagres bare i denne nettleseren. Læreren ser dem når du leverer en <a href="#/rapport">fremdriftsrapport</a> i Teams.
         ${store.saveText ? 'Det du skriver i skriveoppgavene lagres også her – andre som bruker PC-en kan se det.' : 'Det du skriver i skriveoppgavene lagres ikke.'}
         <a href="#/lagring">Innstillinger og sletting</a></span></div>
-      <section class="panel tll-start" aria-labelledby="start-heading"><h2 id="start-heading">Første gang her?</h2><p>Start med «${esc(forsteTema.tittel)}». Les eller lytt til forklaringen, og prøv oppgavene etterpå. Har læreren gitt deg et annet tema, velger du det nedenfor.</p><a class="tll-action" href="#/${forsteTema.id}">Start med ${esc(forsteTema.lok)} – ${esc(forsteTema.tittel)} →</a></section>
+      <section class="panel tll-start" aria-labelledby="start-heading"><h2 id="start-heading">Første gang her?</h2><p>Start med «${esc(forsteTema.tittel)}». Les eller lytt til forklaringen, og prøv oppgavene etterpå. Har læreren gitt deg et annet tema, velger du det nedenfor.</p><a class="tll-action" href="#/${forsteTema.id}">Start med ${temaNavn(forsteTema)} →</a></section>
       <div class="section-h"><h2>Velg tema</h2><span class="muted small">${alle.d} av ${alle.n} aktiviteter gjort på nivået du har valgt</span></div>
       <div class="phase-steps" style="margin:-4px 0 14px">${FASER.map(f => `<span>${f.navn.toUpperCase()}</span>`).join('')}</div>
       <div class="grid">${K.temaer.map(t => { const p = temaProg(t); return `
@@ -670,7 +671,10 @@ function bootKapittel(){
   }
 
   function pageTema(t){
-    header(`<a href="#/">${KN}</a> <span>›</span> <span>${t.lok}</span>`, esc(t.tittel), esc(t.kort), false);
+    header(`<a href="#/">${KN}</a> <span>›</span> <span>${esc(t.lok)}</span>`, temaNavn(t), esc(t.kort), false);
+    const index = K.temaer.indexOf(t);
+    const forrige = K.temaer[index - 1];
+    const neste = K.temaer[index + 1];
     const acts = t.aktiviteter.filter(visible);
     const phaseHead = f => `<div class="phase-h"><span class="pn" aria-hidden="true">${f.nr}<small>${f.ikon}</small></span><div><h2>${f.navn}</h2><p>${esc(f.tekst)}</p></div></div>`;
     const cards = f => { const list = acts.filter(a => faseAv(a) === f.id);
@@ -693,8 +697,12 @@ function bootKapittel(){
       </section>
       ${FASER.slice(1).map(f => `<section class="phase" id="${f.id}">${phaseHead(f)}${cards(f)}</section>`).join('')}
       <p class="muted small" style="margin-top:18px">${NIVA[store.lvl]} · ${acts.length} aktiviteter. Begrepskort og Voks gjelder alle nivåer.</p>
-      <p style="margin-top:22px"><a href="#/">← Tilbake til alle tema</a></p>`;
-    const nr = K.temaer.indexOf(t) + 1;
+      <nav class="row" aria-label="Naviger mellom temaer" style="margin-top:22px">
+        ${forrige ? `<a class="btn ghost" href="#/${forrige.id}">← Forrige tema: ${temaNavn(forrige)}</a>` : ''}
+        <a class="btn ghost" href="#/">Tilbake til alle tema</a>
+        ${neste ? `<a class="btn ghost" href="#/${neste.id}">Neste tema: ${temaNavn(neste)} →</a>` : ''}
+      </nav>`;
+    const nr = index + 1;
     findEpisode(nr, src => { const el = $('#pod'); if (!el) return; el.hidden = false; el.innerHTML = podPlayer(nr, t, src); wirePlayer(el); });
   }
   function actCard(t,a){
