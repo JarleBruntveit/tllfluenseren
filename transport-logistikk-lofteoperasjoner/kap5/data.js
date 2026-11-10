@@ -134,6 +134,7 @@ TLL.registrer({
     { kode: 'TOL02-01 · KV427', tekst: 'sikre last etter gjeldende forskrifter' },
     { kode: 'TOL02-01 · KV427', tekst: 'bruke ulike metoder og utstyr for å utføre sikre laste-, losse- og løfteoperasjoner' }
   ],
+  visKapittelkilder: true,
   ressurser: {
     // KUN egenprodusert materiell her (f.eks. egne lysark). IKKE last opp forlagets presentasjon eller PDF-er.
     presentasjon: '',
