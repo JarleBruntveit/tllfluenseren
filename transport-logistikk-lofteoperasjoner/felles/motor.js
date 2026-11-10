@@ -617,13 +617,14 @@ function bootKapittel(){
   function pageHome(){
     header(`<span>${esc(K.kortnavn || 'Kapittel ' + K.nr)}</span>`, K.kortnavn ? esc(K.tittel) : `Kap ${K.nr} · ${esc(K.tittel)}`, esc(K.ingress), true);
     const r = K.ressurser;
+    const forsteTema = K.temaer[0];
     const alle = K.temaer.reduce((s,t) => { const p = temaProg(t); return { d: s.d + p.done, n: s.n + p.total }; }, { d: 0, n: 0 });
     app.innerHTML = `
       <div class="note ${store.saveText ? 'warn' : ''}" style="margin-top:4px"><span aria-hidden="true">${store.saveText ? '💾' : '🔒'}</span><span>
         <b>Lagring på denne PC-en:</b> Resultatene dine lagres bare i denne nettleseren. Læreren ser dem når du leverer en <a href="#/rapport">fremdriftsrapport</a> i Teams.
         ${store.saveText ? 'Det du skriver i skriveoppgavene lagres også her – andre som bruker PC-en kan se det.' : 'Det du skriver i skriveoppgavene lagres ikke.'}
         <a href="#/lagring">Innstillinger og sletting</a></span></div>
-      <section class="panel tll-start" aria-labelledby="start-heading"><h2 id="start-heading">Første gang her?</h2><p>Start med «${esc(K.temaer[0].tittel)}». Les eller lytt til forklaringen, og prøv oppgavene etterpå. Har læreren gitt deg et annet tema, velger du det nedenfor.</p><a class="tll-action" href="#/${K.temaer[0].id}">Start med ${esc(K.temaer[0].tittel)} →</a></section>
+      <section class="panel tll-start" aria-labelledby="start-heading"><h2 id="start-heading">Første gang her?</h2><p>Start med «${esc(forsteTema.tittel)}». Les eller lytt til forklaringen, og prøv oppgavene etterpå. Har læreren gitt deg et annet tema, velger du det nedenfor.</p><a class="tll-action" href="#/${forsteTema.id}">Start med ${esc(forsteTema.lok)} – ${esc(forsteTema.tittel)} →</a></section>
       <div class="section-h"><h2>Velg tema</h2><span class="muted small">${alle.d} av ${alle.n} aktiviteter gjort på nivået du har valgt</span></div>
       <div class="phase-steps" style="margin:-4px 0 14px">${FASER.map(f => `<span>${f.navn.toUpperCase()}</span>`).join('')}</div>
       <div class="grid">${K.temaer.map(t => { const p = temaProg(t); return `
