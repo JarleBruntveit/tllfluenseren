@@ -355,9 +355,9 @@ class Lager extends Building {
 
     this.labels.mottak = makeLabel(this.root, '1 Varemottak og kontroll', -13, 3.2, 7.3, 'zone');
     this.labels.innlagring = makeLabel(this.root, '2 Innrydding på lokasjon', -13.6, 6.2, -4.5, 'zone');
-    this.labels.lagring = makeLabel(this.root, '3 Lagring i pallereoler', 0, 6.6, -6, 'zone');
+    this.labels.lagring = makeLabel(this.root, '3 Lagring: plukklager nede, volumlager i høyden', 0, 6.6, -6, 'zone');
     this.labels.plukk = makeLabel(this.root, '4 Ordre og plukk', 13.6, 6.2, -4.5, 'zone');
-    this.labels.pakk = makeLabel(this.root, '5 Sammenstilling og emballering', 13, 3.2, 7.3, 'zone');
+    this.labels.pakk = makeLabel(this.root, '5 Sammenstilling og oppstilling for transport', 13, 3.2, 7.3, 'zone');
     this.labels.utlevering = makeLabel(this.root, '6 Utlevering', 13, 3.0, 17, 'zone');
     this.title = makeLabel(this.root, 'LAGER', 0, 9.5, -13, 'bigTitle');
 
@@ -477,10 +477,10 @@ class Lager extends Building {
    sortert etter destinasjon, ut på motsatt side. Ingen reoler.
    ===================================================================== */
 const DEST = [
-  { name: 'Rute Sandnes', color: 0xe8742c },
-  { name: 'Rute Egersund', color: 0x4f8fd6 },
-  { name: 'Rute Haugesund', color: 0x8cd6ae },
-  { name: 'Sentralterminal', color: 0xc77dd8 },
+  { name: 'Lokal: sone Stavanger', truck: 'Distribusjon Stavanger', color: 0xe8742c },
+  { name: 'Lokal: sone Sandnes', truck: 'Distribusjon Sandnes', color: 0xf2c94c },
+  { name: 'Regional rute: Egersund', truck: 'Rute Egersund', color: 0x8cd6ae },
+  { name: 'Andre regioner: sentralterminal', truck: 'Skapbil til sentralterminal', color: 0xc77dd8 },
 ];
 class Terminal extends Building {
   constructor() {
@@ -500,10 +500,10 @@ class Terminal extends Building {
     });
     this.labels.ankomst = makeLabel(this.root, '1 Ankomst', 0, 3.0, -16, 'zone');
     this.labels.lossing = makeLabel(this.root, '2 Lossing + skanning', 0, 3.0, -6.6, 'zone');
-    this.labels.sortering = makeLabel(this.root, '3 Sortering (crossdocking)', 0, 4.8, -1.5, 'zone');
+    this.labels.sortering = makeLabel(this.root, '3 Sortering: lokal · regional · andre regioner', 0, 4.8, -1.5, 'zone');
     this.labels.buffer = makeLabel(this.root, '4 Kort oppstilling i sone', -11, 3.6, 3.4, 'zone');
-    this.labels.lasting = makeLabel(this.root, '5 Lasting etter LIFO', 11, 3.6, 7.5, 'zone');
-    this.labels.avgang = makeLabel(this.root, '6 Avgang', 0, 3.0, 17, 'zone');
+    this.labels.lasting = makeLabel(this.root, '5 Lasting (LIFO)', 11, 3.6, 7.5, 'zone');
+    this.labels.avgang = makeLabel(this.root, '6 Avgang i terminalnettet', 0, 3.0, 17, 'zone');
     this.title = makeLabel(this.root, 'TERMINAL', 0, 9.5, -9.5, 'bigTitle');
 
     const h = (x, z) => new THREE.Vector3(x, 0, z);
@@ -538,7 +538,7 @@ class Terminal extends Building {
       if (!this.outTrucksByDest[i]) {
         this.outTimers[i] -= dt;
         if (this.outTimers[i] <= 0) {
-          const t = this.dockTruck(this.outDoors[i], this.D / 2, 1, d.color, d.name, []);
+          const t = this.dockTruck(this.outDoors[i], this.D / 2, 1, d.color, d.truck, []);
           t.dir = 'out'; t.dest = i; t.cap = 4; t.dockedAt = null;
           this.outTrucksByDest[i] = t; this.outTimers[i] = 3;
         }
@@ -640,42 +640,42 @@ const STEPS = {
   lager: [
     { key: 'mottak', title: 'Varemottak og kontroll', at: [-13, 0, 8], bok: 'Læreboka 1.3, s. 20–22',
       ndla: [['Kontroll av kjøpsavtale', 'kontroll-av-kjopsavtale/f0d37941ee'], ['Kontroll av transportavtale', 'kontroll-av-transportavtale/43f859d552']],
-      text: 'Bilen rygger inn til porten, og varene losses til varemottaket. Her gjøres tre kontroller: <b>kjøpsavtalen</b> (krysse varene kolli for kolli mot pakkseddelen), <b>fraktavtalen</b> (skader og manko noteres i fraktbrevet) og <b>pallene</b>. Finner du feil, skrives en avviksrapport før varene ryddes inn.' },
+      text: 'Bilen rygger inn til porten, og varene losses i varemottaket. Her kontrollerer du tre ting: <b>kjøpsavtalen</b> (kryss av varene kolli for kolli mot pakkseddel eller faktura), <b>transportavtalen</b> (synlige skader og vekta på skadd eller tapt gods skrives i fraktbrevets merknadsrubrikk og signeres – helst også av sjåføren) og <b>pallene</b>. Ødelagt emballasje betyr ekstra grundig kontroll.' },
     { key: 'innlagring', title: 'Vareplassering og innrydding', at: [-11, 0, -4], bok: 'Læreboka 1.3, s. 22–24',
       ndla: [['Plassering av varer', 'plassering-av-varer/0d2fb4ec5d'], ['Innrydding av varer på lokasjon', 'innrydding-av-varer-pa-lokasjon/dba26dc4b2']],
-      text: 'Kontrollerte varer ryddes inn på en <b>lokasjon</b> (lageradresse) i reolen. Lagerstyringssystemet registrerer hvor hver pall står. En pall på feil plass gir leting og feilplukk – ofte for noen andre enn den som satte den der.' },
-    { key: 'lagring', title: 'Lagring', at: [0, 0, -5], bok: 'Læreboka 1.1 og 1.3',
+      text: 'Lagerstyringssystemet finner en ledig <b>lageradresse (lokasjon)</b> i riktig lagersone (frys, kjøl, sval eller tørr). Hver lokasjon har sin egen strekkode. Du skanner lokasjonen og pallen, så lagersaldoen alltid stemmer.' },
+    { key: 'lagring', title: 'Lagring', at: [0, 0, -5], bok: 'Læreboka 1.3, s. 12–13, 19 og 23–25',
       ndla: [['Hva er lagerstyring?', 'hva-er-lagerstyring/e0fce0eef4'], ['Bestillingspunkt og sikkerhetslager', 'bestillingspunkt-og-sikkerhetslager/9dd06bee36']],
-      text: 'Et lager <b>oppbevarer varer en periode</b> mellom selger og kjøper og gjør dem tilgjengelige for kundene. Lageret er også en buffer mot forsinket levering, økt salg og feil i lagersaldoen. Varene kan stå i uker og måneder.' },
-    { key: 'plukk', title: 'Ordre og plukk', at: [11, 0, -4], bok: 'Læreboka 1.3, s. 16–18 og 25–27',
+      text: 'Et lager er et areal for <b>oppbevaring av varer over kortere eller lengre tid</b>. <b>Plukklageret</b> ligger i golvplan, <b>volumlageret</b> i høyden (også kalt høydelager, støtlager eller overstock). Når en plukkplass blir tom, løftes en full pall ned fra volumlageret. Når saldoen når <b>bestillingspunktet</b>, foreslår systemet en ny innkjøpsordre.' },
+    { key: 'plukk', title: 'Ordre og plukk', at: [11, 0, -4], bok: 'Læreboka 1.3, s. 24–26',
       ndla: [['Mottak av kundeordrer og klargjøring for plukk', 'mottak-av-kundeordrer-bekreftelse-og-klargjoring-for-plukk/92fe8ade29']],
-      text: 'Når kundeordren kommer, plukkes varene fra lokasjonene. I animasjonen plukkes den eldste pallen først – <b>FIFO</b> (først inn, først ut).' },
-    { key: 'pakk', title: 'Sammenstilling og emballering', at: [13, 0, 8], bok: 'Læreboka 1.3, s. 25–27',
+      text: 'Kundeordren splittes i plukklister per lagersone, sortert slik at du plukker langs korteste rute. Varer uten holdbarhetsdato plukkes etter <b>FIFO</b> (først inn, først ut) – slik som i animasjonen. Holdbarhetsvarer plukkes etter <b>holdbarhetsdato</b>. A-varer som plukkes ofte, står nærmest oppstillingsområdet.' },
+    { key: 'pakk', title: 'Sammenstilling, emballering og merking', at: [13, 0, 8], bok: 'Læreboka 1.3, s. 18 og 26–27',
       ndla: [['Plukk, sammenstilling, emballering og oppstilling for transport', 'plukk-sammenstilling-emballering-og-oppstilling-for-transport/a5e684dcfc']],
-      text: 'Ordren settes sammen, kontrolleres, emballeres og merkes. Så stilles den opp klar for transport.' },
-    { key: 'utlevering', title: 'Utlevering', at: [13, 0, 14], bok: 'Læreboka 1.3',
+      text: 'Delordrene samles på en kundepall med tunge varer nederst og lette som topplast. Pallen emballeres med strekkfilm, merkes med kundens navn og adresse og settes på <b>oppstillingsområdet for transport</b>.' },
+    { key: 'utlevering', title: 'Utlevering', at: [13, 0, 14], bok: 'Læreboka 1.3, s. 18',
       ndla: [['Innkjøp og distribusjon av varer', 'innkjop-og-distribusjon-av-varer/2638662d26']],
-      text: 'Varene lastes på bilen til kunden. Når varene forlater lageret med en fraktfører, er de <b>gods</b> under transport.' },
+      text: 'Når alle ordrene på samme kjørerute er ferdigplukket, lastes de etter <b>LIFO</b> (sist inn, først ut). Sjåføren sikrer lasten, og kunden kvitterer ved levering. Nå er varene <b>gods</b> under transport.' },
   ],
   terminal: [
-    { key: 'ankomst', title: 'Ankomst', at: [0, 0, -14], bok: 'Læreboka 1.4, s. 27–31',
+    { key: 'ankomst', title: 'Ankomst', at: [0, 0, -14], bok: 'Læreboka 1.4, s. 27 og 30–31',
       ndla: [['Hva er en terminal?', 'hva-er-en-terminal/04f1384e9b'], ['Terminaler', 'terminaler/6a8f025da7']],
-      text: 'Bilene leverer <b>gods</b> fra mange avsendere. Dette er samlastgods: mange små sendinger som skal til ulike mottakere. Godset skal stå kortest mulig på terminalen.' },
-    { key: 'lossing', title: 'Lossing og skanning', at: [0, 0, -6], bok: 'Læreboka 1.4, s. 28–29',
+      text: 'En <b>godsterminal</b> er et anlegg for sortering av gods på veg fra avsendere til mottakere. På en samlastterminal er godset mange mindre kolli fra mange avsendere til mange mottakere. Ved mottak har terminalen <b>undersøkelsesplikt</b>: godset og opplysningene i fraktbrevet skal sjekkes.' },
+    { key: 'lossing', title: 'Lossing og skanning', at: [0, 0, -6], bok: 'Læreboka 1.4, s. 32',
       ndla: [['Hva skjer på en pakketerminal?', 'hva-skjer-pa-en-pakketerminal/d57c6a6094']],
-      text: 'Godset losses og <b>skannes på hver terminal</b>, så sporingen oppdateres. Strekkoden er kolliets stemme: blir den revet eller skitten, stopper flyten.' },
-    { key: 'sortering', title: 'Sortering', at: [0, 0, 0], bok: 'Læreboka 1.4, s. 28–29 og 32–36',
+      text: 'Godset losses, og <b>alt blir skannet</b>, slik at sporingsinformasjonen blir oppdatert. Det skjer på nytt på hver terminal godset er innom. Strekkoden og mottakerens postnummer må derfor ikke bli skadd.' },
+    { key: 'sortering', title: 'Sortering', at: [0, 0, 0], bok: 'Læreboka 1.4, s. 32–34 (figur 1.18–1.19)',
       ndla: [['Logistikkløsninger (film fra Postens terminal)', 'logistikklosninger/a12f0becba']],
-      text: 'Hver pall kjøres rett til sonen for sin <b>distribusjonsrute</b> eller videre terminal (fargene). Godset får ingen lokasjon og går rett videre – det kalles <b>crossdocking</b>.' },
-    { key: 'buffer', title: 'Kort oppstilling i sone', at: [-11, 0, 3], bok: 'Læreboka 1.4',
+      text: 'Godset sorteres i tre grupper (fargene): <b>lokalgods</b> på distribusjonssoner i nærområdet, gods på <b>regionale distribusjonsruter</b> og gods til <b>andre regioner</b>, som går til sentralterminalen. Godset får ingen lokasjon og går rett videre.' },
+    { key: 'buffer', title: 'Kort oppstilling i sone', at: [-11, 0, 3], bok: 'Læreboka 1.1 og 1.4',
       ndla: [['Terminaler', 'terminaler/6a8f025da7']],
-      text: 'Godset står bare til bilen på riktig rute er klar. Det skal ikke oppbevares – derfor finnes det ingen reoler her.' },
-    { key: 'lasting', title: 'Lasting etter LIFO', at: [11, 0, 6], bok: 'Læreboka 1.4',
+      text: 'Terminalen skal sortere godset og sende det videre <b>så snart som mulig</b>. Godset står bare til bilen på riktig rute er klar – derfor finnes det ingen reoler her.' },
+    { key: 'lasting', title: 'Lasting', at: [11, 0, 6], bok: 'Læreboka 1.3, s. 18 og 1.4, s. 32',
       ndla: [['Logistikk på vei', 'logistikk-pa-vei/7cc06dd6cc']],
-      text: 'Bilen lastes etter <b>LIFO</b>: det som skal leveres sist, lastes inn først. Feil rekkefølge gir mye flytting av paller ute hos kundene. Sjåføren sikrer lasten før avgang.' },
-    { key: 'avgang', title: 'Avgang', at: [0, 0, 15], bok: 'Læreboka 1.4, s. 28–29',
+      text: 'Distribusjonsbilene lastes etter <b>LIFO</b>, slik som på lageret: det som skal leveres sist, lastes inn først. Gods til andre regioner lastes i konteinere eller skapbiler til sentralterminalen.' },
+    { key: 'avgang', title: 'Avgang og terminalnett', at: [0, 0, 15], bok: 'Læreboka 1.4, s. 28–29',
       ndla: [['Hva er en terminal?', 'hva-er-en-terminal/04f1384e9b']],
-      text: 'Distribusjonsbilene kjører ut på rutene sine. Gods til en annen region går med linjebil til <b>sentralterminalen</b> og videre til mottakerterminalen. De fleste kolli er innom tre terminaler: avsender-, sentral- og mottakerterminal.' },
+      text: 'De fleste kolli er innom tre terminaler: <b>avsenderterminal</b>, <b>sentralterminal</b> (i Osloområdet) og <b>mottakerterminal</b>. Lokalgods er innom bare én. På sentralterminalen sorterer automatiske anlegg pakkene etter mottakerens postnummer.' },
   ],
 };
 let stepState = { lager: -1, terminal: -1 };

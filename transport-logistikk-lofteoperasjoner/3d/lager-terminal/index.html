@@ -90,7 +90,7 @@
 <section class="intro">
   <div class="kicker">Kapittel 1 · Lær · 3D</div>
   <h1>Lager eller terminal?</h1>
-  <p>Et <b>lager</b> oppbevarer varer en periode mellom selger og kjøper. En <b>godsterminal</b> tar imot gods, sorterer det og sender det videre så raskt som mulig. Se de to byggene side om side, følg pallene og finn forskjellene.</p>
+  <p>Et <b>lager</b> er et areal for oppbevaring av varer over kortere eller lengre tid. En <b>godsterminal</b> tar imot gods, sorterer det og sender det videre så raskt som mulig. Se de to byggene side om side, følg pallene og finn forskjellene.</p>
 </section>
 
 <div class="toolbar" role="group" aria-label="Visning">
@@ -102,7 +102,7 @@
   <label class="speed">Fart <input id="speed" type="range" min="0.5" max="4" step="0.5" value="1"> <output id="speedOut">1×</output></label>
 </div>
 
-<div class="viewer" id="scene" role="img" aria-label="3D-animasjon. Til venstre et lager med høye pallereoler der paller blir stående lenge. Til høyre en godsterminal uten reoler der paller sorteres i fargede soner for hver distribusjonsrute og lastes rett over i bilene på motsatt side.">
+<div class="viewer" id="scene" role="img" aria-label="3D-animasjon. Til venstre et lager med høye pallereoler der paller blir stående lenge. Til høyre en godsterminal uten reoler der paller sorteres i fargede soner for lokalgods, regional rute og gods til sentralterminalen, og lastes rett over i bilene på motsatt side.">
   <div class="clock" id="clock" aria-live="off">Dag 1</div>
   <div class="hint">Dra for å rotere · klyp/scroll for å zoome</div>
   <noscript><p class="noWebgl">Animasjonen trenger JavaScript.</p></noscript>
@@ -137,14 +137,14 @@
   <div class="tableWrap"><table class="cmp">
     <thead><tr><th scope="col"></th><th scope="col">Lager</th><th scope="col">Terminal</th></tr></thead>
     <tbody>
-      <tr><th scope="row">Hovedoppgave</th><td>Oppbevare <b>varer</b> en periode mellom selger og kjøper og gjøre dem tilgjengelige for kundene.</td><td>Ta imot <b>gods</b>, sortere det og sende det videre så raskt som mulig.</td></tr>
-      <tr><th scope="row">Vare eller gods?</th><td>Vare er kjøpslovens ord: noe som skal skifte eier fra selger til kjøper.</td><td>Gods er vegfraktlovens ord for varer under transport.</td></tr>
-      <tr><th scope="row">Hvor lenge står det?</th><td>En periode – ofte uker eller måneder. Lageret er en buffer mot forsinkelser, økt salg og feil saldo.</td><td>Kortest mulig – bare til bilen på riktig rute er klar.</td></tr>
-      <tr><th scope="row">Lokasjon</th><td>Hver pall ryddes inn på en lokasjon (lageradresse) i reolen.</td><td>Godset får ingen lokasjon og går rett videre (crossdocking). Det står i en sone for ruten sin.</td></tr>
-      <tr><th scope="row">Arbeidsprosess</th><td>Varemottak og kontroll → innrydding → lagring → ordre og plukk → sammenstilling og emballering → utlevering.</td><td>Ankomst → lossing og skanning → sortering → kort oppstilling → lasting etter LIFO → avgang.</td></tr>
-      <tr><th scope="row">Viktige prinsipper</th><td>FIFO ved plukk: først inn, først ut.</td><td>LIFO ved lasting: det som leveres sist, lastes inn først.</td></tr>
-      <tr><th scope="row">Kontroll</th><td>Tre kontroller i varemottaket: kjøpsavtalen, fraktavtalen og pallene. Avviksrapport før innrydding.</td><td>Godset skannes på hver terminal, så sporingen oppdateres.</td></tr>
-      <tr><th scope="row">Hva kan gå galt?</th><td>En pall på feil lokasjon gir leting og feilplukk.</td><td>En revet eller skitten strekkode stopper flyten.</td></tr>
+      <tr><th scope="row">Hovedoppgave</th><td>Oppbevare <b>varer</b> over kortere eller lengre tid. Lagrene mellomlagrer varer på veg fra produsenter (selgere) til brukere (kjøpere).</td><td>Ta imot <b>gods</b> fra hele verden, sortere det og sende det videre så snart som mulig.</td></tr>
+      <tr><th scope="row">Vare eller gods?</th><td>Vare er kjøpslovens begrep: eiendomsretten skal overføres fra selger til kjøper.</td><td>Gods er vegfraktlovens begrep om varer under transport.</td></tr>
+      <tr><th scope="row">Hvor lenge står det?</th><td>Kortere eller lengre tid. Bestillingspunkt og sikkerhetslager sørger for at lageret ikke går tomt.</td><td>Så kort som mulig – bare til bilen på riktig rute er klar.</td></tr>
+      <tr><th scope="row">Lokasjon</th><td>Hver vare får en lageradresse (lokasjon) i riktig lagersone. Plukklager i golvplan, volumlager i høyden.</td><td>Godset får ingen lokasjon. Det sorteres til en sone: lokal distribusjonssone, regional rute eller andre regioner.</td></tr>
+      <tr><th scope="row">Arbeidsprosess</th><td>Varemottak og kontroll → innrydding → lagring → ordre og plukk → sammenstilling, emballering og oppstilling → utlevering.</td><td>Ankomst og undersøkelse → lossing og skanning → sortering → kort oppstilling → lasting → avgang i terminalnettet.</td></tr>
+      <tr><th scope="row">Prinsipper</th><td>Innrydding og plukk etter FIFO, eller etter holdbarhetsdato for holdbarhetsvarer. Lasting etter LIFO.</td><td>Sortering etter mottakerens adresse og postnummer. Lasting etter LIFO.</td></tr>
+      <tr><th scope="row">Kontroll</th><td>Varemottak: kjøpsavtalen, transportavtalen og pallene. Skader og vekt på skadd gods skrives i fraktbrevets merknadsrubrikk.</td><td>Undersøkelsesplikt ved mottak. Alt gods skannes på hver terminal, så sporingen blir oppdatert.</td></tr>
+      <tr><th scope="row">Grenseområde</th><td>Svært høyfrekvente varer (for eksempel toalettpapir) kan krysse-dokkes på lageret: de får ingen lokasjon og går rett videre.</td><td>Crossdocking er hele poenget med en terminal.</td></tr>
     </tbody></tbody>
   </table></div>
 </section>
@@ -153,18 +153,18 @@
   <div class="kicker">Tenk</div>
   <h2 id="h-tenk">Sjekk deg selv</h2>
   <p style="color:var(--muted)">Se på animasjonen før du svarer. Trykk for å se et forslag til svar.</p>
-  <details class="q"><summary>1. Se på tallet «Snitt liggetid». Hvorfor er det så stor forskjell på lageret og terminalen?</summary><p>Lageret skal oppbevare varer til kunden trenger dem, så pallene står i reolen lenge. Terminalen skal bare sortere godset og sende det videre så raskt som mulig.</p></details>
-  <details class="q"><summary>2. Hvorfor har terminalen ingen reoler, og hvorfor får godset ingen lokasjon?</summary><p>Godset skal rett videre (crossdocking). Det ville tatt for lang tid å rydde det inn og plukke det ut igjen. Det holder at det står i sonen for riktig rute.</p></details>
-  <details class="q"><summary>3. Hvilke tre kontroller gjør du i varemottaket på lageret?</summary><p>Kjøpsavtalen (krysse varene mot pakkseddelen), fraktavtalen (skader og manko noteres i fraktbrevet) og pallene. Er noe galt, skriver du avviksrapport før varene ryddes inn.</p></details>
-  <details class="q"><summary>4. Hvorfor skannes godset på hver terminal?</summary><p>Da oppdateres sporingen, slik at avsender og mottaker kan se hvor sendingen er. Skanningen viser også hvilken rute godset skal sorteres til.</p></details>
-  <details class="q"><summary>5. Lageret plukker etter FIFO, terminalen laster etter LIFO. Forklar forskjellen.</summary><p>FIFO: det som kom inn først, går ut først – så varene ikke blir gamle på lageret. LIFO ved lasting: det som skal leveres sist, lastes inn først – så sjåføren slipper å flytte paller hos kundene.</p></details>
-  <details class="q"><summary>6. Ekspert: En pakke fra Egersund skal til Tromsø. Hvorfor går den innom flere terminaler?</summary><p>Den går fra avsenderterminalen til sentralterminalen og videre til mottakerterminalen i Tromsø. Der sorteres den til riktig distribusjonsrute. Ved å samle gods på sentralterminalen blir bilene fulle og transporten effektiv.</p></details>
+  <details class="q"><summary>1. Se på tallet «Snitt liggetid». Hvorfor er det så stor forskjell på lageret og terminalen?</summary><p>Lageret oppbevarer varer over kortere eller lengre tid, til kundene bestiller. Terminalen skal sortere godset og sende det videre så snart som mulig.</p></details>
+  <details class="q"><summary>2. Hvorfor har terminalen ingen reoler, og hvorfor får godset ingen lokasjon?</summary><p>Godset skal rett videre. Det holder å sortere det til riktig sone – lokal distribusjonssone, regional rute eller andre regioner – til bilen er klar.</p></details>
+  <details class="q"><summary>3. I et varemottak kontrollerer vi normalt flere forhold. Hvilke?</summary><p>Kjøpsavtalen (varene kolli for kolli mot pakkseddel eller faktura), transportavtalen (skader, vekt på skadd eller tapt gods og eventuelt ankomsttid ved tidsgaranti noteres i fraktbrevets merknadsrubrikk) og pallene.</p></details>
+  <details class="q"><summary>4. Hvorfor skannes godset på hver terminal?</summary><p>Da blir sporingsinformasjonen oppdatert hver gang. Skanningen viser også hvor godset skal sorteres.</p></details>
+  <details class="q"><summary>5. Når bruker vi FIFO, holdbarhetsdato og LIFO?</summary><p>FIFO: ved innrydding og plukk av varer uten holdbarhetsdato. Holdbarhetsdato: for holdbarhetsvarer, så de ikke går ut på dato. LIFO: når bilen lastes – det som skal leveres sist, lastes først – og ved krysse-dokking av høyfrekvente varer.</p></details>
+  <details class="q"><summary>6. Ekspert: En pakke fra Egersund skal til Tromsø. Hvilke terminaler er den innom, og hva skjer der?</summary><p>Avsenderterminalen (skanning, sortering til «andre regioner», konteiner til sentralterminalen), sentralterminalen i Osloområdet (skanning, automatisk sortering etter postnummer) og mottakerterminalen (skanning, sortering på distribusjonsrute og levering til mottaker).</p></details>
 </section>
 
 <section class="block" aria-labelledby="h-kilder">
   <div class="kicker">Les mer</div>
   <h2 id="h-kilder">Fagstoff</h2>
-  <p class="sources">Innholdet bygger på læreboka i Transport, logistikk og løfteoperasjoner Vg2, kapittel 1 (1.1, 1.3 og 1.4), og på NDLA. Tekstene er egenprodusert – ingenting er kopiert fra boka.<br>
+  <p class="sources">Innholdet bygger på læreboka i Transport, logistikk og løfteoperasjoner Vg2, kapittel 1 (1.1, 1.3 og 1.4, s. 9–37), og på NDLA. Tekstene er egenprodusert – ingenting er kopiert fra boka.<br>
   NDLA: <a href="https://ndla.no/nb/r/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/hva-er-en-terminal/04f1384e9b" target="_blank" rel="noopener">Hva er en terminal?</a> ·
   <a href="https://ndla.no/nb/r/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/hva-skjer-pa-en-pakketerminal/d57c6a6094" target="_blank" rel="noopener">Hva skjer på en pakketerminal?</a> ·
   <a href="https://ndla.no/nb/r/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/hva-er-lagerstyring/e0fce0eef4" target="_blank" rel="noopener">Hva er lagerstyring?</a> ·
