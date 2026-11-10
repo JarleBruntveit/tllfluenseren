@@ -27,8 +27,8 @@
   <div class="section-h"><h2>1. Les inn rapporter</h2></div>
   <div class="panel">
     <div class="drop" id="drop">
-      <p style="margin:0 0 10px"><b>Dra rapportfilene hit</b> (fremdrift-….json) – gjerne mange samtidig.</p>
-      <label class="btn ghost" style="display:inline-block">Velg filer <input type="file" id="files" accept=".json,application/json" multiple hidden></label>
+      <p style="margin:0 0 10px"><b>Dra rapportfilene hit</b> (PDF eller JSON) – gjerne mange samtidig.</p>
+      <label class="btn ghost" style="display:inline-block">Velg filer <input type="file" id="files" accept=".pdf,.json,application/pdf,application/json" multiple hidden></label>
     </div>
     <details style="margin-top:12px"><summary><b>Har eleven levert en tekstkode i stedet?</b></summary>
       <p class="small">Lim inn én eller flere koder som starter med «TLLRAPPORT:».</p>
@@ -37,7 +37,7 @@
     </details>
     <details style="margin-top:8px"><summary><b>Slik henter du filene fra Teams</b></summary>
       <ol class="steps-teams">
-        <li>Lag en oppgave i Teams der elevene skal levere fremdriftsrapporten (filen «fremdrift-navn-dato.json»).</li>
+        <li>Lag en oppgave i Teams der elevene skal levere fremdriftsrapporten (filen «fremdrift-navn-dato.pdf»).</li>
         <li>Åpne innleveringene. Elevfilene ligger også i klassens fillager (SharePoint/OneDrive) under mappen for elevarbeid.</li>
         <li>Last ned filene og dra dem inn i feltet over.</li>
       </ol>
@@ -69,7 +69,7 @@
 </main>
 <footer class="kapfot"><div class="wrap">Lærersiden behandler rapportene bare lokalt i nettleseren. Rapportene inneholder elevens navn, klasse, resultater og eventuelle tekster eleven har valgt å ta med. En kontrollsum viser om en rapportfil er endret etter at den ble laget.</div></footer>
 <script src="../felles/kapitler.js"></script>
-<script src="../felles/fremdrift.js"></script>
+<script src="../felles/fremdrift.js?v=rapport-pdf"></script>
 <script src="../felles/motor.js"></script>
 <script src="laerer.js"></script>
 </body>
