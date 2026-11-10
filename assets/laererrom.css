@@ -1,5 +1,5 @@
 /* Lærerrommet: egen, rolig blågrønn profil – TLL-logoen beholdes. */
-body.teacher-area{--teacher-bg:#0c1921;--teacher-panel:#142a34;--teacher-panel-2:#193541;--teacher-line:#31515c;--teacher-accent:#8ed7cc;background:radial-gradient(circle at 20% 0%,#173945,transparent 40%),var(--teacher-bg);color:#f1f7f7}
+body.teacher-area{--teacher-bg:#0c1921;--teacher-panel:#142a34;--teacher-panel-2:#193541;--teacher-line:#4e7581;--teacher-accent:#8ed7cc;background:#12303b;color:#f1f7f7}
 .teacher-shell{width:min(1120px,calc(100% - 32px));margin:0 auto}
 .teacher-header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px 0;border-bottom:1px solid var(--teacher-line)}
 .teacher-brand{display:flex;align-items:center;gap:12px;color:#f5f8f8;text-decoration:none;font-weight:900}
@@ -15,7 +15,7 @@ body.teacher-area{--teacher-bg:#0c1921;--teacher-panel:#142a34;--teacher-panel-2
 .teacher-category h2{font-size:clamp(24px,3vw,32px);margin:0 0 8px}
 .teacher-category>p{color:#c3d2d7;margin:0 0 18px}
 .teacher-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:16px}
-.teacher-card{border:1px solid var(--teacher-line);border-radius:18px;background:linear-gradient(180deg,var(--teacher-panel),var(--teacher-bg));padding:24px;min-width:0}
+.teacher-card{border:1px solid var(--teacher-line);border-radius:18px;background:#1c3c48;padding:24px;min-width:0}
 .teacher-card h3{font-size:22px;margin:10px 0 12px}
 .teacher-card p{color:#c3d2d7;line-height:1.55}
 .teacher-card a{color:var(--teacher-accent);font-weight:800}
@@ -26,3 +26,15 @@ body.teacher-area{--teacher-bg:#0c1921;--teacher-panel:#142a34;--teacher-panel-2
 .teacher-area .tll-site-nav a[aria-current="page"]{color:var(--teacher-accent)}
 @media(max-width:600px){.teacher-header{padding:14px 0}.teacher-intro{padding-top:28px}.teacher-grid{grid-template-columns:1fr}.teacher-card{padding:20px}}
 @media print{.teacher-header,.teacher-category,.teacher-intro{break-inside:avoid}body.teacher-area{background:#fff;color:#111}}
+
+/* Ensartet bakgrunn fra topp til bunn, uten mørk høyreside. */
+body.teacher-area{--teacher-bg:#12303b;--teacher-panel:#1c3c48;--teacher-panel-2:#244b58;--teacher-accent:#a5f0df;background:#12303b}
+.teacher-area .teacher-card{background:#1c3c48;border-color:#547b87;box-shadow:0 5px 16px rgba(0,0,0,.12)}
+.teacher-area .teacher-card:hover{background:#244b58;border-color:#8dc9c6}
+.teacher-area .teacher-note{background:#244b58;border-color:#a5f0df}
+.teacher-area .tll-global-footer{background:#1b3c48;border-top:2px solid #547b87;color:#edf8f8}
+.teacher-area .tll-global-footer p,.teacher-area .tll-footer-bottom{color:#d7e9ec}
+.teacher-area .tll-global-footer a{color:#b5f4e6}
+.teacher-area .tll-footer-bottom{border-color:#547b87}
+.teacher-area .teacher-category{border-bottom:1px solid #426571;padding-bottom:30px}
+.teacher-area .teacher-category:last-child{border-bottom:0}
