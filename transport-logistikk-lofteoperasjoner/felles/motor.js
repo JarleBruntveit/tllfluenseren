@@ -729,7 +729,7 @@ function bootKapittel(){
   function pageAct(t,a){
     header(`<a href="#/">${KN}</a> <span>›</span> <a href="#/${t.id}">${esc(t.tittel)}</a>`, esc(a.tittel), `${faseNavn(faseAv(a)).toUpperCase()} · ${TYPE[a.type]}${a.nivaa ? ' · ' + NIVA_KORT[a.nivaa] : ''}`, false);
     const idx = t.aktiviteter.filter(visible), pos = idx.indexOf(a), neste = idx[pos+1];
-    app.innerHTML = `${a.vis ? `<div class="stage"><div class="panel vis" style="margin-bottom:14px">${a.vis}</div></div>` : ''}<div class="stage" id="stage"></div><p class="stage row" style="margin-top:22px"><a href="#/${t.id}">← Tilbake til ${esc(t.tittel)}</a><span class="spacer"></span>${neste ? `<a href="#/${t.id}/${neste.id}">Neste: ${esc(neste.tittel)} →</a>` : ''}</p>`;
+    app.innerHTML = `${a.vis ? `<div class="stage"><div class="panel vis" style="margin-bottom:14px">${a.vis}</div></div>` : ''}<div class="stage" id="stage"></div><nav class="stage row activity-nav" aria-label="Naviger mellom aktiviteter"><a class="btn ghost activity-nav-back" href="#/${t.id}">← Tilbake til ${esc(t.tittel)}</a><span class="spacer"></span>${neste ? `<a class="btn yellow activity-nav-next" href="#/${t.id}/${neste.id}">Neste: ${esc(neste.tittel)} →</a>` : ''}</nav>`;
     RUN[a.type]($('#stage'), a, done(a.id), t);
   }
   function pageRapport(){
