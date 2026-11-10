@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.ico">
+<link rel="stylesheet" href="/assets/styles.css">
+<title>Vurderingspakke – lastsikring (kap. 5) | TLLfluenseren</title>
+<style>
+main{max-width:960px;margin:40px auto;padding:24px}
+p,li{line-height:1.6}
+.ark{border:1px solid #71818a;border-radius:14px;padding:22px 24px;margin:18px 0;background:#fff;color:#1b2128}
+.ark h2,.ark h3,.ark th,.ark td,.ark b,.ark summary{color:#1b2128}
+.ark h2{margin-top:0}
+.ark a{color:#0e6a79}
+table{border-collapse:collapse;width:100%;margin:10px 0 14px;font-size:15px}
+th,td{border:1px solid #9aa3ab;padding:8px 10px;text-align:left;vertical-align:top}
+th{background:rgba(242,184,75,.18)}
+td.fyll{height:30px;min-width:60px}
+.info{border-left:5px solid #14889b;background:#eef7f9;color:#1b2128;padding:12px 16px;border-radius:8px}
+.info b{color:#1b2128}
+.warn{border-left:5px solid #e07b00;background:#fff4e5;color:#1b2128;padding:12px 16px;border-radius:8px}
+.fase{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:#1b2128;color:#fff;border-radius:6px;padding:2px 8px;margin-right:6px;vertical-align:middle}
+.linjer{border-bottom:1px solid #9aa3ab;height:30px}
+a.btn,button.btn{display:inline-block;padding:12px 20px;background:#14889b;color:#fff;border:0;border-radius:8px;text-decoration:none;font:inherit;cursor:pointer}
+button.btn.sek{background:#3c4a56}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.toc{columns:2;column-gap:28px}
+.toc li{break-inside:avoid}
+.kortgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:14px}
+.kort{border:2px solid #1b2128;border-radius:12px;padding:16px 18px;background:#fff;color:#1b2128;break-inside:avoid}
+.kort h3{margin:0 0 6px}
+.kort .nr{font-weight:800;letter-spacing:.1em;color:#14889b}
+.trapp{list-style:none;padding:0;margin:10px 0 0}
+.trapp li{margin:6px 0;padding-left:0}
+.trapp b{display:inline-block;min-width:74px}
+details.fasit{margin-top:12px;border-top:1px dashed #9aa3ab;padding-top:8px}
+details.fasit summary{cursor:pointer;font-weight:700}
+#trekk{display:none;margin:16px 0}
+#trekk.vis{display:block}
+#trekk .kort{font-size:20px;border-width:3px}
+#trekk .kort h3{font-size:26px}
+.liten{font-size:14px;color:#4d5862}
+@media print{
+  .tll-site-nav,.tll-skip,.noprint,footer,.tll-global-footer,#trekk{display:none!important}
+  main{margin:0;padding:0;max-width:none}
+  .ark{border:0;padding:0;margin:0 0 10mm;page-break-after:always}
+  .ark:last-of-type{page-break-after:auto}
+  html,body{background:#fff!important;color:#000!important;font-size:11pt}
+  .kortgrid{display:block}
+  .kort{margin:0 0 6mm;page-break-inside:avoid}
+  body.print-elev .ark:not(.elev){display:none!important}
+  body.print-elev details.fasit{display:none!important}
+}
+</style>
+<link rel="stylesheet" href="/assets/global-footer.css"><script defer src="/assets/global-footer.js?v=mobile-nav-2"></script><link rel="stylesheet" href="/assets/elevflyt.css?v=mobile-nav-2">
+</head>
+<body>
+<a class="tll-skip" href="#tll-main">Hopp til innhold</a>
+<nav class="tll-site-nav tll-standalone-nav" aria-label="Hovedmeny"><a href="/">Forside</a><a href="/#fag">Fagområder</a><a href="/ressursbank/">Ressursbank</a><a href="/assistent/">TLL-assistenten</a><a href="/laererrom/" aria-current="page">Lærerrom</a><a href="/om/">Om</a></nav>
+<main id="tll-main" tabindex="-1">
+
+<div class="noprint">
+  <a href="/laererrom/">← Lærerrom</a>
+  <h1>Vurderingspakke – lastsikring (kap. 5)</h1>
+  <p>Praktisk-muntlig vurdering i én dobbeltøkt. Elevene roterer mellom tre stasjoner. På lærerstasjonen viser hver elev hva hen kan, og forklarer hvorfor, med spørsmålstrappen <i>hva – hvorfor – hva om</i>. De to andre stasjonene driver elevene selv. De gir skriftlig dokumentasjon og frigjør deg til lærerstasjonen.</p>
+  <p>Pakken bygger videre på <a href="/transport-logistikk-lofteoperasjoner/kap5/">kapittel 5 på TLLfluenseren</a> og <a href="/laererrom/lastsikring-case/">case-arkene</a>. Kjør den når klassen har jobbet med kapitlet og casene.</p>
+  <p class="info"><b>Åpen side.</b> Kriteriene og spørsmålene er ment å være kjent for elevene på forhånd. Det er en del av god vurdering. Stikkordfasiten ligger skjult under hvert kort, men fordi spørsmålene ber om begrunnelse og «hva om», hjelper det lite å pugge fasiten. <b>Skriv aldri elevnavn eller vurderinger inn på denne siden.</b> Bruk papirskjemaet eller skolens egne systemer (Teams/OneDrive, Forms).</p>
+  <div class="actions">
+    <button class="btn" type="button" onclick="skrivUt('alt')">Skriv ut hele lærerpakken (med fasit)</button>
+    <button class="btn sek" type="button" onclick="skrivUt('elev')">Skriv ut elevark (uten fasit)</button>
+    <button class="btn sek" type="button" onclick="trekkKort()">Trekk et kort til stasjon A</button>
+  </div>
+  <div id="trekk" aria-live="polite"></div>
+  <h2>Innhold</h2>
+  <ol class="toc">
+    <li><a href="#oversikt">Oversikt og kompetansemål</a></li>
+    <li><a href="#plan">Gjennomføringsplan (90 min)</a></li>
+    <li><a href="#forberedelser">Forberedelser, utstyr og HMS</a></li>
+    <li><a href="#stasjon-a">Stasjon A – Sikre og forklar (lærer)</a></li>
+    <li><a href="#stasjon-b">Stasjon B – Feilriggen</a></li>
+    <li><a href="#stasjon-c">Stasjon C – Utstyrskontroll</a></li>
+    <li><a href="#kriterier">Kjennetegn på måloppnåelse</a></li>
+    <li><a href="#skjema">Observasjonsskjema</a></li>
+    <li><a href="#samarbeid">Samarbeid (vurderes for seg)</a></li>
+    <li><a href="#tilpasning">Tilpasning</a></li>
+    <li><a href="#voks">Voks-sjekkliste for elevene</a></li>
+    <li><a href="#exit">Exit ticket og oppfølging</a></li>
+  </ol>
+</div>
+
+<!-- ============================================================ OVERSIKT -->
+<section class="ark" id="oversikt" aria-labelledby="h-oversikt">
+  <h2 id="h-oversikt">1. Oversikt</h2>
+  <table><tbody>
+    <tr><th style="width:28%">Tema</th><td>Sikring av last etter gjeldende forskrifter (kap. 5)</td></tr>
+    <tr><th>Varighet</th><td>2 × 45 min (én dobbeltøkt)</td></tr>
+    <tr><th>Elever</th><td>Ca. 15, i tre grupper à 5 som roterer. Inne i gruppene jobber elevene i par (eventuelt én trio).</td></tr>
+    <tr><th>Sted</th><td>Lager, verksted eller ved et kjøretøy/en henger med surringspunkter. Har du ikke lasteplan, kan du markere et «lasteplan» med teip på gulvet og bruke en vegg eller kraftige bukker som frontvegg.</td></tr>
+    <tr><th>Fase på TLLfluenseren</th><td><span class="fase">Voks</span> Elevene viser hva de kan, etter å ha jobbet med Lær, Øv og Tenk i kapitlet.</td></tr>
+  </tbody></table>
+
+  <h3>Kompetansemål (ordrett, TOL02-01, transport, logistikk og løfteoperasjoner)</h3>
+  <ul>
+    <li>sikre last etter gjeldende forskrifter</li>
+    <li>bruke ulike metoder og utstyr for å utføre sikre laste-, losse- og løfteoperasjoner</li>
+  </ul>
+  <p class="liten">Pakken støtter også de grunnleggende ferdighetene <i>muntlige ferdigheter</i> (bruke fagspråk, kommunisere risikovurderinger muntlig) og <i>å kunne regne</i> (bruke tekniske tabeller). Kilde: læreplanen TOL02-01 på udir.no.</p>
+
+  <h3>Læringsmål for økten (egne, elevvennlige)</h3>
+  <p>Etter økten kan jeg …</p>
+  <ol>
+    <li>… vise og forklare hvordan jeg sikrer en pall mot å gli og velte, og hvorfor metoden virker.</li>
+    <li>… forklare hvilke krefter lasten utsettes for, og hvor mye sikringen må tåle i hver retning.</li>
+    <li>… finne feil i en lastsikring og si hvordan de skal rettes.</li>
+    <li>… kontrollere et surrebånd og avgjøre om det kan brukes.</li>
+  </ol>
+
+  <h3>Hvordan aktivitetene henger sammen med kompetansemålene</h3>
+  <ul>
+    <li><b>Stasjon A</b> viser om eleven kan <i>sikre last</i> og forklare valgene med regelverk og krefter. Dette er hovedgrunnlaget.</li>
+    <li><b>Stasjon B</b> viser om eleven kan vurdere en sikring kritisk, altså forstå regelverket godt nok til å se når det ikke er fulgt.</li>
+    <li><b>Stasjon C</b> dekker <i>utstyr</i>: kontroll av surrebånd før bruk.</li>
+  </ul>
+</section>
+
+<!-- ============================================================ PLAN -->
+<section class="ark" id="plan" aria-labelledby="h-plan">
+  <h2 id="h-plan">2. Gjennomføringsplan (90 min)</h2>
+  <table>
+    <thead><tr><th style="width:11%">Tid</th><th style="width:20%">Aktivitet</th><th>Lærerens oppgave</th><th>Elevenes oppgave</th><th style="width:20%">Sjekk av læring</th></tr></thead>
+    <tbody>
+      <tr><td>0–10</td><td>Oppstart</td><td>Gå kort gjennom stasjonene, kriteriene (vis tabellen i del 7) og HMS-reglene. Del inn i tre grupper og par.</td><td>Ta på verneutstyr. Les Voks-sjekklisten og kryss av hvor trygg du er nå.</td><td>Sjekklisten viser hvem som er usikre før start.</td></tr>
+      <tr><td>10–35</td><td>Runde 1</td><td>Gruppe 1 på stasjon A: ca. 5 min per elev (ett kort + spørsmålstrappen). Fyll ut observasjonsskjemaet fortløpende.</td><td>Gruppe 2 på B, gruppe 3 på C. Makkerroller etter instruksen på arkene.</td><td>Observasjonsskjema (A), arbeidsark (B og C).</td></tr>
+      <tr><td>35–60</td><td>Runde 2</td><td>Gruppe 2 på A.</td><td>Gruppe 3 på B, gruppe 1 på C.</td><td>Som over.</td></tr>
+      <tr><td>60–85</td><td>Runde 3</td><td>Gruppe 3 på A.</td><td>Gruppe 1 på B, gruppe 2 på C.</td><td>Som over.</td></tr>
+      <tr><td>85–90</td><td>Avslutning</td><td>Samle inn arbeidsark. Ta bort feilriggen.</td><td>Exit ticket (tre spørsmål, del 12).</td><td>Exit ticket for hver elev.</td></tr>
+    </tbody>
+  </table>
+  <p class="liten">Bytt ved signal. Elever som venter på tur på stasjon A, er kontrollør for makkeren (se instruksen ved kortene). De hører spørsmålene, så gi makkeren et annet kort.</p>
+</section>
+
+<!-- ============================================================ FORBEREDELSER -->
+<section class="ark" id="forberedelser" aria-labelledby="h-forb">
+  <h2 id="h-forb">3. Forberedelser, utstyr og HMS</h2>
+  <h3>Dagen før</h3>
+  <ul>
+    <li>Skriv ut kortene til stasjon A (ett sett), arbeidsark B og C (ett per par), observasjonsskjemaet og exit tickets.</li>
+    <li>Rigg <b>feilriggen</b> til stasjon B (se fasit i del 5). Merk den med «Ikke rør – kun se».</li>
+    <li>Klargjør fem nummererte surrebånd til stasjon C (se fasit i del 6). Merk de defekte med en skjult lapp på undersiden, slik at de aldri havner i vanlig bruk etterpå.</li>
+    <li>Sett fram lasten med truck <b>før</b> økten. Elevene flytter ikke last med truck under vurderingen.</li>
+  </ul>
+  <h3>Utstyr</h3>
+  <ul>
+    <li>Stasjon A: 1–2 paller med kartonger (lett, maks ca. 300 kg), én høy og smal kolli (f.eks. tomt fat eller esker stablet høyt og filmet), 4–6 godkjente surrebånd, kantbeskyttere, friksjonsmatte, mellomlegg (tom pall eller luftpute), målebånd, en eske og en tralle til kort A6.</li>
+    <li>Stasjon B: én ferdig feilrigget pall eller kolli.</li>
+    <li>Stasjon C: fem surrebånd nummerert 1–5, lommelykt. Lastsikringsheftet eller nettbrett med <a href="/transport-logistikk-lofteoperasjoner/kap5/">kap. 5</a>.</li>
+    <li>Alle: vernesko, arbeidshansker, synlighetsvest. Kalkulator.</li>
+  </ul>
+  <h3>HMS-regler (les opp ved start)</h3>
+  <p class="warn"><b>1.</b> Ingen løfter alene over 25 kg. Bruk jekketralle eller vær to. <b>2.</b> Stå aldri i linje med en stropp som strammes eller løses. Hold hånden på håndtaket når du slakker strammeren. <b>3.</b> På stasjon B og C ser og kjenner du, men du strammer eller løsner ingenting. <b>4.</b> Defekt utstyr legges i kassen merket «Kassert», ikke tilbake i utstyrskassen. <b>5.</b> Ingen klatrer opp på lasteplanet uten at læreren er der.</p>
+</section>
+
+<!-- ============================================================ STASJON A -->
+<section class="ark elev" id="stasjon-a" aria-labelledby="h-a">
+  <h2 id="h-a">4. Stasjon A – Sikre og forklar <span class="fase">Voks</span></h2>
+  <p><b>Til eleven:</b> Du trekker et kort. Først <b>viser</b> du (ca. 2 min). Så svarer du på tre spørsmål fra læreren. Du kan bruke lastsikringsheftet. Det er <b>forklaringen</b> som avgjør nivået, ikke bare om sikringen ser riktig ut.</p>
+  <p><b>Makkerroller:</b> <i>Utfører</i> gjør og forklarer. <i>Kontrollør</i> hjelper med å holde og stramme, og sier fra hvis noe er utrygt. Kontrolløren får ikke hjelpe med svarene. Bytt rolle og kort.</p>
+  <p class="liten noprint">Læreren stiller spørsmålene i rekkefølge. <b>Hva</b> viser grunnleggende nivå, <b>hvorfor</b> viser forståelse, og <b>hva om</b> viser overføring til nye situasjoner. Still gjerne oppfølgingsspørsmål som «Kan du vise meg?» eller «Hvordan vet du det?».</p>
+
+  <div class="kortgrid" id="kortene">
+
+    <div class="kort" data-kort="1">
+      <span class="nr">KORT A1</span>
+      <h3>Pall midt på planet</h3>
+      <p>En pall med kartonger står midt på lasteplanet. Den står ikke inntil frontveggen. Sikre den med overfallssurring.</p>
+      <ul class="trapp">
+        <li><b>Hva:</b> Vis hvordan du legger og strammer surringen. Hva sjekker du før du er ferdig?</li>
+        <li><b>Hvorfor:</b> Overfallssurringen holder ikke pallen fast i en bestemt retning. Hvordan kan den likevel hindre at pallen glir?</li>
+        <li><b>Hva om:</b> Det er en glatt plastpall på et vått stålgolv. Hva betyr det for sikringen, og hva gjør du?</li>
+      </ul>
+      <details class="fasit"><summary>Lærerfasit</summary>
+        <ul>
+          <li>Hva: stroppen over lasten, så loddrett som mulig, festet i godkjente surringspunkter. Kantbeskyttere på skarpe kanter, ingen vridning. Strammet til, strammeren låst, løse ender festet. Nevner etterstramming.</li>
+          <li>Hvorfor: stroppen presser lasten ned mot planet. Da øker friksjonen, og den holder igjen lasten. Forstår eleven at friksjonen er det som sikrer, er det middels til høy forståelse. Kobler eleven det til forspenningen (S<sub>TF</sub>) på merkelappen, er det høy.</li>
+          <li>Hva om: lavere friksjon, så hver surring holder mindre og det trengs flere. Bedre løsninger er friksjonsmatte under pallen, blokkering mot frontvegg/karm, eller en annen metode som loop- eller grimesurring. Høy: sammenligner løsningene og velger med begrunnelse.</li>
+        </ul>
+      </details>
+    </div>
+
+    <div class="kort" data-kort="2">
+      <span class="nr">KORT A2</span>
+      <h3>Blokkering</h3>
+      <p>Du skal laste to paller slik at de er sikret mot å forskyve seg framover. Det er luft mellom pallene og sidekarmen.</p>
+      <ul class="trapp">
+        <li><b>Hva:</b> Vis hvor du plasserer pallene. Hva er blokkering?</li>
+        <li><b>Hvorfor:</b> Forskriften krever mer sikring framover enn bakover og sidevegs. Hvorfor?</li>
+        <li><b>Hva om:</b> Det er ca. 30 cm luft mellom lasten og sidekarmen. Er det et problem? Hva gjør du?</li>
+      </ul>
+      <details class="fasit"><summary>Lærerfasit</summary>
+        <ul>
+          <li>Hva: tett inntil frontveggen. Blokkering betyr at lasten står helt inntil noe fast som hindrer at den flytter seg (frontvegg, karm, stake, sperrebom, mellomlegg).</li>
+          <li>Hvorfor: ved bråbremsing presses lasten framover. Det er den største kraften i vanlig kjøring. Kravet er 0,8 × lastens vekt framover og 0,5 × vekten sidevegs og bakover (forskrift om bruk av kjøretøy § 3-3, for tunge kjøretøy). Høy: forklarer treghet (lasten vil fortsette i samme fart) og kobler det til tallene.</li>
+          <li>Hva om: ja. Luften lar lasten få fart før den treffer karmen. Fyll luften med mellomlegg (tom pall, luftpute, klosser) eller surr i tillegg. Boka bruker ca. 15 cm som grense for luft sidevegs. Høy: forklarer hvorfor luft gir et hardere støt.</li>
+        </ul>
+      </details>
+    </div>
+
+    <div class="kort" data-kort="3">
+      <span class="nr">KORT A3</span>
+      <h3>Lasten har satt seg</h3>
+      <p>Du har kjørt de første kilometerne med en surret last og stopper for å kontrollere.</p>
+      <ul class="trapp">
+        <li><b>Hva:</b> Vis hva du kontrollerer, og hvordan du etterstrammer. Hva gjør du med de løse endene?</li>
+        <li><b>Hvorfor:</b> Hvorfor kan en surring som var stram ved avreise, være slakk nå?</li>
+        <li><b>Hva om:</b> Du lar være å etterstramme. Hva kan skje ved en bråbremsing?</li>
+      </ul>
+      <details class="fasit"><summary>Lærerfasit</summary>
+        <ul>
+          <li>Hva: går rundt hele lasten og kjenner på hver surring, ser etter forskyvning og kantbeskyttere som har falt av. Strammer, låser strammeren og fester løse ender så de ikke kan slå eller henge ut over siden.</li>
+          <li>Hvorfor: lasten setter seg (kartong og emballasje gir etter), og surrebåndet strekker seg under belastning. Da forsvinner noe av forspenningen.</li>
+          <li>Hva om: lasten kan få fart før surringen tar imot. Da kommer det et rykk som kan overbelaste stroppen eller festepunktet, og i verste fall ryker sikringen. Høy: kobler dette til at sikringen er beregnet med en bestemt forspenning.</li>
+        </ul>
+      </details>
+    </div>
+
+    <div class="kort" data-kort="4">
+      <span class="nr">KORT A4</span>
+      <h3>Høy og smal kolli</h3>
+      <p>En høy og smal kolli står på planet. Den har god friksjon mot underlaget og glir ikke lett.</p>
+      <ul class="trapp">
+        <li><b>Hva:</b> Mål høyde og bredde. Vis hvordan du vil sikre kolliet.</li>
+        <li><b>Hvorfor:</b> Kolliet glir ikke. Hvorfor må du likevel sikre det?</li>
+        <li><b>Hva om:</b> Kolliet er merket med tyngdepunktsymbol, og tyngdepunktet sitter høyt og på skrå. Hva endrer det?</li>
+      </ul>
+      <details class="fasit"><summary>Lærerfasit</summary>
+        <ul>
+          <li>Hva: måler H og B (og L), regner H/B og H/L, og velger en metode mot velt. Det kan være overfallssurring over tyngdepunktet, loopsurring sidevegs, direktesurring eller blokkering høyt nok.</li>
+          <li>Hvorfor: et høyt og smalt kolli kan <i>velte</i> selv om det ikke glir. Jo høyere H/B, jo større veltefare. Forskriften krever at sikringen også hindrer helling og velt.</li>
+          <li>Hva om: surringen må plasseres i forhold til tyngdepunktet, ikke midt på kolliet. Blokkering mot velt må gå høyt nok, helst opp til tyngdepunktet. Høy: forklarer hvorfor tyngdepunktets plassering avgjør hvor lett kolliet velter.</li>
+        </ul>
+      </details>
+    </div>
+
+    <div class="kort" data-kort="5">
+      <span class="nr">KORT A5</span>
+      <h3>Regn og forklar</h3>
+      <p>En pall veier 1,2 tonn og står på riflet aluminium. Den står <b>ikke</b> inntil frontveggen. Bruk disse verdiene:</p>
+      <ul>
+        <li>Friksjon trepall mot riflet aluminium: µ = 0,4</li>
+        <li>Én overfallssurring holder 0,63 tonn framover ved denne friksjonen</li>
+        <li>Én overfallssurring holder 2,9 tonn sidevegs og bakover ved denne friksjonen</li>
+      </ul>
+      <ul class="trapp">
+        <li><b>Hva:</b> Hvor mange tonn må sikres framover, sidevegs og bakover? Hvor mange overfallssurringer trenger du? Vis utregningen.</li>
+        <li><b>Hvorfor:</b> Du får ulike antall surringer for ulike retninger. Hvilket antall bruker du, og hvorfor?</li>
+        <li><b>Hva om:</b> Du flytter pallen helt inntil frontveggen. Hva endrer seg, og hva må du fortsatt sikre?</li>
+      </ul>
+      <details class="fasit"><summary>Lærerfasit</summary>
+        <ul>
+          <li>Hva: framover 0,8 × 1,2 = 0,96 t. Sidevegs og bakover 0,5 × 1,2 = 0,6 t. Framover: 0,96 : 0,63 ≈ 1,5, rundet opp til 2 surringer. Sidevegs og bakover: 0,6 t er under 2,9 t, så 1 surring holder.</li>
+          <li>Hvorfor: det <b>høyeste</b> antallet gjelder (2), fordi sikringen må holde i alle retninger samtidig. Rund alltid opp. Høy: nevner at velt også må sjekkes (H/B og H/L), og at det høyeste antallet av gli og velt gjelder.</li>
+          <li>Hva om: frontveggen blokkerer framover (forutsatt at den er sterk nok for vekten). Da gjenstår sidevegs og bakover, og der holder 1 surring. Overfallssurring hindrer også at lasten «vandrer» på ujevn vei. Høy: nevner at frontveggens styrke avhenger av kjøretøyet (standarden EN 12642).</li>
+        </ul>
+      </details>
+    </div>
+
+    <div class="kort" data-kort="6">
+      <span class="nr">KORT A6</span>
+      <h3>Kreftene på lasten</h3>
+      <p>Sett en eske på en tralle. Den er «lasten», og trallen er «bilen».</p>
+      <ul class="trapp">
+        <li><b>Hva:</b> Vis hva som skjer med esken når «bilen» bråbremser, gir gass og svinger. Hvilken vei vil lasten?</li>
+        <li><b>Hvorfor:</b> Hvorfor vil lasten den veien? Bruk ordet <i>treghet</i>.</li>
+        <li><b>Hva om:</b> Du dobler farten gjennom en krapp sving. Hva skjer med kraften sidevegs?</li>
+      </ul>
+      <details class="fasit"><summary>Lærerfasit</summary>
+        <ul>
+          <li>Hva: bråbrems gjør at lasten vil framover. Gass gjør at den vil bakover. I sving vil den utover i svingen.</li>
+          <li>Hvorfor: treghet. Lasten vil fortsette i den farten og retningen den hadde (Newtons første lov). Det er bilen som endrer fart eller retning under lasten. Høy: forklarer at kraften på lasten er like stor som kraften på bilen, men motsatt rettet.</li>
+          <li>Hva om: kraften sidevegs blir omtrent fire ganger så stor, fordi den øker med farten i andre. Høy: kobler det til veltefare med høyt tyngdepunkt og til hvorfor fartsvalg også er lastsikring.</li>
+        </ul>
+      </details>
+    </div>
+
+    <div class="kort" data-kort="7">
+      <span class="nr">KORT A7</span>
+      <h3>Riktig metode for lasten</h3>
+      <p>Læreren peker ut én av disse lastene: <b>rør</b>, <b>kabeltrommel</b>, <b>løsmasser (sand)</b> eller <b>stykkgods i konteiner</b>.</p>
+      <ul class="trapp">
+        <li><b>Hva:</b> Hvilken sikringsmetode passer for denne lasten? Vis med hendene eller tegn en skisse.</li>
+        <li><b>Hvorfor:</b> Hva er spesielt med denne lasten som gjør at du velger slik?</li>
+        <li><b>Hva om:</b> En kollega sier: «Vi legger bare presenning over, så holder det.» Hva svarer du?</li>
+      </ul>
+      <details class="fasit"><summary>Lærerfasit</summary>
+        <ul>
+          <li>Rør og kabeltrommel: kan <i>rulle</i>, så de må blokkeres med klosser i rulleretningen, og i tillegg surres. Løsmasser: sikres av påbygget (karmer og lemmer), med lemmen låst og lasset ikke over karmene. Ved støv brukes presenning, nett eller fukting. Stykkgods i konteiner: blokkeres mot vegger og hverandre, med tunge kolli nederst og fremst, og hull fylles.</li>
+          <li>Hvorfor: eleven peker på det som er spesielt med lasten (ruller, flyter, støver, mange små enheter) og kobler det til metoden.</li>
+          <li>Hva om: presenning og kapell beskytter mot vær og vind, men er <b>ikke</b> lastsikringsutstyr. Presenningen hindrer støv og flygende løse biter, men den holder ikke lasten på plass ved bremsing eller i sving.</li>
+        </ul>
+      </details>
+    </div>
+
+    <div class="kort" data-kort="8">
+      <span class="nr">KORT A8</span>
+      <h3>Filmet pall – er den sikret?</h3>
+      <p>En pall er godt surret inn i strekkfilm. Sjåføren sier: «Den er filmet, så den er sikret.»</p>
+      <ul class="trapp">
+        <li><b>Hva:</b> Hva gjør strekkfilmen? Vis hva du må gjøre i tillegg når pallen står på lasteplanet.</li>
+        <li><b>Hvorfor:</b> Hvorfor er strekkfilm ikke nok alene?</li>
+        <li><b>Hva om:</b> Filmen er revnet, og kolliene har sklidd litt på pallen. Hvorfor er det farlig, også for sikringen du har laget?</li>
+      </ul>
+      <details class="fasit"><summary>Lærerfasit</summary>
+        <ul>
+          <li>Hva: filmen holder kolliene sammen og fast til pallen, så pallen blir én enhet. Pallen må likevel sikres mot planet ved blokkering og/eller surring.</li>
+          <li>Hvorfor: filmen fester ikke pallen til kjøretøyet. Hele pallen kan gli eller velte.</li>
+          <li>Hva om: kolliene kan forskyve seg, og tyngdepunktet flytter seg. Da kan pallen lettere velte, surringen kan bli slakk, og kolli kan falle av. Pallen må stabiliseres (ny film) før den sikres. Høy: forklarer at sikringen ble planlagt for en last som ikke endrer form.</li>
+        </ul>
+      </details>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================ STASJON B -->
+<section class="ark elev" id="stasjon-b" aria-labelledby="h-b">
+  <h2 id="h-b">5. Stasjon B – Feilriggen <span class="fase">Tenk</span></h2>
+  <p class="warn"><b>Se, ikke rør.</b> Du kan gå rundt og se under og bak, men du strammer, løsner eller flytter ingenting.</p>
+  <p><b>Oppdrag:</b> Lasten foran dere er sikret med flere feil. Finn så mange feil som mulig. For hver feil skriver dere hvilken risiko den gir, og hvordan den skal rettes.</p>
+  <p><b>Makkerroller:</b> <i>Finner</i> peker ut feilen og forklarer. <i>Skriver</i> noterer. Bytt etter hver feil.</p>
+  <p>Navn: ______________________ &nbsp; Makker: ______________________</p>
+  <table>
+    <thead><tr><th style="width:5%">#</th><th style="width:32%">Feil jeg ser</th><th style="width:31%">Hva kan skje? (risiko)</th><th>Slik retter jeg det</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td></tr>
+      <tr><td>2</td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td></tr>
+      <tr><td>3</td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td></tr>
+      <tr><td>4</td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td></tr>
+      <tr><td>5</td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td></tr>
+      <tr><td>6</td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td></tr>
+    </tbody>
+  </table>
+  <p><b>Ekstra:</b> Hvilken feil er den farligste? Begrunn med 1–2 setninger.</p>
+  <div class="linjer"></div><div class="linjer"></div>
+  <details class="fasit"><summary>Lærerfasit: slik rigger du feilene (velg 5–7)</summary>
+    <ol>
+      <li><b>Ingen kantbeskyttelse</b> der stroppen går over en skarp kant. Stroppen kan kuttes. Rettes med kantbeskytter.</li>
+      <li><b>Feil festepunkt:</b> stroppen er festet i et håndtak, rekkverk eller lemhengsel, ikke i et surringspunkt. Festet kan ryke. Flytt til godkjent surringspunkt.</li>
+      <li><b>Vridd stropp</b> over lasten. Den gir ujevn belastning og lavere kapasitet. Rett ut stroppen.</li>
+      <li><b>Slakk stropp eller ulåst strammer.</b> Den gir ingen forspenning, og lasten kan gli. Stram og lås.</li>
+      <li><b>Løs ende som henger fritt.</b> Den kan slå mot andre eller henge ut over siden. Fest eller knyt den opp.</li>
+      <li><b>Stor luft</b> (30–40 cm) mot karm eller frontvegg. Lasten får fart før den stopper. Fyll med mellomlegg eller flytt lasten.</li>
+      <li><b>Revnet eller løs strekkfilm.</b> Kolliene kan forskyve seg og flytte tyngdepunktet. Film på nytt.</li>
+      <li><b>Stropp med synlig skade eller uten merkelapp.</b> Kapasiteten er ukjent eller redusert. Kasser stroppen og bruk en ny.</li>
+    </ol>
+    <p class="liten">Nivå: lav = finner 2–3 feil og beskriver dem. Middels = finner 4–5 feil og gir riktig tiltak. Høy = finner de fleste feilene, forklarer risikoen med fagbegreper og rangerer dem med god begrunnelse.</p>
+  </details>
+</section>
+
+<!-- ============================================================ STASJON C -->
+<section class="ark elev" id="stasjon-c" aria-labelledby="h-c">
+  <h2 id="h-c">6. Stasjon C – Utstyrskontroll <span class="fase">Øv</span></h2>
+  <p><b>Oppdrag:</b> Fem surrebånd er nummerert 1–5. Kontroller hvert bånd slik du ville gjort før bruk. Bruk lommelykten. Avgjør om båndet kan brukes.</p>
+  <p><b>Makkerroller:</b> <i>Kontrollør</i> undersøker båndet og strammeren og leser merkelappen høyt. <i>Kvalitetssjekker</i> fyller ut skjemaet og spør «hvordan vet du det?». Bytt for hvert bånd.</p>
+  <p class="warn">Ikke stram båndene. Defekte bånd legges i kassen «Kassert».</p>
+  <p>Navn: ______________________ &nbsp; Makker: ______________________</p>
+  <table>
+    <thead><tr><th style="width:6%">Bånd</th><th style="width:18%">LC (daN)</th><th style="width:18%">S<sub>TF</sub> (daN)</th><th style="width:28%">Skader eller mangler jeg fant</th><th>Bruke? (ja/nei) og hvorfor</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td></tr>
+      <tr><td>2</td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td></tr>
+      <tr><td>3</td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td></tr>
+      <tr><td>4</td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td></tr>
+      <tr><td>5</td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td></tr>
+    </tbody>
+  </table>
+  <p><b>Forklar med egne ord:</b> Hva betyr LC, og hva betyr S<sub>TF</sub>? Hvilken av dem er viktigst ved overfallssurring, og hvorfor?</p>
+  <div class="linjer"></div><div class="linjer"></div><div class="linjer"></div>
+  <p><b>Ferdig før tiden?</b> Jobb videre med <a href="/transport-logistikk-lofteoperasjoner/kap5/#/t7">oppgavebanken i kap. 5</a> på nettbrett.</p>
+  <p style="margin-top:12px"><b>Nye ord:</b> <i>LC (Lashing Capacity)</i> = hvor mye båndet tåler i bruk. <i>S<sub>TF</sub> (Standard Tension Force)</i> = forspenningen du oppnår med strammeren. <i>Kassere</i> = ta ut av bruk for godt.</p>
+  <details class="fasit"><summary>Lærerfasit: slik klargjør du båndene</summary>
+    <ol>
+      <li>Helt og godkjent bånd med lesbar merkelapp. <b>Bruke.</b></li>
+      <li>Kutt eller slitasje i kanten av båndet. <b>Kasser</b>, fordi skade i vevet gir ukjent styrke.</li>
+      <li>Merkelappen mangler eller er uleselig. <b>Kasser</b>, fordi kapasiteten er ukjent.</li>
+      <li>Strammer som er deformert, rusten eller ikke låser. <b>Kasser</b> strammeren eller hele båndet.</li>
+      <li>Helt bånd, men med en annen LC enn de andre (f.eks. lettere bånd). <b>Bruke, men</b> eleven må se at det tåler mindre, og at bånd med ulik kapasitet ikke er likeverdige i en beregning.</li>
+    </ol>
+    <p class="liten">Andre grunner til å kassere bånd: varme- eller kjemikalieskade, skadde sømmer, knuter i båndet.<br>LC/S<sub>TF</sub>: ved overfallssurring er det forspenningen (S<sub>TF</sub>) som presser lasten ned og gir friksjon, så den er viktigst. LC er viktigst ved direktesurring, der båndet tar imot kraften direkte.<br>Nivå: lav = leser merkelappen og ser tydelige skader. Middels = gir riktig bruk/kasser-beslutning med grunn. Høy = forklarer LC og S<sub>TF</sub> og når hver av dem er avgjørende.</p>
+  </details>
+</section>
+
+<!-- ============================================================ KRITERIER -->
+<section class="ark elev" id="kriterier" aria-labelledby="h-krit">
+  <h2 id="h-krit">7. Kjennetegn på måloppnåelse</h2>
+  <p>Dette er det læreren ser etter. Du får vist kompetansen din på flere måter: når du utfører, når du forklarer og på arbeidsarkene.</p>
+  <table>
+    <thead><tr><th style="width:19%">Hva vurderes</th><th>Lav (2)</th><th>Middels (3–4)</th><th>Høy (5–6)</th></tr></thead>
+    <tbody>
+      <tr><th>Utføre lastsikring</th><td>Sikrer lasten med hjelp. Noen feil i plassering, vinkel eller stramming.</td><td>Sikrer lasten selvstendig med riktig metode og utstyr. Få feil, og retter dem selv.</td><td>Sikrer lasten selvstendig, effektivt og ryddig. Kontrollerer eget arbeid systematisk.</td></tr>
+      <tr><th>Regelverk og krefter</th><td>Vet at last skal sikres, og kan nevne én eller to retninger lasten kan forskyve seg.</td><td>Forklarer kreftene ved bremsing, akselerasjon og sving, og kjenner kravene framover, sidevegs og bakover.</td><td>Forklarer kravene med treghet og friksjon, og bruker dem til å begrunne valgene sine.</td></tr>
+      <tr><th>Velge metode og utstyr</th><td>Velger en metode, men begrunnelsen er tynn.</td><td>Velger og begrunner metode og antall surringer ut fra lasten. Kontrollerer utstyret.</td><td>Sammenligner flere løsninger, tilpasser til nye situasjoner («hva om») og velger med god begrunnelse.</td></tr>
+      <tr><th>Fagspråk og HMS</th><td>Bruker noen fagord. Følger HMS-regler når hen blir minnet på det.</td><td>Bruker fagord riktig og følger HMS-reglene.</td><td>Bruker fagspråk presist, ser risiko selv og sier fra om den.</td></tr>
+    </tbody>
+  </table>
+  <p class="liten">Karakter 1: eleven viser ikke kompetanse i målet, heller ikke med hjelp. Dette er underveisvurdering. Standpunktkarakteren settes ut fra samlet kompetanse vist på varierte måter gjennom hele opplæringen. Innsats og oppførsel holdes utenfor den faglige vurderingen. Samarbeid får egen tilbakemelding (del 9).</p>
+</section>
+
+<!-- ============================================================ SKJEMA -->
+<section class="ark" id="skjema" aria-labelledby="h-skjema">
+  <h2 id="h-skjema">8. Observasjonsskjema – stasjon A</h2>
+  <p class="liten">Kryss for nivå: <b>L</b> = lav, <b>M</b> = middels, <b>H</b> = høy. Skriv én setning om hva eleven <i>viste</i>, for eksempel «forklarte friksjon uten hjelp». Skjemaet er personopplysninger: oppbevar det innelåst, eller overfør til skolens system og kast papiret.</p>
+  <p>Klasse: ________ &nbsp; Dato: ________ &nbsp; Gruppe: ________</p>
+  <table>
+    <thead><tr><th style="width:17%">Elev</th><th style="width:7%">Kort</th><th style="width:11%">Utføre</th><th style="width:11%">Regelverk/krefter</th><th style="width:11%">Metode/utstyr</th><th style="width:11%">Fagspråk/HMS</th><th>Eleven viste … (én setning)</th></tr></thead>
+    <tbody>
+      <tr><td class="fyll"></td><td class="fyll"></td><td>L&nbsp;M&nbsp;H</td><td>L&nbsp;M&nbsp;H</td><td>L&nbsp;M&nbsp;H</td><td>L&nbsp;M&nbsp;H</td><td class="fyll"></td></tr>
+      <tr><td class="fyll"></td><td class="fyll"></td><td>L&nbsp;M&nbsp;H</td><td>L&nbsp;M&nbsp;H</td><td>L&nbsp;M&nbsp;H</td><td>L&nbsp;M&nbsp;H</td><td class="fyll"></td></tr>
+      <tr><td class="fyll"></td><td class="fyll"></td><td>L&nbsp;M&nbsp;H</td><td>L&nbsp;M&nbsp;H</td><td>L&nbsp;M&nbsp;H</td><td>L&nbsp;M&nbsp;H</td><td class="fyll"></td></tr>
+      <tr><td class="fyll"></td><td class="fyll"></td><td>L&nbsp;M&nbsp;H</td><td>L&nbsp;M&nbsp;H</td><td>L&nbsp;M&nbsp;H</td><td>L&nbsp;M&nbsp;H</td><td class="fyll"></td></tr>
+      <tr><td class="fyll"></td><td class="fyll"></td><td>L&nbsp;M&nbsp;H</td><td>L&nbsp;M&nbsp;H</td><td>L&nbsp;M&nbsp;H</td><td>L&nbsp;M&nbsp;H</td><td class="fyll"></td></tr>
+      <tr><td class="fyll"></td><td class="fyll"></td><td>L&nbsp;M&nbsp;H</td><td>L&nbsp;M&nbsp;H</td><td>L&nbsp;M&nbsp;H</td><td>L&nbsp;M&nbsp;H</td><td class="fyll"></td></tr>
+    </tbody>
+  </table>
+  <p class="liten"><b>Digitalt alternativ:</b> Lag et Microsoft Forms-skjema i skolens konto med de samme fire kriteriene (valg L/M/H) og ett tekstfelt. Fyll det ut på mobilen ved stasjonen. Svarene havner i en Excel-fil du kan bruke som vurderingsgrunnlag. Bruk ikke private apper eller denne nettsiden til elevdata.</p>
+</section>
+
+<!-- ============================================================ SAMARBEID -->
+<section class="ark" id="samarbeid" aria-labelledby="h-samarbeid">
+  <h2 id="h-samarbeid">9. Samarbeid og sosial læring – egen tilbakemelding</h2>
+  <p>Klassens egne verdier lå ikke tilgjengelig da pakken ble laget. Målene under er <b>forslag</b>, og du bytter dem ut med klassens verdier. De gir kort muntlig tilbakemelding og påvirker ikke den faglige vurderingen.</p>
+  <table>
+    <thead><tr><th style="width:35%">Samarbeidsmål (forslag)</th><th>Dette ser jeg etter</th></tr></thead>
+    <tbody>
+      <tr><td>Vi passer på hverandre</td><td>Kontrolløren sier fra om utrygge situasjoner, og ingen står i linje med en stropp som strammes.</td></tr>
+      <tr><td>Vi bytter roller</td><td>Begge får både gjøre og skrive. Ingen tar over.</td></tr>
+      <tr><td>Vi sjekker hverandres arbeid</td><td>Spør «hvordan vet du det?» og går gjennom svaret før det skrives ned.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ TILPASNING -->
+<section class="ark" id="tilpasning" aria-labelledby="h-tilp">
+  <h2 id="h-tilp">10. Tilpasning</h2>
+  <h3>Støtte</h3>
+  <ul>
+    <li><b>Lese- og skrivevansker:</b> Les kortet høyt for eleven. På B og C kan eleven peke og forklare muntlig mens makkeren skriver. Det er kompetansen i lastsikring som vurderes, ikke skrivingen.</li>
+    <li><b>Språkstøtte:</b> Gi eleven ordlisten fra kap. 5 og la hen bruke skisser. Still spørsmålene kort og ett om gangen.</li>
+    <li><b>Prestasjonsangst eller usikkerhet:</b> La eleven trekke kortet dagen før. Ta stasjon A én-til-én, eller la eleven filme en 90 sekunders forklaring med skolens utstyr. Lagre videoen i skolens system.</li>
+    <li><b>Konsentrasjonsvansker:</b> Ta eleven først på stasjon A. Del B-oppgaven i to (tre feil, kort pause, tre feil).</li>
+    <li><b>Støttespørsmål</b> når eleven står fast: «Hvilken vei vil lasten når du bremser?», «Hva holder lasten igjen nå?», «Hva står på merkelappen?». Noter at eleven fikk hjelp.</li>
+  </ul>
+  <h3>Utfordring</h3>
+  <ul>
+    <li>Kort A5 med to metoder: regn ut både overfallssurring og blokkering + surring, og argumenter for den beste løsningen.</li>
+    <li>Kolli med eksentrisk tyngdepunkt: hvor legger du surringene, og hvorfor?</li>
+    <li>Kombinert transport: lasten skal på ferje over Skagerrak. Hvorfor holder det ikke å sikre etter reglene for veitransport?</li>
+    <li>Lag selv et nytt kort til stasjon A, med fasit, til neste klasse.</li>
+  </ul>
+</section>
+
+<!-- ============================================================ VOKS -->
+<section class="ark elev" id="voks" aria-labelledby="h-voks">
+  <h2 id="h-voks">11. Voks-sjekkliste – hvor trygg er jeg? <span class="fase">Voks</span></h2>
+  <p>Kryss av før økten og igjen etterpå. 1 = ikke ennå, 2 = med hjelp, 3 = alene, 4 = kan lære det bort.</p>
+  <p>Navn: ______________________</p>
+  <table>
+    <thead><tr><th>Jeg kan …</th><th style="width:16%">Før</th><th style="width:16%">Etter</th></tr></thead>
+    <tbody>
+      <tr><td>… forklare hvilken vei lasten vil ved bremsing, gass og sving</td><td>1 2 3 4</td><td>1 2 3 4</td></tr>
+      <tr><td>… si hvor mye sikringen må tåle framover, sidevegs og bakover</td><td>1 2 3 4</td><td>1 2 3 4</td></tr>
+      <tr><td>… forklare hvordan friksjon hjelper sikringen</td><td>1 2 3 4</td><td>1 2 3 4</td></tr>
+      <tr><td>… blokkere lasten riktig</td><td>1 2 3 4</td><td>1 2 3 4</td></tr>
+      <tr><td>… legge og stramme en overfallssurring riktig</td><td>1 2 3 4</td><td>1 2 3 4</td></tr>
+      <tr><td>… kontrollere et surrebånd og lese merkelappen</td><td>1 2 3 4</td><td>1 2 3 4</td></tr>
+      <tr><td>… se når en last kan velte, og sikre mot det</td><td>1 2 3 4</td><td>1 2 3 4</td></tr>
+      <tr><td>… finne riktig verdi i lastsikringsheftet og regne ut antall surringer</td><td>1 2 3 4</td><td>1 2 3 4</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ EXIT -->
+<section class="ark elev" id="exit" aria-labelledby="h-exit">
+  <h2 id="h-exit">12. Exit ticket</h2>
+  <p>Navn: ______________________</p>
+  <ol>
+    <li>I hvilken retning krever forskriften mest sikring? Forklar hvorfor med én setning.<div class="linjer"></div><div class="linjer"></div></li>
+    <li>Nevn én feil fra feilriggen, og skriv hvordan den skal rettes.<div class="linjer"></div><div class="linjer"></div></li>
+    <li>Hvor trygg er du på å sikre en pall helt alene? (1–4) _____ &nbsp; Hva vil du øve mer på?<div class="linjer"></div></li>
+  </ol>
+</section>
+
+<section class="ark" id="oppfolging" aria-labelledby="h-oppf">
+  <h2 id="h-oppf">Lærerveiledning: oppfølging etter økten</h2>
+  <table>
+    <thead><tr><th style="width:34%">Hvis svarene viser …</th><th>… så gjør du dette</th></tr></thead>
+    <tbody>
+      <tr><td>Spørsmål 1 feil eller tomt hos flere</td><td>Kort felles repetisjon av kreftene med tralleforsøket (kort A6). Elevene gjør tema 2 i kap. 5 på siden.</td></tr>
+      <tr><td>Mange finner få feil på B</td><td>Gå gjennom feilriggen sammen neste økt: elevene retter én feil hver, og forklarer hvorfor, foran klassen.</td></tr>
+      <tr><td>Lav på «Velge metode» i skjemaet</td><td>Case-arkene (case 1–4) i par, med fokus på begrunnelsen.</td></tr>
+      <tr><td>Selvvurdering 1–2 på spørsmål 3</td><td>Ny praktisk runde på stasjon A med et nytt kort om 1–2 uker. Det gir eleven en ny sjanse til å vise kompetansen.</td></tr>
+      <tr><td>Høy på alt</td><td>Eleven lager et nytt kort med fasit, eller er medhjelper/kontrollør ved neste runde.</td></tr>
+    </tbody>
+  </table>
+  <h3>Vanlige misforståelser</h3>
+  <ul>
+    <li>«Tung last ligger stille av seg selv.» Vekt gir mer friksjon, men også mer treghet. Kravet regnes alltid i forhold til vekten.</li>
+    <li>«Strekkfilm og presenning er sikring.» De stabiliserer og beskytter, men sikrer ikke lasten mot kjøretøyet.</li>
+    <li>«Stramt er stramt.» Lasten setter seg og båndet strekker seg, så etterstramming er nødvendig.</li>
+    <li>«Det minste antallet surringer holder.» Det høyeste antallet for gli og velt i alle retninger gjelder, og man runder alltid opp.</li>
+  </ul>
+</section>
+
+<p class="noprint" style="color:#aab7c4;font-size:15px">Vurderingspakken er egenprodusert for TLLfluenseren av Jarle Bruntveit. Faglig grunnlag: kap. 5 i læreboka i transport, logistikk og løfteoperasjoner (Vg2), forskrift om bruk av kjøretøy § 3-3 og læreplanen TOL02-01. Ingen tekst eller tabeller er kopiert fra boka. Tallene i kort A5 er oppgitt i selve oppgaven, slik elevene er vant til fra oppgavebanken.</p>
+</main>
+<script>
+(function(){
+  var brukt = [];
+  window.trekkKort = function(){
+    var kort = Array.prototype.slice.call(document.querySelectorAll('#kortene .kort'));
+    if (brukt.length >= kort.length) brukt = [];
+    var ledige = kort.filter(function(k){ return brukt.indexOf(k.dataset.kort) === -1; });
+    var valgt = ledige[Math.floor(Math.random() * ledige.length)];
+    brukt.push(valgt.dataset.kort);
+    var kopi = valgt.cloneNode(true);
+    var f = kopi.querySelector('details.fasit'); if (f) f.remove();
+    var boks = document.getElementById('trekk');
+    boks.innerHTML = '';
+    boks.appendChild(kopi);
+    var info = document.createElement('p');
+    info.className = 'liten';
+    info.style.color = '#aab7c4';
+    info.textContent = 'Kort ' + brukt.length + ' av ' + kort.length + ' trukket i denne runden. Fasiten finner du under kortet lenger ned.';
+    boks.appendChild(info);
+    boks.classList.add('vis');
+    boks.scrollIntoView({behavior:'smooth', block:'start'});
+  };
+  window.skrivUt = function(hva){
+    var detaljer = document.querySelectorAll('details.fasit');
+    document.body.classList.toggle('print-elev', hva === 'elev');
+    detaljer.forEach(function(d){ d.dataset.var = d.open ? '1' : ''; d.open = (hva !== 'elev'); });
+    window.print();
+    setTimeout(function(){
+      document.body.classList.remove('print-elev');
+      detaljer.forEach(function(d){ d.open = d.dataset.var === '1'; });
+    }, 500);
+  };
+})();
+</script>
+</body>
+</html>
