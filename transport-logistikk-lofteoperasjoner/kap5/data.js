@@ -903,6 +903,7 @@ TLL.registrer({
     ],
     ekstra: `<h3 style="font-size:22px;margin-top:0">Det du trenger</h3>
       <ul class="reslist">
+        <li><span class="tag">Øv</span><span><a href="ovelsesbank/">Øvelsesbank: 110 oppgaver til lastsikringsheftet</a><br><span class="small muted">Fire nivåer, fra «bli kjent med heftet» til ekspert. Hint, sidetall og forklaring på hver oppgave.</span></span></li>
         <li><span class="tag ndla">NDLA</span><span><a href="${NDLA_R + N.brosjyre[1]}" target="_blank" rel="noopener">Lastsikring ved vegtransport – lastsikringsheftet (NLF)</a><br><span class="small muted">Åpne PDF-en fra NDLA-siden, eller bruk papireksemplaret i klassen.</span></span></li>
         <li><span class="tag">PDF</span><span><a href="dokumenter/Sikring_av_last_hjelpedokument.pdf" target="_blank" rel="noopener">Sikring av last – hjelpedokument (sikringsplan)</a><br><span class="small muted">Bruk det som kladd når du regner gjennom casene.</span></span></li>
       </ul>`,
