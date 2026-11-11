@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="no"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>INT – Interaktiv 3D-tegning</title>
+<style>body{margin:0;background:#0d1726;color:#f4f7fc;font:15px system-ui,Arial}header{padding:16px 22px;background:#17253a;border-bottom:1px solid #34445b}h1{font-size:22px;margin:0 0 4px}small{color:#a8bad0}.layout{display:grid;grid-template-columns:1fr 280px;min-height:80vh}#scene{width:100%;height:78vh;display:block;touch-action:none}aside{background:#142236;padding:20px;border-left:1px solid #34445b}button{background:#263e5a;color:white;border:1px solid #54718d;border-radius:7px;padding:9px 12px;margin:4px;cursor:pointer}button:hover,button.active{background:#2770a4}label{display:block;margin:15px 0}input[type=range]{width:100%}.part{display:block;width:100%;text-align:left}p{line-height:1.5;color:#c5d3e3}.note{font-size:12px;color:#b5c7d9}footer{padding:12px 20px;color:#b5c7d9}@media(max-width:760px){.layout{grid-template-columns:1fr}#scene{height:55vh}aside{border-left:0;border-top:1px solid #34445b}}</style></head>
+<body><header><h1>INT · Interaktiv konstruksjonsmodell</h1><small>Gjesterommet / TLLfluenseren · Undervisningsprototype basert på «INT prosjekt tegning» (12 sider)</small></header>
+<div class="layout"><div id="scene"></div><aside><h2>Utforsk modellen</h2><p>Dra for å rotere, bruk musehjul eller to fingre for å zoome. Velg deler for å fremheve dem.</p><button id="reset">Nullstill visning</button><button id="explode">Eksplodert visning</button><button id="wire">Trådmodell</button><label>Avstand mellom deler <input id="spread" type="range" min="0" max="100" value="0"></label><h3>Komponenter</h3><div id="parts"></div><p id="info">Velg en komponent.</p><p class="note">OBS: Forenklet 3D-geometri. Ikke bruk modellen til produksjon, målsetting eller CNC før alle mål og toleranser er verifisert.</p></aside></div>
+<footer>Kilde: Haugaland videregående skole / VG2 industriteknologi · Prototype for undervisning</footer>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
+const host=document.getElementById('scene'),scene=new THREE.Scene();scene.background=new THREE.Color('#0d1726');
+const camera=new THREE.PerspectiveCamera(42,1,.1,10000);camera.position.set(1100,850,1100);
+const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));host.appendChild(renderer.domElement);
+const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.target.set(0,250,0);
+scene.add(new THREE.HemisphereLight(0xffffff,0x33445c,2));const light=new THREE.DirectionalLight(0xffffff,2.8);light.position.set(400,900,600);scene.add(light);
+const grid=new THREE.GridHelper(1400,28,0x46627d,0x263b51);scene.add(grid);
+const groups=[],details=[
+['Ramme','Stålramme med profiler – se sammenstilling og rammetegning, side 5–7.'],
+['Hjul','Forenklede hjul på aksler – se sammenstilling, side 1.'],
+['Motor og utstyr','Skjematisk volum for maskinens motor/utstyr – se sammenstilling, side 1.'],
+['Hjulestell og braketter','Skjematiske forbindelser og braketter – se detaljtegninger, side 2–4.'],
+['Hydraulikktank / hus','Skjematisk hus med tilkoblinger – se side 8–12.']];
+const colors=[0x7d9bad,0x262e39,0x2e69bb,0xd6a352,0xb4c5d2];
+function group(i){const g=new THREE.Group();g.userData.part=i;scene.add(g);groups.push(g);return g}
+function mat(i){return new THREE.MeshStandardMaterial({color:colors[i],metalness:.55,roughness:.36})}
+function box(g,x,y,z,w,h,d,i){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat(i));m.position.set(x,y,z);g.add(m);return m}
+function rod(g,a,b,r,i){const v1=new THREE.Vector3(...a),v2=new THREE.Vector3(...b),dir=v2.clone().sub(v1),m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,dir.length(),12),mat(i));m.position.copy(v1.add(v2).multiplyScalar(.5));m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dir.normalize());g.add(m)}
+const frame=group(0);
+for(const x of [-175,175]){rod(frame,[x,45,-330],[x,45,330],14,0);rod(frame,[x,45,-330],[x,520,-330],14,0);rod(frame,[x,45,330],[x,520,330],14,0);rod(frame,[x,520,-330],[x,520,330],14,0)}
+for(const y of [45,520])for(const z of [-330,330])rod(frame,[-175,y,z],[175,y,z],12,0);
+rod(frame,[-175,520,-330],[175,45,330],10,0);rod(frame,[175,520,-330],[-175,45,330],10,0);
+const wheels=group(1);for(const x of [-235,235])for(const z of [-235,235]){const tire=new THREE.Mesh(new THREE.TorusGeometry(92,22,14,36),mat(1));tire.rotation.y=Math.PI/2;tire.position.set(x,115,z);wheels.add(tire);const hub=new THREE.Mesh(new THREE.CylinderGeometry(28,28,22,24),mat(0));hub.rotation.z=Math.PI/2;hub.position.set(x,115,z);wheels.add(hub)}
+const engine=group(2);box(engine,0,190,-50,250,180,220,2);box(engine,0,285,35,165,85,150,2);
+const fittings=group(3);for(const z of [-200,200])rod(fittings,[-200,115,z],[200,115,z],17,3);box(fittings,0,385,-240,160,20,120,3);
+const tank=group(4);box(tank,0,365,150,235,130,220,4);const cap=new THREE.Mesh(new THREE.CylinderGeometry(33,33,22,28),mat(3));cap.position.set(0,443,150);tank.add(cap);
+const buttons=document.getElementById('parts');let selected=-1,exploded=false,wire=false;
+details.forEach((d,i)=>{const b=document.createElement('button');b.className='part';b.textContent=(i+1)+'. '+d[0];b.onclick=()=>{selected=i;document.getElementById('info').textContent=d[1];update()};buttons.appendChild(b)});
+function update(){const t=+document.getElementById('spread').value/100;groups.forEach((g,i)=>{g.position.set((i-2)*t*170,i*t*50,(i%2?1:-1)*t*100);g.traverse(o=>{if(o.isMesh){o.material.emissive.setHex(i===selected?0x234b65:0);o.material.wireframe=wire}})});document.getElementById('explode').classList.toggle('active',t>0)}
+document.getElementById('explode').onclick=()=>{exploded=!exploded;document.getElementById('spread').value=exploded?85:0;update()};
+document.getElementById('wire').onclick=()=>{wire=!wire;document.getElementById('wire').classList.toggle('active',wire);update()};
+document.getElementById('spread').oninput=update;
+document.getElementById('reset').onclick=()=>{selected=-1;exploded=false;wire=false;document.getElementById('spread').value=0;camera.position.set(1100,850,1100);controls.target.set(0,250,0);document.getElementById('info').textContent='Velg en komponent.';update()};
+function resize(){const w=host.clientWidth,h=host.clientHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h)}window.addEventListener('resize',resize);resize();
+renderer.setAnimationLoop(()=>{controls.update();renderer.render(scene,camera)});
+</script></body></html>
