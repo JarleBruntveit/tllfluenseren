@@ -118,6 +118,18 @@
       "url": "/truck/opplaering/"
     },
     {
+      "id": "truck-praksis",
+      "title": "Praktiske truckøvelser",
+      "area": "bransjeteknikk",
+      "url": "/truck/praksis/"
+    },
+    {
+      "id": "truck-praksis-tll",
+      "title": "Truck i praksis: logistikkoppdrag",
+      "area": "tll",
+      "url": "/truck/praksis/#niva-5"
+    },
+    {
       "id": "adr-bok",
       "title": "ADR – finn fram i boka",
       "area": "bransjeteknikk",

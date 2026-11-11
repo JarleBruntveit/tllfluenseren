@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="no">
+<head>
+<link rel="icon" href="/favicon.ico?v=1" sizes="any">
+<link rel="icon" href="/favicon.svg?v=1" type="image/svg+xml">
+<link rel="icon" href="/favicon-32x32.png?v=1" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=1" sizes="180x180">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Praktiske truckøvelser – TLLfluenseren</title>
+<meta name="description" content="29 praktiske truckøvelser for T1, T2 og T4 i seks nivåer – fra daglig kontroll til logistikkoppdrag. Felles for Bransjeteknikk og TLL.">
+<link rel="stylesheet" href="../../assets/styles.css">
+<style>
+  .pShell{max-width:980px}
+  .pHero{padding:56px 0 24px;max-width:780px}
+  .pHero h1{font-size:clamp(42px,7vw,72px);margin:12px 0 18px}
+  .pHero p{color:var(--muted);font-size:clamp(17px,2vw,19px);line-height:1.6;margin:0 0 12px}
+  .crumb{color:var(--muted);text-decoration:none;font-weight:750;font-size:14px}
+  .crumb:hover{color:var(--text)}
+  .kmGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:22px 0}
+  .kmCard{border:1px solid var(--line);border-radius:18px;background:var(--panel);padding:20px}
+  .kmCard .kicker{margin-bottom:6px}
+  .kmCard p{color:var(--muted);margin:6px 0 0;line-height:1.55}
+  .kmCard q{color:var(--text)}
+  .howBox{border:1px solid var(--line);border-radius:20px;background:var(--panel);padding:22px 24px;margin:8px 0 26px}
+  .howBox summary{cursor:pointer;font-weight:850;font-size:19px}
+  .howBox h3{margin:22px 0 8px;font-size:18px}
+  .howBox p,.howBox li{color:var(--muted);line-height:1.6}
+  .howBox table{border-collapse:collapse;width:100%;margin:8px 0}
+  .howBox th,.howBox td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;color:var(--muted)}
+  .howBox th{color:var(--text)}
+  .dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:7px;vertical-align:-1px}
+  .filters{display:flex;flex-wrap:wrap;gap:18px;align-items:center;margin:6px 0 10px;position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 0;border-bottom:1px solid var(--line)}
+  .fGroup{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  .fGroup span{color:var(--muted);font-size:14px;font-weight:800;margin-right:4px}
+  .chipBtn{appearance:none;border:1px solid var(--line);background:#111c25;color:var(--text);border-radius:999px;padding:7px 13px;font:inherit;font-size:14px;font-weight:750;cursor:pointer}
+  .chipBtn[aria-pressed="true"]{background:var(--accent);color:#111820;border-color:var(--accent)}
+  .chipBtn:focus-visible,.pCard summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  .count{color:var(--muted);font-size:14px;margin-left:auto}
+  .lvl{margin:34px 0 10px}
+  .lvl h2{font-size:clamp(26px,3.4vw,34px);margin:6px 0 8px}
+  .lvl > p{color:var(--muted);line-height:1.6;margin:0 0 8px;max-width:760px}
+  .core{border-left:4px solid var(--accent);background:rgba(242,184,75,.08);padding:12px 16px;border-radius:10px;color:var(--text);line-height:1.6;margin:10px 0 14px}
+  .core a{color:var(--accent)}
+  .pCard{border:1px solid var(--line);border-radius:16px;background:var(--panel);margin:10px 0;scroll-margin-top:80px}
+  .pCard summary{list-style:none;cursor:pointer;padding:16px 18px;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center}
+  .pCard summary::-webkit-details-marker{display:none}
+  .pCard[open] summary{border-bottom:1px solid var(--line)}
+  .pId{font-weight:950;color:var(--accent);font-size:18px;min-width:38px}
+  .pTitle{font-weight:850;font-size:18px}
+  .pMeta{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+  .tag{font-size:12.5px;font-weight:800;border:1px solid var(--line);border-radius:999px;padding:3px 9px;color:var(--muted)}
+  .tag.t{color:var(--text)}
+  .chev{color:var(--muted);transition:transform .2s}
+  .pCard[open] .chev{transform:rotate(90deg)}
+  .pBody{padding:6px 20px 18px}
+  .pBody p,.pBody li{line-height:1.6}
+  .pBody h4{margin:16px 0 4px;font-size:15px;text-transform:uppercase;letter-spacing:.06em;color:var(--accent)}
+  .pBody .hms{border-left:4px solid #e07b00;background:rgba(224,123,0,.1);padding:10px 14px;border-radius:8px}
+  .pLinks{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;font-weight:800}
+  .pLinks a{color:var(--accent)}
+  .pLinks a.teach{color:#8ed7cc}
+  .empty{color:var(--muted);padding:30px 0}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 0}
+  @media(max-width:760px){.kmGrid{grid-template-columns:1fr}.filters{position:static}.count{margin-left:0}}
+  @media print{
+    .tll-site-nav,.tll-skip,.noprint,.filters,footer,.tll-global-footer,.tll-return,.topbar{display:none!important}
+    html,body,.homePage{background:#fff!important;color:#000!important}
+    .pCard,.kmCard,.howBox{background:#fff;border-color:#999;break-inside:avoid}
+    .pCard summary{border-bottom:1px solid #999}
+    .pBody,.pBody *,.pTitle,.lvl > p,.core,.tag{color:#000!important}
+    .pBody .hms,.core{background:#fff}
+    .pLinks a.teach{display:none}
+  }
+</style>
+<link rel="stylesheet" href="/assets/global-footer.css"><script defer src="/assets/global-footer.js?v=mobile-nav-2"></script><link rel="stylesheet" href="/assets/elevflyt.css?v=mobile-nav-2">
+<script src="data.js"></script>
+</head>
+<body class="homePage"><a class="tll-skip" href="#tll-main">Hopp til innhold</a>
+<div class="wrap pShell">
+  <header class="topbar homeTopbar">
+    <a class="brand" href="/" aria-label="TLLfluenseren forside">
+      <span class="brandmark">TLL</span>
+      <span>TLLfluenseren <small>Transport · Logistikk · Løfteoperasjoner · Livet</small></span>
+    </a>
+    <nav class="tll-site-nav" aria-label="Hovedmeny"><a href="/">Forside</a><a href="/#fag">Fagområder</a><a href="/yrkesretninger/">Yrkesretninger</a><a href="/video/">Video</a><a href="/ressursbank/">Ressursbank</a><a href="/assistent/">TLL-assistenten</a><a href="/laererrom/">Lærerrom</a><a href="/om/">Om</a></nav>
+  </header><div class="tll-return"><a href="/truck/">← Tilbake til Truck</a></div>
+
+  <main id="tll-main" tabindex="-1">
+    <section class="pHero">
+      <div class="kicker">ØV · Praktisk truckkjøring</div>
+      <h1>Praktiske øvelser</h1>
+      <p>29 øvelser på T1, T2 og T4 i seks nivåer – fra daglig kontroll til et helt logistikkoppdrag. Du går videre til neste nivå når du har fått grønt på minst to øvelser på nivået ditt.</p>
+      <p>Vurder deg selv underveis i <a href="/truck/nivaer/" style="color:var(--accent);font-weight:800">egenvurderingen</a> (Nybegynner, Trygg og Ekspert).</p>
+    </section>
+
+    <section aria-label="Kompetansemål øvelsene bygger på">
+      <div class="kmGrid" id="kmGrid"></div>
+    </section>
+
+    <details class="howBox">
+      <summary>Slik jobber vi på truckøvelsene</summary>
+      <h3>Tre roller – bytt etter hver runde</h3>
+      <table><thead><tr><th>Rolle</th><th>Gjør</th></tr></thead><tbody>
+        <tr><td><b>Fører</b></td><td>Kjører øvelsen og sier høyt hva du gjør. Avbryter selv hvis noe føles utrygt.</td></tr>
+        <tr><td><b>Observatør</b></td><td>Holder faresonen fri, krysser av på sjekklisten og teller feilpoeng. Kan rope STOPP – føreren stopper alltid.</td></tr>
+        <tr><td><b>Filmer / tidtaker</b></td><td>Filmer vurderingsrunden og tar tiden.</td></tr>
+      </tbody></table>
+      <h3>Kritiske feil – runden stopper</h3>
+      <ul id="kritiskList"></ul>
+      <h3>Feilpoeng – 1 poeng hver</h3>
+      <ul id="feilList"></ul>
+      <p><b>Grønt på øvelsen</b> = ingen kritiske feil og høyst 2 feilpoeng.</p>
+      <h3>Kjøretillatelse på skolen</h3>
+      <table><thead><tr><th>Farge</th><th>Du får</th><th>Krav</th></tr></thead><tbody>
+        <tr><td><span class="dot" style="background:#f28b82"></span>Rød</td><td>Kjøre kun med lærer ved siden av</td><td>Bestått truckteori og daglig kontroll (0.1)</td></tr>
+        <tr><td><span class="dot" style="background:#f0c75a"></span>Gul</td><td>Øve på avsperret område med observatør</td><td>Grønt på to øvelser på nivå 1</td></tr>
+        <tr><td><span class="dot" style="background:var(--ok)"></span>Grønn</td><td>Utføre oppdrag på skolens område etter lærerens rammer</td><td>Grønt på to øvelser på nivå 3 og lærerens godkjenning</td></tr>
+      </tbody></table>
+      <p>Kjøretillatelsen er skolens egen ordning. Den er ikke et truckførerbevis.</p>
+      <h3>Alltid</h3>
+      <ul>
+        <li>Daglig kontroll før første kjøring hver dag.</li>
+        <li>Vernesko og refleksvest. Avsperret område, én truck i hver løype.</li>
+        <li>Gangfart. Ingen passasjerer. Ingen personer på eller under gaflene.</li>
+        <li>Øvelser med høy last eller høyde krever risikovurdering godkjent av læreren.</li>
+      </ul>
+      <h3>Etter hver øvelse – svar kort</h3>
+      <ol><li>Hva gjorde jeg riktig og trygt i dag?</li><li>Hva var vanskeligst, og hvorfor?</li><li>Hva skal jeg øve på neste gang?</li></ol>
+    </details>
+
+    <div class="filters noprint" role="group" aria-label="Filtrer øvelser">
+      <div class="fGroup" id="fNiva"><span>Nivå</span></div>
+      <div class="fGroup" id="fTruck"><span>Truck</span></div>
+      <span class="count" id="count" aria-live="polite"></span>
+    </div>
+    <div class="actions noprint"><button class="btn" type="button" id="openAll">Åpne alle synlige</button><button class="btn" type="button" id="printBtn">Skriv ut synlige øvelser</button></div>
+
+    <div id="list"></div>
+  </main>
+
+  <footer class="homeFooter">
+    <div class="brand footerBrand"><span class="brandmark">TLL</span><span>TLLfluenseren <small>Mer enn truck og logistikk.</small></span></div>
+    <div>Fagstoff og film: <a href="https://ndla.no/e/bransjeteknikk-tp-tol-vg2---ressurssamling/truck/115ba21a46" style="color:var(--muted)">NDLA – Truck</a></div>
+  </footer>
+</div>
+<script>
+(function(){
+  const D = window.TRUCK_PRAKSIS;
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const state = { niva: 'alle', truck: 'alle' };
+
+  document.getElementById('kmGrid').innerHTML = ['BT','TLL'].map(k => {
+    const m = D.km[k];
+    return `<div class="kmCard"><div class="kicker">${esc(m.fag)} · ${m.kode}</div><p>Kompetansemål: <q>${esc(m.tekst)}</q></p><p>Vi ser på deg som <b style="color:var(--text)">${m.blikk.toLowerCase()}</b>: ${k === 'BT' ? 'kontroll, sikkerhet, presisjon og regelverk.' : 'planlegging, riktig godshåndtering, effektivitet og dokumentasjon.'}</p></div>`;
+  }).join('');
+  document.getElementById('kritiskList').innerHTML = D.kritiske.map(x => `<li>${esc(x)}</li>`).join('');
+  document.getElementById('feilList').innerHTML = D.feilpoeng.map(x => `<li>${esc(x)}</li>`).join('');
+
+  const mkBtns = (el, key, values, label) => {
+    el.insertAdjacentHTML('beforeend', values.map(v => `<button type="button" class="chipBtn" data-k="${key}" data-v="${v}" aria-pressed="${v === 'alle'}">${label(v)}</button>`).join(''));
+  };
+  mkBtns(document.getElementById('fNiva'), 'niva', ['alle', '0', '1', '2', '3', '4', '5'], v => v === 'alle' ? 'Alle' : v);
+  mkBtns(document.getElementById('fTruck'), 'truck', ['alle', 'T1', 'T2', 'T4'], v => v === 'alle' ? 'Alle' : v);
+  document.querySelector('.filters').addEventListener('click', e => {
+    const b = e.target.closest('.chipBtn'); if (!b) return;
+    state[b.dataset.k] = b.dataset.v;
+    document.querySelectorAll(`.chipBtn[data-k="${b.dataset.k}"]`).forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    render();
+  });
+
+  const fagTag = f => f === 'BT' ? 'Bransjeteknikk' : f === 'TLL' ? 'TLL' : 'BT + TLL';
+  const card = t => {
+    const nd = t.ndla ? D.ndla[t.ndla] : null;
+    return `<details class="pCard" id="${t.slug}"><summary><span class="pId">${t.id}</span><span><span class="pTitle">${esc(t.tittel)}</span><span class="pMeta">${t.truck.map(x => `<span class="tag t">${x}</span>`).join('')}<span class="tag">${esc(t.tid)}</span><span class="tag">${esc(t.fase)}</span><span class="tag">${fagTag(t.fag)}</span>${t.gml ? `<span class="tag">gml. ${esc(t.gml)}</span>` : ''}</span></span><span class="chev" aria-hidden="true">▶</span></summary>
+      <div class="pBody"><h4>Oppdrag</h4>${t.oppdrag}<h4>Du lykkes når</h4><p>${t.lykkes}</p>${t.hms ? `<h4>HMS</h4><p class="hms">${t.hms}</p>` : ''}${t.dok ? `<h4>Dokumentasjon</h4><p>${t.dok}</p>` : ''}
+      <div class="pLinks">${nd ? `<a href="${nd.u}" target="_blank" rel="noopener">NDLA: ${esc(nd.t)} ↗</a>` : ''}<a class="teach" href="/laererrom/truck-praksis/#${t.slug}">Lærerveiledning for øvelsen →</a></div></div></details>`;
+  };
+
+  function render() {
+    const list = D.oppgaver.filter(t => (state.niva === 'alle' || String(t.niva) === state.niva) && (state.truck === 'alle' || t.truck.includes(state.truck)));
+    document.getElementById('count').textContent = `${list.length} av ${D.oppgaver.length} øvelser`;
+    const html = D.nivaer.map(n => {
+      const items = list.filter(t => t.niva === n.n); if (!items.length) return '';
+      const links = n.ndla.map(k => `<a href="${D.ndla[k].u}" target="_blank" rel="noopener">${esc(D.ndla[k].t)} ↗</a>`).join(' · ');
+      return `<section class="lvl" aria-labelledby="niva-${n.n}"><div class="kicker">Nivå ${n.n} · ${n.mestring}</div><h2 id="niva-${n.n}">${esc(n.tittel)}</h2><p>${esc(n.intro)}</p><div class="core"><b>Husk:</b> ${esc(n.kjerne)}${links ? `<br><small>Se: ${links}</small>` : ''}</div>${items.map(card).join('')}</section>`;
+    }).join('');
+    document.getElementById('list').innerHTML = html || '<p class="empty">Ingen øvelser passer filteret.</p>';
+  }
+  render();
+
+  function openHash() {
+    const id = location.hash.slice(1); if (!/^o-\d-\d$/.test(id)) return;
+    let el = document.getElementById(id);
+    if (!el) { state.niva = 'alle'; state.truck = 'alle'; document.querySelectorAll('.chipBtn').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.v === 'alle'))); render(); el = document.getElementById(id); }
+    if (el) { el.open = true; el.scrollIntoView({ block: 'start' }); el.querySelector('summary').focus({ preventScroll: true }); }
+  }
+  window.addEventListener('hashchange', openHash); openHash();
+
+  document.getElementById('openAll').addEventListener('click', () => document.querySelectorAll('#list details').forEach(d => d.open = true));
+  document.getElementById('printBtn').addEventListener('click', () => { document.querySelectorAll('#list details').forEach(d => d.open = true); window.print(); });
+})();
+</script>
+</body>
+</html>
