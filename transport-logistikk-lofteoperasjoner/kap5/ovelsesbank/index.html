@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Øvelsesbank: Lastsikring ved vegtransport – TLLfluenseren</title>
+<meta name="description" content="110 oppgaver til NLF-heftet «Lastsikring ved vegtransport» – fra å bli kjent med heftet til ekspertnivå (Vg2 TLL, kap 5)">
+<link rel="icon" href="/favicon.ico?v=1" sizes="any">
+<link rel="icon" href="/favicon.svg?v=1" type="image/svg+xml">
+<link rel="icon" href="/favicon-32x32.png?v=1" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=1" sizes="180x180">
+<link rel="stylesheet" href="/assets/global-footer.css"><script defer src="/assets/global-footer.js?v=mobile-nav-2"></script><link rel="stylesheet" href="/assets/elevflyt.css?v=mobile-nav-2">
+<style>
+:root{--g:#2d7a4f;--g2:#e7f3ec;--ink:#1d2a24;--mut:#5b6b63;--line:#d8e2dc;--bg:#f6f8f7;--ok:#1f8a4c;--bad:#c0392b;--warn:#b7791f;
+--n1:#3b82c4;--n2:#2d7a4f;--n3:#b7791f;--n4:#8e3b9e}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+header{background:var(--g);color:#fff;padding:28px 20px 22px}
+header .wrap{max-width:900px;margin:0 auto}
+h1{margin:0 0 6px;font-size:1.6rem}
+header p{margin:4px 0;opacity:.92}
+main{max-width:900px;margin:0 auto;padding:18px 16px 60px}
+.box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:16px}
+.info{background:#fffaf0;border-color:#f0dfb8;font-size:.92rem}
+.levels{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-bottom:16px}
+.lv{background:#fff;border:2px solid var(--line);border-radius:12px;padding:12px;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.lv.on{border-color:var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 18%,transparent)}
+.lv b{display:block;color:var(--c)}
+.lv small{color:var(--mut);display:block}
+.bar{height:7px;background:#eef2f0;border-radius:4px;margin-top:8px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--c);width:0}
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+select,input[type=text],textarea{font:inherit;padding:8px 10px;border:1px solid #b9c7bf;border-radius:8px;background:#fff}
+label.chk{display:flex;gap:6px;align-items:center;font-size:.93rem}
+.goals{margin:0;padding-left:20px}
+.task{background:#fff;border:1px solid var(--line);border-left:5px solid var(--c);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+.task.done-ok{background:#f7fcf9}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.tag{font-size:.75rem;padding:2px 8px;border-radius:20px;background:#eef2f0;color:var(--mut)}
+.tag.lvl{background:var(--c);color:#fff}
+.tag.ph{background:var(--g2);color:var(--g)}
+.q{font-weight:600;margin:4px 0 10px}
+.q .no{color:var(--mut);font-weight:500;margin-right:4px}
+.opts{display:grid;gap:7px}
+.opt{display:flex;gap:9px;align-items:flex-start;border:1px solid var(--line);border-radius:8px;padding:8px 10px;cursor:pointer}
+.opt:hover{background:#f6faf8}
+.opt input{margin-top:4px}
+.opt.right{border-color:var(--ok);background:#eaf7ef}
+.opt.wrong{border-color:var(--bad);background:#fbeceb}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+button.b{font:inherit;border:0;border-radius:8px;padding:8px 14px;cursor:pointer;background:var(--g);color:#fff}
+button.b.sec{background:#eef2f0;color:var(--ink)}
+button.b.sm{padding:5px 10px;font-size:.88rem}
+.fb{margin-top:10px;padding:10px 12px;border-radius:8px;font-size:.95rem}
+.fb.ok{background:#eaf7ef;border:1px solid #b9e2c8}
+.fb.no{background:#fbeceb;border:1px solid #efc2bd}
+.fb.neu{background:#f3f6f4;border:1px solid var(--line)}
+.hint{margin-top:8px;font-size:.92rem;color:#6b5414;background:#fff8e6;border-radius:8px;padding:8px 10px}
+.unit{color:var(--mut)}
+textarea{width:100%;min-height:90px}
+.self{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.self button.on{outline:2px solid var(--g)}
+footer.kapfot-ob{max-width:900px;margin:0 auto;padding:0 16px 40px;color:var(--mut);font-size:.88rem}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;padding:16px}
+.modal.on{display:flex}
+.modal .box{max-width:420px}
+.empty{color:var(--mut);text-align:center;padding:30px}
+.legend{font-size:.9rem;color:var(--mut)}
+</style>
+</head>
+<body>
+<a class="tll-skip" href="#tll-main">Hopp til innhold</a>
+<nav class="tll-site-nav tll-standalone-nav" aria-label="Hovedmeny"><a href="/">Forside</a><a href="/#fag">Fagområder</a><a href="/ressursbank/">Ressursbank</a><a href="/assistent/">TLL-assistenten</a><a href="/laererrom/">Lærerrom</a><a href="/om/">Om</a></nav>
+<header><div class="wrap">
+<p style="margin:0 0 8px"><a href="../#t7" style="color:#fff">← Kap 5 Sikring av last</a></p>
+<h1>Øvelsesbank: Lastsikring ved vegtransport</h1>
+<p>Oppgaver til NLF-heftet «Lastsikring ved vegtransport» (NLF-standard 2021, etter EN 12195-1:2010).</p>
+<p><b>Ha heftet ved siden av deg</b> (<a style="color:#fff" href="https://ndla.no/r/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/lastsikringsbrosjyre/de48b28cc9" target="_blank" rel="noopener">åpne det fra NDLA</a> eller bruk papireksemplaret). Alle svarene finner du der, og sidetallet står på hver oppgave.</p>
+</div></header>
+
+<main id="tll-main" tabindex="-1">
+<div class="box info">
+<b>Slik bruker du øvelsesbanken</b>
+<ul style="margin:6px 0 0;padding-left:20px">
+<li>Start på <b>Nivå 1</b> og jobb deg oppover. Du kan bytte nivå når du vil.</li>
+<li>Bruk heftet. Prøv selv før du trykker på <i>Hint</i>.</li>
+<li>Skriv tall med komma eller punktum (for eksempel 2,4). Skriv bare tallet, uten benevning.</li>
+<li><b>Antall stropper rundes alltid OPP.</b> 2,1 stropper betyr 3 stropper.</li>
+<li><b>Lagring:</b> Svarene dine lagres bare i denne nettleseren på denne maskinen. Bruker du en delt skole-PC, kan neste elev se svarene dine. Da bør du trykke «Nullstill mine svar» når du er ferdig.</li>
+</ul>
+</div>
+
+<div class="levels" id="levels"></div>
+
+<div class="box" id="goalsBox"></div>
+
+<div class="filters">
+<select id="tema" aria-label="Velg tema"></select>
+<label class="chk"><input type="checkbox" id="onlyOpen"> Vis bare oppgaver jeg ikke har klart</label>
+<span class="legend" id="count"></span>
+</div>
+
+<div id="list"></div>
+</main>
+
+<footer class="kapfot-ob">
+<div class="row">
+<button class="b sec sm" id="reset">Nullstill mine svar</button>
+</div>
+<p>Oppgavene er laget for å brukes sammen med NLF-heftet. Heftet er ikke gjengitt her. Tabellverdiene i forklaringene er hentet fra heftet med sidehenvisning. Ved avvik gjelder heftet og gjeldende forskrift.</p>
+</footer>
+
+<div class="modal" id="modal"><div class="box">
+<p><b>Vil du slette alle svarene dine?</b><br>Dette kan ikke angres.</p>
+<div class="row"><button class="b" id="yes">Ja, nullstill</button><button class="b sec" id="no">Avbryt</button></div>
+</div></div>
+
+<script>
+const LEVELS={
+1:{name:"Nivå 1 – Bli kjent med heftet",lvl:"Nybegynner",ph:"Lær",c:"var(--n1)",
+ goals:["Etter dette nivået kan jeg finne fram i heftet ved hjelp av sidetall og overskrifter.","Etter dette nivået kan jeg forklare hva LC, Stf, H, B og L betyr.","Etter dette nivået kan jeg nevne de viktigste metodene for å sikre last."]},
+2:{name:"Nivå 2 – Les tabellene",lvl:"Nybegynner/Trygg",ph:"Øv",c:"var(--n2)",
+ goals:["Etter dette nivået kan jeg regne ut hvilke krefter lasten skal sikres mot.","Etter dette nivået kan jeg finne riktig friksjonsverdi (μ) for ulike underlag.","Etter dette nivået kan jeg lese av hvor mye én stropp sikrer i tabellene."]},
+3:{name:"Nivå 3 – Regn ut sikringen",lvl:"Trygg",ph:"Tenk",c:"var(--n3)",
+ goals:["Etter dette nivået kan jeg regne ut H/B og H/L og velge riktig rad i tabellen.","Etter dette nivået kan jeg regne ut hvor mange stropper som trengs mot glidning og tipping.","Etter dette nivået kan jeg korrigere for vinkel, blokkeringskapasitet og annet utstyr."]},
+4:{name:"Nivå 4 – Ekspert",lvl:"Ekspert",ph:"Voks",c:"var(--n4)",
+ goals:["Etter dette nivået kan jeg planlegge sikringen av et helt lass og begrunne valget av metode.","Etter dette nivået kan jeg finne feil i andres lastsikring og forklare hva som må rettes.","Etter dette nivået kan jeg bruke omregningsfaktorer og regelen for last i flere lag."]}
+};
+
+/* type: mc | num | open.  a = indeks (mc) eller tall (num). tol = toleranse */
+const T=[
+/* ---------- NIVÅ 1 ---------- */
+{n:1,t:"Bli kjent",s:"forsiden",type:"mc",q:"Hvem har gitt ut heftet?",o:["Statens vegvesen","NLF – Norges Lastebileier-Forbund","Arbeidstilsynet","Trafikksikkerhetsforeningen"],a:1,h:"Se på logoen og nettadressen på forsiden.",f:"Heftet er en NLF-standard. NLF er Norges Lastebileier-Forbund (lastebil.no)."},
+{n:1,t:"Bli kjent",s:"forsiden",type:"mc",q:"Hvilken europeisk standard bygger heftet på?",o:["EN 12195-1:2010","ISO 9001","EN 1090","EN 13414"],a:0,h:"Står under tittelen på forsiden.",f:"Heftet følger EN 12195-1:2010. Den standarden handler om beregning av lastsikring."},
+{n:1,t:"Bli kjent",s:"forsiden",type:"num",q:"Hvilket år er denne utgaven av heftet fra?",a:2021,tol:0,h:"Se på forsiden.",f:"Utgaven er fra 2021."},
+{n:1,t:"Bli kjent",s:"2",type:"mc",q:"Hvilken norsk forskrift gjelder for lastsikring ifølge heftet?",o:["Forskrift om bruk av kjøretøy § 3-2 og § 3-3","Kjøre- og hviletidsforskriften","Vegtrafikkloven § 1","Forskrift om utførelse av arbeid kap. 10"],a:0,h:"Første setning på side 2.",f:"Forskrift om bruk av kjøretøy § 3-2 og § 3-3 er den norske forskriften for lastsikring."},
+{n:1,t:"Bli kjent",s:"2",type:"mc",q:"Heftet viser til «EU BPG» flere steder. Hva er det?",o:["EUs retningslinjer for beste praksis for lastsikring på vei","En europeisk pall-standard","Et EU-krav til bremser","En app for lastberegning"],a:0,h:"Side 2: «Noen prinsipper fra EU …»",f:"EU BPG står for EU Best Practice Guidelines, altså EUs retningslinjer for god praksis ved lastsikring på vei."},
+{n:1,t:"Bli kjent",s:"2",type:"mc",q:"Hva betyr det når det står «glir ikke» eller «tipper ikke» i en tabell?",o:["Det er ingen risiko for at kolliet glir eller tipper i den retningen","Lasten er ikke lov å kjøre","Du må bruke minst én stropp","Tabellen mangler en verdi"],a:0,h:"Les nederst på side 2.",f:"«Glir ikke» og «tipper ikke» betyr at det ikke er noen risiko for at kolliet glir eller tipper i den retningen."},
+{n:1,t:"Bli kjent",s:"2",type:"mc",q:"Hvor mange siffer er verdiene i tabellene avrundet til?",o:["Maksimalt to siffer","Maksimalt ett siffer","Nøyaktig tre desimaler","De er ikke avrundet"],a:0,h:"Side 2.",f:"Alle verdier i tabellene er avrundet til maksimalt to siffer."},
+{n:1,t:"Bli kjent",s:"10–11",type:"mc",q:"På hvilke sider finner du friksjonstabellen?",o:["Side 4","Side 10–11","Side 17","Side 25"],a:1,h:"Bla til du finner overskriften «Friksjon».",f:"Friksjon står på side 10 og 11."},
+{n:1,t:"Bli kjent",s:"25",type:"mc",q:"Hvilken side forklarer merkingen på fiberstropper?",o:["Side 7","Side 12","Side 20","Side 25"],a:3,h:"Se etter «Merking av fiberstropper (EN 12195-2)».",f:"Side 25 forklarer merkingen, og side 24 viser et bilde av en merkelapp."},
+{n:1,t:"Bli kjent",s:"4",type:"mc",q:"Hvilke metoder kan brukes for å sikre gods ifølge side 4?",o:["Låsing, blokkering, direkte surring, overfallssurring eller en kombinasjon av disse","Tau, presenning og nett","Bare stropper","Bare friksjonsmatter"],a:0,h:"Les nederst på side 4.",f:"Gods skal sikres ved låsing, blokkering, direkte surring eller overfallssurring, eller ved en kombinasjon av disse."},
+{n:1,t:"Blokkering",s:"6",type:"mc",q:"Hvilken metode er den beste for lastsikring når det er mulig å bruke den?",o:["Overfallssurring","Blokkering (stengning)","Friksjonsmatte alene","Loopsurring"],a:1,h:"Overskriften på side 6.",f:"Blokkering er det beste alternativet. Lasten plasseres mot framvegg, karmer, støtter eller annen last slik at den ikke kan flytte seg."},
+{n:1,t:"Utstyr og merking",s:"3",type:"mc",q:"Hvilke verdier for stroppene er tabellene i heftet beregnet ut fra?",o:["LC 1600 daN og Stf 400 daN","LC 4000 daN og Stf 1000 daN","LC 2000 daN og Stf 50 daN","LC 1000 daN og Stf 400 daN"],a:0,h:"Side 3, «Sikringsutstyr».",f:"Tabellene forutsetter stropper med sikringskapasitet LC 1600 daN og forspenning Stf 400 daN."},
+{n:1,t:"Utstyr og merking",s:"3",type:"num",q:"Hvor stor kapasitet har surrefestene som heftet regner med?",u:"daN",a:2000,tol:0,h:"Side 3, «Surrefestene».",f:"Heftet regner med surrefester med kapasitet 2000 daN (ca. 2000 kg)."},
+{n:1,t:"Utstyr og merking",s:"3",type:"num",q:"Hvor stor håndkraft (Shf) regner heftet med at du bruker når du strammer stroppen?",u:"kg",a:50,tol:0,h:"Side 3, «Håndkraft».",f:"Heftet regner med en håndkraft på 50 kg."},
+{n:1,t:"Utstyr og merking",s:"3",type:"mc",q:"Hva må være oppfylt for stroppene under hele transporten?",o:["De må være stramme","De må byttes hver dag","De må være nye","De kan henge litt løst"],a:0,h:"Siste linje på side 3.",f:"Stroppene må være stramme under hele transporten. Etterstram underveis ved behov."},
+{n:1,t:"Bli kjent",s:"6",type:"num",q:"Figuren på side 6 viser et lass. Hvor mange lasterader har lasset?",a:2,tol:0,h:"Les teksten ved figuren.",f:"Figuren viser 2 lasterader og 6 lasteseksjoner."},
+{n:1,t:"Bli kjent",s:"6",type:"mc",q:"Hva er en lasteseksjon?",o:["En gruppe kolli som står ved siden av hverandre på tvers av planet og sikres sammen","Hele lasteplanet","Én enkelt stropp","Avstanden mellom to surrefester"],a:0,h:"Se figuren på side 6 med 6 lasteseksjoner og 2 lasterader.",f:"En lasteseksjon er en «skive» av lasset på tvers av planet. Lasteradene går på langs. Ofte sikres hver seksjon for seg."},
+{n:1,t:"Tipping",s:"12",type:"mc",q:"Hva står H, B og L for i tipptabellene?",o:["Høyde, bredde og lengde","Hjul, bremse og last","Halvdel, bunn og lengde","Høyre, bak og langs"],a:0,h:"Side 12.",f:"H er høyde, B er bredde og L er lengde. Du bruker dem til å regne ut H/B og H/L."},
+{n:1,t:"Bli kjent",s:"27",type:"mc",q:"Hvilke to apper for lastsikring nevner heftet?",o:["TYA Lastsikring og MariTerm ReadyLash","Vegvesen-appen og Yr","Truckappen og Lastpro","Google Maps og Waze"],a:0,h:"Side 27, «Mer informasjon om lastsikring».",f:"TYA Lastsikring og ReadyLash fra MariTerm AB."},
+{n:1,t:"Overfallssurring",s:"bakside",type:"mc",q:"Hva viser figuren på baksiden av heftet?",o:["Vinkler for overfallssurring","Riktig dekktrykk","Kart over vektstasjoner","Hvordan du knyter en knute"],a:0,h:"Snu heftet.",f:"Baksiden viser vinklene for overfallssurring: 75–90° gir tabellverdiene, 30–75° gir halv verdi, og under 30° skal du velge en annen metode."},
+{n:1,t:"Bli kjent",s:"hele heftet",type:"open",q:"Bla gjennom heftet og lag din egen innholdsfortegnelse med minst 10 temaer og sidetall. Hvilket tema tror du blir vanskeligst? Hvorfor?",f:"Eksempel: Forskrift og forutsetninger (2–3) · Krefter lasten skal tåle (4) · Kantprofiler (5) · Blokkering (6–7) · Hvordan velge metode (8) · Gods uten stropper (9) · Friksjon (10–11) · Tipping, H/B og H/L (12–13) · Overfallssurring (14–15) · Loopsurring (16–17) · Grimesurring (18–19) · Direktesurring (20–21) · Omregningsfaktorer (22–23) · Merking av stropper (24–25) · Last i flere lag (26) · Apper og dokumenter (27)."},
+
+/* ---------- NIVÅ 2 ---------- */
+{n:2,t:"Krefter",s:"4",type:"num",q:"Hvor mange prosent av lastens vekt skal lastsikringen tåle fremover?",u:"%",a:80,tol:0,h:"Side 4.",f:"80 % fremover (vekt × 0,8)."},
+{n:2,t:"Krefter",s:"4",type:"num",q:"Hvor mange prosent av lastens vekt skal lastsikringen tåle til sidene?",u:"%",a:50,tol:0,h:"Side 4.",f:"50 % til sidene (vekt × 0,5)."},
+{n:2,t:"Krefter",s:"4",type:"num",q:"Hvor mange prosent av lastens vekt skal lastsikringen tåle bakover?",u:"%",a:50,tol:0,h:"Side 4.",f:"50 % bakover (vekt × 0,5)."},
+{n:2,t:"Krefter",s:"4",type:"num",q:"Lasten veier 10 tonn. Hvor mange tonn skal sikringen tåle fremover?",u:"tonn",a:8,tol:0.01,h:"Vekt × 0,8",f:"10 × 0,8 = 8 tonn."},
+{n:2,t:"Krefter",s:"4",type:"num",q:"Lasten veier 7 tonn. Hvor mange tonn skal sikringen tåle sideveis?",u:"tonn",a:3.5,tol:0.01,h:"Vekt × 0,5",f:"7 × 0,5 = 3,5 tonn."},
+{n:2,t:"Krefter",s:"4",type:"mc",q:"Hvorfor må sikringen tåle mer fremover enn bakover?",o:["Ved kraftig nedbremsing presses lasten fremover med større kraft enn ved akselerasjon","Fordi lasten alltid står lenger bak","Fordi bakkarmen er sterkere","Det er ingen forskjell"],a:0,h:"Tenk på hva som skjer med lasten når du bråbremser.",f:"Ved nødbrems blir kraften fremover størst. Derfor skal sikringen tåle 0,8 × vekten fremover og 0,5 × vekten bakover og til sidene."},
+{n:2,t:"Friksjon",s:"10",type:"mc",q:"Hva er friksjon?",o:["Motstanden mot bevegelse mellom godset og underlaget","Hvor mye stroppen strekker seg","Vekten av godset","Kraften i strammeren"],a:0,h:"Første setning på side 10.",f:"Friksjon er motstanden mot bevegelse mellom godset og underlaget. Høy friksjon gir mindre fare for glidning."},
+{n:2,t:"Friksjon",s:"10",type:"num",q:"Hva er friksjonen (μ) for saget tre/trepall mot plywood?",a:0.45,tol:0.001,h:"Tabellen «Saget tre/trepall».",f:"μ = 0,45"},
+{n:2,t:"Friksjon",s:"11",type:"num",q:"Hva er friksjonen (μ) for plastpall mot riflet aluminium?",a:0.15,tol:0.001,h:"Tabellen «Plastpaller».",f:"μ = 0,15. Det er svært glatt."},
+{n:2,t:"Friksjon",s:"11",type:"num",q:"Hva er friksjonen (μ) for stål mot rustfri stålplate?",a:0.2,tol:0.001,h:"Tabellen «Stål mot plater».",f:"μ = 0,20"},
+{n:2,t:"Friksjon",s:"11",type:"num",q:"Hvilken friksjon (μ) gir et friksjonsmellomlegg av gummi?",a:0.6,tol:0.001,h:"«Friksjonsmellomlegg».",f:"Gummi gir μ = 0,60."},
+{n:2,t:"Friksjon",s:"10",type:"num",q:"Du vet ikke hvilken friksjon du har. Hvilken μ skal du bruke?",a:0.2,tol:0.001,h:"Side 10, nederst i teksten.",f:"Er du usikker på friksjonen, skal du bruke μ = 0,2."},
+{n:2,t:"Friksjon",s:"10–11",type:"mc",q:"Hvilken kombinasjon har lavest friksjon?",o:["Plastpall mot rustfri stålplate","Saget trepall mot plywood","Stål mot plywood","Slett betong mot tre"],a:0,h:"Sammenlign verdiene i tabellen.",f:"Plastpall mot rustfri stålplate har μ = 0,15. Det er lavest av alternativene."},
+{n:2,t:"Friksjon",s:"10",type:"mc",q:"Friksjonsverdiene i tabellen gjelder bare når …",o:["flatene er rene og frie for frost, is og snø","lasten veier under 5 tonn","stroppene er nye","det er sommer"],a:0,h:"Side 10.",f:"Flatene må være rene og frie for frost, is og snø. Vær også spesielt oppmerksom på oljete flater."},
+{n:2,t:"Friksjon",s:"11",type:"mc",q:"Hvilket underlag gir høyest friksjon mot tre?",o:["Grov betongoverflate","Slett betongoverflate","Plastpall","Høvlet treverk"],a:0,h:"Se avsnittet «Betong».",f:"Grov betongoverflate mot tre har μ = 0,7."},
+{n:2,t:"Blokkering",s:"7",type:"num",q:"Blokkering: Hvor mange tonn gods kan sikres sideveis mot en anordning med BC 1000 daN når μ = 0,30?",u:"tonn",a:5.1,tol:0.01,h:"Tabellen på side 7. Finn μ 0,30 i kolonnen «Sideveis».",f:"5,1 tonn."},
+{n:2,t:"Blokkering",s:"7",type:"num",q:"Hvilken blokkeringskapasitet (BC) har framveggen på et L-kjøretøy?",u:"daN",a:5000,tol:0,h:"Side 7, «Blokkeringskapasiteter».",f:"Framveggen på et L-kjøretøy har BC 5000 daN (faktor 5)."},
+{n:2,t:"Blokkering",s:"7",type:"num",q:"Hvilken blokkeringskapasitet (BC) har bakkarmen på et L-kjøretøy?",u:"daN",a:3500,tol:0,h:"Side 7.",f:"Bakkarmen har BC 3500 daN (faktor 3,5)."},
+{n:2,t:"Overfallssurring",s:"14",type:"num",q:"Overfallssurring med vinkel 75–90°, μ = 0,40. Hvor mange tonn sikrer én stropp mot å gli sideveis?",u:"tonn",a:2.9,tol:0.01,h:"Tabellen «Overfallssurring … GLI», side 14.",f:"2,9 tonn per stropp."},
+{n:2,t:"Overfallssurring",s:"14",type:"num",q:"Samme situasjon (overfall, μ = 0,40). Hvor mange tonn sikrer én stropp mot å gli fremover?",u:"tonn",a:0.63,tol:0.005,h:"Samme tabell, kolonnen «Fremover».",f:"0,63 tonn. Overfallssurring sikrer lite fremover. Derfor bør lasten heller blokkeres fremover."},
+{n:2,t:"Overfallssurring",s:"14",type:"mc",q:"Vinkelen mellom overfallsstroppen og lasteplanet er 50°. Hva gjør du?",o:["Halverer verdiene i tabellen (eller dobler antall stropper)","Bruker tabellen som den er","Velger en annen metode","Ganger med 0,85"],a:0,h:"Side 14 og baksiden.",f:"Er vinkelen mellom 30° og 75°, halverer du tabellverdiene."},
+{n:2,t:"Overfallssurring",s:"14",type:"mc",q:"Vinkelen mellom overfallsstroppen og lasteplanet er 20°. Hva gjør du?",o:["Halverer tabellverdiene","Bruker tabellen som den er","Velger en annen sikringsmetode","Dobler tabellverdiene"],a:2,h:"Side 14.",f:"Er vinkelen under 30°, skal du velge en annen metode. Da har stroppen for liten nedoverrettet kraft."},
+{n:2,t:"Loopsurring",s:"16",type:"num",q:"Hvor mange loopsurringspar skal lasten minst sikres med?",a:2,tol:0,h:"Side 16, store bokstaver.",f:"Lasten skal ALLTID sikres med to loopsurringspar. En loopsurring består av to stropper."},
+{n:2,t:"Loopsurring",s:"17",type:"num",q:"Hvor mange tonn sikrer ett loopsurringspar mot å gli sideveis når μ = 0,25?",u:"tonn",a:6.2,tol:0.01,h:"Tabellen øverst på side 17.",f:"6,2 tonn."},
+{n:2,t:"Grimesurring",s:"18",type:"num",q:"Hvor mange grader kan vinkelen mellom grimestroppen og lasteplanet høyst være?",u:"grader",a:45,tol:0,h:"Side 18.",f:"Høyst 45°."},
+{n:2,t:"Grimesurring",s:"19",type:"num",q:"Hvor mange tonn sikrer én grimesurring mot å gli fremover når μ = 0,30?",u:"tonn",a:4.9,tol:0.01,h:"Side 19.",f:"4,9 tonn."},
+{n:2,t:"Direktesurring",s:"20",type:"mc",q:"Hvilken vinkel skal direktesurringen ha på langs, på tvers og i høyden?",o:["Mellom 30° og 60°","Mellom 75° og 90°","Under 30°","Nøyaktig 45°"],a:0,h:"Side 20.",f:"Mellom 30° og 60°. Da hindrer surringen både tipping og glidning på langs og på tvers."},
+{n:2,t:"Direktesurring",s:"21",type:"num",q:"Hvor mange tonn sikrer én direktesurring mot å gli fremover når μ = 0,30?",u:"tonn",a:1.3,tol:0.01,h:"Tabellen «Direktesurring … GLI».",f:"1,3 tonn."},
+{n:2,t:"Utstyr og merking",s:"24",type:"num",q:"Se på merkelappen på side 24. Hva er stroppens LC?",u:"daN",a:1700,tol:0,h:"LC = Lashing Capacity.",f:"LC 1700 daN."},
+{n:2,t:"Utstyr og merking",s:"24–25",type:"mc",q:"Hvilket tall på merkelappen må du IKKE forveksle med LC?",o:["4000 (bruddstyrke, NO/SE)","1700","400","60"],a:0,h:"Les NB-avsnittet på side 25.",f:"I Norge står ofte bruddstyrken (4000 kg) på stroppen. Den er ikke det samme som sikringskapasiteten LC. Bruker du bruddstyrken, regner du med altfor høy kapasitet."},
+{n:2,t:"Utstyr og merking",s:"25",type:"mc",q:"Hva betyr STF på merkelappen?",o:["Spennkraften (forspenningen) du oppnår når du bruker den oppgitte håndkraften SHF","Bruddstyrken","Stroppens lengde","Maks håndkraft"],a:0,h:"Side 25.",f:"STF er spennkraften i stroppen når du strammer med den oppgitte håndkraften SHF."},
+{n:2,t:"Utstyr og merking",s:"24",type:"num",q:"Merkelappen på side 24 oppgir en annen håndkraft (SHF) enn heftet regner med. Hvor mange kg står det på lappen?",u:"kg",a:60,tol:0,h:"Se etter S HF.",f:"SHF 60 kg. Heftet regner med 50 kg (side 3)."},
+{n:2,t:"Utstyr og merking",s:"25",type:"mc",q:"Hvilke opplysninger på merkelappen er IKKE krav i Norge?",o:["Lengde (LGL) og forlengelse (elongation)","LC","STF","Materialtype"],a:0,h:"Side 25: «Ikke krav i Norge».",f:"Lengde (LGL) og elongation er ikke krav i Norge."},
+{n:2,t:"Grunnlag",s:"3",type:"num",q:"Et rullende kolli har radius 45 cm. Hvor høy må klossen minst være?",u:"cm",a:15,tol:0.01,h:"Minst 1/3 av radien.",f:"45 / 3 = 15 cm."},
+{n:2,t:"Grunnlag",s:"5",type:"mc",q:"Hva kan kantprofiler lages av ifølge heftet?",o:["Treplanker på 20 × 100 mm eller annet materiale med tilsvarende styrke","Papp","Plastfolie","Tau"],a:0,h:"Side 5.",f:"Treplanker på 20 × 100 mm eller annet materiale med tilsvarende styrke."},
+{n:2,t:"Grunnlag",s:"5",type:"mc",q:"Hvorfor bruker man kantprofiler?",o:["For å fordele effekten av én stropp over flere seksjoner, slik at du trenger færre stropper","For at lasten skal se penere ut","For å øke friksjonen mot planet","For å slippe å stramme stroppene"],a:0,h:"Side 5.",f:"Kantprofilen fordeler kraften fra stroppen over flere seksjoner. Da trenger du ikke én stropp per seksjon. Heftet krever likevel minst én stropp i hver ende og en stropp på annenhver seksjon."},
+{n:2,t:"Grunnlag",s:"9",type:"num",q:"EU BPG anbefaler én surring per hvor mange tonn gods for å hindre at lasten «vandrer» under kjøring?",u:"tonn",a:4,tol:0,h:"Side 9.",f:"Én surring per 4 tonn gods. Lasten kan bevege seg på grunn av risting selv om tabellene sier at den ikke glir eller tipper."},
+{n:2,t:"Grunnlag",s:"8",type:"mc",q:"Du har regnet ut antall stropper for glidning og tipping i alle retninger med samme metode. Hvilket tall bruker du?",o:["Det høyeste antallet","Gjennomsnittet","Det laveste antallet","Summen av alle"],a:0,h:"Siste punkt på side 8.",f:"Du bruker det høyeste antallet."},
+{n:2,t:"Tipping",s:"12",type:"mc",q:"Hva forteller H/B om et kolli?",o:["Hvor lett det tipper sideveis. Høy og smal last har høy H/B og tipper lettere","Hvor tungt kolliet er","Hvor glatt underlaget er","Hvor mange stropper du har"],a:0,h:"Høyden delt på bredden.",f:"Jo høyere H/B, desto høyere og smalere er kolliet, og desto lettere tipper det sideveis."},
+
+/* ---------- NIVÅ 3 ---------- */
+{n:3,t:"Krefter",s:"4",type:"num",q:"Et lass veier 24 tonn. Hvor mange tonn skal sikringen tåle fremover?",u:"tonn",a:19.2,tol:0.01,h:"24 × 0,8",f:"24 × 0,8 = 19,2 tonn."},
+{n:3,t:"Tipping",s:"12",type:"num",q:"Et kolli er 1,6 m høyt og 1,2 m bredt og står i én rad. Regn ut H/B (to desimaler).",a:1.33,tol:0.01,h:"H delt på B.",f:"1,6 / 1,2 = 1,33"},
+{n:3,t:"Tipping",s:"15",type:"mc",q:"Du har regnet ut H/B = 1,33. Hvilken rad i tipptabellen bruker du?",o:["1,4 (runder opp)","1,2 (runder ned)","1,3","1,0"],a:0,h:"Hvilken rad gir den sikreste verdien?",f:"Du runder opp til nærmeste høyere tabellverdi, altså 1,4. Høyere H/B gir lavere kapasitet per stropp, så det er det sikreste valget."},
+{n:3,t:"Tipping",s:"15",type:"num",q:"Kolli: H = 2,0 m, B = 0,8 m, én rad, overfallssurring 75–90°. Hvor mange tonn sikrer én stropp mot å tippe sideveis?",u:"tonn",a:2.4,tol:0.01,h:"H/B = 2,5. Rund opp til 2,6. Les av i kolonnen «1 rad».",f:"H/B = 2,0 / 0,8 = 2,5. Du runder opp til 2,6, og tabellen gir 2,4 tonn per stropp."},
+{n:3,t:"Tipping",s:"15",type:"num",q:"Samme kolli (H/B 2,5, én rad) veier 6 tonn. Hvor mange overfallsstropper trengs mot sideveis tipping?",u:"stropper",a:3,tol:0,h:"6 / 2,4 og rund opp.",f:"6 / 2,4 = 2,5, som rundes opp til 3 stropper."},
+{n:3,t:"Tipping",s:"15",type:"num",q:"En lasteseksjon med 2 rader er 1,8 m høy og 1,6 m bred. Hvor mange tonn sikrer én overfallsstropp mot å tippe sideveis?",u:"tonn",a:4.1,tol:0.01,h:"H/B = 1,125. Rund opp til 1,2. Les av i kolonnen «2 rader».",f:"H/B = 1,8 / 1,6 = 1,125. Du runder opp til 1,2, og kolonnen «2 rader» gir 4,1 tonn."},
+{n:3,t:"Overfallssurring",s:"11, 14",type:"num",q:"4 tonn last på plastpaller står på riflet aluminium. Du bruker overfallssurring (75–90°). Hvor mange stropper trengs mot å gli sideveis?",u:"stropper",a:13,tol:0,h:"Finn μ på side 11, og les deretter av tabellen på side 14.",f:"μ = 0,15, som gir 0,31 tonn per stropp. 4 / 0,31 = 12,9, altså 13 stropper. Det er urealistisk. Bruk heller friksjonsmatte eller blokkering."},
+{n:3,t:"Overfallssurring",s:"11, 14",type:"num",q:"Samme last (4 t), men nå med gummimatte under (μ = 0,60). Hvor mange overfallsstropper trengs mot å gli fremover?",u:"stropper",a:3,tol:0,h:"μ 0,60, kolonnen «Fremover».",f:"Fremover gir tabellen 1,9 tonn per stropp. 4 / 1,9 = 2,1, altså 3 stropper. Sideveis glir lasten ikke."},
+{n:3,t:"Overfallssurring",s:"10, 14",type:"num",q:"3 tonn gods på ukjent underlag (du vet ikke friksjonen). Overfallssurring 75–90°. Hvor mange stropper trengs mot å gli sideveis?",u:"stropper",a:7,tol:0,h:"Ukjent friksjon: μ = 0,2.",f:"μ = 0,20 gir 0,48 tonn per stropp. 3 / 0,48 = 6,25, altså 7 stropper."},
+{n:3,t:"Overfallssurring",s:"14",type:"num",q:"5 tonn, μ = 0,45, overfallssurring med vinkel 60°. Hvor mange stropper trengs mot å gli sideveis?",u:"stropper",a:2,tol:0,h:"Vinkel 30–75°: halver tabellverdien.",f:"Tabellen gir 6,4 tonn. Halvert blir det 3,2 tonn per stropp. 5 / 3,2 = 1,56, altså 2 stropper."},
+{n:3,t:"Overfallssurring",s:"14",type:"num",q:"6 tonn på trepaller mot plywood, overfallssurring (75–90°) og ingen blokkering fremover. Hvor mange stropper trengs mot å gli fremover?",u:"stropper",a:8,tol:0,h:"μ 0,45, kolonnen «Fremover».",f:"Tabellen gir 0,81 tonn per stropp. 6 / 0,81 = 7,4, altså 8 stropper. Dette viser hvorfor du bør blokkere fremover."},
+{n:3,t:"Blokkering",s:"7",type:"num",q:"L-kjøretøy med μ = 0,30. Hvor mange tonn kan blokkeres fremover mot framveggen?",u:"tonn",a:10,tol:0.01,h:"Tabellverdien fremover × faktor 5.",f:"Tabellen gir 2,0 tonn. 2,0 × 5 = 10 tonn."},
+{n:3,t:"Blokkering",s:"7",type:"mc",q:"Du skal frakte 12 tonn med μ = 0,30, blokkert bare mot framveggen på et L-kjøretøy. Holder det?",o:["Nei. Framveggen holder bare 10 tonn, så du trenger mer sikring, for eksempel friksjonsmatte","Ja, framveggen holder alt","Ja, hvis du kjører sakte","Det kommer an på været"],a:0,h:"Se forrige oppgave.",f:"Nei, framveggen holder 2,0 × 5 = 10 tonn. Med gummimatte (μ 0,60) blir det 5,1 × 5 = 25,5 tonn, og da holder det."},
+{n:3,t:"Blokkering",s:"7",type:"num",q:"L-kjøretøy med μ = 0,30. Hvor mange tonn kan blokkeres bakover mot bakkarmen (to desimaler)?",u:"tonn",a:17.85,tol:0.05,h:"Tabellverdien bakover × 3,5.",f:"5,1 × 3,5 = 17,85 tonn."},
+{n:3,t:"Blokkering",s:"7",type:"num",q:"XL-kjøretøy: Framveggen har en testkapasitet på 12 000 daN. Hvilken BC kan du regne med?",u:"daN",a:6000,tol:0,h:"Framvegg XL: 50 % av testkapasiteten.",f:"12 000 × 0,5 = 6000 daN."},
+{n:3,t:"Blokkering",s:"7",type:"num",q:"XL-kjøretøy: Bakkarmen har en testkapasitet på 10 000 daN. Hvilken BC kan du regne med?",u:"daN",a:3000,tol:0,h:"Bakkarm XL: 30 % av testkapasiteten.",f:"10 000 × 0,3 = 3000 daN."},
+{n:3,t:"Loopsurring",s:"17",type:"num",q:"8 tonn, μ = 0,30, loopsurring. Hvor mange loopsurringspar trengs mot å gli sideveis?",u:"par",a:2,tol:0,h:"Regn ut, men husk minstekravet.",f:"7,3 tonn per par. 8 / 7,3 = 1,1, som rundes opp til 2 par. Det oppfyller også kravet om minst to par."},
+{n:3,t:"Loopsurring",s:"17",type:"num",q:"20 tonn, μ = 0,20, loopsurring. Hvor mange par trengs mot å gli sideveis?",u:"par",a:4,tol:0,h:"5,4 tonn per par.",f:"20 / 5,4 = 3,7, altså 4 par."},
+{n:3,t:"Loopsurring",s:"17",type:"num",q:"Loopsurringen festes i SAMME surrefeste. Stroppene har LC 1600 daN. Hvor mye må surrefestet minst tåle?",u:"daN",a:2240,tol:0,h:"Stroppens LC × 1,4",f:"1600 × 1,4 = 2240 daN. Heftet regner med surrefester på 2000 daN, så et vanlig feste er for svakt til dette."},
+{n:3,t:"Grimesurring",s:"19",type:"num",q:"10 tonn, μ = 0,20, grimesurring. Hvor mange grimer trengs mot å gli fremover?",u:"grimer",a:3,tol:0,h:"4,1 tonn per grime.",f:"10 / 4,1 = 2,4, altså 3 grimer."},
+{n:3,t:"Grimesurring",s:"19",type:"num",q:"Grime med μ = 0,20 fremover, men vinkelen sideveis er 20°. Hvor mange tonn sikrer grimen nå (to desimaler)?",u:"tonn",a:3.485,tol:0.01,h:"Vinkel 5–30°: tabellverdien × 0,85.",f:"4,1 × 0,85 = 3,49 tonn."},
+{n:3,t:"Grimesurring",s:"19",type:"num",q:"10 tonn, μ = 0,20, grime fremover med sidevinkel 40°. Hvor mange grimer trengs?",u:"grimer",a:4,tol:0,h:"Vinkel 30–45°: × 0,70.",f:"4,1 × 0,70 = 2,87 tonn per grime. 10 / 2,87 = 3,5, altså 4 grimer."},
+{n:3,t:"Grimesurring",s:"18–19",type:"num",q:"Grimen har to parter per side (som på figuren på side 18). μ = 0,20, 10 tonn, fremover. Hvor mange slike grimer trengs?",u:"grimer",a:2,tol:0,h:"To parter per side sikrer dobbelt så mye.",f:"4,1 × 2 = 8,2 tonn per grime. 10 / 8,2 = 1,2, altså 2 grimer."},
+{n:3,t:"Grimesurring",s:"18–19",type:"num",q:"Grime mot tipping fremover, H/L = 2,0. Grimen sitter bare halvveis oppe på godset. Hvor mange tonn sikrer den?",u:"tonn",a:7.5,tol:0.01,h:"Tabellen gir 15 tonn. Hva skjer når grimen sitter halvveis oppe?",f:"Halvveis oppe sikrer grimen halvparten: 15 / 2 = 7,5 tonn."},
+{n:3,t:"Direktesurring",s:"11, 21",type:"num",q:"En stålmaskin på 7 tonn står på plywood. Hvor mange direktesurringer trengs mot å gli fremover?",u:"surringer",a:4,tol:0,h:"Stål mot plywood: μ 0,45. Les av kolonnen «Fremover».",f:"Tabellen gir 1,9 tonn per surring. 7 / 1,9 = 3,7, altså 4 surringer."},
+{n:3,t:"Omregning",s:"22",type:"num",q:"Du bruker overfallsstropper med Stf 300 daN. Hva blir omregningsfaktoren mot å gli?",a:0.75,tol:0.001,h:"Aktuell Stf / 400",f:"300 / 400 = 0,75. Hver stropp sikrer da bare 75 % av tabellverdien."},
+{n:3,t:"Omregning",s:"22",type:"num",q:"Overfallsstropp med LC 2500 daN og Stf 500 daN. Hva blir omregningsfaktoren mot å TIPPE?",a:1.25,tol:0.001,h:"Den minste av Stf/400 og LC/1600.",f:"500 / 400 = 1,25 og 2500 / 1600 = 1,56. Den minste verdien gjelder, altså 1,25."},
+{n:3,t:"Omregning",s:"22",type:"num",q:"Du har en kjetting med bruddstyrke 8000 daN, men LC er ikke oppgitt. Hvilken LC kan du regne med?",u:"daN",a:4000,tol:0,h:"Se den gule boksen på side 22.",f:"LC kan settes til 50 % av bruddstyrken: 8000 × 0,5 = 4000 daN."},
+{n:3,t:"Overfallssurring",s:"15",type:"num",q:"En seksjon med 3 rader er 1,5 m høy og 2,4 m bred. Hvor mange tonn sikrer én overfallsstropp mot å tippe sideveis?",u:"tonn",a:4.9,tol:0.01,h:"H/B = 0,625. Rund opp til 0,8.",f:"H/B 0,625 rundes opp til 0,8. Kolonnen «3 rader» gir 4,9 tonn."},
+{n:3,t:"Grunnlag",s:"3",type:"num",q:"Et rullende kolli har radius 90 cm. Surring hindrer at det ruller over klossen. Hvor høy trenger klossen å være?",u:"cm",a:20,tol:0,h:"1/3 av radien er 30 cm, men les resten av avsnittet.",f:"Når surring hindrer kolliet i å rulle over klossen, trenger ikke klossen være høyere enn 20 cm. Uten surring måtte den vært 30 cm."},
+
+/* ---------- NIVÅ 4 ---------- */
+{n:4,t:"Omregning",s:"22–23",type:"num",q:"Direktesurring med kjetting som har LC 5000 daN. Surrefestene tåler 2000 daN. Hvilken omregningsfaktor bruker du?",a:1.25,tol:0.001,h:"NB på side 22: kapasiteten til surrefestene må ikke overskrides.",f:"Surrefestet begrenser til 2000 daN. 2000 / 1600 = 1,25. Kjettingen hjelper ikke når festet er svakere."},
+{n:4,t:"Omregning",s:"14, 22",type:"num",q:"Overfallsstropp med Stf 600 daN, μ = 0,35. Hvor mange tonn sikrer én stropp mot å gli sideveis (to desimaler)?",u:"tonn",a:2.55,tol:0.01,h:"Faktor = Stf / 400. Tabellverdien finner du på side 14.",f:"Faktoren er 600 / 400 = 1,5. 1,7 × 1,5 = 2,55 tonn."},
+{n:4,t:"Omregning",s:"22",type:"num",q:"Overfallsstropp med LC 1600 daN og Stf 600 daN. Hvilken omregningsfaktor gjelder mot TIPPING?",a:1,tol:0.001,h:"Den minste av Stf/400 og LC/1600.",f:"600 / 400 = 1,5, men 1600 / 1600 = 1,0. Den minste gjelder, altså 1,0. Høy forspenning hjelper ikke mot tipping når LC er lav."},
+{n:4,t:"Omregning",s:"21–23",type:"num",q:"Direktesurring med stropper som har LC 2000 daN. Stål mot riflet aluminium. 9 tonn maskin. Hvor mange surringer trengs mot å gli fremover?",u:"surringer",a:6,tol:0,h:"Finn μ, les av tabellen og gang med LC/1600.",f:"μ = 0,30 gir 1,3 tonn fremover. Faktoren er 2000 / 1600 = 1,25, så hver surring sikrer 1,625 tonn. 9 / 1,625 = 5,5, altså 6 surringer."},
+{n:4,t:"Direktesurring",s:"11, 21",type:"num",q:"En maskin på 9 tonn, stål mot riflet aluminium, direktesurring (LC 1600). Hvor mange surringer trengs på hver side mot å gli sideveis?",u:"surringer",a:4,tol:0,h:"μ 0,30, kolonnen «Sideveis».",f:"2,6 tonn per surring. 9 / 2,6 = 3,5, altså 4 surringer per side."},
+{n:4,t:"Direktesurring",s:"20",type:"mc",q:"I forrige oppgave trengte du 4 direktesurringer i samme retning. Hva advarer heftet om?",o:["Flere enn to surringer i en retning virker ikke alltid samtidig, og da kan sikringen bli underdimensjonert","Det er forbudt med mer enn to","Flere surringer dobler kapasiteten","Det er ingen problemer med det"],a:0,h:"Side 20.",f:"Surringene virker ikke alltid samtidig, så det er fare for underdimensjonering. Vurder blokkering, friksjonsmatte eller sterkere utstyr."},
+{n:4,t:"Flere lag",s:"10, 14–15, 26",type:"num",q:"En seksjon med én rad og to pallelag (2 + 2 tonn) har trepall mot plywood i bunnen. Mellom lagene står trepall mot krympefilm. H = 2,4 m og B = 0,8 m. Hvor mange overfallsstropper (75–90°) trengs sideveis? Bruk de tre stegene på side 26.",u:"stropper",a:3,tol:0,h:"1) Hele seksjonen glir (μ 0,45). 2) Øvre lag glir (μ 0,30). 3) Hele seksjonen tipper (H/B). Velg det høyeste svaret.",f:"Steg 1: 4 / 6,4 = 0,6, altså 1 stropp. Steg 2: 2 / 1,1 = 1,8, altså 2 stropper. Steg 3: H/B = 3,0, og «1 rad» gir 1,4 tonn. 4 / 1,4 = 2,9, altså 3 stropper. Det høyeste svaret er 3 stropper."},
+{n:4,t:"Grimesurring",s:"18–19",type:"num",q:"Grimesurring bakover med μ = 0,40. Grimen har to parter per side, og sidevinkelen er 20°. Hvor mange tonn sikrer grimen?",u:"tonn",a:25.5,tol:0.05,h:"Tabellverdi × 2 (to parter) × 0,85 (vinkel).",f:"15 × 2 × 0,85 = 25,5 tonn."},
+{n:4,t:"Grunnlag",s:"8",type:"num",q:"En sjåfør har regnet ut at han trenger 2 stropper mot glidning sideveis, 6 mot glidning fremover og 3 mot tipping sideveis (samme metode). Hvor mange stropper må han bruke?",u:"stropper",a:6,tol:0,h:"Side 8.",f:"Han må bruke det høyeste antallet, altså 6. Et smartere valg er å blokkere fremover. Da faller kravet på 6 bort, og han trenger 3 stropper."},
+{n:4,t:"Feilsøking",s:"25",type:"mc",q:"Feilsøk: En sjåfør sier: «Stroppen min tåler 4000 kg, så jeg trenger færre stropper enn tabellen sier.» Hva er feil?",o:["Han forveksler bruddstyrken med sikringskapasiteten LC","Ingenting, det stemmer","Han burde bruke 2000 kg","Stropper tåler aldri over 1000 kg"],a:0,h:"NB-avsnittet på side 25.",f:"4000 kg er bruddstyrken. Den sier ikke hva stroppen kan brukes til ved sikring. Du skal regne med LC, for eksempel 1600 daN, og bruke Stf og omregningsfaktorene."},
+{n:4,t:"Feilsøking",s:"10",type:"mc",q:"Feilsøk: Det er januar og is på lasteplanet. Kollegaen din bruker μ = 0,45 fordi «plywood er jo ru». Hva gjør du?",o:["Sier fra: Tabellverdiene gjelder bare for rene flater uten is og snø. Planet må gjøres rent, ellers må dere regne med lav friksjon","Ingenting, plywood er alltid 0,45","Bruker 0,60 fordi det er kaldt","Bruker bare én stropp ekstra"],a:0,h:"Side 10.",f:"Friksjonsverdiene forutsetter rene flater uten frost, is og snø. Fjern isen eller bruk friksjonsmatte. Er du usikker, skal du bruke μ = 0,2."},
+{n:4,t:"Feilsøking",s:"14",type:"mc",q:"Feilsøk: En lav kasse er overfallssurret, og stroppen danner bare 25° med lasteplanet. Sjåføren har brukt tabellverdiene uten justering. Hva er riktig?",o:["Han må velge en annen metode. Under 30° fungerer ikke overfallssurring","Han må halvere verdiene","Det er riktig gjort","Han må gange med 0,85"],a:0,h:"Side 14.",f:"Under 30° skal du velge en annen metode, for eksempel blokkering eller direktesurring."},
+{n:4,t:"Feilsøking",s:"16–17",type:"mc",q:"Feilsøk: Et tungt kolli er sikret sideveis med ett loopsurringspar, og ifølge tabellen holder det. Er sikringen godkjent?",o:["Nei. Lasten skal alltid sikres med minst to loopsurringspar","Ja, tabellen holder","Ja, hvis stroppene er nye","Nei, loopsurring er ikke lov"],a:0,h:"Side 16.",f:"Heftet krever ALLTID to loopsurringspar. Er det flere seksjoner som støtter hverandre, kan ett par per seksjon være nok."},
+{n:4,t:"Feilsøking",s:"22",type:"mc",q:"Feilsøk: En sjåfør bruker kjettinger med LC 5000 daN i surrefester på 2000 daN og regner med faktor 3,1. Hva er feil?",o:["Surrefestets kapasitet kan ikke overskrides, så faktoren blir høyst 2000/1600 = 1,25","Ingenting","Han skulle brukt faktor 5","Kjetting kan ikke brukes"],a:0,h:"NB på side 22.",f:"Det svakeste leddet bestemmer. Kapasiteten til surrefestene må ikke overskrides."},
+{n:4,t:"Helhetlige case",s:"4–9, 14–15",type:"open",q:"CASE: Du skal laste 12 europaller med maling, 500 kg per pall (6 tonn totalt), på et L-kjøretøy med plywoodplan. Pallene står 3 i bredden (seksjonen er 2,4 m bred) i 4 seksjoner, og de er 1,6 m høye. Lasset står tett mot framveggen, men det er luft bak og på sidene. Du bruker overfallsstropper (LC 1600 / Stf 400, 75–90°).\n\na) Hvilke krefter skal lasset tåle i hver retning?\nb) Holder blokkeringen mot framveggen?\nc) Hvor mange stropper trengs mot glidning og tipping sideveis per seksjon?\nd) Hvor mange stropper bruker du totalt? Begrunn svaret og vis til sidetall i heftet.",f:"a) Fremover 6 × 0,8 = 4,8 t. Sideveis og bakover 6 × 0,5 = 3 t (s. 4).\nb) Trepall mot plywood gir μ 0,45 (s. 10). Fremover gir tabellen 2,9 t per 1000 daN, og 2,9 × 5 = 14,5 t. Det er mer enn 6 t, så blokkeringen holder (s. 7).\nc) Hver seksjon veier 1,5 t. Glidning sideveis: μ 0,45 gir 6,4 t per stropp, så 1 stropp per seksjon holder (s. 14). Tipping: H/B = 1,6 / 2,4 = 0,67, som rundes opp til 0,8. Kolonnen «3 rader» gir 4,9 t per stropp, så 1 stropp holder (s. 15). Bakover: μ 0,45 gir 6,4 t, så det holder.\nd) Du trenger 1 stropp per seksjon, altså 4 stropper. EU BPG anbefaler 1 per 4 t, altså minst 2, og det er oppfylt (s. 9). Med kantprofiler kan du redusere antallet etter regelen på s. 5. Stroppene må være stramme under hele turen (s. 3)."},
+{n:4,t:"Helhetlige case",s:"7, 14",type:"open",q:"SAMMENLIGN METODER: 6 tonn på trepaller mot plywood. Regn ut hvor mange overfallsstropper som trengs fremover uten blokkering, og hvor mye som kan blokkeres mot framveggen på et L-kjøretøy. Hva anbefaler du til sjåføren, og hvorfor?",f:"Overfallssurring fremover: 6 / 0,81 = 7,4, altså 8 stropper (s. 14). Blokkering mot framveggen: 2,9 × 5 = 14,5 t, så du trenger 0 stropper fremover (s. 7). Anbefaling: Last tett mot framveggen. Det er raskere, sikrere og gir færre stropper. Blokkering er den beste metoden (s. 6)."},
+{n:4,t:"Helhetlige case",s:"10–11, 14",type:"open",q:"FRIKSJONSMATTE ELLER IKKE? 5 tonn på plastpaller mot riflet aluminium, overfallssurring. Regn ut antall stropper mot sideveis glidning uten matte og med gummimatte. Hva koster det i tid og utstyr å la være å bruke matte?",f:"Uten matte: μ 0,15 gir 0,31 t per stropp. 5 / 0,31 = 16,1, altså 17 stropper. Med gummimatte: μ 0,60 gir «glir ikke» sideveis (s. 14). Fremover gir 1,9 t: 5 / 1,9 = 2,6, altså 3 stropper, eller 0 stropper hvis lasten blokkeres mot framveggen. Matta sparer altså mange stropper og mye tid, og den gir en tryggere last."},
+{n:4,t:"Helhetlige case",s:"12–13, 20–21",type:"open",q:"FORSKJØVET TYNGDEPUNKT: En maskin er 2,2 m høy og 1,0 m bred. Tyngdepunktet ligger 1,4 m over planet og 0,4 m fra den nærmeste siden. Forklar hvordan du finner H og B (side 13), regn ut H/B og vurder om maskinen kan tippe sideveis med direktesurring (side 21).",f:"H = avstanden opp til tyngdepunktet = 1,4 m. B = den korteste avstanden fra tyngdepunktet til godsets side = 0,4 m (s. 13). H/B = 1,4 / 0,4 = 3,5. Det er høyere enn den høyeste raden i tabellen (3,2), så tabellen dekker ikke denne lasten. Velg en annen eller ekstra metode, for eksempel blokkering, eller bruk en app eller beregning (s. 27). Tips: Hadde du regnet med hele bredden, ville H/B blitt 2,2 / 1,0 = 2,2. Det gir et altfor gunstig svar."},
+{n:4,t:"Helhetlige case",s:"hele heftet",type:"open",q:"MUNTLIG: Forklar til en ny kollega hvorfor overfallssurring er svak fremover, men god sideveis. Bruk tall fra tabellen på side 14 og kreftene fra side 4.",f:"Overfallssurring sikrer ved å presse lasten ned mot planet, slik at friksjonen øker. Den holder ikke lasten direkte. Fremover må sikringen tåle 0,8 × vekten, mens den sideveis bare må tåle 0,5 × vekten. Eksempel med μ 0,40: én stropp sikrer 2,9 t sideveis, men bare 0,63 t fremover. Derfor bør lasten blokkeres fremover."},
+{n:4,t:"Helhetlige case",s:"hele heftet",type:"open",q:"VOKS: Lag din egen lastsikringsoppgave til en medelev. Den skal inneholde last, vekt, underlag, mål og metode, og den skal ha fasit med sidehenvisninger. Bytt oppgave med en medelev, løs hverandres oppgaver og gi tilbakemelding.",f:"En god oppgave har: 1) en realistisk last med vekt og mål, 2) et underlag slik at μ kan finnes, 3) et valg av metode og vinkel, 4) en fasit som regner både glidning og tipping og velger det høyeste antallet, 5) sidehenvisninger. Sjekk spesielt at medeleven har rundet opp og brukt riktig kolonne (antall rader)."}
+];
+
+/* ---------- motor ---------- */
+const KEY="ovelsesbank_lastsikring_v1";
+let S={};try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){S={}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+let curLevel=1,teacher=false;
+T.forEach((t,i)=>t.id=i+1);
+
+const temaSel=document.getElementById('tema');
+function fillTema(){const ts=[...new Set(T.filter(t=>t.n===curLevel).map(t=>t.t))];
+ temaSel.innerHTML='<option value="">Alle temaer</option>'+ts.map(x=>`<option>${x}</option>`).join('');}
+
+function solved(t){const s=S[t.id];return s&&(s.ok===true||(t.type==='open'&&s.self==='ja'))}
+
+function renderLevels(){
+ document.getElementById('levels').innerHTML=Object.entries(LEVELS).map(([k,L])=>{
+  const ts=T.filter(t=>t.n==k),d=ts.filter(solved).length;
+  return `<button class="lv ${curLevel==k?'on':''}" style="--c:${L.c}" data-l="${k}"><b>${L.name}</b><small>${L.lvl} · ${L.ph}</small><small>${d} av ${ts.length} klart</small><div class="bar"><i style="width:${ts.length?d/ts.length*100:0}%"></i></div></button>`}).join('');
+ document.querySelectorAll('.lv').forEach(b=>b.onclick=()=>{curLevel=+b.dataset.l;fillTema();render()});
+ const L=LEVELS[curLevel];
+ document.getElementById('goalsBox').innerHTML=`<b>Læringsmål – ${L.name}</b><ul class="goals">${L.goals.map(g=>`<li>${g}</li>`).join('')}</ul>`;
+}
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>')}
+function fmt(x){return String(x).replace('.',',')}
+
+function render(){
+ renderLevels();
+ const L=LEVELS[curLevel],tema=temaSel.value,only=document.getElementById('onlyOpen').checked;
+ const list=T.filter(t=>t.n===curLevel&&(!tema||t.t===tema)&&(!only||!solved(t)));
+ document.getElementById('count').textContent=list.length+' oppgaver vises';
+ const el=document.getElementById('list');
+ if(!list.length){el.innerHTML='<div class="empty">Ingen oppgaver her. Bra jobba! 💪</div>';return}
+ el.innerHTML=list.map(t=>card(t,L)).join('');
+ list.forEach(bind);
+}
+
+function card(t,L){
+ const s=S[t.id]||{};let body='';
+ if(t.type==='mc'){body='<div class="opts">'+t.o.map((o,i)=>`<label class="opt" data-i="${i}"><input type="radio" name="q${t.id}" value="${i}" ${s.v==i?'checked':''}> <span>${esc(o)}</span></label>`).join('')+'</div>'+
+  `<div class="row"><button class="b chk">Sjekk svar</button><button class="b sec hintb">Hint</button></div>`}
+ else if(t.type==='num'){body=`<div class="row"><input type="text" inputmode="decimal" class="ans" placeholder="Svar" value="${s.v!=null?esc(s.v):''}" style="width:140px"> <span class="unit">${t.u||''}</span><button class="b chk">Sjekk svar</button><button class="b sec hintb">Hint</button></div>`}
+ else{body=`<textarea class="ans" placeholder="Skriv svaret ditt her …">${s.v?esc(s.v).replace(/<br>/g,'\n'):''}</textarea><div class="row"><button class="b sol">Vis løsningsforslag</button></div>`}
+ return `<div class="task ${solved(t)?'done-ok':''}" id="t${t.id}" style="--c:${L.c}">
+ <div class="meta"><span class="tag lvl">${L.lvl}</span><span class="tag ph">${L.ph}</span><span class="tag">${t.t}</span><span class="tag">Heftet s. ${t.s}</span>${solved(t)?'<span class="tag" style="background:#eaf7ef;color:var(--ok)">✓ Klart</span>':''}</div>
+ <div class="q"><span class="no">${t.id}.</span>${esc(t.q)}</div>${body}<div class="fbx"></div></div>`;
+}
+
+function parseNum(v){v=String(v).trim().replace(/\s/g,'').replace(',','.').replace(/[^0-9.\-]/g,'');return v===''?NaN:parseFloat(v)}
+
+function bind(t){
+ const c=document.getElementById('t'+t.id),fbx=c.querySelector('.fbx');
+ const hb=c.querySelector('.hintb');
+ if(hb)hb.onclick=()=>{if(!c.querySelector('.hint')){const d=document.createElement('div');d.className='hint';d.innerHTML='💡 '+esc(t.h||'Se heftet s. '+t.s);fbx.before(d)}};
+ const show=(ok,extra)=>{fbx.innerHTML=`<div class="fb ${ok===true?'ok':ok===false?'no':'neu'}">${ok===true?'<b>Riktig!</b> ':ok===false?'<b>Ikke helt.</b> ':''}${extra||''}</div>`};
+ if(t.type==='mc'){
+  const chk=()=>{const r=c.querySelector('input:checked');if(!r){show(null,'Velg et svar først.');return}
+   const v=+r.value,ok=v===t.a;S[t.id]={v,ok:ok||(S[t.id]&&S[t.id].ok===true),tries:((S[t.id]||{}).tries||0)+1};save();
+   c.querySelectorAll('.opt').forEach(o=>{o.classList.remove('right','wrong');if(+o.dataset.i===v)o.classList.add(ok?'right':'wrong')});
+   if(ok)show(true,esc(t.f));else show(false,'Prøv igjen. Bruk hintet eller se i heftet på s. '+t.s+'.'+(S[t.id].tries>=2?' <button class="b sec sm fas">Vis forklaring</button>':''));
+   const fb=fbx.querySelector('.fas');if(fb)fb.onclick=()=>show(null,'<b>Riktig svar:</b> '+esc(t.o[t.a])+'<br>'+esc(t.f));
+   renderLevels();};
+  c.querySelector('.chk').onclick=chk;
+  if(teacher)show(null,'<b>Fasit:</b> '+esc(t.o[t.a])+'<br>'+esc(t.f));
+ }else if(t.type==='num'){
+  const inp=c.querySelector('.ans');
+  const chk=()=>{const v=parseNum(inp.value);if(isNaN(v)){show(null,'Skriv inn et tall.');return}
+   const ok=Math.abs(v-t.a)<=(t.tol||0)+1e-9;S[t.id]={v:inp.value,ok:ok||(S[t.id]&&S[t.id].ok===true),tries:((S[t.id]||{}).tries||0)+1};save();
+   if(ok)show(true,esc(t.f));else show(false,'Prøv igjen. Husk å runde OPP når du teller stropper. Se heftet s. '+t.s+'.'+(S[t.id].tries>=2?' <button class="b sec sm fas">Vis forklaring</button>':''));
+   const fb=fbx.querySelector('.fas');if(fb)fb.onclick=()=>show(null,'<b>Riktig svar:</b> '+fmt(t.a)+' '+(t.u||'')+'<br>'+esc(t.f));
+   renderLevels();};
+  c.querySelector('.chk').onclick=chk;inp.onkeydown=e=>{if(e.key==='Enter')chk()};
+  if(teacher)show(null,'<b>Fasit:</b> '+fmt(t.a)+' '+(t.u||'')+'<br>'+esc(t.f));
+ }else{
+  const ta=c.querySelector('.ans');ta.oninput=()=>{S[t.id]=Object.assign(S[t.id]||{},{v:ta.value});save()};
+  const sol=()=>{const cur=(S[t.id]||{}).self;
+   fbx.innerHTML=`<div class="fb neu"><b>Løsningsforslag:</b><br>${esc(t.f)}</div><div class="self"><span class="legend">Sammenlign med ditt svar. Fikk du det til?</span>
+   ${['ja','delvis','nei'].map(k=>`<button class="b sec sm ${cur===k?'on':''}" data-k="${k}">${k==='ja'?'Ja 👍':k==='delvis'?'Delvis':'Ikke ennå'}</button>`).join('')}</div>`;
+   fbx.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{S[t.id]=Object.assign(S[t.id]||{},{self:b.dataset.k});save();sol();renderLevels()});};
+  c.querySelector('.sol').onclick=()=>{if(!teacher&&!(ta.value.trim().length>10)){fbx.innerHTML='<div class="fb neu">Skriv ditt eget svar først, minst et par setninger. Da lærer du mer av å sammenligne.</div>';return}sol()};
+  if(teacher)sol();
+ }
+}
+
+temaSel.onchange=render;document.getElementById('onlyOpen').onchange=render;
+const modal=document.getElementById('modal');
+document.getElementById('reset').onclick=()=>modal.classList.add('on');
+document.getElementById('no').onclick=()=>modal.classList.remove('on');
+document.getElementById('yes').onclick=()=>{S={};save();try{localStorage.removeItem(KEY)}catch(e){}modal.classList.remove('on');render()};
+fillTema();render();
+</script>
+</body>
+</html>
