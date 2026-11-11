@@ -484,6 +484,43 @@
         "Hva er forskjellen på LC og bruddstyrke?"
       ],
       "visible": true
+    },
+    {
+      "id": "tll-daglig-truckkontroll",
+      "title": "Daglig kontroll av truck",
+      "provider": "TLLfluenseren",
+      "type": "Film",
+      "url": "https://tllfluenseren.no/video/#daglig-kontroll",
+      "description": "Fem korte fagfilmer om daglig kontroll av truck.",
+      "topics": [
+        "truck"
+      ],
+      "visible": true
+    },
+    {
+      "id": "tll-fagfilm-lager-terminal",
+      "title": "Grunnleggende prinsipper ved lager og terminal",
+      "provider": "TLLfluenseren",
+      "type": "Film",
+      "url": "https://tllfluenseren.no/video/#lager-terminal-film",
+      "description": "Følg varer fra varemottak via registrering og lagring til plukk og terminalarbeid.",
+      "topics": [
+        "kap1-t1",
+        "kap1-t3"
+      ],
+      "visible": true
+    },
+    {
+      "id": "tll-ovelsesbank-lastsikring",
+      "title": "Øvelsesbank i lastsikring",
+      "provider": "TLLfluenseren",
+      "type": "Nettside",
+      "url": "https://tllfluenseren.no/transport-logistikk-lofteoperasjoner/kap5/ovelsesbank/",
+      "description": "Øv med oppslag, regneoppgaver og case på fire nivåer.",
+      "topics": [
+        "kap5-t7"
+      ],
+      "visible": true
     }
   ]
 }

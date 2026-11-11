@@ -77,8 +77,16 @@ main{padding:22px 0 60px}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow)}
 .two{display:grid;grid-template-columns:1.4fr 1fr;gap:14px}
 @media (max-width:760px){.two{grid-template-columns:1fr}}
-.kort ul{margin:8px 0 0;padding-left:20px}
-.kort li{margin:4px 0}
+.theory{display:grid;gap:18px}
+.theory .panel,.mal{padding:clamp(16px,3vw,26px)}
+.mal h2{font-size:24px}
+.mal p{margin:12px 0 0}
+.kort ul,.mal ul{max-width:66ch;margin:14px 0 0;padding-inline-start:1.4em;line-height:1.7}
+.kort li+li,.mal li+li{margin-block-start:.75em}
+.theory .reslist li{padding-block:12px;flex-wrap:wrap}
+.topic-progress{margin:24px 0 0}
+.vis p,.vis li{line-height:1.7}
+.vis p+p,.vis li+li{margin-block-start:.7em}
 .reslist{list-style:none;margin:8px 0 0;padding:0}
 .reslist li{padding:7px 0;border-top:1px solid var(--line);display:flex;gap:8px;align-items:baseline}
 .reslist li:first-child{border-top:0}
@@ -313,22 +321,29 @@ input.sel{font:inherit;padding:8px 10px;border:2px solid var(--line);border-radi
 #kapsel{width:min(340px,calc(100vw - 110px))}
 .section-h .row{max-width:100%}
 
-/* Tydelig navigasjon mellom aktiviteter */
-.activity-nav{margin-top:24px;padding-top:16px;border-top:1px solid var(--line)}
-.activity-nav .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;text-decoration:none;line-height:1.4;text-align:center}
-.activity-nav .btn:hover{filter:brightness(1.08)}
-@media(max-width:600px){.activity-nav{display:grid;grid-template-columns:1fr 1fr;gap:10px}.activity-nav .spacer{display:none}.activity-nav .btn{padding:12px 10px;min-width:0}.activity-nav .activity-nav-next{grid-column:2}.activity-nav .activity-nav-back{grid-column:1}}
-
-/* Samordnet navigasjon nederst i temaer */
-.topic-nav{display:flex;align-items:stretch;flex-wrap:wrap;gap:12px;margin:24px 0 8px;padding:20px 0 0;border-top:1px solid var(--line)}
-.topic-nav .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 18px;text-decoration:none;text-align:center;line-height:1.4;white-space:normal;max-width:100%}
-.topic-nav .topic-nav-next{margin-left:auto}
-@media(max-width:700px){.topic-nav{display:grid;grid-template-columns:1fr;gap:10px}.topic-nav .btn{width:100%;margin:0}.topic-nav .topic-nav-next{margin-left:0}}
-
-/* Forrige / neste side om side, også på mobil */
-.activity-nav{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;align-items:stretch}
-.activity-nav .spacer{display:none}
-.activity-nav .btn{width:100%;min-width:0;min-height:54px;white-space:normal;overflow-wrap:anywhere;padding:12px 14px}
-.activity-nav .activity-nav-back{grid-column:1}
-.activity-nav .activity-nav-next{grid-column:2}
-@media(max-width:600px){.activity-nav{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}.activity-nav .btn{padding:10px 8px;font-size:14px;line-height:1.3}}
+/* Felles navigasjon for temaer, aktiviteter og oppgavesteg */
+.step-nav{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;
+  margin-top:26px;padding-top:18px;border-top:1px solid var(--line);
+}
+.step-nav .btn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  min-height:54px;padding:12px;line-height:1.35;text-align:center;text-decoration:none;overflow-wrap:anywhere;
+}
+.step-nav small{font-size:.86em;font-weight:600}
+.step-nav .step-back{grid-column:1}
+.step-nav .step-overview{grid-column:2}
+.step-nav .step-next{grid-column:3}
+.btn.step-next{border:2px solid #8d5609;min-height:48px}
+.btn.step-back,.btn.step-overview{border:2px solid var(--ink);background:var(--panel);min-height:48px}
+.btn.step-next:hover:not(:disabled){background:#ffd378}
+.btn.step-back:hover,.btn.step-overview:hover{background:var(--line)}
+.btn:focus-visible,.tcard:focus-visible,.act:focus-visible{
+  outline:3px solid var(--ink);outline-offset:4px;
+}
+#app{scroll-margin-top:110px}
+@media(max-width:620px){
+  .step-nav{grid-template-columns:minmax(0,1fr)}
+  .step-nav .step-back,.step-nav .step-overview,.step-nav .step-next{grid-column:1}
+  .step-nav .btn{min-height:48px}
+}

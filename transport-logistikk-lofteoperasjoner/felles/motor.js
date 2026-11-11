@@ -81,20 +81,20 @@ function resultBox(pct, again, extra){
   return `<div class="panel result"><div class="big">${Math.round(pct)} %</div><div class="msg">${msg}</div>${extra||''}
     <div class="row" style="justify-content:center"><button class="btn" id="again">Prøv igjen</button></div></div>`;
 }
-const nextRow = (last, label) => `<div class="row" style="margin-top:12px"><span class="spacer"></span><button class="btn yellow" id="nx">${last ? (label || 'Se resultat') : 'Neste →'}</button></div>`;
+const nextRow = (last, label) => `<div class="row" style="margin-top:12px"><span class="spacer"></span><button class="btn yellow step-next" id="nx">${last ? (label || 'Se resultat') : 'Neste →'}</button></div>`;
 
 /* =================== AKTIVITETER =================== */
 function runFlash(st, a, done){
   let order = a.kort.map((_,i)=>i), i = 0; const seen = new Set();
   const draw = () => {
     const [f,b] = a.kort[order[i]];
-    st.innerHTML = `<p class="instr">Trykk på kortet for å snu det. Bruk pilene for å bla. Du er ferdig når du har snudd alle kortene.</p>
+    st.innerHTML = `<p class="instr">Trykk på kortet for å snu det. Bruk «Forrige kort» og «Neste kort» for å bla. Du er ferdig når du har snudd alle kortene.</p>
       <div class="flash" id="fc"><div class="inner">
         <div class="face front">${esc(f)}<div class="hint">Trykk for å snu</div></div>
         <div class="face back">${esc(b)}</div></div></div>
-      <div class="row"><button class="btn ghost" id="prev" aria-label="Forrige">←</button>
+      <div class="row"><button class="btn ghost step-back" id="prev">← Forrige kort</button>
         <span class="counter">${i+1} / ${a.kort.length} · snudd ${seen.size}</span>
-        <button class="btn ghost" id="next" aria-label="Neste">→</button>
+        <button class="btn yellow step-next" id="next">Neste kort →</button>
         <span class="spacer"></span>${sayBtn(f + '. ' + b)}
         <button class="btn ghost" id="mix">Bland</button></div>`;
     const fc = $('#fc');
@@ -519,7 +519,7 @@ function runSim(st, a, done){
       <svg class="chart" viewBox="0 0 400 170" preserveAspectRatio="none" aria-label="Lagersaldo per dag">${chart()}</svg>
       <div class="row" style="margin-top:12px">
         <button class="btn ghost" id="ord" ${onOrder||day>DAYS?'disabled':''}>Bestill ${QTY} kartonger</button>
-        <span class="spacer"></span><button class="btn yellow" id="nx" ${day>DAYS?'disabled':''}>Neste dag →</button></div>
+        <span class="spacer"></span><button class="btn yellow step-next" id="nx" ${day>DAYS?'disabled':''}>Neste dag →</button></div>
       <ul class="log">${log.slice().reverse().map(l=>`<li>${l}</li>`).join('')}</ul><div id="sres"></div>`;
     $('#ord').onclick = () => { pending = [day + LEAD]; log.push(`Dag ${day}: Bestilte ${QTY} kartonger (saldo ${stock}).`); draw(); };
     $('#nx').onclick = step;
@@ -615,6 +615,7 @@ function bootKapittel(){
   const save = () => TLL.skrivLager(K.id, store);
   const KN = esc(K.kortnavn || ('Kap ' + K.nr));
   const visible = a => !a.nivaa || store.lvl === 0 || a.nivaa === store.lvl;
+  const aktiviteter = t => FASER.flatMap(f => t.aktiviteter.filter(a => visible(a) && faseAv(a) === f.id));
   const temaNavn = t => `${esc(t.lok)} – ${esc(t.tittel)}`;
 
   const LEVEL_HELP = {0:'Alle: vis aktiviteter fra alle nivåene. Du kan velge ett nivå for å få færre aktiviteter om gangen.',1:'Nybegynner: bli kjent med begrepene.',2:'Trygg: bruk kunnskapen i praktiske oppgaver.',3:'Ekspert: begrunn valg og løs mer sammensatte oppgaver.'};
@@ -635,7 +636,7 @@ function bootKapittel(){
   }
   $('#ftr').innerHTML = K.fotnote || `${esc(K.fag)} · Kapittel ${K.nr}. Tekster, oppgaver og tegninger er egenprodusert. Fagstoff fra <a href="${K.ressurser.ndlaEmne}" target="_blank" rel="noopener">NDLA</a> er lenket til, ikke kopiert. Kompetansemål fra Utdanningsdirektoratet (NLOD). Henvisninger til lærebok og arbeidsbok gjelder sidetall og oppgavenummer i elevens egne bøker. Resultater lagres bare i nettleseren på denne enheten – <a href="#/lagring">les om lagring</a> · <a href="#/rapport">lever fremdrift</a>.`;
 
-  const temaProg = t => { const acts = t.aktiviteter.filter(visible); return { done: acts.filter(a => store.best[a.id] != null).length, total: acts.length }; };
+  const temaProg = t => { const acts = aktiviteter(t); return { done: acts.filter(a => store.best[a.id] != null).length, total: acts.length }; };
   const done = id => pct => { TLL.registrerResultat(K.id, store, id, pct); };
 
   function pageHome(){
@@ -649,7 +650,7 @@ function bootKapittel(){
         ${store.saveText ? 'Det du skriver i skriveoppgavene lagres også her – andre som bruker PC-en kan se det.' : 'Det du skriver i skriveoppgavene lagres ikke.'}
         <a href="#/lagring">Innstillinger og sletting</a></span></div>
       <section class="panel tll-start" aria-labelledby="start-heading"><h2 id="start-heading">Første gang her?</h2><p>Start med «${esc(forsteTema.tittel)}». Les eller lytt til forklaringen, og prøv oppgavene etterpå. Har læreren gitt deg et annet tema, velger du det nedenfor.</p><a class="tll-action" href="#/${forsteTema.id}">Start med ${temaNavn(forsteTema)} →</a></section>
-      <div class="section-h"><h2>Velg tema</h2><span class="muted small">${alle.d} av ${alle.n} aktiviteter gjort på nivået du har valgt</span></div>
+      <div class="section-h"><h2>Velg tema</h2><span class="muted small">${alle.d} av ${alle.n} aktiviteter gjort · ${alle.n - alle.d} gjenstår</span></div>
       <div class="phase-steps" style="margin:-4px 0 14px">${FASER.map(f => `<span>${f.navn.toUpperCase()}</span>`).join('')}</div>
       <div class="grid">${K.temaer.map(t => { const p = temaProg(t); return `
         <a class="tcard" href="#/${t.id}">
@@ -664,7 +665,7 @@ function bootKapittel(){
         </a>`}
         <a class="tcard" href="#/rapport">
           <div class="lab"><span class="lok" style="background:var(--n2);color:#111820">LEVER</span><span class="bars"></span></div>
-          <div class="body"><h3>Lever fremdrift</h3><p>Last ned en rapport over det du har gjort, og lever den i Teams.</p></div>
+          <div class="body"><h3>Lever fremdrift</h3><p>Last ned en PDF med det du har gjort og det som gjenstår. Lever den i Teams.</p></div>
         </a>
       </div>
       ${K.visKapittelkilder || K.ressursomrade === false ? '' : `<section data-resource-area="${esc(K.ressursomrade || 'tll')}"></section>`}
@@ -698,15 +699,16 @@ function bootKapittel(){
     const index = K.temaer.indexOf(t);
     const forrige = K.temaer[index - 1];
     const neste = K.temaer[index + 1];
-    const acts = t.aktiviteter.filter(visible);
+    const acts = aktiviteter(t);
+    const p = temaProg(t);
     const phaseHead = f => `<div class="phase-h"><span class="pn" aria-hidden="true">${f.nr}<small>${f.ikon}</small></span><div><h2>${f.navn}</h2><p>${esc(f.tekst)}</p></div></div>`;
     const cards = f => { const list = acts.filter(a => faseAv(a) === f.id);
       return list.length ? `<div class="acts">${list.map(a => actCard(t,a)).join('')}</div>` : `<p class="muted small">Ingen aktiviteter i ${f.navn} på nivået du har valgt.</p>`; };
     app.innerHTML = `
-      ${t.mal ? `<div class="panel mal"><h3 style="font-size:22px">Læringsmål – etter dette temaet kan jeg …</h3><ul>${t.mal.map(m => `<li>${esc(m)}</li>`).join('')}</ul></div>` : ''}
+      ${t.mal ? `<section class="panel mal"><h2>Læringsmål</h2><p>Etter dette temaet kan jeg …</p><ul>${t.mal.map(m => `<li>${esc(m)}</li>`).join('')}</ul></section>` : ''}
       <section class="phase" id="laer">${phaseHead(FASER[0])}
         <div id="pod" hidden></div>
-        <div class="two">
+        <div class="theory">
           <div class="panel kort"><h3 style="font-size:22px">Kort fortalt</h3><ul>${t.punkter.map(p => `<li>${p}</li>`).join('')}</ul></div>
           <div class="panel"><h3 style="font-size:22px">Les og se mer</h3>
             <ul class="reslist">
@@ -719,14 +721,15 @@ function bootKapittel(){
         <div style="margin-top:12px">${cards(FASER[0])}</div>
       </section>
       ${FASER.slice(1).map(f => `<section class="phase" id="${f.id}">${phaseHead(f)}${cards(f)}</section>`).join('')}
-      <p class="muted small" style="margin-top:18px">${NIVA[store.lvl]} · ${acts.length} aktiviteter. Begrepskort og Voks gjelder alle nivåer.</p>
-      <nav class="row topic-nav" aria-label="Naviger mellom temaer">
-        ${forrige ? `<a class="btn ghost" href="#/${forrige.id}">← Forrige tema: ${temaNavn(forrige)}</a>` : ''}
-        <a class="btn ghost" href="#/">Tilbake til alle tema</a>
-        ${neste ? `<a class="btn yellow topic-nav-next" href="#/${neste.id}">Neste tema: ${temaNavn(neste)} →</a>` : ''}
+      <p class="topic-progress muted small">${NIVA[store.lvl]} · ${p.done} av ${p.total} aktiviteter gjort · ${p.total - p.done} gjenstår</p>
+      <nav class="step-nav" aria-label="Naviger mellom temaer">
+        ${forrige ? `<a class="btn ghost step-back" href="#/${forrige.id}"><span>← Forrige tema</span><small>${temaNavn(forrige)}</small></a>` : ''}
+        <a class="btn ghost step-overview" href="#/">Tilbake til alle tema</a>
+        ${neste ? `<a class="btn yellow step-next" href="#/${neste.id}"><span>Neste tema →</span><small>${temaNavn(neste)}</small></a>` : ''}
       </nav>`;
     const nr = index + 1;
-    findEpisode(nr, src => { const el = $('#pod'); if (!el) return; el.hidden = false; el.innerHTML = podPlayer(nr, t, src); wirePlayer(el); });
+    const el = $('#pod');
+    findEpisode(nr, src => { if (!el.isConnected) return; el.hidden = false; el.innerHTML = podPlayer(nr, t, src); wirePlayer(el); });
   }
   function actCard(t,a){
     const n = a.nivaa || 0, b = store.best[a.id], l = store.log[a.id];
@@ -738,8 +741,17 @@ function bootKapittel(){
   }
   function pageAct(t,a){
     header(`<a href="#/">${KN}</a> <span>›</span> <a href="#/${t.id}">${esc(t.tittel)}</a>`, esc(a.tittel), `${faseNavn(faseAv(a)).toUpperCase()} · ${TYPE[a.type]}${a.nivaa ? ' · ' + NIVA_KORT[a.nivaa] : ''}`, false);
-    const idx = t.aktiviteter.filter(visible), pos = idx.indexOf(a), neste = idx[pos+1];
-    app.innerHTML = `${a.vis ? `<div class="stage"><div class="panel vis" style="margin-bottom:14px">${a.vis}</div></div>` : ''}<div class="stage" id="stage"></div><nav class="stage row activity-nav" aria-label="Naviger mellom aktiviteter"><a class="btn ghost activity-nav-back" href="#/${t.id}">← Tilbake til ${esc(t.tittel)}</a><span class="spacer"></span>${neste ? `<a class="btn yellow activity-nav-next" href="#/${t.id}/${neste.id}">Neste: ${esc(neste.tittel)} →</a>` : ''}</nav>`;
+    const liste = aktiviteter(t), pos = liste.indexOf(a);
+    const forrige = pos > 0 ? liste[pos - 1] : null;
+    const neste = pos >= 0 ? liste[pos + 1] : null;
+    app.innerHTML = `
+      ${a.vis ? `<div class="stage"><div class="panel vis" style="margin-bottom:14px">${a.vis}</div></div>` : ''}
+      <div class="stage" id="stage"></div>
+      <nav class="stage step-nav" aria-label="Naviger mellom aktiviteter">
+        ${forrige ? `<a class="btn ghost step-back" href="#/${t.id}/${forrige.id}"><span>← Forrige aktivitet</span><small>${esc(forrige.tittel)}</small></a>` : ''}
+        <a class="btn ghost step-overview" href="#/${t.id}">Tilbake til temaet</a>
+        ${neste ? `<a class="btn yellow step-next" href="#/${t.id}/${neste.id}"><span>Neste aktivitet →</span><small>${esc(neste.tittel)}</small></a>` : ''}
+      </nav>`;
     RUN[a.type]($('#stage'), a, done(a.id), t);
   }
   function pageRapport(){
@@ -805,7 +817,10 @@ function bootKapittel(){
     }
     window.scrollTo(0,0);
   }
-  window.addEventListener('hashchange', route);
+  window.addEventListener('hashchange', () => {
+    route();
+    app.focus({preventScroll: true});
+  });
   renderLevels(); route();
 }
 

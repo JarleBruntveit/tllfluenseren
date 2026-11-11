@@ -29,8 +29,8 @@
     return data;
   }
   function filter(data, {q = '', area = '', topic = '', type = ''} = {}) {
-    const query = q.trim().toLocaleLowerCase('nb');
-    return data.resources.filter(r => r.visible && (!type || r.type === type) && (!topic || r.topics.includes(topic)) && (!area || r.topics.some(id => data.topics.find(t => t.id === id)?.area === area)) && (!query || [r.title, r.provider, r.description, ...r.topics.map(id => data.topics.find(t => t.id === id)?.title)].join(' ').toLocaleLowerCase('nb').includes(query)));
+    const terms = q.trim().toLocaleLowerCase('nb').split(/\s+/).filter(Boolean);
+    return data.resources.filter(r => r.visible && (!type || r.type === type) && (!topic || r.topics.includes(topic)) && (!area || r.topics.some(id => data.topics.find(t => t.id === id)?.area === area)) && terms.every(term => [r.title, r.provider, r.description, ...r.topics.map(id => data.topics.find(t => t.id === id)?.title)].join(' ').toLocaleLowerCase('nb').includes(term)));
   }
   const dataPromise = fetch('/ressursbank/katalog.json', {cache:'no-cache'}).then(r => { if (!r.ok) throw Error('Ressursbanken kunne ikke lastes.'); return r.json(); }).then(validate);
   // Embed-only pages also handle loading failures through mount().
@@ -60,13 +60,16 @@
   function publicPage(root, data) {
     const params = new URLSearchParams(location.search);
     const state = {q:params.get('q') || '', area:params.get('area') || '', topic:params.get('topic') || '', type:params.get('type') || ''};
-    if (!data.areas.some(a => a.id === state.area)) state.area = '';
-    if (!data.topics.some(t => t.id === state.topic)) state.topic = '';
+    const topicIds = new Set(data.resources.filter(r => r.visible).flatMap(r => r.topics));
+    const topics = data.topics.filter(t => topicIds.has(t.id));
+    const areas = data.areas.filter(a => topics.some(t => t.area === a.id));
+    if (!areas.some(a => a.id === state.area)) state.area = '';
+    if (!topics.some(t => t.id === state.topic && (!state.area || t.area === state.area))) state.topic = '';
     if (!types.includes(state.type)) state.type = '';
     const topicAreas = new Map(data.topics.map(t => [t.id, t.area]));
     root.classList.add('rb');
-    root.innerHTML = intro + `<div class="rb-filters" role="search" aria-label="Finn ressurser"><label class="rb-field">Søk<input id="rb-q" type="search" value="${esc(state.q)}" placeholder="Søk etter tema, tittel eller avsender"></label><label class="rb-field">Fagområde<select id="rb-area"><option value="">Alle fagområder</option>${options(data.areas, state.area)}</select></label><label class="rb-field">Tema<select id="rb-topic"></select></label><label class="rb-field">Type<select id="rb-type"><option value="">Alle typer</option>${types.map(x => `<option ${x === state.type ? 'selected' : ''}>${x}</option>`).join('')}</select></label></div><div class="rb-actions"><button id="rb-clear">Nullstill filtre</button></div><p id="rb-count" role="status" aria-live="polite"></p><div id="rb-results"></div>`;
-    const updateTopics = () => { root.querySelector('#rb-topic').innerHTML = '<option value="">Alle temaer</option>' + options(data.topics.filter(t => !state.area || t.area === state.area), state.topic); };
+    root.innerHTML = intro + `<div class="rb-filters" role="search" aria-label="Finn ressurser"><label class="rb-field">Søk<input id="rb-q" type="search" value="${esc(state.q)}" placeholder="Søk etter tema, tittel eller avsender"></label><label class="rb-field">Fagområde<select id="rb-area"><option value="">Alle fagområder</option>${options(areas, state.area)}</select></label><label class="rb-field">Tema<select id="rb-topic"></select></label><label class="rb-field">Type<select id="rb-type"><option value="">Alle typer</option>${types.map(x => `<option ${x === state.type ? 'selected' : ''}>${x}</option>`).join('')}</select></label></div><div class="rb-actions"><button id="rb-clear">Nullstill filtre</button></div><p id="rb-count" role="status" aria-live="polite"></p><div id="rb-results"></div>`;
+    const updateTopics = () => { root.querySelector('#rb-topic').innerHTML = '<option value="">Alle temaer</option>' + options(topics.filter(t => !state.area || t.area === state.area), state.topic); };
     const update = () => {
       const rows = filter(data, state);
       const selectedArea = state.area || topicAreas.get(state.topic);
