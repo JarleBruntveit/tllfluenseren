@@ -347,3 +347,8 @@ input.sel{font:inherit;padding:8px 10px;border:2px solid var(--line);border-radi
   .step-nav .step-back,.step-nav .step-overview,.step-nav .step-next{grid-column:1}
   .step-nav .btn{min-height:48px}
 }
+
+/* Første tema har ingen «Forrige»: plasser oversikten helt til venstre. */
+@media(min-width:621px){
+  .step-nav:not(:has(.step-back)) .step-overview{grid-column:1}
+}
