@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="/favicon.ico">
+<link rel="stylesheet" href="/assets/styles.css">
+<title>Truckøvelser – lærerveiledning | TLLfluenseren</title>
+<style>
+main{max-width:980px;margin:0 auto;padding:0 0 60px}
+p,li{line-height:1.6}
+.tp h2{font-size:clamp(24px,3vw,32px);margin:42px 0 10px}
+.tp h3{font-size:20px;margin:24px 0 8px}
+.tp p,.tp li{color:#d1dfe2}
+.tp table{border-collapse:collapse;width:100%;margin:10px 0 14px;font-size:15.5px}
+.tp th,.tp td{border:1px solid #547b87;padding:8px 10px;text-align:left;vertical-align:top;color:#e4eff0}
+.tp th{background:#244b58}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+.toc a{border:1px solid #547b87;border-radius:999px;padding:6px 12px;color:var(--teacher-accent);text-decoration:none;font-weight:750;font-size:14px}
+.toc a:hover{background:#244b58}
+.lock{border:1px solid #8dc9c6;border-radius:16px;background:#1c3c48;padding:20px 22px;margin:20px 0}
+.lock h2{margin:0 0 8px;font-size:22px}
+.lock input{display:block;width:100%;max-width:380px;padding:12px;border:1px solid #547b87;border-radius:8px;background:#0f2630;color:#f1f7f7;margin:10px 0;font:inherit}
+.lock button,.tp .tbtn{display:inline-block;padding:10px 18px;background:#14889b;color:#fff;border:0;border-radius:8px;font:inherit;font-weight:750;cursor:pointer;text-decoration:none}
+.lock button:disabled{opacity:.6;cursor:wait}
+.lock .err{color:#ffb4a8;min-height:1.4em;margin:6px 0 0}
+.lock .ok{color:#a5f0df;font-weight:800}
+.lvlHead{margin:30px 0 6px}
+.oItem{border:1px solid #547b87;border-radius:14px;background:#1c3c48;padding:14px 18px;margin:10px 0;scroll-margin-top:16px}
+.oItem:target{border-color:#a5f0df;box-shadow:0 0 0 3px rgba(165,240,223,.35)}
+.oItem h4{margin:0;font-size:17px}
+.oItem h4 b{color:var(--teacher-accent);margin-right:8px}
+.oMeta{color:#bdd0d4;font-size:14px;margin:4px 0 8px}
+.oItem a{color:var(--teacher-accent);font-weight:750}
+.fasit{border-left:4px solid #a5f0df;background:#244b58;border-radius:8px;padding:10px 14px;margin-top:10px}
+.fasit p,.fasit li{color:#eef8f7;margin:6px 0}
+.locked{color:#9fb6bc;font-style:italic;font-size:14.5px;margin-top:8px}
+.dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:7px;vertical-align:-1px}
+.noprint{}
+@media print{
+  .tll-site-nav,.tll-skip,.noprint,footer,.tll-global-footer,.teacher-header,.lock{display:none!important}
+  html,body,body.teacher-area{background:#fff!important;color:#000!important}
+  .tp p,.tp li,.tp th,.tp td,.oMeta,.fasit p,.fasit li{color:#000!important}
+  .tp th{background:#eee}.tp th,.tp td{border-color:#999}
+  .oItem,.fasit{background:#fff;border-color:#999;break-inside:avoid}
+  .oItem a{color:#000}
+}
+</style>
+<link rel="stylesheet" href="/assets/global-footer.css"><script defer src="/assets/global-footer.js?v=mobile-nav-2"></script><link rel="stylesheet" href="/assets/elevflyt.css?v=mobile-nav-2">
+<link rel="stylesheet" href="/assets/laererrom.css?v=2">
+<script src="/truck/praksis/data.js"></script>
+<script src="fasit.enc.js"></script>
+</head>
+<body class="teacher-area">
+<a class="tll-skip" href="#tll-main">Hopp til innhold</a>
+<header class="teacher-header teacher-shell noprint"><a class="teacher-brand" href="/" aria-label="TLLfluenseren – gå til forsiden"><span class="brandmark">TLL</span><span>TLLfluenseren<small>Transport · Logistikk · Løfteoperasjoner · Livet</small></span></a><a class="teacher-back" href="/laererrom/">← Lærerrommet</a></header>
+<nav class="tll-site-nav tll-standalone-nav" aria-label="Hovedmeny"><a href="/">Forside</a><a href="/#fag">Fagområder</a><a href="/ressursbank/">Ressursbank</a><a href="/assistent/">TLL-assistenten</a><a href="/laererrom/" aria-current="page">Lærerrom</a><a href="/om/">Om</a></nav>
+<main id="tll-main" tabindex="-1" class="teacher-shell tp">
+<div class="teacher-intro">
+  <div class="teacher-eyebrow">Bransjeteknikk + TLL · Truck</div>
+  <h1>Truckøvelser – lærerveiledning</h1>
+  <p>35 praktiske øvelser på T1, T2 og T4 i seks nivåer, fra daglig kontroll til logistikkoppdrag. Én praktisk økt gir vurderingsgrunnlag i både Bransjeteknikk og TLL. Elevene finner øvelsene i <a href="/truck/praksis/" style="color:var(--teacher-accent);font-weight:800">elevversjonen</a>, og hver øvelse lenker hit.</p>
+  <div class="toc noprint"><a href="#fag">Fagkobling</a><a href="#metode">Metode</a><a href="#tillatelse">Kjøretillatelse</a><a href="#hms">HMS</a><a href="#vurdering">Vurderingsskjema</a><a href="#ovelser">Øvelser med fasit</a><a href="#endringer">Endringer</a><a href="#kilder">Kilder</a></div>
+</div>
+
+<section class="lock noprint" aria-labelledby="lock-h" id="lock">
+  <h2 id="lock-h">Fasit og lærernotater</h2>
+  <div id="lockForm">
+    <p>Siden er åpen, så fasit, lærernotater og «plantede feil» er kryptert. Skriv inn lærerpassordet for å vise dem under hver øvelse. Passordet lagres ikke, og innholdet lukkes når du laster siden på nytt.</p>
+    <form id="unlock"><label for="pw"><b>Lærerpassord</b></label><input id="pw" type="password" autocomplete="current-password" required><button id="unlockBtn" type="submit">Vis fasit</button><p class="err" id="err" role="alert" aria-live="polite"></p></form>
+  </div>
+  <div id="unlocked" hidden>
+    <p class="ok">Fasit og lærernotater vises under hver øvelse.</p>
+    <details><summary style="cursor:pointer;font-weight:800">Bytt passord</summary>
+      <p>Lager en ny versjon av filen <code>laererrom/truck-praksis/fasit.enc.js</code> med nytt passord, for eksempel det felles lærerpassordet fra truckopplæringen. Last ned filen og erstatt den i repoet.</p>
+      <form id="rekey"><label for="pw1"><b>Nytt passord</b> (minst 10 tegn)</label><input id="pw1" type="password" autocomplete="new-password" minlength="10" required><label for="pw2"><b>Gjenta nytt passord</b></label><input id="pw2" type="password" autocomplete="new-password" minlength="10" required><button id="rekeyBtn" type="submit">Last ned ny fasit.enc.js</button><p class="err" id="err2" role="alert" aria-live="polite"></p></form>
+    </details>
+  </div>
+</section>
+
+<section id="fag" aria-labelledby="fag-h">
+  <h2 id="fag-h">Fagkobling: ett opplegg, to kompetansemål</h2>
+  <p>NDLA kobler de samme truckressursene til to kompetansemål i TOL02-01. Hver øvelse vurderes derfor med to blikk.</p>
+  <table><thead><tr><th>Fag</th><th>Kompetansemål (ordrett)</th><th>Vi ser etter</th><th>Blikk</th></tr></thead><tbody id="kmRows"></tbody></table>
+  <p>Tommelfingerregel: nivå 0–3 vektlegger førerblikket (Bransjeteknikk), nivå 4–5 oppdragsblikket (TLL). Nivåene følger Nybegynner (0–1), Trygg (2–3) og Ekspert (4–5) i <a href="/truck/nivaer/" style="color:var(--teacher-accent)">egenvurderingen</a>.</p>
+  <h3>Kobling til egenvurderingen</h3>
+  <p>Alle de 27 punktene i egenvurderingen har minst én øvelse, og hver øvelse viser punktene den trener. Øvelsesnivået og egenvurderingsnivået er ikke alltid det samme: lading (0.3) trener for eksempel et Trygg-punkt, men gjøres tidlig fordi trucken må lades fra første dag. Eleven dokumenterer i egenvurderingen med bilder og film fra øvelsene og leverer én samlet fil.</p>
+  <table><thead><tr><th>Punkt i egenvurderingen</th><th>Øvelser</th></tr></thead><tbody id="evRows"></tbody></table>
+  <p><b>Forutsetninger:</b> Øvelsene bygger på modul 1 og 2.2 i truckteorien. Eleven bør ha bestått teorien før første praktiske økt. Kontroller timetall og praktisk prøve mot skolens godkjente opplæringsplan for sertifiserende opplæring – denne basen erstatter den ikke.</p>
+</section>
+
+<section id="metode" aria-labelledby="metode-h">
+  <h2 id="metode-h">Metode: mange korte repetisjoner, én ny vanskelighet om gangen</h2>
+  <h3>Progresjonsprinsippet</h3>
+  <ol><li>Uten last → med last</li><li>Lav last → høy last (høyt tyngdepunkt)</li><li>Åpen plass → trang løype → reol</li><li>Rolig og riktig → rolig, riktig og effektivt (tid først når teknikken sitter)</li><li>Enkel øvelse → helt logistikkoppdrag med dokumenter</li></ol>
+  <h3>Instruksjonsmodellen i hver økt</h3>
+  <ol><li><b>Forbered (2 min):</b> Målet for økten og én HMS-regel som er ekstra viktig i dag.</li><li><b>Demonstrer (3 min):</b> Kjør øvelsen og si høyt hva du ser etter. Alternativt NDLA-filmen.</li><li><b>Eleven prøver med veiledning:</b> Første runde sakte, observatøren leser sjekklisten høyt.</li><li><b>Mengdetrening:</b> 3–5 runder per elev, bytt roller mellom hver runde.</li><li><b>Vis meg:</b> Én vurderingsrunde som filmes. Den runden teller.</li></ol>
+  <h3>Makkerroller</h3>
+  <table><thead><tr><th>Rolle</th><th>Oppgave</th><th>Myndighet</th></tr></thead><tbody>
+    <tr><td>Fører</td><td>Kjører og «tenker høyt»</td><td>Avbryter selv ved utrygghet</td></tr>
+    <tr><td>Observatør / sikkerhetsvakt</td><td>Holder faresonen fri, sjekkliste, teller feilpoeng</td><td>Roper STOPP – føreren adlyder alltid</td></tr>
+    <tr><td>Filmer / tidtaker</td><td>Filmer vurderingsrunden og tar tiden</td><td>–</td></tr>
+  </tbody></table>
+  <p>Ved tre elever per truck går alle rollene rundt. Ved to elever har observatøren også kameraet.</p>
+  <h3>Kritiske feil og feilpoeng</h3>
+  <p><b>Kritisk feil – runden avbrytes, øvingen fortsetter neste gang:</b></p><ul id="kritisk"></ul>
+  <p><b>Feilpoeng – 1 poeng hver:</b></p><ul id="feil"></ul>
+  <p><b>Grønt på øvelsen</b> = ingen kritiske feil og høyst 2 feilpoeng. Eleven går videre til neste nivå med grønt på minst to øvelser på nivået.</p>
+  <h3>Tilpasning</h3>
+  <ul><li><b>Støtte:</b> Steg-kort med bilder på trucken. NDLA-filmen sett på forhånd. Muntlig dokumentasjon i stedet for skriftlig. Mer mengdetrening på samme nivå.</li><li><b>Utfordring:</b> Tid kombinert med feilpoeng. Instruktørrollen (5.5). Samme øvelse på en annen truckklasse.</li></ul>
+</section>
+
+<section id="tillatelse" aria-labelledby="till-h">
+  <h2 id="till-h">Skolens kjøretillatelse</h2>
+  <p>Intern ordning per truckklasse – ikke truckførerbevis. Den gjør synlig hva eleven får lov til.</p>
+  <table><thead><tr><th>Farge</th><th>Eleven får</th><th>Krav</th></tr></thead><tbody>
+    <tr><td><span class="dot" style="background:#f28b82"></span>Rød</td><td>Kjøre kun med lærer ved siden av</td><td>Bestått teori og daglig kontroll (0.1)</td></tr>
+    <tr><td><span class="dot" style="background:#f0c75a"></span>Gul</td><td>Øve på avsperret område med observatør</td><td>Grønt på to øvelser på nivå 1</td></tr>
+    <tr><td><span class="dot" style="background:#8cd6ae"></span>Grønn</td><td>Utføre oppdrag på skolens område innenfor lærerens rammer</td><td>Grønt på to øvelser på nivå 3 og lærerens godkjenning</td></tr>
+  </tbody></table>
+</section>
+
+<section id="hms" aria-labelledby="hms-h">
+  <h2 id="hms-h">HMS-rammer for øvingsområdet</h2>
+  <ul><li>Området sperres av med kjegler eller bånd. Ingen uvedkommende innenfor.</li><li>Én truck i hver løype. Flere trucker krever atskilte soner med minst 5 meters avstand.</li><li>Gangfart. Ingen passasjerer. Ingen personer på eller under gaflene.</li><li>Verneutstyr etter skolens krav, minimum vernesko og refleksvest.</li><li>Daglig kontroll (0.1) gjort og kvittert før første kjøring hver dag.</li><li>Nye øvelser med høy last eller høyde (nivå 3–5) krever risikovurdering godkjent på forhånd.</li></ul>
+</section>
+
+<section id="vurdering" aria-labelledby="vurd-h">
+  <h2 id="vurd-h">Felles vurderingsskjema</h2>
+  <p>Erstatter de tomme radene i de gamle oppgavearkene. Under / Middels / Over tilsvarer lav / middels / høy måloppnåelse.</p>
+  <h3>Fører – Bransjeteknikk (KM4561)</h3>
+  <table><thead><tr><th>Kriterium</th><th>Lav (2) / Under</th><th>Middels (3–4)</th><th>Høy (5–6) / Over</th></tr></thead><tbody>
+    <tr><td>Sikkerhet</td><td>Følger reglene når hen blir minnet på dem</td><td>Følger reglene på egen hånd, få feilpoeng</td><td>Sikker atferd er en vane; forutser farer</td></tr>
+    <tr><td>Kontroll over trucken</td><td>Rykkvis, mange korrigeringer</td><td>Jevn kjøring, enkelte korrigeringer</td><td>Myk, presis og effektiv; riktig bruk av svingpunkt</td></tr>
+    <tr><td>Gafler, tårn og last</td><td>Treffer pallen med hjelp</td><td>Riktig transporthøyde og tilt på egen hånd</td><td>Tilpasser tilt og spredning til skjev last og ulike lastbærere</td></tr>
+    <tr><td>Kontroll og regelverk</td><td>Daglig kontroll med kort</td><td>Daglig kontroll uten hjelp, forklarer de fleste punktene</td><td>Forklarer hvorfor hvert punkt finnes og kobler til forskriftene</td></tr>
+  </tbody></table>
+  <h3>Oppdrag – TLL (KM4550)</h3>
+  <table><thead><tr><th>Kriterium</th><th>Lav (2) / Under</th><th>Middels (3–4)</th><th>Høy (5–6) / Over</th></tr></thead><tbody>
+    <tr><td>Planlegging</td><td>Starter uten plan</td><td>Plan for rekkefølge og rute</td><td>Planen tar høyde for vekt, risiko og effektivitet</td></tr>
+    <tr><td>Håndtering av gods</td><td>Godset kommer frem, men med skader eller feil</td><td>Riktig lastbærer, sikring og plassering</td><td>Velger beste metode og begrunner faglig</td></tr>
+    <tr><td>Effektivitet</td><td>Mye unødvendig kjøring</td><td>Fornuftig rute og tid</td><td>Rask uten at det går ut over sikkerheten</td></tr>
+    <tr><td>Dokumentasjon</td><td>Mangelfull</td><td>Komplett skjema, film eller rapport</td><td>Presis og faglig; andre kan bruke den</td></tr>
+  </tbody></table>
+  <p><b>Kritisk feil:</b> Øvelsen kan ikke vurderes over lav måloppnåelse i førerkolonnen. Eleven får ny mulighet etter mer øving.</p>
+  <h3>Samarbeid – egen tilbakemelding, ikke med i karakteren</h3>
+  <p>Forslag til samarbeidsmål (klassens egne verdier kan erstatte disse):</p>
+  <ul><li>Tar observatørrollen på alvor og sier STOPP når det trengs</li><li>Gir makkeren ett konkret tips etter hver runde</li><li>Bytter roller uten å måtte bli minnet på det</li><li>Rydder og parkerer trucken korrekt for neste gruppe</li></ul>
+  <p class="noprint"><button class="tbtn" type="button" onclick="window.print()">Skriv ut veiledningen</button></p>
+</section>
+
+<section id="ovelser" aria-labelledby="ov-h">
+  <h2 id="ov-h">Øvelsene med fasit og lærernotater</h2>
+  <p id="lockHint">Fasit og lærernotater vises her når du har låst opp øverst på siden.</p>
+  <div id="ovList"></div>
+</section>
+
+<section id="endringer" aria-labelledby="end-h">
+  <h2 id="end-h">Endringer fra de gamle oppgavearkene</h2>
+  <table><thead><tr><th>Gml. nr.</th><th>Ny plass</th><th>Endring</th></tr></thead><tbody>
+    <tr><td>200</td><td>2.1</td><td>Lykkes-kriterier og kobling til BT + TLL</td></tr>
+    <tr><td>201</td><td>1.2</td><td>Vurderingsrunde fremover og bakover</td></tr>
+    <tr><td>202</td><td>1.3 + 3.1</td><td>Delt: uten last på nivå 1, med last på nivå 3. Fasit på personløft og forskrifter</td></tr>
+    <tr><td>203</td><td>2.3</td><td>Tommestokk i dokumentasjonen</td></tr>
+    <tr><td>204</td><td>5.4</td><td>Fasit lagt til</td></tr>
+    <tr><td>205</td><td>3.2</td><td>Strammere HMS (maks 50 cm løftehøyde, gangfart) og fasit på kreftene</td></tr>
+    <tr><td>206</td><td>0.3</td><td>Syrevekt og fasit fra NDLA</td></tr>
+    <tr><td>207</td><td>3.5</td><td>Andre forsøk må også ha få feilpoeng</td></tr>
+    <tr><td>208</td><td>4.3</td><td>Fjernet «stå på toppen av stabelen» (fallfare). Tid + feilpoeng</td></tr>
+    <tr><td>209</td><td>2.2</td><td>Fasit på parkering, kjøring og skjeve paller</td></tr>
+    <tr><td>300</td><td>0.4</td><td>Minimumsliste over komponenter, HMS</td></tr>
+    <tr><td>Videooppgave</td><td>0.5</td><td>Uendret, plassert som avslutning på nivå 1</td></tr>
+  </tbody></table>
+  <p>Bildene av sluttresultatet til 207 og 208 ligger nå på øvelse 3.5 og 4.3.</p>
+</section>
+
+<section id="kilder" aria-labelledby="kilder-h">
+  <h2 id="kilder-h">Kilder</h2>
+  <ul id="kildeList"></ul>
+  <p>Kompetansemålene er hentet fra NDLAs læreplankoblinger (data.udir.no, NLOD) til emnene <a href="https://ndla.no/e/bransjeteknikk-tp-tol-vg2---ressurssamling/sertifisert-sikkerhetsopplaring/0ce154df10" style="color:var(--teacher-accent)">Sertifisert sikkerhetsopplæring</a> og <a href="https://ndla.no/nb/e/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/handtere-og-transportere-varer-med-truck/32e4f28ce4" style="color:var(--teacher-accent)">Håndtere og transportere varer med truck</a>, november 2026. Øvelsestekstene er egenprodusert; NDLA-stoff er lenket, ikke kopiert.</p>
+</section>
+</main>
+<script>
+(function(){
+  const D = window.TRUCK_PRAKSIS, C = window.TRUCK_PRAKSIS_LAERER;
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  let fasit = null;
+
+  document.getElementById('kmRows').innerHTML = ['BT','TLL'].map(k => { const m = D.km[k]; return `<tr><td>${esc(m.fag)} (${m.kode})</td><td>${esc(m.tekst)}</td><td>${k==='BT'?'Hvordan eleven fører trucken: kontroll, sikkerhet, presisjon, regelverk':'Hvordan eleven løser oppdraget: planlegging, godshåndtering, effektivitet, dokumentasjon'}</td><td><b>${m.blikk}</b></td></tr>`; }).join('');
+  document.getElementById('evRows').innerHTML = ['n','t','e'].flatMap(l => D.egenvurdering[l].map((txt, i) => { const id = l + (i + 1); const ov = D.oppgaver.filter(t => t.ev.includes(id)); return `<tr><td><b>${D.evNavn[l]} ${i + 1}:</b> ${esc(txt)}</td><td>${ov.map(t => `<a href="#${t.slug}" style="color:var(--teacher-accent)">${t.id}</a>`).join(', ')}</td></tr>`; })).join('');
+  document.getElementById('kritisk').innerHTML = D.kritiske.map(x => `<li>${esc(x)}</li>`).join('');
+  document.getElementById('feil').innerHTML = D.feilpoeng.map(x => `<li>${esc(x)}</li>`).join('');
+  document.getElementById('kildeList').innerHTML = Object.values(D.ndla).map(n => `<li><a href="${n.u}" target="_blank" rel="noopener" style="color:var(--teacher-accent)">NDLA: ${esc(n.t)}</a></li>`).join('');
+
+  const fagTxt = f => f === 'BT' ? 'Bransjeteknikk' : f === 'TLL' ? 'TLL' : 'BT + TLL';
+  function renderList() {
+    document.getElementById('ovList').innerHTML = D.nivaer.map(n => `<h3 class="lvlHead">Nivå ${n.n} – ${esc(n.tittel)} <span style="color:#bdd0d4;font-weight:600">(${n.mestring})</span></h3>` +
+      D.oppgaver.filter(t => t.niva === n.n).map(t => `<article class="oItem" id="${t.slug}"><h4><b>${t.id}</b>${esc(t.tittel)}</h4><div class="oMeta">${t.truck.join(', ')} · ${esc(t.tid)} · ${esc(t.fase)} · ${fagTxt(t.fag)}${t.gml ? ' · gml. ' + esc(t.gml) : ''}<br>Egenvurdering: ${t.ev.map(e => D.evNavn[e[0]] + ' ' + e.slice(1)).join(', ')}</div><a href="/truck/praksis/#${t.slug}">Elevteksten →</a>${fasit ? (fasit[t.id] ? `<div class="fasit">${fasit[t.id]}</div>` : '') : '<p class="locked">Fasit og lærernotat er låst.</p>'}</article>`).join('')).join('');
+    if (location.hash) { const el = document.getElementById(location.hash.slice(1)); if (el) el.scrollIntoView({ block: 'start' }); }
+  }
+  renderList();
+
+  const bytes = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  const b64 = u => btoa(String.fromCharCode(...u));
+  async function deriveKey(pw, salt, iterations, usage) {
+    const m = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw.normalize('NFC')), 'PBKDF2', false, ['deriveKey']);
+    return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations, hash: 'SHA-256' }, m, { name: 'AES-GCM', length: 256 }, false, [usage]);
+  }
+
+  document.getElementById('unlock').addEventListener('submit', async e => {
+    e.preventDefault();
+    const f = document.getElementById('pw'), b = document.getElementById('unlockBtn'), err = document.getElementById('err');
+    if (!window.crypto?.subtle) { err.textContent = 'Nettleseren kan ikke åpne fasiten her. Bruk en oppdatert nettleser og HTTPS.'; return; }
+    b.disabled = true; b.textContent = 'Åpner …'; err.textContent = '';
+    try {
+      const key = await deriveKey(f.value, bytes(C.salt), C.iterations, 'decrypt'); f.value = '';
+      const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: bytes(C.iv) }, key, bytes(C.data));
+      const obj = JSON.parse(new TextDecoder().decode(plain));
+      if (!obj || typeof obj !== 'object' || !obj['0.1']) throw Error('Ugyldig innhold');
+      fasit = obj;
+      document.getElementById('lockForm').hidden = true; document.getElementById('unlocked').hidden = false;
+      document.getElementById('lockHint').textContent = 'Fasit og lærernotater vises under hver øvelse.';
+      renderList();
+    } catch (x) { f.value = ''; b.disabled = false; b.textContent = 'Vis fasit'; err.textContent = 'Feil passord. Prøv igjen.'; f.focus(); }
+  });
+
+  document.getElementById('rekey').addEventListener('submit', async e => {
+    e.preventDefault();
+    const p1 = document.getElementById('pw1'), p2 = document.getElementById('pw2'), err = document.getElementById('err2'), b = document.getElementById('rekeyBtn');
+    if (p1.value !== p2.value) { err.textContent = 'Passordene er ikke like.'; return; }
+    if (!fasit) { err.textContent = 'Lås opp først.'; return; }
+    b.disabled = true; err.textContent = '';
+    try {
+      const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12)), iterations = 600000;
+      const key = await deriveKey(p1.value, salt, iterations, 'encrypt'); p1.value = ''; p2.value = '';
+      const data = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(JSON.stringify(fasit))));
+      const obj = { version: 1, salt: b64(salt), iv: b64(iv), iterations, data: b64(data) };
+      const txt = '/* Kryptert lærerinnhold (fasit og lærernotater) for truckøvelsene. Åpnes med lærerpassord i /laererrom/truck-praksis/. */\nwindow.TRUCK_PRAKSIS_LAERER = ' + JSON.stringify(obj) + ';\n';
+      const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([txt], { type: 'text/javascript' })); a.download = 'fasit.enc.js'; a.click();
+      err.textContent = 'Filen er lastet ned. Erstatt laererrom/truck-praksis/fasit.enc.js i repoet med den.';
+    } catch (x) { err.textContent = 'Klarte ikke å lage filen.'; }
+    b.disabled = false;
+  });
+})();
+</script>
+</body>
+</html>
