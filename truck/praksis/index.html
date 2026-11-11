@@ -57,6 +57,7 @@
   .pBody p,.pBody li{line-height:1.6}
   .pBody h4{margin:16px 0 4px;font-size:15px;text-transform:uppercase;letter-spacing:.06em;color:var(--accent)}
   .pBody .hms{border-left:4px solid #e07b00;background:rgba(224,123,0,.1);padding:10px 14px;border-radius:8px}
+  .pFig{margin:12px 0 4px}.pFig img{display:block;max-width:100%;height:auto;border-radius:12px;background:#fff}.pFig figcaption{color:var(--muted);font-size:14px;margin-top:6px}
   .pLinks{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;font-weight:800}
   .pLinks a{color:var(--accent)}
   .pLinks a.teach{color:#8ed7cc}
@@ -173,7 +174,7 @@
   const card = t => {
     const nd = t.ndla ? D.ndla[t.ndla] : null;
     return `<details class="pCard" id="${t.slug}"><summary><span class="pId">${t.id}</span><span><span class="pTitle">${esc(t.tittel)}</span><span class="pMeta">${t.truck.map(x => `<span class="tag t">${x}</span>`).join('')}<span class="tag">${esc(t.tid)}</span><span class="tag">${esc(t.fase)}</span><span class="tag">${fagTag(t.fag)}</span>${t.gml ? `<span class="tag">gml. ${esc(t.gml)}</span>` : ''}</span></span><span class="chev" aria-hidden="true">▶</span></summary>
-      <div class="pBody"><h4>Oppdrag</h4>${t.oppdrag}<h4>Du lykkes når</h4><p>${t.lykkes}</p>${t.hms ? `<h4>HMS</h4><p class="hms">${t.hms}</p>` : ''}${t.dok ? `<h4>Dokumentasjon</h4><p>${t.dok}</p>` : ''}
+      <div class="pBody"><h4>Oppdrag</h4>${t.oppdrag}${t.bilde ? `<figure class="pFig"><img src="${t.bilde.src}" alt="${esc(t.bilde.alt)}" loading="lazy"><figcaption>Sluttresultatet du skal bygge.</figcaption></figure>` : ''}<h4>Du lykkes når</h4><p>${t.lykkes}</p>${t.hms ? `<h4>HMS</h4><p class="hms">${t.hms}</p>` : ''}${t.dok ? `<h4>Dokumentasjon</h4><p>${t.dok}</p>` : ''}
       <div class="pLinks">${nd ? `<a href="${nd.u}" target="_blank" rel="noopener">NDLA: ${esc(nd.t)} ↗</a>` : ''}<a class="teach" href="/laererrom/truck-praksis/#${t.slug}">Lærerveiledning for øvelsen →</a></div></div></details>`;
   };
 
