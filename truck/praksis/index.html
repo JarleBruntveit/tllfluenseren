@@ -8,7 +8,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Praktiske truckøvelser – TLLfluenseren</title>
-<meta name="description" content="29 praktiske truckøvelser for T1, T2 og T4 i seks nivåer – fra daglig kontroll til logistikkoppdrag. Felles for Bransjeteknikk og TLL.">
+<meta name="description" content="35 praktiske truckøvelser for T1, T2 og T4 i seks nivåer – fra daglig kontroll til logistikkoppdrag. Felles for Bransjeteknikk og TLL.">
 <link rel="stylesheet" href="../../assets/styles.css">
 <style>
   .pShell{max-width:980px}
@@ -58,6 +58,7 @@
   .pBody h4{margin:16px 0 4px;font-size:15px;text-transform:uppercase;letter-spacing:.06em;color:var(--accent)}
   .pBody .hms{border-left:4px solid #e07b00;background:rgba(224,123,0,.1);padding:10px 14px;border-radius:8px}
   .pFig{margin:12px 0 4px}.pFig img{display:block;max-width:100%;height:auto;border-radius:12px;background:#fff}.pFig figcaption{color:var(--muted);font-size:14px;margin-top:6px}
+  .evList{list-style:none;padding:0;margin:4px 0;display:grid;gap:6px}.evList a{color:var(--text);text-decoration:none}.evList a:hover{text-decoration:underline}.evLvl{display:inline-block;font-size:12px;font-weight:850;border:1px solid var(--accent);color:var(--accent);border-radius:999px;padding:1px 8px;margin-right:8px}
   .pLinks{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;font-weight:800}
   .pLinks a{color:var(--accent)}
   .pLinks a.teach{color:#8ed7cc}
@@ -91,8 +92,8 @@
     <section class="pHero">
       <div class="kicker">ØV · Praktisk truckkjøring</div>
       <h1>Praktiske øvelser</h1>
-      <p>29 øvelser på T1, T2 og T4 i seks nivåer – fra daglig kontroll til et helt logistikkoppdrag. Du går videre til neste nivå når du har fått grønt på minst to øvelser på nivået ditt.</p>
-      <p>Vurder deg selv underveis i <a href="/truck/nivaer/" style="color:var(--accent);font-weight:800">egenvurderingen</a> (Nybegynner, Trygg og Ekspert).</p>
+      <p>35 øvelser på T1, T2 og T4 i seks nivåer – fra daglig kontroll til et helt logistikkoppdrag. Hver øvelse viser hvilke punkter i egenvurderingen den trener. Du går videre til neste nivå når du har fått grønt på minst to øvelser på nivået ditt.</p>
+      <p>Vurder deg selv underveis i <a href="/truck/nivaer/" style="color:var(--accent);font-weight:800">egenvurderingen</a> (Nybegynner, Trygg og Ekspert). Der finner du også øvelsene som passer til hvert punkt.</p>
     </section>
 
     <section aria-label="Kompetansemål øvelsene bygger på">
@@ -174,7 +175,7 @@
   const card = t => {
     const nd = t.ndla ? D.ndla[t.ndla] : null;
     return `<details class="pCard" id="${t.slug}"><summary><span class="pId">${t.id}</span><span><span class="pTitle">${esc(t.tittel)}</span><span class="pMeta">${t.truck.map(x => `<span class="tag t">${x}</span>`).join('')}<span class="tag">${esc(t.tid)}</span><span class="tag">${esc(t.fase)}</span><span class="tag">${fagTag(t.fag)}</span>${t.gml ? `<span class="tag">gml. ${esc(t.gml)}</span>` : ''}</span></span><span class="chev" aria-hidden="true">▶</span></summary>
-      <div class="pBody"><h4>Oppdrag</h4>${t.oppdrag}${t.bilde ? `<figure class="pFig"><img src="${t.bilde.src}" alt="${esc(t.bilde.alt)}" loading="lazy"><figcaption>Sluttresultatet du skal bygge.</figcaption></figure>` : ''}<h4>Du lykkes når</h4><p>${t.lykkes}</p>${t.hms ? `<h4>HMS</h4><p class="hms">${t.hms}</p>` : ''}${t.dok ? `<h4>Dokumentasjon</h4><p>${t.dok}</p>` : ''}
+      <div class="pBody"><h4>Oppdrag</h4>${t.oppdrag}${t.bilde ? `<figure class="pFig"><img src="${t.bilde.src}" alt="${esc(t.bilde.alt)}" loading="lazy"><figcaption>Sluttresultatet du skal bygge.</figcaption></figure>` : ''}<h4>Du lykkes når</h4><p>${t.lykkes}</p>${t.hms ? `<h4>HMS</h4><p class="hms">${t.hms}</p>` : ''}${t.dok ? `<h4>Dokumentasjon</h4><p>${t.dok}</p>` : ''}<h4>Egenvurdering</h4><p>Øvelsen trener disse punktene:</p><ul class="evList">${t.ev.map(e => `<li><a href="/truck/nivaer/#it-${e}"><span class="evLvl">${D.evNavn[e[0]]}</span>${esc(D.evTekst(e))}</a></li>`).join('')}</ul>
       <div class="pLinks">${nd ? `<a href="${nd.u}" target="_blank" rel="noopener">NDLA: ${esc(nd.t)} ↗</a>` : ''}<a class="teach" href="/laererrom/truck-praksis/#${t.slug}">Lærerveiledning for øvelsen →</a></div></div></details>`;
   };
 

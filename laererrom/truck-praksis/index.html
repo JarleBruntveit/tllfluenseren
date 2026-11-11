@@ -59,7 +59,7 @@ p,li{line-height:1.6}
 <div class="teacher-intro">
   <div class="teacher-eyebrow">Bransjeteknikk + TLL · Truck</div>
   <h1>Truckøvelser – lærerveiledning</h1>
-  <p>29 praktiske øvelser på T1, T2 og T4 i seks nivåer, fra daglig kontroll til logistikkoppdrag. Én praktisk økt gir vurderingsgrunnlag i både Bransjeteknikk og TLL. Elevene finner øvelsene i <a href="/truck/praksis/" style="color:var(--teacher-accent);font-weight:800">elevversjonen</a>, og hver øvelse lenker hit.</p>
+  <p>35 praktiske øvelser på T1, T2 og T4 i seks nivåer, fra daglig kontroll til logistikkoppdrag. Én praktisk økt gir vurderingsgrunnlag i både Bransjeteknikk og TLL. Elevene finner øvelsene i <a href="/truck/praksis/" style="color:var(--teacher-accent);font-weight:800">elevversjonen</a>, og hver øvelse lenker hit.</p>
   <div class="toc noprint"><a href="#fag">Fagkobling</a><a href="#metode">Metode</a><a href="#tillatelse">Kjøretillatelse</a><a href="#hms">HMS</a><a href="#vurdering">Vurderingsskjema</a><a href="#ovelser">Øvelser med fasit</a><a href="#endringer">Endringer</a><a href="#kilder">Kilder</a></div>
 </div>
 
@@ -83,6 +83,9 @@ p,li{line-height:1.6}
   <p>NDLA kobler de samme truckressursene til to kompetansemål i TOL02-01. Hver øvelse vurderes derfor med to blikk.</p>
   <table><thead><tr><th>Fag</th><th>Kompetansemål (ordrett)</th><th>Vi ser etter</th><th>Blikk</th></tr></thead><tbody id="kmRows"></tbody></table>
   <p>Tommelfingerregel: nivå 0–3 vektlegger førerblikket (Bransjeteknikk), nivå 4–5 oppdragsblikket (TLL). Nivåene følger Nybegynner (0–1), Trygg (2–3) og Ekspert (4–5) i <a href="/truck/nivaer/" style="color:var(--teacher-accent)">egenvurderingen</a>.</p>
+  <h3>Kobling til egenvurderingen</h3>
+  <p>Alle de 27 punktene i egenvurderingen har minst én øvelse, og hver øvelse viser punktene den trener. Øvelsesnivået og egenvurderingsnivået er ikke alltid det samme: lading (0.3) trener for eksempel et Trygg-punkt, men gjøres tidlig fordi trucken må lades fra første dag. Eleven dokumenterer i egenvurderingen med bilder og film fra øvelsene og leverer én samlet fil.</p>
+  <table><thead><tr><th>Punkt i egenvurderingen</th><th>Øvelser</th></tr></thead><tbody id="evRows"></tbody></table>
   <p><b>Forutsetninger:</b> Øvelsene bygger på modul 1 og 2.2 i truckteorien. Eleven bør ha bestått teorien før første praktiske økt. Kontroller timetall og praktisk prøve mot skolens godkjente opplæringsplan for sertifiserende opplæring – denne basen erstatter den ikke.</p>
 </section>
 
@@ -184,6 +187,7 @@ p,li{line-height:1.6}
   let fasit = null;
 
   document.getElementById('kmRows').innerHTML = ['BT','TLL'].map(k => { const m = D.km[k]; return `<tr><td>${esc(m.fag)} (${m.kode})</td><td>${esc(m.tekst)}</td><td>${k==='BT'?'Hvordan eleven fører trucken: kontroll, sikkerhet, presisjon, regelverk':'Hvordan eleven løser oppdraget: planlegging, godshåndtering, effektivitet, dokumentasjon'}</td><td><b>${m.blikk}</b></td></tr>`; }).join('');
+  document.getElementById('evRows').innerHTML = ['n','t','e'].flatMap(l => D.egenvurdering[l].map((txt, i) => { const id = l + (i + 1); const ov = D.oppgaver.filter(t => t.ev.includes(id)); return `<tr><td><b>${D.evNavn[l]} ${i + 1}:</b> ${esc(txt)}</td><td>${ov.map(t => `<a href="#${t.slug}" style="color:var(--teacher-accent)">${t.id}</a>`).join(', ')}</td></tr>`; })).join('');
   document.getElementById('kritisk').innerHTML = D.kritiske.map(x => `<li>${esc(x)}</li>`).join('');
   document.getElementById('feil').innerHTML = D.feilpoeng.map(x => `<li>${esc(x)}</li>`).join('');
   document.getElementById('kildeList').innerHTML = Object.values(D.ndla).map(n => `<li><a href="${n.u}" target="_blank" rel="noopener" style="color:var(--teacher-accent)">NDLA: ${esc(n.t)}</a></li>`).join('');
@@ -191,7 +195,7 @@ p,li{line-height:1.6}
   const fagTxt = f => f === 'BT' ? 'Bransjeteknikk' : f === 'TLL' ? 'TLL' : 'BT + TLL';
   function renderList() {
     document.getElementById('ovList').innerHTML = D.nivaer.map(n => `<h3 class="lvlHead">Nivå ${n.n} – ${esc(n.tittel)} <span style="color:#bdd0d4;font-weight:600">(${n.mestring})</span></h3>` +
-      D.oppgaver.filter(t => t.niva === n.n).map(t => `<article class="oItem" id="${t.slug}"><h4><b>${t.id}</b>${esc(t.tittel)}</h4><div class="oMeta">${t.truck.join(', ')} · ${esc(t.tid)} · ${esc(t.fase)} · ${fagTxt(t.fag)}${t.gml ? ' · gml. ' + esc(t.gml) : ''}</div><a href="/truck/praksis/#${t.slug}">Elevteksten →</a>${fasit ? (fasit[t.id] ? `<div class="fasit">${fasit[t.id]}</div>` : '') : '<p class="locked">Fasit og lærernotat er låst.</p>'}</article>`).join('')).join('');
+      D.oppgaver.filter(t => t.niva === n.n).map(t => `<article class="oItem" id="${t.slug}"><h4><b>${t.id}</b>${esc(t.tittel)}</h4><div class="oMeta">${t.truck.join(', ')} · ${esc(t.tid)} · ${esc(t.fase)} · ${fagTxt(t.fag)}${t.gml ? ' · gml. ' + esc(t.gml) : ''}<br>Egenvurdering: ${t.ev.map(e => D.evNavn[e[0]] + ' ' + e.slice(1)).join(', ')}</div><a href="/truck/praksis/#${t.slug}">Elevteksten →</a>${fasit ? (fasit[t.id] ? `<div class="fasit">${fasit[t.id]}</div>` : '') : '<p class="locked">Fasit og lærernotat er låst.</p>'}</article>`).join('')).join('');
     if (location.hash) { const el = document.getElementById(location.hash.slice(1)); if (el) el.scrollIntoView({ block: 'start' }); }
   }
   renderList();
