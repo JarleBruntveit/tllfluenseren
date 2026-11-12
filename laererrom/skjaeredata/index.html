@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.ico">
+<link rel="stylesheet" href="/assets/styles.css">
+<title>Vurdering – skjæredata (INT) | TLLfluenseren</title>
+<style>
+main{max-width:1040px;margin:40px auto;padding:24px}
+p,li{line-height:1.6}
+.ark{border:1px solid #71818a;border-radius:14px;padding:22px 24px;margin:18px 0;background:#fff;color:#1b2128}
+.ark h2,.ark h3,.ark th,.ark td,.ark b,.ark summary,.ark label{color:#1b2128}
+.ark h2{margin-top:0}
+.ark a{color:#0e6a79}
+table{border-collapse:collapse;width:100%;margin:10px 0 14px;font-size:14.5px}
+th,td{border:1px solid #9aa3ab;padding:7px 9px;text-align:left;vertical-align:top}
+th{background:rgba(242,184,75,.18);cursor:default}
+th[data-sort]{cursor:pointer}
+th[data-sort]:hover{background:rgba(242,184,75,.32)}
+.info{border-left:5px solid #14889b;background:#eef7f9;color:#1b2128;padding:12px 16px;border-radius:8px}
+.warn{border-left:5px solid #e07b00;background:#fff4e5;color:#1b2128;padding:12px 16px;border-radius:8px}
+.fase{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:#1b2128;color:#fff;border-radius:6px;padding:2px 8px;margin-right:6px;vertical-align:middle}
+a.btn,button.btn{display:inline-block;padding:11px 18px;background:#14889b;color:#fff;border:0;border-radius:8px;text-decoration:none;font:inherit;cursor:pointer}
+button.btn.sek{background:#3c4a56}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0;align-items:center}
+.drop{border:2px dashed #14889b;border-radius:12px;padding:22px;text-align:center;background:#f4fafb;color:#1b2128}
+.drop.over{background:#dff1f4}
+textarea{width:100%;min-height:80px;font:13px ui-monospace,Menlo,Consolas,monospace;border:1px solid #9aa3ab;border-radius:8px;padding:8px}
+.liten{font-size:14px;color:#4d5862}
+.ok{color:#17784a;font-weight:700}
+.feil{color:#b3261e;font-weight:700}
+.chip{display:inline-block;white-space:nowrap;border-radius:999px;padding:2px 9px;font-size:12.5px;font-weight:700;border:1px solid #9aa3ab;margin:1px 2px}
+.chip.b{background:#e3f4ea;border-color:#5fb487}
+.chip.p{background:#fff4e5;border-color:#e0a24b}
+.chip.x{background:#f1f3f5}
+.bars div{display:grid;grid-template-columns:260px 1fr 46px;gap:10px;align-items:center;margin:6px 0;font-size:14px}
+.bars i{display:block;height:14px;border-radius:7px;background:#14889b}
+.bars i.org{background:#e07b00}
+.kortgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.kort{border:2px solid #1b2128;border-radius:12px;padding:14px 16px;background:#fff;color:#1b2128;break-inside:avoid}
+.kort h3{margin:0 0 6px}
+details{margin:6px 0}
+details summary{cursor:pointer;font-weight:700}
+td.fyll{height:30px;min-width:60px}
+.sum{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:10px 0}
+.sum div{border:1px solid #9aa3ab;border-radius:10px;padding:10px 12px}
+.sum b{display:block;font-size:26px}
+@media(max-width:760px){.bars div{grid-template-columns:1fr}.sum{grid-template-columns:repeat(2,1fr)}}
+@media print{
+  .tll-site-nav,.tll-skip,.noprint,footer,.tll-global-footer{display:none!important}
+  main{margin:0;padding:0;max-width:none}
+  .ark{border:0;padding:0;margin:0 0 18px;page-break-inside:auto}
+  body{background:#fff!important}
+}
+</style>
+<link rel="stylesheet" href="/assets/global-footer.css"><script defer src="/assets/global-footer.js?v=mobile-nav-2"></script><link rel="stylesheet" href="/assets/elevflyt.css?v=mobile-nav-2">
+<link rel="stylesheet" href="/assets/laererrom.css?v=2">
+</head>
+<body class="teacher-area">
+<a class="tll-skip" href="#tll-main">Hopp til innhold</a>
+<header class="teacher-header teacher-shell noprint"><a class="teacher-brand" href="/" aria-label="TLLfluenseren – gå til forsiden"><span class="brandmark">TLL</span><span>TLLfluenseren<small>Transport · Logistikk · Løfteoperasjoner · Livet</small></span></a><a class="teacher-back" href="/laererrom/">← Lærerrommet</a></header>
+<nav class="tll-site-nav tll-standalone-nav" aria-label="Hovedmeny"><a href="/">Forside</a><a href="/#fag">Fagområder</a><a href="/ressursbank/">Ressursbank</a><a href="/assistent/">TLL-assistenten</a><a href="/laererrom/" aria-current="page">Lærerrom</a><a href="/om/">Om</a></nav>
+<main id="tll-main" tabindex="-1">
+<div class="teacher-eyebrow">Gjestefag INT · Vurdering</div>
+<h1>Skjæredata – lærerens vurdering</h1>
+<p>Les inn elevenes PDF-rapporter fra Teams og få en klasseoversikt: nivå, resultat per område og hvilke regnefeil som går igjen. Under finner du kjennetegn på måloppnåelse, spørsmål til muntlig kontroll og et observasjonsskjema for praktisk prøve ved fresen.</p>
+<p class="noprint"><a class="btn" href="/int/skjaeredata/">Åpne elevsiden</a> <button class="btn sek" type="button" onclick="print()">Skriv ut siden</button></p>
+
+<section class="ark noprint" id="innlesing">
+  <h2>1 · Les inn rapporter</h2>
+  <div class="info"><b>Personvern:</b> Rapportene leses bare i denne nettleseren. Ingenting lastes opp eller lagres. Lukker du fanen, er oversikten borte. Bruk eksportknappen hvis du vil ta vare på den i skolens egne systemer.</div>
+  <div class="drop" id="drop" style="margin-top:14px">
+    <p style="margin:0 0 10px"><b>Slipp PDF-filene her</b>, eller velg dem fra maskinen. Du kan velge mange samtidig.</p>
+    <input type="file" id="filer" accept=".pdf,.json,application/pdf" multiple>
+  </div>
+  <p class="liten">Har eleven levert en rapportkode i stedet for PDF? Lim inn én eller flere koder her (de begynner med <code>SKJAERERAPPORT:</code>).</p>
+  <textarea id="koder" placeholder="SKJAERERAPPORT:…"></textarea>
+  <div class="actions"><button class="btn" type="button" id="lesKoder">Les inn kodene</button><button class="btn sek" type="button" id="tom">Tøm oversikten</button><button class="btn sek" type="button" id="csv">Last ned CSV</button><span class="liten" id="melding" aria-live="polite"></span></div>
+</section>
+
+<section class="ark" id="oversikt" hidden>
+  <h2>2 · Klasseoversikt</h2>
+  <div class="sum" id="sum"></div>
+  <table id="tabell"><thead><tr>
+    <th data-sort="navn">Elev</th><th data-sort="klasse">Klasse</th><th data-sort="niva">Nivå</th>
+    <th data-sort="nyb">Nybegynner</th><th data-sort="trygg">Trygg</th><th data-sort="eksp">Ekspert</th>
+    <th data-sort="forutsi">Forutsi</th><th data-sort="hint">Hint</th><th>Mest vanlige feil</th><th>Kontroll</th>
+  </tr></thead><tbody></tbody></table>
+  <p class="liten">Klikk på en kolonneoverskrift for å sortere. «Forutsi» er riktige gjetninger på første forsøk i Tenk-delen. Kontroll ⚠ betyr at rapporten er endret etter at den ble laget.</p>
+  <h3>Resultat per område (snitt for klassen)</h3>
+  <div class="bars" id="omrader"></div>
+  <h3>Typiske feil i klassen – og hva du kan gjøre</h3>
+  <div class="bars" id="feilbars"></div>
+  <div id="tiltak"></div>
+  <h3>Elevdetaljer og refleksjoner</h3>
+  <div id="detaljer"></div>
+</section>
+
+<section class="ark" id="kjennetegn">
+  <h2>3 · Kjennetegn på måloppnåelse</h2>
+  <p>Kjennetegnene bygger på kompetansemålene i <a href="https://www.udir.no/lk20/PIN02-03">Læreplan i vg2 industriteknologi (PIN02-03)</a> om å velge riktig tilvirkningsmetode ut fra materiale og tegninger, og om å programmere, simulere og drifte styrte produksjonsmaskiner (kortform – se Udir for ordrett tekst). Formuleringene under er egne. Nivåene i elevverktøyet er <b>et grunnlag</b>, ikke en karakter i seg selv. Kombiner dem med muntlig kontroll og praktisk utførelse.</p>
+  <table>
+    <thead><tr><th style="width:18%">Område</th><th>Lav måloppnåelse (2)</th><th>Middels måloppnåelse (3–4)</th><th>Høy måloppnåelse (5–6)</th></tr></thead>
+    <tbody>
+      <tr><td><b>Begreper</b></td><td>Kjenner igjen Vc, n, D og f med hjelp.</td><td>Forklarer Vc, n, D, fz/f og vf med riktige enheter.</td><td>Forklarer sammenhengene og bruker fagspråket presist, også i G-kode (S og F).</td></tr>
+      <tr><td><b>Beregning</b></td><td>Regner ut n når formelen og tallene er oppgitt.</td><td>Regner ut n og vf for fresing, dreiing og boring ut fra tabell.</td><td>Regner baklengs, tar hensyn til maks turtall, beregner tid, gjengemating og sponvolum.</td></tr>
+      <tr><td><b>Valg av skjæredata</b></td><td>Finner en verdi i tabellen med hjelp.</td><td>Velger Vc og mating ut fra materiale og verktøy (HSS/HM).</td><td>Begrunner valgene og justerer for maskin, verktøylengde, oppspenning og overflatekrav.</td></tr>
+      <tr><td><b>Feilsøking</b></td><td>Ser at noe er galt (lyd, spon, overflate).</td><td>Kobler vanlige symptomer til for høy eller lav Vc eller mating.</td><td>Foreslår og tester tiltak (løseegg, vibrasjoner, slitasje) og vurderer resultatet.</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th>Elevverktøyet viser</th><th>Tyder på</th></tr></thead>
+    <tbody>
+      <tr><td>Nybegynner bestått, under 80 % på Trygg</td><td>Lav til middels – kan grunnformelen, usikker på mating og valg</td></tr>
+      <tr><td>Trygg bestått</td><td>Middels – regner selvstendig for alle tre prosessene</td></tr>
+      <tr><td>Ekspert bestått, gode refleksjoner</td><td>Høy – må bekreftes muntlig og praktisk</td></tr>
+    </tbody>
+  </table>
+  <div class="warn"><b>Husk:</b> Innsats, oppførsel og antall forsøk er ikke en del av den faglige vurderingen. Hint og forsøk er informasjon til deg om hvor eleven trenger hjelp. Samarbeid i makkerpar vurderes og gis tilbakemelding på for seg.</div>
+</section>
+
+<section class="ark" id="muntlig">
+  <h2>4 · Muntlig kontroll (5–10 minutter per elev)</h2>
+  <p>Trekk 2–3 spørsmål fra elevens nivå. Be eleven forklare med egne ord og vise i simulatoren eller på et ekte verktøy. Løsningsforslag ligger under hvert spørsmål.</p>
+  <div class="kortgrid">
+    <div class="kort"><h3><span class="fase">Nybegynner</span></h3><ol>
+      <li>Hva er forskjellen på n og Vc?<details><summary>Løsningsforslag</summary>n er omdreininger per minutt. Vc er hvor mange meter eggen beveger seg per minutt. Vc avhenger av både n og D.</details></li>
+      <li>Hvorfor ganger vi med 1000 i formelen for n?<details><summary>Løsningsforslag</summary>D er i mm og Vc i m/min. 1 m = 1000 mm.</details></li>
+      <li>Hva roterer ved fresing, og hva roterer ved dreiing?<details><summary>Løsningsforslag</summary>Fresing: verktøyet. Dreiing: arbeidsstykket.</details></li>
+      <li>Vis S og F i en programlinje. Hva betyr de?<details><summary>Løsningsforslag</summary>S = turtall (o/min), F = matehastighet (mm/min).</details></li>
+    </ol></div>
+    <div class="kort"><h3><span class="fase">Trygg</span></h3><ol>
+      <li>Hvorfor må et Ø5-bor gå fortere enn et Ø20-bor i samme stål?<details><summary>Løsningsforslag</summary>Kortere omkrets. For samme Vc må n være fire ganger høyere (D er fire ganger mindre).</details></li>
+      <li>Regn ut vf for en Ø10 3-skjærs fres, fz 0,05, n 4000.<details><summary>Løsningsforslag</summary>vf = 0,05 · 3 · 4000 = 600 mm/min.</details></li>
+      <li>Hva skjer hvis tabellen gir et turtall over maskinens maks?<details><summary>Løsningsforslag</summary>n stopper på maks, Vc blir lavere. Behold fz, så vf = fz · z · nmaks. Vurder større verktøy.</details></li>
+      <li>Hvorfor er Vc så mye høyere med hardmetall enn med HSS?<details><summary>Løsningsforslag</summary>Hardmetall tåler mye høyere temperatur uten å miste hardheten.</details></li>
+    </ol></div>
+    <div class="kort"><h3><span class="fase">Ekspert</span></h3><ol>
+      <li>Forklar G96 og G50 ved plandreiing.<details><summary>Løsningsforslag</summary>G96 holder Vc konstant, så n øker når D blir mindre. G50 begrenser maks turtall, ellers går n mot uendelig ved senter.</details></li>
+      <li>Hvilken F trenger du ved stiv gjenging av M8 på 500 o/min?<details><summary>Løsningsforslag</summary>F = n · P = 500 · 1,25 = 625 mm/min.</details></li>
+      <li>Aluminium kleber seg til eggen. Hva gjør du?<details><summary>Løsningsforslag</summary>Løseegg: øk Vc, bruk kjølevæske eller luft, skarpt og polert verktøy for aluminium, sjekk fz.</details></li>
+      <li>Planlegg slissen i pos. 22 (nivåglass topp) på Mini Mill.<details><summary>Løsningsforslag</summary>Ø6 HM 3-skjær, ønsket n ≈ 13 000 begrenses til 6000 (eller 8000). vf = 0,04 · 3 · 6000 = 720 mm/min. Spiralnedgang, flere passeringer, kjølevæske.</details></li>
+    </ol></div>
+  </div>
+</section>
+
+<section class="ark" id="praktisk">
+  <h2>5 · Praktisk prøve ved Mini Mill – observasjonsskjema</h2>
+  <p><span class="fase">Oppdrag</span>Eleven får en fres og et materiale, regner ut skjæredata, kontrollerer dem i Fusion 360 eller G-koden, og forklarer valgene før kjøring. Læreren er ved maskinen hele tiden. Eleven kjører ikke uten godkjenning.</p>
+  <table>
+    <thead><tr><th style="width:52%">Kriterium</th><th>Ikke vist</th><th>Delvis</th><th>Vist</th><th>Kommentar</th></tr></thead>
+    <tbody>
+      <tr><td>Finner Vc og fz i tabellen for riktig materiale og verktøy</td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td></tr>
+      <tr><td>Regner ut n og vf riktig, med enheter</td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td></tr>
+      <tr><td>Tar hensyn til maskinens maks turtall</td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td></tr>
+      <tr><td>Finner og kontrollerer S og F i programmet</td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td></tr>
+      <tr><td>Forklarer valgene med fagbegreper</td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td></tr>
+      <tr><td>Vurderer spon, lyd og overflate og foreslår justering</td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td></tr>
+      <tr><td>Følger HMS: vernebriller, lukkede dører, spon fjernes med kost</td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td><td class="fyll"></td></tr>
+    </tbody>
+  </table>
+  <p class="liten">Samarbeid (eget skjema, ikke del av faglig vurdering): Bytter roller i makkerparet · forklarer for makkeren · tar imot innspill.</p>
+</section>
+</main>
+
+<script type="module">
+import { lesRapporter, NIVAER, KATEGORIER, FEILTYPER } from '/int/skjaeredata/rapport.js';
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const elever = new Map(); // nøkkel: navn|klasse → siste rapport
+let sortKey = 'navn', sortDir = 1;
+
+function nivaNaadd(r) { let n = 0; NIVAER.forEach((l, i) => { if (r.nivaer?.[l.id]?.bestatt) n = i + 1; }); return n; }
+const nivaNavn = n => n ? NIVAER[n - 1].navn : 'Ikke bestått';
+function legg(resultat) {
+  let ok = 0, feil = 0;
+  for (const x of resultat) {
+    if (x.feil) { feil++; continue; }
+    const r = x.data, k = (r.navn || 'Uten navn').toLowerCase() + '|' + (r.klasse || '').toLowerCase();
+    const gml = elever.get(k);
+    if (!gml || gml.data.laget < r.laget) elever.set(k, x);
+    ok++;
+  }
+  return { ok, feil };
+}
+async function lesFiler(files) {
+  let ok = 0, feil = 0, navn = [];
+  for (const f of files) {
+    const buf = await f.arrayBuffer();
+    const tekst = new TextDecoder('latin1').decode(buf);
+    const res = lesRapporter(tekst, f.name);
+    const r = legg(res); ok += r.ok; feil += r.feil;
+    res.filter(x => x.feil).forEach(x => navn.push(`${esc(f.name)}: ${esc(x.feil)}`));
+  }
+  $('melding').innerHTML = `${ok} rapport(er) lest inn.` + (feil ? ` <span class="feil">${feil} feil:</span> ${navn.join('; ')}` : '');
+  tegn();
+}
+$('filer').addEventListener('change', e => lesFiler(e.target.files));
+const drop = $('drop');
+['dragenter', 'dragover'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add('over'); }));
+['dragleave', 'drop'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.remove('over'); }));
+drop.addEventListener('drop', e => lesFiler(e.dataTransfer.files));
+$('lesKoder').addEventListener('click', () => { const r = legg(lesRapporter($('koder').value)); $('melding').textContent = `${r.ok} rapport(er) lest inn${r.feil ? `, ${r.feil} kunne ikke leses` : ''}.`; tegn(); });
+$('tom').addEventListener('click', () => { elever.clear(); $('koder').value = ''; $('filer').value = ''; $('melding').textContent = 'Oversikten er tømt.'; tegn(); });
+
+function rader() {
+  return [...elever.values()].map(x => {
+    const r = x.data, ni = r.nivaer || {};
+    const feil = Object.entries(r.feil || {}).filter(([, n]) => n > 0).sort((a, b) => b[1] - a[1]);
+    return { x, r, navn: r.navn || 'Uten navn', klasse: r.klasse || '', niva: nivaNaadd(r), nyb: ni.nybegynner?.best ?? -1, trygg: ni.trygg?.best ?? -1, eksp: ni.ekspert?.best ?? -1,
+      forutsi: r.forutsi?.riktig ?? 0, hint: r.hint || 0, feil };
+  });
+}
+const celle = v => v?.forsok ? `<span class="chip ${v.bestatt ? 'b' : 'p'}">${v.best} %</span><br><span class="liten">${v.forsok} forsøk</span>` : '<span class="chip x">–</span>';
+
+function tegn() {
+  const rr = rader();
+  $('oversikt').hidden = !rr.length;
+  if (!rr.length) return;
+  rr.sort((a, b) => { const A = a[sortKey], B = b[sortKey]; return (typeof A === 'string' ? A.localeCompare(B, 'nb') : A - B) * sortDir; });
+  $('tabell').querySelector('tbody').innerHTML = rr.map(e => `<tr>
+    <td><b>${esc(e.navn)}</b><br><span class="liten">${new Date(e.r.laget).toLocaleDateString('nb-NO')}</span></td><td>${esc(e.klasse)}</td><td>${nivaNavn(e.niva)}</td>
+    <td>${celle(e.r.nivaer?.nybegynner)}</td><td>${celle(e.r.nivaer?.trygg)}</td><td>${celle(e.r.nivaer?.ekspert)}</td>
+    <td>${e.forutsi} / ${e.r.forutsi?.antall || 8}</td><td>${e.hint}</td>
+    <td>${e.feil.slice(0, 2).map(([k, n]) => `${esc(FEILTYPER[k]?.navn || k)} (${n})`).join('<br>') || '–'}</td>
+    <td>${e.x.endret ? '<span class="feil" title="Rapporten er endret etter at den ble laget">⚠ endret</span>' : '<span class="ok">✓</span>'}</td></tr>`).join('');
+  // sammendrag
+  const fordeling = [0, 0, 0, 0]; rr.forEach(e => fordeling[e.niva]++);
+  $('sum').innerHTML = `<div>Elever<b>${rr.length}</b></div>` + NIVAER.map((l, i) => `<div>${l.navn} bestått<b>${rr.filter(e => e.niva >= i + 1).length}</b></div>`).join('');
+  // områder
+  const omr = {};
+  rr.forEach(e => Object.entries(e.r.kategorier || {}).forEach(([k, v]) => { const o = (omr[k] ||= { r: 0, t: 0 }); o.r += v.riktig || 0; o.t += v.totalt || 0; }));
+  $('omrader').innerHTML = Object.entries(KATEGORIER).filter(([k]) => omr[k]?.t).map(([k, navn]) => { const p = Math.round(omr[k].r / omr[k].t * 100); return `<div><span>${navn}</span><i style="width:${p}%"></i><b>${p} %</b></div>`; }).join('') || '<p class="liten">Ingen oppgaver besvart ennå.</p>';
+  // feil
+  const sumFeil = {}; rr.forEach(e => e.feil.forEach(([k, n]) => sumFeil[k] = (sumFeil[k] || 0) + n));
+  const fl = Object.entries(sumFeil).sort((a, b) => b[1] - a[1]), maks = fl[0]?.[1] || 1;
+  $('feilbars').innerHTML = fl.map(([k, n]) => `<div><span>${esc(FEILTYPER[k]?.navn || k)}</span><i class="org" style="width:${n / maks * 100}%"></i><b>${n}</b></div>`).join('') || '<p class="liten">Ingen registrerte feil.</p>';
+  $('tiltak').innerHTML = fl.length ? `<ul>${fl.slice(0, 3).map(([k]) => `<li><b>${esc(FEILTYPER[k]?.navn || k)}:</b> ${esc(FEILTYPER[k]?.tiltak || '')}</li>`).join('')}</ul>` : '';
+  // detaljer
+  $('detaljer').innerHTML = rr.map(e => {
+    const ref = Object.entries(e.r.refleksjon || {}).filter(([, t]) => t && t.trim());
+    const kat = Object.entries(e.r.kategorier || {}).map(([k, v]) => `${KATEGORIER[k] || k}: ${v.riktig}/${v.totalt}`).join(' · ');
+    return `<details><summary>${esc(e.navn)} ${e.klasse ? '(' + esc(e.klasse) + ')' : ''} – ${nivaNavn(e.niva)}</summary>
+      <p class="liten">${esc(kat) || 'Ingen oppgaver besvart.'}</p>
+      <p class="liten">Forutsi-utfordringer gjort: ${(e.r.forutsi?.fullfort || []).length} av ${e.r.forutsi?.antall || 8} · Hint: ${e.hint} · Kilde: ${esc(e.x.kilde)}</p>
+      ${ref.length ? ref.map(([q, t]) => `<p><b>${esc(q)}</b><br>${esc(t).replace(/\n/g, '<br>')}</p>`).join('') : '<p class="liten">Ingen refleksjon skrevet.</p>'}</details>`;
+  }).join('');
+}
+document.querySelectorAll('th[data-sort]').forEach(th => th.addEventListener('click', () => { const k = th.dataset.sort; sortDir = sortKey === k ? -sortDir : 1; sortKey = k; tegn(); }));
+
+$('csv').addEventListener('click', () => {
+  const rr = rader(); if (!rr.length) { $('melding').textContent = 'Ingen rapporter å eksportere.'; return; }
+  const q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+  const kat = Object.keys(KATEGORIER);
+  const hode = ['Navn', 'Klasse', 'Dato', 'Nivå nådd', 'Nybegynner %', 'Trygg %', 'Ekspert %', 'Forutsi riktig', 'Hint', ...kat.map(k => KATEGORIER[k] + ' riktig/totalt'), ...Object.values(FEILTYPER).map(f => f.navn), 'Endret'];
+  const linjer = rr.map(e => [e.navn, e.klasse, e.r.laget.slice(0, 10), nivaNavn(e.niva), ...['nybegynner', 'trygg', 'ekspert'].map(id => e.r.nivaer?.[id]?.forsok ? e.r.nivaer[id].best : ''), e.forutsi, e.hint,
+    ...kat.map(k => e.r.kategorier?.[k] ? `${e.r.kategorier[k].riktig}/${e.r.kategorier[k].totalt}` : ''), ...Object.keys(FEILTYPER).map(k => e.r.feil?.[k] || 0), e.x.endret ? 'ja' : 'nei'].map(q).join(';'));
+  const blob = new Blob(['﻿' + [hode.map(q).join(';'), ...linjer].join('\r\n')], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `skjaeredata-klasseoversikt-${new Date().toISOString().slice(0, 10)}.csv`;
+  document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+});
+</script>
+</body>
+</html>

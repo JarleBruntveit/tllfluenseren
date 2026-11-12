@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>INT: Skjæredata – fresing, dreiing og boring – TLLfluenseren</title>
+<meta name="description" content="Gjestefag INT: Interaktiv simulator for skjæredata. Se hvordan skjærehastighet, turtall, diameter og mating henger sammen ved fresing, dreiing og boring. Tre nivåer fra nybegynner til ekspert.">
+<link rel="icon" href="/favicon.ico?v=1" sizes="any">
+<link rel="icon" href="/favicon.svg?v=1" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/styles.css">
+<link rel="stylesheet" href="/assets/elevflyt.css?v=mobile-nav-2">
+<link rel="stylesheet" href="/assets/global-footer.css">
+<script defer src="/assets/global-footer.js?v=mobile-nav-2"></script>
+<style>
+  .intro{padding:34px 0 6px}
+  .intro h1{font-size:clamp(32px,5.5vw,56px);margin:10px 0 14px}
+  .intro p{color:var(--muted);font-size:18px;line-height:1.6;max-width:820px}
+  .faser{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}
+  .fase{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:12px 14px;text-align:left;color:var(--text);cursor:pointer;font:inherit}
+  .fase b{color:var(--accent);letter-spacing:.12em;text-transform:uppercase;font-size:13px}
+  .fase p{margin:6px 0 0;color:var(--muted);line-height:1.45;font-size:14px}
+  .fase[aria-selected="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 12px}
+  .tabs .btn{padding:10px 14px;font-size:15px}
+  .btn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#111820}
+  .btn.sm{padding:8px 12px;font-size:14px;border-radius:11px}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .simgrid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:14px;align-items:start}
+  .stage{position:relative;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#0b1117;height:min(56vh,470px);min-height:330px}
+  .stage canvas{display:block;width:100%;height:100%}
+  .legend{position:absolute;left:12px;bottom:10px;display:flex;gap:12px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);background:rgba(17,26,35,.82);padding:6px 10px;border-radius:10px}
+  .legend i{display:inline-block;width:12px;height:3px;border-radius:2px;margin-right:5px;vertical-align:middle}
+  .ctrl label{display:block;margin:10px 0 2px;font-weight:700;font-size:14px}
+  .ctrl .row{display:flex;align-items:center;gap:8px}
+  .ctrl input[type=range]{flex:1;accent-color:var(--accent)}
+  .ctrl input[type=number]{width:84px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:6px 8px;font:inherit}
+  .ctrl select{width:100%;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:8px;font:inherit}
+  .ctrl .unit{color:var(--muted);font-size:13px;min-width:62px}
+  .res{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}
+  .res div{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+  .res small{display:block;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+  .res b{font-size:22px}
+  .res em{font-style:normal;color:var(--muted);font-size:13px;margin-left:3px}
+  .formel{font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;background:#0d151d;border:1px solid var(--line);border-radius:12px;padding:10px 12px;line-height:1.75;font-size:14.5px;overflow-x:auto}
+  .formel .v{color:var(--accent)}
+  .gauge{margin:10px 0}
+  .gauge .lbl{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+  .gauge .bar{position:relative;height:14px;border-radius:7px;background:#1b2834;margin-top:4px;overflow:hidden}
+  .gauge .ok{position:absolute;top:0;bottom:0;background:rgba(140,214,174,.35);border-left:2px solid var(--ok);border-right:2px solid var(--ok)}
+  .gauge .mk{position:absolute;top:-3px;width:4px;height:20px;background:var(--accent);border-radius:2px;transform:translateX(-2px);transition:left .25s}
+  .status{border-radius:12px;padding:10px 12px;margin-top:8px;line-height:1.45;font-size:14.5px}
+  .status.ok{background:rgba(140,214,174,.12);border:1px solid rgba(140,214,174,.5)}
+  .status.warn{background:rgba(242,184,75,.12);border:1px solid rgba(242,184,75,.55)}
+  .status.bad{background:rgba(255,138,76,.13);border:1px solid rgba(255,138,76,.6)}
+  .card2{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin:14px 0}
+  .card2 h2{margin:2px 0 8px;font-size:24px}
+  .card2 h3{margin:14px 0 6px}
+  .muted{color:var(--muted)}
+  .chal{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-top:10px}
+  .chal button{text-align:left;font:inherit;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:14px;padding:12px;cursor:pointer;line-height:1.4}
+  .chal button.done{border-color:var(--ok)}
+  .chal button.done::after{content:" ✓";color:var(--ok);font-weight:900}
+  .chal small{display:block;color:var(--accent);font-weight:800;letter-spacing:.08em;text-transform:uppercase;font-size:11px;margin-bottom:4px}
+  .ask{margin-top:12px;border:1px solid var(--accent);border-radius:16px;padding:14px;background:rgba(242,184,75,.06)}
+  .ask .opts{display:grid;gap:8px;margin-top:10px}
+  .opt{text-align:left;font:inherit;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:11px 13px;cursor:pointer}
+  .opt:hover:not(:disabled){border-color:var(--accent)}
+  .opt.right{border-color:var(--ok);background:rgba(140,214,174,.14)}
+  .opt.wrong{border-color:#ff8a4c;background:rgba(255,138,76,.12)}
+  .levels{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .lvl{background:var(--panel2);border:1px solid var(--line);border-radius:16px;padding:14px}
+  .lvl h3{margin:0 0 4px}
+  .lvl .bar{height:8px;border-radius:4px;background:#1b2834;margin:8px 0;overflow:hidden}
+  .lvl .bar i{display:block;height:100%;background:var(--ok);width:0}
+  .lvl.locked{opacity:.55}
+  .task{border:1px solid var(--line);border-radius:16px;padding:16px;background:var(--panel2);margin-top:12px}
+  .task .meta{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:13px;font-weight:700}
+  .task .q{font-size:17px;line-height:1.55;margin:8px 0}
+  .task input.ans{background:#0d151d;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:18px;width:170px}
+  .fb{margin-top:10px;border-radius:12px;padding:10px 12px;line-height:1.5}
+  .fb.ok{background:rgba(140,214,174,.12);border:1px solid rgba(140,214,174,.5)}
+  .fb.bad{background:rgba(255,138,76,.12);border:1px solid rgba(255,138,76,.55)}
+  .fb.hint{background:rgba(113,197,220,.1);border:1px solid rgba(113,197,220,.5)}
+  .prog{height:8px;border-radius:4px;background:#1b2834;overflow:hidden;margin-top:8px}
+  .prog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+  table.tab{border-collapse:collapse;width:100%;font-size:14px}
+  table.tab th,table.tab td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left}
+  table.tab th{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+  textarea.refl{width:100%;min-height:110px;background:#0d151d;color:var(--text);border:1px solid var(--line);border-radius:12px;padding:10px;font:inherit;line-height:1.5}
+  .inline{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .inline input[type=text]{background:#0d151d;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:9px 11px;font:inherit}
+  .badge{display:inline-block;padding:3px 9px;border-radius:999px;font-size:12px;font-weight:800;border:1px solid var(--line);color:var(--muted)}
+  .badge.on{border-color:var(--ok);color:var(--ok)}
+  .hidden{display:none!important}
+  .privacy{font-size:14px;color:var(--muted);border-left:3px solid var(--accent);padding:6px 12px;margin:10px 0}
+  @media(max-width:600px){.legend{display:none}}
+  @media(max-width:900px){.simgrid{grid-template-columns:minmax(0,1fr)}.res{grid-template-columns:repeat(3,minmax(0,1fr))}.res b{font-size:18px}.res div{padding:8px}.res small{font-size:10.5px;letter-spacing:.02em}.faser{grid-template-columns:repeat(2,1fr)}.levels{grid-template-columns:1fr}.stage{height:330px}}
+</style>
+</head>
+<body>
+<a class="tll-skip" href="#tll-main">Hopp til innhold</a>
+<div class="wrap">
+<header class="topbar homeTopbar"><a class="brand" href="/"><span class="brandmark">TLL</span><span>TLLfluenseren <small>Transport · Logistikk · Løfteoperasjoner · Livet</small></span></a><nav class="tll-site-nav" aria-label="Hovedmeny"><a href="/">Forside</a><a href="/#fag">Fagområder</a><a href="/yrkesretninger/">Yrkesretninger</a><a href="/ressursbank/">Ressursbank</a><a href="/assistent/">TLL-assistenten</a><a href="/laererrom/">Lærerrom</a><a href="/om/">Om</a></nav></header>
+
+<main id="tll-main" tabindex="-1">
+<a href="/laererrom/#undervisning" style="color:var(--accent)">← Gjestefag i Lærerrom</a>
+<section class="intro">
+  <div class="kicker">Gjestefag INT · Lær · Øv · Tenk · Voks</div>
+  <h1>Skjæredata</h1>
+  <p>Hvor fort skal verktøyet gå rundt, og hvor fort skal det mates fram? Her ser du hvordan <b>skjærehastighet (Vc)</b>, <b>turtall (n)</b>, <b>diameter (D)</b> og <b>mating (f)</b> henger sammen når du <b>freser</b>, <b>dreier</b> og <b>borer</b>. Dra i bryterne, gjett før du ser svaret, og jobb deg fra nybegynner til ekspert.</p>
+</section>
+
+<div class="faser" role="tablist" aria-label="Faser">
+  <button class="fase" role="tab" data-fase="laer" aria-selected="true"><b>1 · Lær</b><p>Simulatoren og formlene. Prøv deg fram.</p></button>
+  <button class="fase" role="tab" data-fase="tenk" aria-selected="false"><b>2 · Tenk</b><p>Gjett hva som skjer – før du ser det.</p></button>
+  <button class="fase" role="tab" data-fase="ov" aria-selected="false"><b>3 · Øv</b><p>Nivåtester: Nybegynner, Trygg, Ekspert.</p></button>
+  <button class="fase" role="tab" data-fase="voks" aria-selected="false"><b>4 · Voks</b><p>Refleksjon og rapport til læreren.</p></button>
+</div>
+<p class="sub"><b>Makkerpar:</b> Én styrer bryterne, den andre forklarer høyt hva pilene betyr. Bytt roller for hver prosess.</p>
+
+<!-- ============ SIMULATOR (alltid synlig i Lær og Tenk) ============ -->
+<section id="simSec">
+  <div class="tabs" role="group" aria-label="Velg prosess">
+    <button class="btn" data-proc="fres" aria-pressed="true">Fresing</button>
+    <button class="btn" data-proc="dre" aria-pressed="false">Dreiing</button>
+    <button class="btn" data-proc="bor" aria-pressed="false">Boring</button>
+  </div>
+  <div class="simgrid">
+    <div>
+      <div class="stage" id="stage"><canvas id="cv" aria-label="Animasjon av skjæreprosessen"></canvas>
+        <div class="legend"><span><i style="background:#f2b84b"></i>Vc – skjærehastighet</span><span><i style="background:#71c5dc"></i>n – turtall</span><span><i style="background:#8cd6ae"></i>f / vf – mating</span><span><i style="background:#e6edf3"></i>D – diameter</span></div>
+      </div>
+      <div class="res">
+        <div><small>Skjærehastighet</small><b id="oVc">–</b><em>m/min</em></div>
+        <div><small>Turtall</small><b id="oN">–</b><em>o/min</em></div>
+        <div><small>Matehastighet</small><b id="oVf">–</b><em>mm/min</em></div>
+      </div>
+      <div class="formel" id="formel"></div>
+    </div>
+    <div class="panel ctrl" id="ctrl">
+      <label for="mat">Materiale</label><select id="mat"></select>
+      <label for="tool">Verktøy</label><select id="tool"><option value="HM">Hardmetall (HM)</option><option value="HSS">Hurtigstål (HSS)</option></select>
+      <label for="mach">Maskin</label><select id="mach"></select>
+      <label for="dR"><span id="dLbl">Fresediameter D</span></label><div class="row"><input id="dR" type="range" min="1" max="50" step="0.5"><input id="dN" type="number" min="1" max="200" step="0.5" aria-label="Diameter"><span class="unit">mm</span></div>
+      <label for="nR">Turtall n</label><div class="row"><input id="nR" type="range" min="50" max="12000" step="10"><input id="nN" type="number" min="10" max="30000" step="10" aria-label="Turtall"><span class="unit">o/min</span></div>
+      <div id="zBox"><label for="zR">Antall tenner z</label><div class="row"><input id="zR" type="range" min="1" max="8" step="1"><input id="zN" type="number" min="1" max="8" step="1" aria-label="Antall tenner"><span class="unit">skjær</span></div></div>
+      <label for="fR" id="fLbl">Mating per tann fz</label><div class="row"><input id="fR" type="range" min="0.005" max="0.4" step="0.005"><input id="fN" type="number" min="0.001" max="2" step="0.005" aria-label="Mating"><span class="unit" id="fUnit">mm/tann</span></div>
+      <div class="inline" style="margin-top:12px"><button class="btn sm primary" id="bestBtn" type="button">Bruk anbefalt Vc og mating</button></div>
+      <div class="gauge" id="gVc"><div class="lbl"><span>Vc i forhold til tabellen</span><span id="gVcT"></span></div><div class="bar"><div class="ok"></div><div class="mk"></div></div></div>
+      <div class="gauge" id="gF"><div class="lbl"><span id="gFL">Mating i forhold til tabellen</span><span id="gFT"></span></div><div class="bar"><div class="ok"></div><div class="mk"></div></div></div>
+      <div id="status"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LÆR ============ -->
+<section class="card2" data-vis="laer">
+  <h2>Lær: Fire størrelser du må kunne</h2>
+  <p class="muted"><b>Læringsmål.</b> Etter denne delen kan jeg: forklare hva Vc, n, D og f betyr · regne ut turtallet fra skjærehastigheten · regne ut matehastigheten ved fresing, dreiing og boring · forklare hvorfor maskinens maks turtall kan begrense skjæredataene.</p>
+  <div style="overflow-x:auto"><table class="tab">
+    <thead><tr><th>Størrelse</th><th>Betyr</th><th>Enhet</th><th>Hvor kommer den fra?</th></tr></thead>
+    <tbody>
+      <tr><td><b>Vc</b></td><td>Skjærehastighet: hvor fort skjæreeggen beveger seg gjennom materialet</td><td>m/min</td><td>Velges fra tabell ut fra materiale og verktøy</td></tr>
+      <tr><td><b>D</b></td><td>Diameter: fresen, boret eller arbeidsstykket (dreiing)</td><td>mm</td><td>Måles eller står på verktøyet</td></tr>
+      <tr><td><b>n</b></td><td>Turtall: omdreininger per minutt</td><td>o/min (S i G-koden)</td><td>Regnes ut: n = Vc · 1000 / (π · D)</td></tr>
+      <tr><td><b>fz / f</b></td><td>Mating per tann (fresing) eller per omdreining (dreiing, boring)</td><td>mm/tann, mm/omdr</td><td>Velges fra tabell</td></tr>
+      <tr><td><b>vf</b></td><td>Matehastighet: hvor fort verktøyet flytter seg</td><td>mm/min (F i G-koden)</td><td>Fresing: vf = fz · z · n · Dreiing/boring: vf = f · n</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Hvorfor ganger vi med 1000?</h3>
+  <p class="muted">Diameteren står i <b>millimeter</b>, men skjærehastigheten i <b>meter</b> per minutt. Én runde rundt verktøyet er π · D millimeter. Gang med turtallet, og du har millimeter per minutt. Del på 1000, og du har meter per minutt.</p>
+  <h3>Veiledende skjærehastighet (Vc, m/min)</h3>
+  <p class="muted">Startverdier for undervisning. På verkstedet bruker du alltid tabellen fra verktøyleverandøren.</p>
+  <div style="overflow-x:auto"><table class="tab" id="vcTab"></table></div>
+  <p class="muted" style="margin-top:12px">Læreplan: <a href="https://www.udir.no/lk20/PIN02-03" style="color:var(--accent)">Vg2 industriteknologi (PIN02-03)</a>, kompetansemål om å velge riktig tilvirkningsmetode ut fra materiale og tegninger, og om å programmere, simulere og drifte styrte produksjonsmaskiner. Les ordrett tekst hos Udir.</p>
+</section>
+
+<!-- ============ TENK ============ -->
+<section class="card2 hidden" data-vis="tenk">
+  <h2>Tenk: Gjett først – se etterpå</h2>
+  <p class="muted">Velg en utfordring. Simulatoren stilles inn. Du gjetter hva som skjer, og så endres bryterne foran øynene dine. <span id="chalSum"></span></p>
+  <div class="chal" id="chalList"></div>
+  <div id="chalBox"></div>
+</section>
+
+<!-- ============ ØV ============ -->
+<section class="card2 hidden" data-vis="ov">
+  <h2>Øv: Nivåtester</h2>
+  <p class="muted">Hver test har 8 oppgaver. Får du <b>80 %</b> eller mer, låser du opp neste nivå. Hint koster litt poeng, men du lærer mer av å bruke dem enn av å gjette. Tallene endres hver gang.</p>
+  <div class="levels" id="levels"></div>
+  <div id="testBox"></div>
+</section>
+
+<!-- ============ VOKS ============ -->
+<section class="card2 hidden" data-vis="voks">
+  <h2>Voks: Refleksjon og rapport</h2>
+  <p class="muted">Svar med egne ord. Læreren ser svarene i rapporten.</p>
+  <div id="reflBox"></div>
+  <label class="inline" style="margin:6px 0 14px"><input type="checkbox" id="saveText"> Lagre teksten på denne maskinen (ikke kryss av på en delt skole-PC)</label>
+  <h3>Lever rapport i Teams</h3>
+  <div class="inline">
+    <input type="text" id="navn" placeholder="Navn" maxlength="60" aria-label="Navn">
+    <input type="text" id="klasse" placeholder="Klasse" maxlength="20" aria-label="Klasse">
+    <button class="btn primary sm" id="pdfBtn" type="button">Last ned PDF-rapport</button>
+    <button class="btn sm" id="kodeBtn" type="button">Vis rapportkode</button>
+  </div>
+  <p class="muted" id="pdfMsg" aria-live="polite"></p>
+  <textarea class="refl hidden" id="kodeOut" readonly aria-label="Rapportkode"></textarea>
+  <div class="privacy"><b>Personvern:</b> Resultatene lagres bare i nettleseren på denne maskinen. Ingenting sendes til noen server. Navnet ditt brukes bare i PDF-en du laster ned. På en delt skole-PC: last ned rapporten og trykk «Slett mine data» når du er ferdig.</div>
+  <button class="btn sm" id="slettBtn" type="button">Slett mine data</button>
+</section>
+
+</main>
+</div>
+<script type="module" src="./skjaeredata.js"></script>
+</body>
+</html>
