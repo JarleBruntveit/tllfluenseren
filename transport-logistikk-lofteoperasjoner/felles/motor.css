@@ -354,3 +354,25 @@ input.sel{font:inherit;padding:8px 10px;border:2px solid var(--line);border-radi
 @media(min-width:621px){
   .step-nav:not(:has(.step-back)) .step-overview{grid-column:1}
 }
+
+/* ---------- Øvelsesbank (type 'bank'): faner og oppgaveliste ---------- */
+.bank-tabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:22px 0 8px}
+.bank-tab{display:flex;flex-direction:column;gap:4px;align-items:flex-start;padding:12px 14px;border:2px solid var(--line);border-radius:var(--r);background:var(--panel);color:var(--ink);text-decoration:none}
+.bank-tab:hover{border-color:var(--ink)}
+.bank-tab[aria-current="page"]{border-color:var(--yellow);box-shadow:0 0 0 3px color-mix(in srgb,var(--yellow) 25%,transparent)}
+.bank-tab .meter{width:100%;margin:4px 0 0}
+.bank-tab:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.bank-h{font-size:28px;margin:18px 0 8px}
+.bank-del{scroll-margin-top:150px}
+.bank-filter{gap:14px;flex-wrap:wrap;margin:4px 0 14px}
+.bank-filter select{font:inherit;padding:6px 8px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--ink)}
+.bank-list{display:grid;gap:14px}
+.bank-q{border-left:5px solid var(--line)}
+.bank-q.klart{border-left-color:var(--ok)}
+.bank-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.bank-meta .bank-ok{background:var(--ok-bg);color:var(--ok)}
+.bank-nr{color:var(--muted);margin-right:2px}
+.bank-num{gap:8px;flex-wrap:wrap}
+.bank-num input{font:inherit;font-size:20px;width:140px;padding:8px 10px;border:2px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink)}
+.bank-hint{border-left-color:var(--yellow);background:color-mix(in srgb,var(--yellow) 14%,var(--panel))}
+.bank-q textarea{width:100%}

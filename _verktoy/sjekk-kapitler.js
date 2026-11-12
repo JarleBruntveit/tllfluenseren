@@ -217,6 +217,15 @@ function sjekkType(N, a) {
         if (!Number.isInteger(it[1]) || it[1] < 0 || it[1] >= a.kat.length) F(N, `items[${i}] peker til kategori ${it[1]}, som ikke finnes`);
       });
       break;
+    case 'bank':
+      if (liste('oppg')) a.oppg.forEach((o, i) => {
+        if (!o.q) F(N, `oppg[${i}] mangler spørsmål q`);
+        if (o.k === 'mc' && !(Array.isArray(o.o) && Number.isInteger(o.r) && o.r >= 0 && o.r < o.o.length)) F(N, `oppg[${i}] (mc) må ha svaralternativer o og gyldig r`);
+        else if (o.k === 'num' && typeof o.ans !== 'number') F(N, `oppg[${i}] (num) må ha tallsvar ans`);
+        else if (!['mc', 'num', 'open'].includes(o.k)) F(N, `oppg[${i}] har ukjent k='${o.k}' (mc, num eller open)`);
+        if (!o.f) A(N, `oppg[${i}] mangler forklaring f`);
+      });
+      break;
     case 'calc':
       if (!GEN.has(a.gen)) F(N, `regnegeneratoren '${a.gen}' finnes ikke i motor.js (finnes: ${[...GEN].join(', ')})`);
       break;
