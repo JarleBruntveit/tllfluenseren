@@ -54,7 +54,7 @@ for å kopiere. Tegninger lages som egne SVG-er. Podkastmanus skrives med egne o
 4. `node _verktoy/sjekk-kapitler.js kapN` – skal gi **0 feil**. Se på advarslene.
 5. Test i nettleser (lokal server i rotmappen, f.eks. `python3 -m http.server`): kapittelsiden, minst én aktivitet av hver type,
    prøvesiden og lærersiden uten JavaScript-feil. 404 på `lyd/episode-N` er normalt når episoden ikke finnes.
-6. **Publiser kapitlet** i samme PR:
+6. **Gjør kapitlet klart for publisering** i samme PR (publiseres først når Jarle har sett skjermbilde og sagt ja):
    - legg det til i `felles/kapitler.js`,
    - gjør det ventende kortet på fagsiden (`transport-logistikk-lofteoperasjoner/index.html`) om til `<a class="chapter-card" href="kapN/">`,
    - legg URL-en i `sitemap.xml`,
@@ -71,9 +71,13 @@ Endringer skal være bakoverkompatible. Øk versjonsnummeret (`?v=…`) på alle
   med synlig `:focus-visible`, og fungere med mus, berøring og tastatur. Kort uten mål skal ikke se klikkbare ut.
 - Test på mobil og PC. Respekter `prefers-reduced-motion`.
 
-## Arbeidsflyt i Git
-- **Aldri direkte til `main`.** Lag en ny gren med beskrivende norsk navn (`kap6-arbeidsutstyr`, `fiks-ressursbank`)
-  og åpne en Pull Request. Jarle ser over og fletter selv.
-- PR-beskrivelsen skrives på norsk: *Hvorfor*, *Hva er endret*, *Testet*.
-- Hold én PR til én sak. Slett grenen når PR-en er flettet.
+## Arbeidsflyt i Git (avtalt med Jarle 12.11.2026)
+Jarle bruker bare Claude til nettsiden og skal ikke trenge å åpne GitHub.
+- **Aldri direkte til `main`.** Lag en gren med beskrivende norsk navn (`kap6-arbeidsutstyr`, `fiks-ressursbank`) og en PR.
+- **Før publisering:** kjør kontrollen, test lokalt og send Jarle **skjermbilde + kort forklaring** av det elevene vil se.
+  Vent på at han sier ja.
+- **Når Jarle godkjenner,** fletter Claude PR-en selv (squash). Si fra at siden er oppdatert etter et par minutter.
+- Endringer som ikke synes på nettsiden (dokumentasjon, `_verktoy/`), kan flettes uten skjermbilde, men fortell hva som er gjort.
+- PR-beskrivelsen skrives på norsk: *Hvorfor*, *Hva er endret*, *Testet*. Hold én PR til én sak.
 - Før push fra en grunn klone: `git fetch origin main` og rebase ved behov.
+- Claude kan ikke slette grener herfra. Slå på «Automatically delete head branches» i GitHub-innstillingene.
