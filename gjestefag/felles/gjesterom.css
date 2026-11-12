@@ -1,0 +1,77 @@
+/* Gjesterommet: egen profil for gjestelærere. Fagets farge settes i --gjest. */
+body.gjest-area{--gjest:#7fb6ff;--gjest-bg:#0f1824;--gjest-panel:#162334;--gjest-line:#3c5068;background:var(--gjest-bg);color:#eef3f8}
+.gjest-shell{width:min(1080px,calc(100% - 32px));margin:0 auto}
+.gjest-header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px 0;border-bottom:1px solid var(--gjest-line)}
+.gjest-brand{display:flex;align-items:center;gap:12px;color:#f5f8fb;text-decoration:none;font-weight:900}
+.gjest-brand .brandmark{flex:none;background:#f2b84b;color:#111820}
+.gjest-brand small{display:block;font-size:12px;color:#b7c6d6;font-weight:500}
+.gjest-merke{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--gjest);color:var(--gjest);border-radius:999px;padding:5px 12px;font-weight:800;font-size:13px;letter-spacing:.06em}
+.gjest-merke i{width:9px;height:9px;border-radius:50%;background:var(--gjest)}
+.gjest-eyebrow{color:var(--gjest);font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:900}
+.gjest-intro{padding:40px 0 14px}
+.gjest-intro h1{font-size:clamp(34px,5.5vw,56px);line-height:1.08;margin:10px 0 14px}
+.gjest-intro p{color:#c4d1de;max-width:760px;line-height:1.65}
+.gjest-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin:16px 0 40px}
+.gjest-card{border:1px solid var(--gjest-line);border-radius:18px;padding:20px;background:var(--gjest-panel);display:flex;flex-direction:column;gap:6px}
+.gjest-card h3{margin:2px 0 4px;font-size:21px}
+.gjest-card p{color:#c4d1de;line-height:1.55;margin:0 0 8px;flex:1}
+.gjest-card a.lenke{color:var(--gjest);font-weight:800;text-decoration:none}
+.gjest-card a.lenke:hover{text-decoration:underline}
+.gjest-card .tag{align-self:flex-start;font-size:12px;font-weight:800;border-radius:999px;padding:3px 9px;border:1px solid var(--gjest-line);color:#c4d1de}
+.laas{max-width:520px;margin:30px 0 60px;border:1px solid var(--gjest);border-radius:18px;padding:22px;background:var(--gjest-panel)}
+.laas h2{margin:0 0 6px}
+.laas p{color:#c4d1de;line-height:1.55}
+.laas label{display:block;font-weight:800;margin:12px 0 6px}
+.laas input[type=password]{width:100%;padding:12px;border-radius:10px;border:1px solid var(--gjest-line);background:#0b131c;color:#fff;font:inherit}
+.laas .rad{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
+.laas .feil{color:#ff9a8a;font-weight:700;min-height:1.4em;margin:8px 0 0}
+.gbtn{display:inline-block;padding:11px 18px;border-radius:10px;border:1px solid var(--gjest);background:var(--gjest);color:#0e1620;font:inherit;font-weight:800;cursor:pointer;text-decoration:none}
+.gbtn.sek{background:transparent;color:var(--gjest)}
+.gbtn:disabled{opacity:.5;cursor:wait}
+.innlogget{display:flex;gap:10px;align-items:center;flex-wrap:wrap;color:#c4d1de;font-size:14px;margin:6px 0 0}
+/* Lyse arbeidsark inne i lærerrommet (samme uttrykk som vurderingspakkene) */
+.ark{border:1px solid #71818a;border-radius:14px;padding:22px 24px;margin:18px 0;background:#fff;color:#1b2128}
+.ark h2,.ark h3,.ark th,.ark td,.ark b,.ark summary,.ark label,.ark li,.ark p{color:#1b2128}
+.ark h2{margin-top:0}
+.ark a{color:#0e6a79}
+.ark table{border-collapse:collapse;width:100%;margin:10px 0 14px;font-size:14.5px}
+.ark th,.ark td{border:1px solid #9aa3ab;padding:7px 9px;text-align:left;vertical-align:top}
+.ark th{background:rgba(242,184,75,.18)}
+.ark th[data-sort]{cursor:pointer}
+.ark .info{border-left:5px solid #14889b;background:#eef7f9;padding:12px 16px;border-radius:8px}
+.ark .warn{border-left:5px solid #e07b00;background:#fff4e5;padding:12px 16px;border-radius:8px}
+.ark .fase{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:#1b2128;color:#fff;border-radius:6px;padding:2px 8px;margin-right:6px;vertical-align:middle}
+.ark .btn{display:inline-block;padding:10px 16px;background:#14889b;color:#fff;border:0;border-radius:8px;text-decoration:none;font:inherit;cursor:pointer}
+.ark .btn.sek{background:#3c4a56}
+.ark .actions{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0;align-items:center}
+.ark .drop{border:2px dashed #14889b;border-radius:12px;padding:20px;text-align:center;background:#f4fafb}
+.ark .drop.over{background:#dff1f4}
+.ark textarea{width:100%;min-height:80px;font:13px ui-monospace,Menlo,Consolas,monospace;border:1px solid #9aa3ab;border-radius:8px;padding:8px}
+.ark .liten{font-size:14px;color:#4d5862}
+.ark .ok{color:#17784a;font-weight:700}
+.ark .feil{color:#b3261e;font-weight:700}
+.ark .chip{display:inline-block;white-space:nowrap;border-radius:999px;padding:2px 9px;font-size:12.5px;font-weight:700;border:1px solid #9aa3ab;margin:1px 2px}
+.ark .chip.b{background:#e3f4ea;border-color:#5fb487}
+.ark .chip.p{background:#fff4e5;border-color:#e0a24b}
+.ark .chip.x{background:#f1f3f5}
+.ark .bars div{display:grid;grid-template-columns:260px 1fr 46px;gap:10px;align-items:center;margin:6px 0;font-size:14px}
+.ark .bars i{display:block;height:14px;border-radius:7px;background:#14889b}
+.ark .bars i.org{background:#e07b00}
+.ark .kortgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
+.ark .kort{border:2px solid #1b2128;border-radius:12px;padding:14px 16px;background:#fff;break-inside:avoid}
+.ark .kort h3{margin:0 0 6px}
+.ark details{margin:6px 0}
+.ark details summary{cursor:pointer;font-weight:700}
+.ark td.fyll{height:30px;min-width:60px}
+.ark .sum{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:10px 0}
+.ark .sum div{border:1px solid #9aa3ab;border-radius:10px;padding:10px 12px}
+.ark .sum b{display:block;font-size:26px}
+.ark .tabwrap{overflow-x:auto}
+.innhold-nav{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px}
+.innhold-nav a{color:var(--gjest);border:1px solid var(--gjest-line);border-radius:999px;padding:6px 12px;text-decoration:none;font-weight:700;font-size:14px}
+@media(max-width:760px){.ark .bars div{grid-template-columns:1fr}.ark .sum{grid-template-columns:repeat(2,1fr)}.ark{padding:16px}}
+@media print{
+  .tll-site-nav,.tll-skip,.noprint,footer,.tll-global-footer,.gjest-header,.laas,.innlogget,.innhold-nav{display:none!important}
+  body.gjest-area{background:#fff!important;color:#000}
+  .ark{border:0;padding:0;margin:0 0 18px}
+}

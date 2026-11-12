@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.ico">
+<link rel="stylesheet" href="/assets/styles.css">
+<title>Gjesterommet – administrasjon | TLLfluenseren</title>
+<style>
+main{max-width:980px;margin:40px auto;padding:24px}
+p,li{line-height:1.6}
+.ark{border:1px solid #71818a;border-radius:14px;padding:22px 24px;margin:18px 0;background:#fff;color:#1b2128}
+.ark *{color:#1b2128}
+.ark h2{margin-top:0}
+.ark a{color:#0e6a79}
+.info{border-left:5px solid #14889b;background:#eef7f9;padding:12px 16px;border-radius:8px}
+.warn{border-left:5px solid #e07b00;background:#fff4e5;padding:12px 16px;border-radius:8px}
+label{display:block;font-weight:700;margin:10px 0 4px}
+input[type=password],input[type=text]{width:100%;max-width:420px;padding:10px;border:1px solid #9aa3ab;border-radius:8px;font:inherit}
+textarea{width:100%;min-height:260px;font:13px ui-monospace,Menlo,Consolas,monospace;border:1px solid #9aa3ab;border-radius:8px;padding:8px}
+button.btn,a.btn{display:inline-block;padding:10px 16px;background:#14889b;color:#fff!important;border:0;border-radius:8px;text-decoration:none;font:inherit;cursor:pointer;margin:6px 6px 0 0}
+button.btn.sek{background:#3c4a56}
+button.btn:disabled{opacity:.55;cursor:wait}
+.fagkort{border:2px solid #1b2128;border-radius:12px;padding:16px 18px;margin:14px 0;border-top-width:6px}
+.fagkort h3{margin:0 0 4px}
+.msg{font-weight:700;min-height:1.3em}
+.msg.ok{color:#17784a}.msg.feil{color:#b3261e}
+details{margin:10px 0}
+details summary{cursor:pointer;font-weight:700}
+code{background:#f1f3f5;padding:1px 5px;border-radius:4px}
+</style>
+<link rel="stylesheet" href="/assets/global-footer.css"><script defer src="/assets/global-footer.js?v=mobile-nav-2"></script><link rel="stylesheet" href="/assets/elevflyt.css?v=mobile-nav-2">
+<link rel="stylesheet" href="/assets/laererrom.css?v=2">
+</head>
+<body class="teacher-area">
+<a class="tll-skip" href="#tll-main">Hopp til innhold</a>
+<header class="teacher-header teacher-shell"><a class="teacher-brand" href="/" aria-label="TLLfluenseren – gå til forsiden"><span class="brandmark">TLL</span><span>TLLfluenseren<small>Transport · Logistikk · Løfteoperasjoner · Livet</small></span></a><a class="teacher-back" href="/laererrom/">← Lærerrommet</a></header>
+<nav class="tll-site-nav tll-standalone-nav" aria-label="Hovedmeny"><a href="/">Forside</a><a href="/#fag">Fagområder</a><a href="/ressursbank/">Ressursbank</a><a href="/assistent/">TLL-assistenten</a><a href="/laererrom/" aria-current="page">Lærerrom</a><a href="/om/">Om</a></nav>
+<main id="tll-main" tabindex="-1">
+<div class="teacher-eyebrow">Lærerrommet · Administrasjon</div>
+<h1>Gjesterommet</h1>
+<p>Her styrer du gjestelærernes tilgang. Hvert gjestefag har et eget lærerrom under <a href="/gjestefag/" style="color:#8ed7cc">/gjestefag/</a> med eget passord. Du åpner alle rommene med adminpassordet ditt.</p>
+
+<section class="ark">
+  <h2>Slik virker det</h2>
+  <ul>
+    <li>Lærerinnholdet i hvert gjestefag ligger kryptert i <code>gjestefag/&lt;fag&gt;/laererrom/innhold.enc.js</code>. Innholdet kan ikke leses uten passord, selv om repoet er offentlig.</li>
+    <li>Innholdet er låst med <b>to nøkler</b>: fagets passord (for gjestelærerne) og adminpassordet (for deg). Du kan derfor bytte fagpassordet uten å kjenne det gamle.</li>
+    <li>Når du bytter passord eller endrer innhold, laster du ned en ny <code>innhold.enc.js</code>. Last den opp til GitHub i riktig mappe (erstatt den gamle). Endringen gjelder når siden er publisert.</li>
+    <li>Åpne elevsider (simulatorer, 3D-modeller) er ikke låst. Bare lærerrommene er det.</li>
+  </ul>
+  <div class="warn"><b>Viktig:</b> Del fagpassordet direkte med hver gjestelærer, ikke i en åpen Teams-kanal. Bytt passordet når en gjestelærer slutter. Alle som har passordet, kan åpne rommet. Ingen elevdata lagres i rommene.</div>
+</section>
+
+<section class="ark">
+  <h2>Logg inn som administrator</h2>
+  <form id="adminSkjema">
+    <label for="adminPw">Adminpassord</label>
+    <input type="password" id="adminPw" autocomplete="current-password" required>
+    <div><button class="btn" id="adminBtn" type="submit">Åpne alle gjesterom</button></div>
+    <p class="msg" id="adminMsg" role="alert" aria-live="polite"></p>
+  </form>
+</section>
+
+<section class="ark" id="rom" hidden>
+  <h2>Gjestefagene</h2>
+  <div id="fagliste"></div>
+  <details>
+    <summary>Bytt adminpassordet ditt</summary>
+    <p>Lager nye filer for alle gjestefagene. Last opp alle filene, ellers virker det gamle adminpassordet fortsatt på de rommene du ikke har oppdatert.</p>
+    <label for="nyAdmin1">Nytt adminpassord (minst 12 tegn)</label><input type="password" id="nyAdmin1" autocomplete="new-password" minlength="12">
+    <label for="nyAdmin2">Gjenta</label><input type="password" id="nyAdmin2" autocomplete="new-password" minlength="12">
+    <div><button class="btn" type="button" id="byttAdmin">Last ned nye filer for alle fag</button></div>
+    <p class="msg" id="adminByttMsg" aria-live="polite"></p>
+  </details>
+</section>
+
+<section class="ark">
+  <h2>Nytt gjestefag</h2>
+  <ol>
+    <li>Legg faget inn i <code>gjestefag/felles/fag.js</code> (id, navn, kort, farge, beskrivelse).</li>
+    <li>Kopier mappen <code>gjestefag/kjt/</code> til <code>gjestefag/&lt;id&gt;/</code> og bytt «kjt», «KJT» og «Kjøretøy» i <code>index.html</code> og <code>laererrom/index.html</code>.</li>
+    <li>Lag det krypterte innholdet her, og last opp filen til <code>gjestefag/&lt;id&gt;/laererrom/innhold.enc.js</code>.</li>
+  </ol>
+  <details>
+    <summary>Lag lærerrom for et nytt fag</summary>
+    <label for="nyId">Fag-id (små bokstaver, f.eks. «elf»)</label><input type="text" id="nyId" pattern="[a-z]{2,8}">
+    <label for="nyFagPw">Passord for faget (minst 10 tegn)</label><input type="password" id="nyFagPw" autocomplete="new-password" minlength="10">
+    <label for="nyAdminPw">Adminpassordet ditt</label><input type="password" id="nyAdminPw" autocomplete="current-password">
+    <label for="nyHtml">Innhold (HTML). Bruk <code>&lt;section class="ark"&gt;</code> for hvert avsnitt.</label>
+    <textarea id="nyHtml">&lt;section class="ark"&gt;
+  &lt;h2&gt;Velkommen&lt;/h2&gt;
+  &lt;p&gt;Her kommer veiledning og vurdering for faget.&lt;/p&gt;
+&lt;/section&gt;</textarea>
+    <div><button class="btn" type="button" id="lagNytt">Last ned innhold.enc.js</button></div>
+    <p class="msg" id="nyMsg" aria-live="polite"></p>
+  </details>
+</section>
+</main>
+<script type="module">
+import { FAG } from '/gjestefag/felles/fag.js';
+import { apne, laas, byttPassord, nyttInnhold, filTekst } from '/gjestefag/felles/laas.js';
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const apnet = {}; // fag -> { raw, tekst, pakke }
+
+function lastNed(fag, pakke) {
+  const blob = new Blob([filTekst(fag, pakke)], { type: 'text/javascript;charset=utf-8' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'innhold.enc.js';
+  document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+const lastPakker = () => Promise.all(FAG.map(f => new Promise(res => {
+  if (window.GJESTEROM?.[f.id]) return res();
+  const s = document.createElement('script'); s.src = `/gjestefag/${f.id}/laererrom/innhold.enc.js?v=${Date.now()}`;
+  s.onload = res; s.onerror = res; document.head.appendChild(s);
+})));
+function sjekkPar(a, b, min) {
+  if (a.length < min) return `Passordet må ha minst ${min} tegn.`;
+  if (a !== b) return 'Passordene er ikke like.';
+  return '';
+}
+
+$('adminSkjema').addEventListener('submit', async e => {
+  e.preventDefault();
+  const pw = $('adminPw').value, b = $('adminBtn'), m = $('adminMsg');
+  b.disabled = true; b.textContent = 'Åpner …'; m.textContent = ''; m.className = 'msg';
+  await lastPakker();
+  let n = 0;
+  for (const f of FAG) {
+    const p = window.GJESTEROM?.[f.id]; if (!p) continue;
+    try { const r = await apne(p, pw); if (r.rolle === 'admin') { apnet[f.id] = { raw: r.raw, tekst: r.tekst, pakke: p }; n++; } } catch (x) {}
+  }
+  b.disabled = false; b.textContent = 'Åpne alle gjesterom';
+  if (!n) { m.textContent = 'Adminpassordet åpnet ingen rom. Prøv igjen.'; m.className = 'msg feil'; return; }
+  m.textContent = `Åpnet ${n} av ${FAG.length} gjesterom.`; m.className = 'msg ok';
+  $('adminPw').value = '';
+  tegnFag();
+});
+
+function tegnFag() {
+  $('rom').hidden = false;
+  $('fagliste').innerHTML = FAG.map(f => {
+    const a = apnet[f.id];
+    if (!a) return `<div class="fagkort" style="border-top-color:${f.farge}"><h3>${f.kort} – ${esc(f.navn)}</h3><p class="msg feil">Ikke åpnet: fant ingen fil, eller filen har et annet adminpassord.</p></div>`;
+    const roller = a.pakke.nokler.map(s => s.rolle).join(' og ');
+    return `<div class="fagkort" style="border-top-color:${f.farge}" data-fag="${f.id}"><h3>${f.kort} – ${esc(f.navn)}</h3>
+      <p>Fil: <code>gjestefag/${f.id}/laererrom/innhold.enc.js</code> · Nøkler: ${roller}</p>
+      <a class="btn sek" href="/gjestefag/${f.id}/laererrom/">Åpne rommet</a> <a class="btn sek" href="/gjestefag/${f.id}/">Elevressurser</a>
+      <details><summary>Bytt passord for ${f.kort}</summary>
+        <label>Nytt passord (minst 10 tegn)<input type="password" class="p1" autocomplete="new-password"></label>
+        <label>Gjenta<input type="password" class="p2" autocomplete="new-password"></label>
+        <button class="btn" type="button" data-act="pw">Last ned ny innhold.enc.js</button><p class="msg" aria-live="polite"></p></details>
+      <details><summary>Rediger innholdet i ${f.kort}-rommet</summary>
+        <textarea class="html"></textarea>
+        <button class="btn" type="button" data-act="html">Last ned ny innhold.enc.js</button><p class="msg" aria-live="polite"></p></details></div>`;
+  }).join('');
+  document.querySelectorAll('.fagkort[data-fag]').forEach(k => {
+    const id = k.dataset.fag, a = apnet[id];
+    k.querySelector('textarea.html').value = a.tekst;
+    k.querySelector('[data-act=pw]').addEventListener('click', async e => {
+      const m = e.target.nextElementSibling, p1 = k.querySelector('.p1').value, p2 = k.querySelector('.p2').value;
+      const feil = sjekkPar(p1, p2, 10); if (feil) { m.textContent = feil; m.className = 'msg feil'; return; }
+      e.target.disabled = true; m.textContent = 'Lager fil …'; m.className = 'msg';
+      a.pakke = await byttPassord(a.pakke, a.raw, 'fag', p1); lastNed(id, a.pakke);
+      e.target.disabled = false; k.querySelector('.p1').value = k.querySelector('.p2').value = '';
+      m.textContent = `Lastet ned. Last opp filen til gjestefag/${id}/laererrom/ og gi det nye passordet til ${id.toUpperCase()}-lærerne.`; m.className = 'msg ok';
+    });
+    k.querySelector('[data-act=html]').addEventListener('click', async e => {
+      const m = e.target.nextElementSibling;
+      e.target.disabled = true; m.textContent = 'Lager fil …'; m.className = 'msg';
+      a.tekst = k.querySelector('textarea.html').value;
+      a.pakke = await nyttInnhold(a.pakke, a.raw, a.tekst); lastNed(id, a.pakke);
+      e.target.disabled = false; m.textContent = `Lastet ned. Last opp filen til gjestefag/${id}/laererrom/. Passordene er uendret.`; m.className = 'msg ok';
+    });
+  });
+}
+
+$('byttAdmin').addEventListener('click', async () => {
+  const m = $('adminByttMsg'), p1 = $('nyAdmin1').value, p2 = $('nyAdmin2').value;
+  const feil = sjekkPar(p1, p2, 12); if (feil) { m.textContent = feil; m.className = 'msg feil'; return; }
+  m.textContent = 'Lager filer …'; m.className = 'msg';
+  for (const [id, a] of Object.entries(apnet)) {
+    a.pakke = await byttPassord(a.pakke, a.raw, 'admin', p1);
+    lastNed(id, a.pakke);
+    await new Promise(r => setTimeout(r, 600));
+  }
+  $('nyAdmin1').value = $('nyAdmin2').value = '';
+  m.textContent = `Lastet ned ${Object.keys(apnet).length} filer (alle heter innhold.enc.js – last opp én og én i riktig fagmappe: ${Object.keys(apnet).join(', ')}).`; m.className = 'msg ok';
+});
+
+$('lagNytt').addEventListener('click', async () => {
+  const m = $('nyMsg'), id = $('nyId').value.trim(), fpw = $('nyFagPw').value, apw = $('nyAdminPw').value;
+  if (!/^[a-z]{2,8}$/.test(id)) { m.textContent = 'Fag-id må være 2–8 små bokstaver.'; m.className = 'msg feil'; return; }
+  if (fpw.length < 10) { m.textContent = 'Fagpassordet må ha minst 10 tegn.'; m.className = 'msg feil'; return; }
+  if (apw.length < 12) { m.textContent = 'Skriv adminpassordet ditt (minst 12 tegn).'; m.className = 'msg feil'; return; }
+  m.textContent = 'Lager fil …'; m.className = 'msg';
+  const p = await laas($('nyHtml').value, [{ rolle: 'fag', passord: fpw }, { rolle: 'admin', passord: apw }]);
+  lastNed(id, p);
+  m.textContent = `Lastet ned. Last opp til gjestefag/${id}/laererrom/innhold.enc.js.`; m.className = 'msg ok';
+});
+</script>
+</body>
+</html>

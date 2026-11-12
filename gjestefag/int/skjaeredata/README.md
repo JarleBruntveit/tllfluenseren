@@ -7,7 +7,7 @@ Interaktiv simulator og nivåtester for skjæredata ved fresing, dreiing og bori
 | `index.html` | Elevsiden med fasene Lær, Tenk, Øv og Voks. |
 | `skjaeredata.js` | Simulator (canvas), forutsi-utfordringer, oppgavegeneratorer, lagring og rapport. |
 | `rapport.js` | Felles for elev- og lærersiden: rapportformat, kontrollsum, PDF og innlesing. |
-| `/laererrom/skjaeredata/` | Lærersiden: les inn PDF-er fra Teams, klasseoversikt, kjennetegn, muntlig og praktisk kontroll. |
+| `/gjestefag/int/laererrom/` | INT-lærerrommet (passord): les inn PDF-er fra Teams, klasseoversikt, kjennetegn, muntlig og praktisk kontroll. Koden ligger i `vurdering.js`, teksten kryptert i `innhold.enc.js`. |
 
 ## Endre innhold
 
@@ -28,7 +28,7 @@ de vanligste feilene i klassen med forslag til oppfølging (`FEILTYPER` i `rappo
 
 Alt lagres bare i elevens nettleser (`localStorage`). Refleksjonstekst lagres bare hvis eleven krysser av for det.
 Rapporten er en PDF med rapportkoden i Keywords-feltet (prefiks `SKJAERERAPPORT:`) og en kontrollsum som avslører endringer.
-Lærersiden leser filene lokalt og sender ingenting.
+Lærerrommet leser filene lokalt og sender ingenting. Passord og innhold i lærerrommet styres i `/laererrom/gjesterom/`.
 
 ## Opphavsrett
 
