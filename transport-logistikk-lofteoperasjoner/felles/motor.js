@@ -10,14 +10,14 @@ const TLL = window.TLL;
 const NDLA = 'https://ndla.no/nb/r/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/';
 const NIVA = {0:'Alle nivåer',1:'Nybegynner',2:'Trygg',3:'Ekspert'};
 const NIVA_KORT = {1:'Nybegynner',2:'Trygg',3:'Ekspert'};
-const TYPE = {flash:'Begrepskort',quiz:'Quiz',tf:'Sant eller usant',fill:'Fyll inn',match:'Koble sammen',order:'Rekkefølge',sort:'Sorter',calc:'Regneoppgaver',check:'Avvikskontroll',hotspot:'Bildeoppgave',case:'Case',reflect:'Skriveoppgave',sim:'Simulering',voks:'60 sekunder'};
+const TYPE = {flash:'Begrepskort',quiz:'Quiz',tf:'Sant eller usant',fill:'Fyll inn',match:'Koble sammen',order:'Rekkefølge',sort:'Sorter',calc:'Regneoppgaver',check:'Avvikskontroll',hotspot:'Bildeoppgave',case:'Case',reflect:'Skriveoppgave',sim:'Simulering',voks:'60 sekunder',bank:'Oppgaveliste'};
 const FASER = [
   {id:'laer', nr:'01', ikon:'↗', navn:'Lær', tekst:'Få tak på det viktigste. Tydelige forklaringer, eksempler og fagstoff.'},
   {id:'ov',   nr:'02', ikon:'✓', navn:'Øv',  tekst:'Tren på det du skal mestre. Repetisjon og interaktive oppgaver.'},
   {id:'tenk', nr:'03', ikon:'?', navn:'Tenk', tekst:'Stopp opp og vurder. Situasjoner fra arbeidslivet som utfordrer faglig skjønn.'},
   {id:'voks', nr:'04', ikon:'+', navn:'Voks', tekst:'Korte perspektiver på ansvar, samarbeid, vaner og det å fungere godt i arbeidslivet.'}
 ];
-const FASE_AV_TYPE = {flash:'laer', quiz:'ov', tf:'ov', fill:'ov', match:'ov', order:'ov', sort:'ov', calc:'ov', hotspot:'ov', check:'tenk', case:'tenk', sim:'tenk', reflect:'tenk', voks:'voks'};
+const FASE_AV_TYPE = {flash:'laer', quiz:'ov', tf:'ov', fill:'ov', match:'ov', order:'ov', sort:'ov', calc:'ov', hotspot:'ov', check:'tenk', case:'tenk', sim:'tenk', reflect:'tenk', voks:'voks', bank:'ov'};
 const faseAv = a => a.fase || FASE_AV_TYPE[a.type];
 const faseNavn = id => FASER.find(f => f.id === id).navn;
 const $ = s => document.querySelector(s);
@@ -558,7 +558,111 @@ function runSim(st, a, done){
   reset();
 }
 
-const RUN = {flash:runFlash, quiz:runQuiz, tf:runTF, fill:runFill, match:runMatch, order:runOrder, sort:runSort, check:runCheck, hotspot:runHotspot, calc:runCalc, case:runCase, reflect:runReflect, sim:runSim, voks:runVoks};
+/* =================== ØVELSESBANK (type 'bank') ===================
+   En liste med oppgaver som vises samtidig, slik at eleven ser hele banken og velger selv.
+   a.oppg: [{ k:'mc'|'num'|'open', q, o, r, ans, tol, u, s (side i heftet), h (hint), f (forklaring), tema }]
+   Status per oppgave lagres i store.bank; resultatet (andel klart) registreres på aktiviteten. */
+const bankFilter = { tema: '', apne: false };
+const tall = v => Number(String(v).replace(/\s/g,'').replace(',','.'));
+const bankKlart = (a, st) => a.oppg.filter((o,i) => { const x = st[a.id + '#' + i]; return x && (x.ok || (o.k === 'open' && x.self === 'ja')); }).length;
+function stokkFast(n, seed){ const ix = [...Array(n).keys()]; let h = seed * 9301 + 49297; for (let i = n - 1; i > 0; i--){ h = (h * 9301 + 49297) % 233280; const j = Math.floor(h / 233280 * (i + 1)); [ix[i], ix[j]] = [ix[j], ix[i]]; } return ix; }
+function runBank(st, a, done){
+  const store = ctx.store; store.bank = store.bank || {};
+  const B = store.bank, key = i => a.id + '#' + i, total = a.oppg.length;
+  const lagre = () => TLL.skrivLager(ctx.kapId, store);
+  let forrige = bankKlart(a, B);
+  const oppdater = () => {
+    const n = bankKlart(a, B);
+    if (n !== forrige){ forrige = n; done(100 * n / total); } else lagre();
+    const pr = st.querySelector('.bank-prog'); if (pr) pr.innerHTML = progHtml(n);
+  };
+  const progHtml = n => `<div class="row"><span class="counter">${n} av ${total} oppgaver klart</span></div><div class="meter"><i style="width:${100*n/total}%"></i></div>`;
+  const temaer = [...new Set(a.oppg.map(o => o.tema).filter(Boolean))];
+  const side = o => o.s ? `<span class="tag">Heftet ${/^\d/.test(o.s) ? 's. ' : ': '}${esc(o.s)}</span>` : '';
+  const kort = (o, i) => {
+    const x = B[key(i)] || {}, klart = x.ok || (o.k === 'open' && x.self === 'ja');
+    let kropp;
+    if (o.k === 'mc'){
+      const ord = stokkFast(o.o.length, i + 7 * total);
+      kropp = `<div class="opts">${ord.map((k,n) => `<button class="opt" data-k="${k}"><span class="k">${'ABCDE'[n]}</span><span>${esc(o.o[k])}</span></button>`).join('')}</div>`;
+    } else if (o.k === 'num'){
+      kropp = `<div class="row bank-num"><input type="text" inputmode="decimal" autocomplete="off" aria-label="Svar på oppgave ${i+1}" value="${esc(x.v != null ? x.v : '')}"><span class="unit">${esc(o.u || '')}</span><button class="btn yellow" data-chk>Sjekk</button><button class="btn ghost" data-hint>Hint</button></div>`;
+    } else {
+      kropp = `<textarea placeholder="Skriv svaret ditt her …" style="min-height:110px">${esc(getText(a.id + '-' + i))}</textarea>
+        <div class="row" style="margin-top:10px"><button class="btn yellow" data-sol>Vis løsningsforslag</button></div>`;
+    }
+    if (o.k === 'mc') kropp += `<div class="row" style="margin-top:10px"><button class="btn ghost" data-hint>Hint</button></div>`;
+    return `<article class="panel bank-q${klart ? ' klart' : ''}" data-i="${i}">
+      <div class="bank-meta">${o.tema ? `<span class="tag">${esc(o.tema)}</span>` : ''}${side(o)}${klart ? '<span class="tag bank-ok">✓ Klart</span>' : ''}</div>
+      <div class="q"><span><b class="bank-nr">${i+1}.</b> ${esc(o.q).replace(/\n/g,'<br>')}</span>${sayBtn(o.q)}</div>
+      ${kropp}<div class="bank-fb"></div></article>`;
+  };
+  const tegn = () => {
+    const vis = a.oppg.map((o,i) => i).filter(i => {
+      const o = a.oppg[i], x = B[key(i)] || {};
+      if (bankFilter.tema && o.tema !== bankFilter.tema) return false;
+      if (bankFilter.apne && (x.ok || (o.k === 'open' && x.self === 'ja'))) return false;
+      return true;
+    });
+    st.innerHTML = `${a.intro ? `<p class="instr">${esc(a.intro)}</p>` : ''}
+      <div class="bank-prog">${progHtml(bankKlart(a, B))}</div>
+      <div class="row bank-filter">
+        ${temaer.length > 1 ? `<label class="small">Tema <select data-tema><option value="">Alle temaer</option>${temaer.map(x => `<option ${x === bankFilter.tema ? 'selected' : ''}>${esc(x)}</option>`).join('')}</select></label>` : ''}
+        <label class="small"><input type="checkbox" data-apne ${bankFilter.apne ? 'checked' : ''}> Vis bare oppgaver jeg ikke har klart</label>
+        <span class="spacer"></span><span class="counter">${vis.length} oppgaver vises</span>
+      </div>
+      ${vis.some(i => a.oppg[i].k === 'open') ? textNote() : ''}
+      <div class="bank-list">${vis.length ? vis.map(i => kort(a.oppg[i], i)).join('') : '<p class="muted">Ingen oppgaver her. Bra jobba!</p>'}</div>`;
+    const ts = st.querySelector('[data-tema]'); if (ts) ts.onchange = () => { bankFilter.tema = ts.value; tegn(); };
+    st.querySelector('[data-apne]').onchange = e => { bankFilter.apne = e.target.checked; tegn(); };
+    st.querySelectorAll('.bank-q').forEach(koble);
+  };
+  const koble = el => {
+    const i = +el.dataset.i, o = a.oppg[i], fb = el.querySelector('.bank-fb');
+    const x = () => (B[key(i)] = B[key(i)] || { forsok: 0 });
+    const vis = (cls, html) => { fb.innerHTML = `<div class="fb ${cls}">${html}</div>`; };
+    const merk = () => { el.classList.add('klart'); const m = el.querySelector('.bank-meta'); if (!m.querySelector('.bank-ok')) m.insertAdjacentHTML('beforeend', '<span class="tag bank-ok">✓ Klart</span>'); };
+    const hb = el.querySelector('[data-hint]');
+    if (hb) hb.onclick = () => { if (!el.querySelector('.bank-hint')) fb.insertAdjacentHTML('beforebegin', `<div class="fb bank-hint">💡 ${esc(o.h || ('Se heftet: ' + o.s))}</div>`); };
+    const fasit = () => o.k === 'mc' ? esc(o.o[o.r]) : `${String(o.ans).replace('.', ',')} ${esc(o.u || '')}`;
+    const feil = s => { const n = s.forsok; vis('bad', `<b>Ikke helt.</b> Prøv igjen. Bruk hintet eller se i heftet${o.s && /^\d/.test(o.s) ? ' på s. ' + esc(o.s) : ''}.${o.k === 'num' ? ' Husk å runde <b>opp</b> når du teller stropper.' : ''}${n >= 2 ? ` <button class="btn ghost" data-fasit style="margin-top:8px">Vis riktig svar</button>` : ''}`);
+      const fb2 = fb.querySelector('[data-fasit]'); if (fb2) fb2.onclick = () => vis('', `<b>Riktig svar:</b> ${fasit()}<br>${esc(o.f || '')}`); };
+    if (o.k === 'mc'){
+      el.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+        const s = x(), k = +b.dataset.k, ok = k === o.r; s.forsok++; s.v = k; if (ok) s.ok = true;
+        el.querySelectorAll('.opt').forEach(y => y.classList.remove('ok', 'bad')); b.classList.add(ok ? 'ok' : 'bad');
+        if (ok){ vis('', `<b>Riktig!</b> ${esc(o.f || '')}`); merk(); } else feil(s);
+        oppdater();
+      });
+    } else if (o.k === 'num'){
+      const inp = el.querySelector('input'), chk = () => {
+        if (inp.value.trim() === '') return;
+        const v = tall(inp.value); if (isNaN(v)){ vis('bad', 'Skriv inn et tall, for eksempel 2,4.'); return; }
+        const s = x(), ok = Math.abs(v - o.ans) <= (o.tol || 0) + 1e-9; s.forsok++; s.v = inp.value; if (ok) s.ok = true;
+        if (ok){ vis('', `<b>Riktig!</b> ${esc(o.f || '')}`); merk(); } else feil(s);
+        oppdater();
+      };
+      el.querySelector('[data-chk]').onclick = chk; inp.onkeydown = e => { if (e.key === 'Enter') chk(); };
+    } else {
+      const ta = el.querySelector('textarea'), tid = a.id + '-' + i;
+      ta.addEventListener('input', () => setText(tid, ta.value));
+      const sol = () => {
+        const cur = (B[key(i)] || {}).self;
+        fb.innerHTML = `<div class="fb"><b>Løsningsforslag</b><br>${esc(o.f || '').replace(/\n/g,'<br>')}</div>
+          <p class="small muted" style="margin:10px 0 6px">Sammenlign med svaret ditt. Fikk du det til?</p>
+          <div class="row">${[['ja','Ja'],['delvis','Delvis'],['nei','Ikke ennå']].map(([k,t]) => `<button class="btn ${cur === k ? 'yellow' : 'ghost'}" data-self="${k}">${t}</button>`).join('')}</div>`;
+        fb.querySelectorAll('[data-self]').forEach(b => b.onclick = () => { x().self = b.dataset.self; if (b.dataset.self === 'ja') merk(); else { el.classList.remove('klart'); const t = el.querySelector('.bank-ok'); if (t) t.remove(); } sol(); oppdater(); });
+      };
+      el.querySelector('[data-sol]').onclick = () => {
+        if (ta.value.trim().length < 15){ vis('bad', 'Skriv ditt eget svar først – minst et par setninger. Du lærer mer av å sammenligne.'); return; }
+        sol();
+      };
+    }
+  };
+  tegn();
+}
+
+const RUN = {flash:runFlash, quiz:runQuiz, tf:runTF, fill:runFill, match:runMatch, order:runOrder, sort:runSort, check:runCheck, hotspot:runHotspot, calc:runCalc, case:runCase, reflect:runReflect, sim:runSim, voks:runVoks, bank:runBank};
 
 /* =================== RAPPORTSKJEMA (felles) =================== */
 function rapportSkjema(el, tilbake){
@@ -705,7 +809,28 @@ function bootKapittel(){
     }));
   }
 
+  const erListeBank = t => t.ovelsesbank && t.aktiviteter.length && t.aktiviteter.every(a => a.type === 'bank');
+  function pageBank(t, valgt){
+    const deler = t.aktiviteter.filter(visible);
+    const a = (valgt && deler.includes(valgt)) ? valgt : deler[0];
+    header(`<a href="#/">${KN}</a> <span>›</span> <span>${esc(t.lok)}</span>`, temaNavn(t), esc(t.kort), false);
+    const B = store.bank || {};
+    app.innerHTML = `
+      ${t.mal ? `<section class="panel mal"><h2>Læringsmål</h2><p>Etter å ha jobbet med øvelsesbanken kan jeg …</p><ul>${t.mal.map(m => `<li>${esc(m)}</li>`).join('')}</ul></section>` : ''}
+      <div class="theory" style="margin-top:14px">
+        <div class="panel kort"><h3 style="font-size:22px">Slik jobber du</h3><ul>${t.punkter.map(p => `<li>${p}</li>`).join('')}</ul></div>
+        ${t.ekstra ? `<div class="panel">${t.ekstra}</div>` : ''}
+      </div>
+      <nav class="bank-tabs" aria-label="Deler av øvelsesbanken">${deler.map(d => { const n = bankKlart(d, B);
+        return `<a class="bank-tab" href="#/${t.id}/${d.id}" ${d === a ? 'aria-current="page"' : ''}><span class="lvl n${d.nivaa || 0}">${d.nivaa ? NIVA_KORT[d.nivaa] : 'Alle'}</span><b>${esc(d.tittel)}</b><span class="small muted">${n} av ${d.oppg.length} klart</span><span class="meter"><i style="width:${100*n/d.oppg.length}%"></i></span></a>`; }).join('')}</nav>
+      ${a ? `<section class="bank-del" id="bankdel"><h2 class="bank-h">${esc(a.tittel)}</h2><div id="stage"></div></section>`
+          : `<p class="muted">Ingen deler på nivået du har valgt. Velg «Alle» øverst.</p>`}
+      <nav class="step-nav" aria-label="Naviger"><a class="btn ghost step-overview" href="#/">Tilbake til alle tema</a></nav>`;
+    if (a) runBank($('#stage'), a, pct => { TLL.registrerResultat(K.id, store, a.id, pct); });
+    return !!valgt;
+  }
   function pageTema(t){
+    if (erListeBank(t)) return pageBank(t, null);
     header(`<a href="#/">${KN}</a> <span>›</span> <span>${esc(t.lok)}</span>`, temaNavn(t), esc(t.kort), false);
     const index = K.temaer.indexOf(t);
     const forrige = K.temaer[index - 1];
@@ -824,7 +949,8 @@ function bootKapittel(){
     else {
       const t = K.temaer.find(x => x.id === parts[0]);
       const a = t && t.aktiviteter.find(x => x.id === parts[1]);
-      if (t && a) pageAct(t,a); else if (t) pageTema(t); else pageHome();
+      if (t && a && erListeBank(t)){ pageBank(t, a); const d = $('#bankdel'); if (d){ d.scrollIntoView(); return; } }
+      else if (t && a) pageAct(t,a); else if (t) pageTema(t); else pageHome();
     }
     window.scrollTo(0,0);
   }
@@ -877,6 +1003,7 @@ function provePool(kapIder, niva){
       if (niva && a.nivaa && a.nivaa !== niva) return;
       const tag = { _kap: id, _tema: `Kap ${K.nr} · ${t.tittel}`, _temaId: t.id };
       if (a.type === 'quiz') a.sp.forEach((q,i) => pool.push(Object.assign({ _id: `${a.id}#${i}` }, tag, q)));
+      if (a.type === 'bank') a.oppg.forEach((o,i) => { if (o.k === 'mc') pool.push(Object.assign({ _id: `${a.id}#${i}`, q: o.q, a: o.o, r: o.r, f: o.f }, tag)); });
       if (a.type === 'tf') a.ps.forEach(([p,s,f],i) => pool.push(Object.assign({ _id: `${a.id}#${i}`, q: 'Sant eller usant? ' + p, a: ['Sant','Usant'], r: s ? 0 : 1, f, fast: true }, tag)));
     }));
   });
