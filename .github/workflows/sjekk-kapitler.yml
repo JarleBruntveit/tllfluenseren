@@ -1,0 +1,17 @@
+name: Sjekk TLL-kapitler
+on:
+  pull_request:
+    paths:
+      - 'transport-logistikk-lofteoperasjoner/**'
+      - 'ressursbank/katalog.json'
+      - 'sitemap.xml'
+      - '_verktoy/**'
+jobs:
+  sjekk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node _verktoy/sjekk-kapitler.js
