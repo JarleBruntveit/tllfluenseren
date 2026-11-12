@@ -70,6 +70,8 @@ main{padding:22px 0 60px}
 .tcard .body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
 .tcard h3{font-size:22px}
 .tcard p{margin:0;color:var(--muted);font-size:15px}
+.bankgrid{display:grid;gap:14px;margin-bottom:8px}
+.tcard.bank .lok{background:var(--n1);color:#111820}
 .prog{height:7px;background:var(--line);border-radius:4px;overflow:hidden;margin-top:auto}
 .prog i{display:block;height:100%;background:var(--ok);width:0}
 .progtxt{font-size:13px;color:var(--muted)}

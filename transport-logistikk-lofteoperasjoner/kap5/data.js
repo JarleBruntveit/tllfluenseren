@@ -1100,7 +1100,7 @@ TLL.registrer({
   }
   ,
   {
-    id: 't8', lok: 'C-04', tittel: 'Øvelsesbank: lastsikringsheftet',
+    id: 't8', lok: 'ØB-01', ovelsesbank: true, tittel: 'Øvelsesbank: lastsikringsheftet',
     kort: 'Over 100 oppgaver til NLF-heftet «Lastsikring ved vegtransport». Du starter med å bli kjent med heftet og jobber deg opp til ekspertnivå.',
     bok: 'Læreboka 5.3 og 5.7 (s. 122–148)',
     mal: ['finne fram i lastsikringsheftet ved hjelp av sidetall og overskrifter','forklare hva LC, Stf, H/B og H/L betyr','lese av friksjon og tabellverdier for alle sikringsmetodene','regne ut hvor mange surringer som trengs, og korrigere for vinkel og utstyr','finne feil i andres lastsikring og begrunne bedre løsninger'],

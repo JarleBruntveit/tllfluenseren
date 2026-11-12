@@ -646,7 +646,17 @@ function bootKapittel(){
     header(`<span>${esc(K.kortnavn || 'Kapittel ' + K.nr)}</span>`, K.kortnavn ? esc(K.tittel) : `Kap ${K.nr} · ${esc(K.tittel)}`, esc(K.ingress), true);
     const r = K.ressurser;
     const forsteTema = K.temaer[0];
-    const alle = K.temaer.reduce((s,t) => { const p = temaProg(t); return { d: s.d + p.done, n: s.n + p.total }; }, { d: 0, n: 0 });
+    // Temaer merket ovelsesbank: true vises i egen seksjon (jobbes med hele skoleåret), ikke i «Velg tema»
+    const vanlige = K.temaer.filter(t => !t.ovelsesbank);
+    const banker = K.temaer.filter(t => t.ovelsesbank);
+    const alle = vanlige.reduce((s,t) => { const p = temaProg(t); return { d: s.d + p.done, n: s.n + p.total }; }, { d: 0, n: 0 });
+    const temakort = (t, ekstraKlasse) => { const p = temaProg(t); return `
+        <a class="tcard${ekstraKlasse || ''}" href="#/${t.id}">
+          <div class="lab"><span class="lok">${esc(t.lok)}</span><span class="bars"></span></div>
+          <div class="body"><h3>${esc(t.tittel)}</h3><p>${esc(t.kort)}</p>
+            <div class="progtxt">${p.done} av ${p.total} aktiviteter gjort</div>
+            <div class="prog"><i style="width:${p.total?100*p.done/p.total:0}%"></i></div></div>
+        </a>`; };
     app.innerHTML = `
       <div class="note ${store.saveText ? 'warn' : ''}" style="margin-top:4px"><span aria-hidden="true">${store.saveText ? '💾' : '🔒'}</span><span>
         <b>Lagring på denne PC-en:</b> Resultatene dine lagres bare i denne nettleseren. Læreren ser dem når du leverer en <a href="#/rapport">fremdriftsrapport</a> i Teams.
@@ -655,13 +665,7 @@ function bootKapittel(){
       <section class="panel tll-start" aria-labelledby="start-heading"><h2 id="start-heading">Første gang her?</h2><p>Start med «${esc(forsteTema.tittel)}». Les eller lytt til forklaringen, og prøv oppgavene etterpå. Har læreren gitt deg et annet tema, velger du det nedenfor.</p><a class="tll-action" href="#/${forsteTema.id}">Start med ${temaNavn(forsteTema)} →</a></section>
       <div class="section-h"><h2>Velg tema</h2><span class="muted small">${alle.d} av ${alle.n} aktiviteter gjort · ${alle.n - alle.d} gjenstår</span></div>
       <div class="phase-steps" style="margin:-4px 0 14px">${FASER.map(f => `<span>${f.navn.toUpperCase()}</span>`).join('')}</div>
-      <div class="grid">${K.temaer.map(t => { const p = temaProg(t); return `
-        <a class="tcard" href="#/${t.id}">
-          <div class="lab"><span class="lok">${t.lok}</span><span class="bars"></span></div>
-          <div class="body"><h3>${esc(t.tittel)}</h3><p>${esc(t.kort)}</p>
-            <div class="progtxt">${p.done} av ${p.total} aktiviteter gjort</div>
-            <div class="prog"><i style="width:${p.total?100*p.done/p.total:0}%"></i></div></div>
-        </a>`; }).join('')}
+      <div class="grid">${vanlige.map(t => temakort(t)).join('')}
         ${K.prove === false ? '' : `<a class="tcard" href="../prove/?kap=${K.id}">
           <div class="lab"><span class="lok" style="background:var(--asphalt);color:var(--yellow)">TEST</span><span class="bars"></span></div>
           <div class="body"><span class="ftag">Øv</span><h3>Kapittelprøve</h3><p>Tilfeldige spørsmål fra hele kapitlet på nivået du velger. Se hvilke tema du må øve mer på.</p></div>
@@ -672,6 +676,10 @@ function bootKapittel(){
         </a>
       </div>
       ${K.visKapittelkilder || K.ressursomrade === false ? '' : `<section data-resource-area="${esc(K.ressursomrade || 'tll')}"></section>`}
+      ${banker.length ? `<section aria-labelledby="ovelsesbank-heading">
+        <div class="section-h"><h2 id="ovelsesbank-heading">Øvelsesbank</h2><span class="muted small">Jobb med disse gjennom hele skoleåret</span></div>
+        <div class="bankgrid">${banker.map(t => temakort(t, ' bank')).join('')}</div>
+      </section>` : ''}
       <div id="podlist" hidden><div class="section-h"><h2>Podkast</h2><span class="muted small">Hør teorien – én episode per tema</span></div><div class="panel"><ul class="reslist" id="podul"></ul></div></div>
       ${K.filmLenker?.length ? `<section aria-labelledby="kapittelfilm-heading">
         <div class="section-h"><h2 id="kapittelfilm-heading">Fagfilm og 3D</h2></div>
