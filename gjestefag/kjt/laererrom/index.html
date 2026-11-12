@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.ico">
+<link rel="stylesheet" href="/assets/styles.css">
+<link rel="stylesheet" href="/assets/global-footer.css"><script defer src="/assets/global-footer.js?v=mobile-nav-2"></script><link rel="stylesheet" href="/assets/elevflyt.css?v=mobile-nav-2">
+<link rel="stylesheet" href="/gjestefag/felles/gjesterom.css">
+<title>Lærerrom KJT – gjesterommet | TLLfluenseren</title>
+</head>
+<body class="gjest-area" data-fag="kjt">
+<a class="tll-skip" href="#tll-main">Hopp til innhold</a>
+<header class="gjest-header gjest-shell noprint"><a class="gjest-brand" href="/" aria-label="TLLfluenseren – gå til forsiden"><span class="brandmark">TLL</span><span>TLLfluenseren<small>Gjesterommet</small></span></a><span class="gjest-merke"><i></i>KJT · lærerrom</span></header>
+<nav class="tll-site-nav tll-standalone-nav" aria-label="Hovedmeny"><a href="/">Forside</a><a href="/#fag">Fagområder</a><a href="/gjestefag/">Gjestefag</a><a href="/ressursbank/">Ressursbank</a><a href="/om/">Om</a></nav>
+<main id="tll-main" class="gjest-shell" tabindex="-1">
+<section class="gjest-intro">
+  <a href="/gjestefag/kjt/" style="color:var(--gjest)" class="noprint">← Kjøretøy (KJT)</a>
+  <div class="gjest-eyebrow" style="margin-top:14px">Gjesterommet · Kjøretøy</div>
+  <h1>Lærerrom KJT</h1>
+  <p>Her finner KJT-lærere veiledning, vurderingsverktøy og løsningsforslag til elevressursene i faget. Rommet er låst med passord. Passordet får du av administrator.</p>
+</section>
+<section class="laas noprint" id="laas" aria-labelledby="laasTittel">
+  <h2 id="laasTittel">Lås opp rommet</h2>
+  <p>Innholdet er kryptert, så det kan ikke leses uten passord. Passordet sendes ikke noe sted.</p>
+  <form id="laasSkjema">
+    <label for="pw">Passord for KJT</label>
+    <input id="pw" type="password" autocomplete="current-password" required>
+    <div class="rad"><button class="gbtn" id="laasBtn" type="submit">Åpne lærerrommet</button>
+    <label style="margin:0;font-weight:600"><input type="checkbox" id="huskFane"> Hold rommet åpent i denne fanen</label></div>
+    <p class="feil" id="laasFeil" role="alert" aria-live="polite"></p>
+  </form>
+  <p style="font-size:14px">Ikke kryss av på en delt PC. Lukk fanen når du er ferdig.</p>
+</section>
+<div id="innhold" hidden></div>
+</main>
+<script src="/gjestefag/kjt/laererrom/innhold.enc.js"></script>
+<script type="module" src="/gjestefag/felles/gjesterom.js"></script>
+</body>
+</html>
