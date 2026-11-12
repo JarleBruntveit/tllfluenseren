@@ -34,8 +34,11 @@ Ikke lag egne sider med eget design inne i et kapittel – alt skal gå gjennom 
   Fasen settes ut fra oppgavetypen (`flash`=Lær, `quiz/tf/fill/match/order/sort/calc/hotspot`=Øv,
   `check/case/sim/reflect`=Tenk, `voks`=Voks) og kan overstyres med `fase`.
 - `kompetansemal` er **ordrett** fra læreplanen (kontroller mot Udir). Læringsmålene er våre egne – hold dem adskilt.
-- **Oppgavebank-tema** (valgfritt, bare noen kapitler – som kap 5): eget tema til slutt med `oppgavebank: true`.
-  Da kreves ikke alle faser og nivåer i det temaet.
+- **Temaenes etikett (`lok`) er en hylleplass:** bokstaven er «reolen» (en del av kapitlet, i progresjon: A grunnlag →
+  B metoder → C/D anvendelse), tallet er plassen i rekkefølgen. Elevene går gjennom temaene én gang, i rekkefølge.
+- **Øvelsesbank** (valgfritt, bare noen kapitler – som kap 5): oppgaver elevene jobber med gjennom hele skoleåret.
+  Legges som siste tema med `ovelsesbank: true` og `lok: 'ØB-01'`. Motoren viser den under egen overskrift
+  «Øvelsesbank» foran Podkast, ikke i «Velg tema». Alle faser og nivåer kreves ikke i det temaet.
 - Regneoppgaver (`calc`) trenger en generator i `GEN` i `motor.js`. Ny generator = endring i motoren (se under).
 - `sim` er en lagersimulering som er skreddersydd for kap 1 – ikke gjenbruk den uten å utvide motoren.
 

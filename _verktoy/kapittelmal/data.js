@@ -92,7 +92,8 @@ TLL.registrer({
       ]
     }
     /* Neste tema: kopier blokken over, bruk id 't2', lok 'A-02', og aktivitets-id-er som starter med 't2-'.
-       Oppgavebank-tema (valgfritt, som kap 5): legg til  oppgavebank: true  – da kreves ikke alle faser/nivåer. */
+       Øvelsesbank (valgfritt, som kap 5): siste tema med  ovelsesbank: true, lok: 'ØB-01'  – vises i egen seksjon
+       foran Podkast, og krever ikke alle faser/nivåer. */
   ]
 });
 })();

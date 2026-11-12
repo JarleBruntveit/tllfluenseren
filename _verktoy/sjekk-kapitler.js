@@ -121,7 +121,7 @@ for (const kap of KAPITLER) {
       if (t[felt] == null) F(T, `mangler feltet «${felt}»`);
     }
     if (t.lok) {
-      if (!/^[A-Z]-\d{2}$/.test(t.lok)) A(T, `lok '${t.lok}' følger ikke mønsteret 'A-01'`);
+      if (t.ovelsesbank ? !/^ØB-\d{2}$/.test(t.lok) : !/^[A-Z]-\d{2}$/.test(t.lok)) A(T, `lok '${t.lok}' følger ikke mønsteret ${t.ovelsesbank ? "'ØB-01'" : "'A-01'"}`);
       if (lokIder.has(t.lok)) F(T, `lok '${t.lok}' er brukt to ganger`);
       lokIder.add(t.lok);
     }
@@ -151,7 +151,7 @@ for (const kap of KAPITLER) {
       faser.add(a.fase || ({ flash: 'laer', voks: 'voks', check: 'tenk', case: 'tenk', sim: 'tenk', reflect: 'tenk' }[a.type] || 'ov'));
     });
 
-    const erBank = t.oppgavebank === true || /^(oppgavebank|øvelsesbank)/i.test(t.tittel || '');
+    const erBank = t.ovelsesbank === true || /^(oppgavebank|øvelsesbank)/i.test(t.tittel || '');
     if (!erBank) {
       for (const f of ['laer', 'ov', 'tenk', 'voks']) if (!faser.has(f)) A(T, `mangler aktivitet i fasen «${{ laer: 'Lær', ov: 'Øv', tenk: 'Tenk', voks: 'Voks' }[f]}»`);
       for (const n of [1, 2, 3]) if (!nivaer.has(n)) A(T, `mangler aktivitet på nivå ${n} (${['', 'Nybegynner', 'Trygg', 'Ekspert'][n]})`);
