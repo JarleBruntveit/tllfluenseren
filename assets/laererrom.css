@@ -38,3 +38,8 @@ body.teacher-area{--teacher-bg:#12303b;--teacher-panel:#1c3c48;--teacher-panel-2
 .teacher-area .tll-footer-bottom{border-color:#547b87}
 .teacher-area .teacher-category{border-bottom:1px solid #426571;padding-bottom:30px}
 .teacher-area .teacher-category:last-child{border-bottom:0}
+
+/* Hele lærerkortet er en tilgjengelig navigasjonsflate. */
+.teacher-card:has(.teacher-link[href]){cursor:pointer;transition:border-color .15s,transform .15s}
+.teacher-card:has(.teacher-link[href]):hover,.teacher-card:has(.teacher-link[href]):focus-visible,.teacher-card:has(.teacher-link[href]):focus-within{border-color:var(--teacher-accent);outline-offset:3px}
+.teacher-card:focus-visible{outline:3px solid var(--teacher-accent)}
