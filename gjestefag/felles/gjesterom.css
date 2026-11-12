@@ -75,3 +75,10 @@ body.gjest-area{--gjest:#7fb6ff;--gjest-bg:#0f1824;--gjest-panel:#162334;--gjest
   body.gjest-area{background:#fff!important;color:#000}
   .ark{border:0;padding:0;margin:0 0 18px}
 }
+/* Hele kortet er klikkbart: lenken strekkes over kortflaten (ingen nestede lenker) */
+.gjest-card:has(a.lenke){position:relative;transition:border-color .15s,transform .15s}
+.gjest-card a.lenke::after{content:"";position:absolute;inset:0;border-radius:inherit}
+.gjest-card:has(a.lenke):hover{border-color:var(--gjest);transform:translateY(-2px)}
+.gjest-card:has(a.lenke:focus-visible){outline:3px solid var(--gjest);outline-offset:3px}
+.gjest-card a.lenke:focus-visible{outline:none;text-decoration:underline}
+@media (prefers-reduced-motion:reduce){.gjest-card:has(a.lenke):hover{transform:none}}
