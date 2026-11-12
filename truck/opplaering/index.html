@@ -41,7 +41,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .stats{gap:28px;margin-top:28px}.stat strong{color:var(--ink);font-size:1.3rem}.stat small{color:var(--muted)}
 .grid{gap:16px}.card{background:linear-gradient(180deg,var(--paper),#0e171f);border-color:var(--line);border-radius:22px;padding:26px;box-shadow:none}
 .card p{color:var(--muted)}.card h3{color:var(--ink)}
-.module-card{min-height:270px}.module-card:hover{border-color:rgba(242,184,75,.55)}
+.module-card{min-height:270px}.module-card:hover{border-color:rgba(242,184,75,.55)}.module-card{position:relative;cursor:pointer;transition:border-color .15s,transform .15s}.module-card button[data-module]::after{content:"";position:absolute;inset:0;border-radius:inherit}.module-card:hover{transform:translateY(-2px)}.module-card:has(button[data-module]:focus-visible){outline:3px solid var(--accent);outline-offset:3px}@media (prefers-reduced-motion:reduce){.module-card:hover{transform:none}}
 .module-card h3{font-size:clamp(25px,3vw,34px);line-height:1.08}.module-card .row:last-child button{color:var(--accent);font-weight:850;background:transparent}
 .tag{background:transparent;color:var(--accent);font-weight:900;font-size:12px;letter-spacing:.07em;padding:0}
 .tag.green{background:transparent;color:#8cd6ae}
