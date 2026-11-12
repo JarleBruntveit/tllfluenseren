@@ -327,6 +327,8 @@ function runHotspot(st, a, done){
 /* Regneoppgaver: generatorer */
 const VARER = ['vaskemiddel','kaffe','hermetikk','toalettpapir','kopipapir','hundefôr','oppvasktabletter','brus'];
 const GEN = {
+  /* Faste oppgaver fra en liste (a.oppg): {task, ans, unit, steps, tol} – vises i rekkefølge */
+  liste(a, i){ const o = a.oppg[i % a.oppg.length]; return { task: esc(o.task), ans: o.ans, unit: esc(o.unit || ''), steps: (o.steps || []).map(esc), tol: o.tol || 0 }; },
   saldo(){ const s=rnd(8,40), inn=rnd(0,1)?rnd(5,24):0, p=rnd(2,Math.min(30,s+inn)); const v=VARER[rnd(0,VARER.length-1)];
     return { task:`En lokasjon med ${v} har <b>${s}</b> kartonger når dagen starter. I løpet av dagen ryddes <b>${inn}</b> nye kartonger inn, og det plukkes <b>${p}</b> kartonger. Hva er lagersaldoen ved slutten av dagen?`,
       ans:s+inn-p, unit:'kartonger', steps:[`Saldo = start + inn − plukket`,`${s} + ${inn} − ${p} = <b>${s+inn-p}</b> kartonger`] }; },
@@ -406,17 +408,18 @@ const tidel = n => n === 10 ? '1,0' : (n/10).toLocaleString('nb-NO');
 function runCalc(st, a, done){
   const n = a.antall || 5; let i = 0, score = 0, tryN = 0, cur;
   const draw = () => {
-    cur = GEN[a.gen](a); tryN = 0;
+    cur = GEN[a.gen](a, i); tryN = 0;
     st.innerHTML = `<div class="row"><span class="counter">Oppgave ${i+1} av ${n}</span><span class="spacer"></span><span class="counter">${score} riktige</span></div>
       <div class="meter"><i style="width:${100*i/n}%"></i></div>
       <div class="calc panel"><div class="task">${cur.task}</div>
-      <div class="row"><input id="in" type="number" inputmode="numeric" aria-label="Svar"><span class="unit">${cur.unit}</span>
+      <div class="row"><input id="in" type="text" inputmode="decimal" autocomplete="off" aria-label="Svar"><span class="unit">${cur.unit}</span>
       <button class="btn yellow" id="chk">Sjekk</button><span class="spacer"></span>${sayBtn(cur.task)}</div><div id="cf"></div></div>`;
     const inp = $('#in'); inp.focus();
     inp.onkeydown = e => { if (e.key === 'Enter') $('#chk').click(); };
     $('#chk').onclick = () => {
       if (inp.value === '') return;
-      const v = Number(inp.value), ok = v === cur.ans; tryN++;
+      const v = Number(inp.value.replace(/\s/g,'').replace(',','.')); if (isNaN(v)) { $('#cf').innerHTML = '<div class="fb bad">Skriv inn et tall, for eksempel 2,4.</div>'; return; }
+      const ok = Math.abs(v - cur.ans) <= (cur.tol || 0) + 1e-9; tryN++;
       if (ok || tryN >= 2){
         if (ok && tryN === 1) score++; else if (ok) score += 0.5;
         inp.disabled = true; $('#chk').disabled = true;
