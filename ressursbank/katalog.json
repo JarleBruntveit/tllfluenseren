@@ -35,7 +35,7 @@
     },
     {
       "id": "kap1-t2",
-      "title": "Lagerstyring og datasystemer",
+      "title": "Lagertyper og lagerstyring",
       "area": "tll",
       "url": "/transport-logistikk-lofteoperasjoner/kap1/#/t2"
     },
@@ -59,15 +59,21 @@
     },
     {
       "id": "kap1-t6",
-      "title": "Godsterminaler og sortering",
+      "title": "Godsterminaler, oppdrag og fraktbrev",
       "area": "tll",
       "url": "/transport-logistikk-lofteoperasjoner/kap1/#/t6"
     },
     {
       "id": "kap1-t7",
-      "title": "Passasjerterminaler",
+      "title": "Sortering og postpakker",
       "area": "tll",
       "url": "/transport-logistikk-lofteoperasjoner/kap1/#/t7"
+    },
+    {
+      "id": "kap1-t8",
+      "title": "Passasjerterminaler",
+      "area": "tll",
+      "url": "/transport-logistikk-lofteoperasjoner/kap1/#/t8"
     },
     {
       "id": "kap5-t1",
