@@ -1,9 +1,25 @@
-# TLL-assistenten – neste fase
+# TLL-assistenten
 
-Status: elevgrensesnitt publisert som test uten KI. Lærerrommet har lenke til test.
+## Nå (fase 1): søkebasert fagkamerat uten KI
+Assistenten svarer bare med innhold som allerede finnes på TLLfluenseren. Ingenting sendes noe sted, og spørsmålene lagres ikke.
 
-Planlagt: separat backend for OpenAI Responses API, sikker serverlagring av API-nøkkel, bruksgrenser, kildebaserte svar og administrasjon bak reell lærerautentisering.
+| Kilde | Fil |
+| --- | --- |
+| Ordboka (TLL og bransjelære) | `transport-logistikk-lofteoperasjoner/ordbok/ord.js`, `ord-bransjelaere.js` |
+| Begrepskort og temaer i kapitlene | `kapN/data.js` – lastes automatisk fra `felles/kapitler.js` |
+| Andre sider («Hvor finner jeg …?») | `assistent/sider.js` – legg til en linje per ny side |
+| Filmer | `ressursbank/katalog.json` |
 
-Sikkerhet: Ingen API-nøkler i GitHub eller nettleserkode. Ingen elevpersonopplysninger til KI før personvern og databehandlerforhold er avklart. KI-funksjoner må ikke aktiveres før backend er konfigurert og testet.
+Nye kapitler, nye ord i ordboka og nye filmer i ressursbanken blir altså med i assistenten uten at assistenten må endres.
+Forklaringsnivået styrer hvor mye som vises (Enkelt: kort forklaring + ett sted å øve; Vanlig: hele forklaringen + lenker;
+Avansert: også punkter fra kapitlet, sidetall i læreboka og et tenkespørsmål).
 
-Sponsorrommet er en egen ChatGPT Site, ikke en GitHub-hostet backend. TLLfluenseren bruker GitHub Pages og trenger separat serverfunksjon for KI.
+Knappen «Kopier spørsmålet» lar eleven ta spørsmålet videre til KI-verktøyet skolen har godkjent (skolekonto).
+
+## Senere (fase 2): ekte KI – bare etter avklaring
+`backend/` har et utkast til en Cloudflare Worker. Den er ikke deployet og skal ikke kobles på før dette er avklart:
+- personvern og databehandleravtale med skoleeier (elever under 18 år, elever fra flere skoler),
+- kostnadstak, bruksgrense og tilgangskontroll (for eksempel klassekode),
+- at svarene bygger på TLLfluenserens eget innhold, ikke forlagets bøker.
+
+Sikkerhet: Ingen API-nøkler i GitHub eller nettleserkode. Ingen elevpersonopplysninger til KI.

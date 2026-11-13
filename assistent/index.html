@@ -1,1 +1,138 @@
-<!doctype html><html lang="nb"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/assets/styles.css"><title>TLL-assistenten | TLLfluenseren</title><style>main{max-width:900px;margin:36px auto;padding:20px}.panel{border:1px solid #647b88;border-radius:18px;padding:22px;background:#10202b}button,select,input{font:inherit;padding:12px;border-radius:10px}button{cursor:pointer;background:#16a2af;color:#061820;border:0;font-weight:700}input{width:100%;box-sizing:border-box;background:#fff;color:#17242b}label{display:block;margin:15px 0 6px}.messages{min-height:220px;max-height:440px;overflow:auto;display:flex;flex-direction:column;gap:12px;margin:20px 0}.bubble{padding:12px 15px;border-radius:12px;background:#263a45;white-space:pre-wrap}.mine{align-self:flex-end;background:#14586a}.row{display:flex;gap:8px}.row input{flex:1}.notice{border-left:4px solid #e6b34a;padding:12px;background:#29313a;margin:16px 0}a{color:#75d9e5}</style><link rel="stylesheet" href="/assets/global-footer.css"><script defer src="/assets/global-footer.js?v=mobile-nav-2"></script><link rel="stylesheet" href="/assets/elevflyt.css?v=mobile-nav-2"><link rel="stylesheet" href="/assets/tll-figur.css"><script defer src="/assets/tll-figur.js"></script></head><body><a class="tll-skip" href="#tll-main">Hopp til innhold</a><nav class="tll-site-nav tll-standalone-nav" aria-label="Hovedmeny"><a href="/">Forside</a><a href="/#fag">Fagområder</a><a href="/ressursbank/">Ressursbank</a><a href="/assistent/" aria-current="page">TLL-assistenten</a><a href="/laererrom/">Lærerrom</a><a href="/om/">Om</a></nav><main id="tll-main" tabindex="-1"><a href="/">← Til forsiden</a><h1>TLL-assistenten</h1><p>Din digitale fagkamerat for transport, logistikk og løfteoperasjoner.</p><aside class="tll-figur" data-tll-figur aria-label="Hilsen fra TLLfluenseren"><div class="tll-figur__media"><span class="tll-figur__fallback" aria-hidden="true">TLL</span></div><div class="tll-figur__text"><strong>Hei fra TLLfluenseren!</strong><span>Her lærer vi, øver, tenker og vokser – ett steg om gangen.</span></div></aside><div class="notice"><strong>Testversjon:</strong> Denne siden har foreløpig ikke KI-tilkobling. Den gir veiledning og lenker til fagstoff, men kan ikke besvare frie spørsmål med kunstig intelligens. Ikke skriv inn personopplysninger.</div><div class="panel"><label for="level">Forklaringsnivå</label><select id="level"><option value="enkel">Enkelt</option><option value="vanlig" selected>Vanlig</option><option value="avansert">Avansert</option></select><label for="topic">Velg fagområde</label><select id="topic"><option value="truck">Truck og løfteoperasjoner</option><option value="lager">Lager og terminal</option><option value="transport">Transport</option><option value="hms">HMS og sikkerhet</option></select><div class="messages" id="messages" role="log" aria-live="polite"><div class="bubble">Hei! Velg fagområde og skriv et spørsmål. I denne testversjonen får du relevante lenker og forslag til videre læring.</div></div><form id="chat" class="row"><input id="question" aria-label="Spørsmål" placeholder="Hva vil du lære om?" required maxlength="500"><button type="submit">Send</button></form><p><button type="button" id="read">🔊 Les siste svar</button></p></div><p><a href="/laererrom/">Lærer? Gå til lærerrommet</a></p></main><script>const links={truck:['Truckopplæring','/truck/opplaering/'],lager:['Transport, logistikk og løfteoperasjoner','/transport-logistikk-lofteoperasjoner/'],transport:['Transport, logistikk og løfteoperasjoner','/transport-logistikk-lofteoperasjoner/'],hms:['Bransjelære','/bransjelaere/']};let last='';function add(s,mine=false){let d=document.createElement('div');d.className='bubble'+(mine?' mine':'');d.textContent=s;document.getElementById('messages').append(d);d.scrollIntoView({block:'nearest'});}document.getElementById('chat').addEventListener('submit',e=>{e.preventDefault();let q=document.getElementById('question');add(q.value,true);let t=links[document.getElementById('topic').value],l=document.getElementById('level').value;last=(l==='enkel'?'Start med det grunnleggende. ':l==='avansert'?'Undersøk regler, risiko og praktiske konsekvenser. ':'Se på et praktisk eksempel. ')+'Jeg kan ikke gi et KI-generert svar ennå. Åpne «'+t[0]+'» på TLLfluenseren, og prøv å forklare begrepene med egne ord.';add(last+'\nFagstoff: '+location.origin+t[1]);q.value='';});document.getElementById('read').addEventListener('click',()=>{if(!last)return;if('speechSynthesis'in window){speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(last);u.lang='nb-NO';speechSynthesis.speak(u);}});</script></body></html>
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="TLL-assistenten svarer på fagspørsmål i transport, logistikk og løfteoperasjoner med fagord, temaer og lenker fra TLLfluenseren.">
+<link rel="icon" href="/favicon.ico">
+<link rel="stylesheet" href="/assets/styles.css">
+<title>TLL-assistenten | TLLfluenseren</title>
+<style>
+main{max-width:900px;margin:28px auto 60px;padding:0 20px}
+main>p.ingress{color:var(--muted);font-size:18px;line-height:1.55;margin-top:0}
+.as-info{border-left:4px solid var(--accent);padding:12px 16px;background:#121e27;border-radius:0 12px 12px 0;margin:18px 0;color:var(--muted);line-height:1.55}
+.as-info b{color:var(--text)}
+.panel{border:1px solid var(--line);border-radius:18px;padding:clamp(16px,3vw,24px);background:var(--panel)}
+.as-valg{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:640px){.as-valg{grid-template-columns:1fr}}
+.as-valg label{display:block;font-weight:800;margin:0 0 6px}
+.as-valg select{width:100%;font:inherit;padding:12px;min-height:48px}
+.as-hjelp{margin:6px 0 0;font-size:14px;color:var(--muted);line-height:1.45}
+#messages{min-height:200px;max-height:min(60vh,560px);overflow:auto;display:flex;flex-direction:column;gap:12px;margin:20px 0;padding:4px}
+.as-boble{padding:14px 16px;border-radius:14px;background:var(--panel2);line-height:1.55;max-width:100%}
+.as-boble.mine{align-self:flex-end;background:#14586a;max-width:85%}
+.as-boble p{margin:.4em 0}
+.as-boble a{color:#75d9e5}
+.as-boble a:focus-visible,.as-chip:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.as-begrep{background:#0f1820;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:6px 0}
+.as-begrep h3{margin:2px 0 4px;font-size:20px}
+.as-eyebrow{color:var(--accent);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.1em}
+.as-to{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:640px){.as-to{grid-template-columns:1fr}}
+.as-blokk{margin:10px 0;padding:10px 14px;border-radius:12px;background:#0f1820}
+.as-blokk ul{margin:6px 0 0;padding-left:20px}
+.as-blokk li{margin:4px 0}
+.as-oppg{border-left:3px solid var(--ok);padding-left:10px}
+.as-liten{font-size:14px;color:var(--muted)}
+.as-lenker{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:8px}
+.as-lenker li{display:flex;flex-direction:column;gap:2px;padding:8px 10px;border-radius:10px;background:#0f1820}
+.as-lenker a{font-weight:800;text-decoration:none}
+.as-lenker a:hover{text-decoration:underline}
+.as-lenker span{font-size:14px;color:var(--muted)}
+.as-relatert{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:10px}
+.as-relatert>span{font-size:14px;color:var(--muted);margin-right:2px}
+.as-chip{font:inherit;font-size:14px;font-weight:700;min-height:40px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:#172532;color:var(--text);cursor:pointer}
+.as-chip:hover{border-color:var(--accent)}
+.as-forslag{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.row{display:flex;gap:8px}
+.row input{flex:1;min-width:0;font:inherit;padding:12px;border-radius:10px;border:1px solid var(--line);background:#fff;color:#17242b;min-height:48px}
+.as-knapp{font:inherit;font-weight:800;padding:12px 18px;min-height:48px;border-radius:10px;border:0;background:var(--accent);color:#111820;cursor:pointer}
+.as-knapp.sek{background:#172532;color:var(--text);border:1px solid var(--line)}
+.as-verktoy{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+#antall{font-size:13px;color:var(--muted);margin-left:auto}
+.as-ki{margin-top:18px;padding:16px;border:1px dashed var(--line);border-radius:14px;color:var(--muted);line-height:1.55}
+.as-ki h2{font-size:17px;color:var(--text);margin:0 0 6px}
+.as-ki textarea{width:100%;box-sizing:border-box;min-height:90px;margin-top:8px;font:inherit;border-radius:10px;padding:10px}
+#kiStatus{font-weight:700;color:var(--ok)}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+<link rel="stylesheet" href="/assets/global-footer.css">
+<script defer src="/assets/global-footer.js?v=mobile-nav-2"></script>
+<link rel="stylesheet" href="/assets/elevflyt.css?v=mobile-nav-2">
+<link rel="stylesheet" href="/assets/tll-figur.css">
+<script defer src="/assets/tll-figur.js"></script>
+</head>
+<body>
+<a class="tll-skip" href="#tll-main">Hopp til innhold</a>
+<nav class="tll-site-nav tll-standalone-nav" aria-label="Hovedmeny"><a href="/">Forside</a><a href="/#fag">Fagområder</a><a href="/ressursbank/">Ressursbank</a><a href="/assistent/" aria-current="page">TLL-assistenten</a><a href="/laererrom/">Lærerrom</a><a href="/om/">Om</a></nav>
+<main id="tll-main" tabindex="-1">
+<a href="/">← Til forsiden</a>
+<h1>TLL-assistenten</h1>
+<p class="ingress">Din digitale fagkamerat i transport, logistikk og løfteoperasjoner. Spør om et fagord eller et tema, så får du en forklaring og et sted å øve.</p>
+<aside class="tll-figur" data-tll-figur aria-label="Hilsen fra TLLfluenseren"><div class="tll-figur__media"><span class="tll-figur__fallback" aria-hidden="true">TLL</span></div><div class="tll-figur__text"><strong>Hei fra TLLfluenseren!</strong><span>Her lærer vi, øver, tenker og vokser – ett steg om gangen.</span></div></aside>
+
+<div class="as-info"><b>Slik virker assistenten:</b> Den svarer bare med fagstoff fra TLLfluenseren – ordboka, kapitlene og ressursbanken. Den bruker ikke kunstig intelligens, og det du skriver blir ikke lagret eller sendt noe sted. Skriv likevel aldri navn eller andre personopplysninger.</div>
+
+<div class="panel">
+  <div class="as-valg">
+    <div>
+      <label for="level">Forklaringsnivå</label>
+      <select id="level" aria-describedby="levelHjelp">
+        <option value="enkel">Enkelt</option>
+        <option value="vanlig" selected>Vanlig</option>
+        <option value="avansert">Avansert</option>
+      </select>
+      <p class="as-hjelp" id="levelHjelp">Enkelt: kort forklaring og ett sted å øve. Vanlig: hele forklaringen og lenker. Avansert: også punkter fra kapitlet, sidetall i læreboka og et tenkespørsmål.</p>
+    </div>
+    <div>
+      <label for="topic">Fagområde</label>
+      <select id="topic" aria-describedby="topicHjelp">
+        <option value="alle" selected>Alle fagområder</option>
+        <option value="truck">Truck og løfteoperasjoner</option>
+        <option value="lager">Lager og terminal</option>
+        <option value="transport">Transport og lastsikring</option>
+        <option value="hms">HMS og sikkerhet</option>
+      </select>
+      <p class="as-hjelp" id="topicHjelp">Svar fra fagområdet du velger, kommer først.</p>
+    </div>
+  </div>
+
+  <div id="messages" role="log" aria-live="polite" aria-label="Samtale med TLL-assistenten">
+    <div class="as-boble">
+      <p>Hei! Skriv et fagord eller et spørsmål. Du kan for eksempel prøve:</p>
+      <div class="as-forslag">
+        <button type="button" class="as-chip" data-sporsmal="Hva er en godsterminal?">Hva er en godsterminal?</button>
+        <button type="button" class="as-chip" data-sporsmal="Hva er forskjellen på surring og stenging?">Forskjellen på surring og stenging</button>
+        <button type="button" class="as-chip" data-sporsmal="Hva er friksjon?">Hva er friksjon?</button>
+        <button type="button" class="as-chip" data-sporsmal="Hvor finner jeg truckprøven?">Hvor finner jeg truckprøven?</button>
+      </div>
+    </div>
+  </div>
+
+  <form id="chat" class="row">
+    <input id="question" aria-label="Skriv spørsmålet ditt" placeholder="Hva vil du lære om?" required maxlength="300" autocomplete="off">
+    <button type="submit" class="as-knapp">Send</button>
+  </form>
+  <div class="as-verktoy">
+    <button type="button" id="read" class="as-knapp sek">🔊 Les siste svar</button>
+    <span id="antall" aria-live="polite">Laster fagstoff …</span>
+  </div>
+
+  <section class="as-ki" id="kiVidere" hidden aria-labelledby="kiTittel">
+    <h2 id="kiTittel">Vil du vite mer?</h2>
+    <p>Kopier spørsmålet ditt og lim det inn i KI-verktøyet skolen din har godkjent. Logg inn med skolekontoen. Sjekk alltid svaret mot læreboka eller læreren – KI kan ta feil, særlig om regler og sikkerhet.</p>
+    <button type="button" id="kiKopier" class="as-knapp sek">📋 Kopier spørsmålet</button>
+    <span id="kiStatus" role="status"></span>
+    <textarea id="kiTekst" hidden aria-label="Spørsmål du kan kopiere" readonly></textarea>
+  </section>
+</div>
+<p><a href="/transport-logistikk-lofteoperasjoner/ordbok/">Bla i hele ordboka →</a> · <a href="/laererrom/">Lærer? Gå til lærerrommet</a></p>
+</main>
+<script src="/transport-logistikk-lofteoperasjoner/ordbok/ord.js"></script>
+<script src="/transport-logistikk-lofteoperasjoner/ordbok/ord-bransjelaere.js"></script>
+<script src="/transport-logistikk-lofteoperasjoner/felles/kapitler.js"></script>
+<script src="sider.js?v=1"></script>
+<script src="assistent.js?v=1"></script>
+<script>TLLASSIST.start();</script>
+</body>
+</html>
