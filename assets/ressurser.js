@@ -21,6 +21,9 @@
     }
     const resourceIds = new Set(), urls = new Set();
     for (const r of data.resources) {
+      // Valgfrie felt: mangler de, brukes tomme verdier (én ufullstendig ressurs skal ikke stoppe hele banken)
+      if (r && r.watchFor === undefined) r.watchFor = '';
+      if (r && r.questions === undefined) r.questions = [];
       if (!text(r.id, 100) || resourceIds.has(r.id) || !text(r.title, 200) || !text(r.provider, 200) || !types.includes(r.type) || !safeURL(r.url) || !text(r.description) || typeof r.visible !== 'boolean' || !Array.isArray(r.topics) || !r.topics.length || r.topics.some(t => !topicIds.has(t)) || new Set(r.topics).size !== r.topics.length || typeof r.watchFor !== 'string' || r.watchFor.length > 3000 || !Array.isArray(r.questions) || r.questions.length > 30 || r.questions.some(q => !text(q, 1000))) throw Error('En ressurs mangler gyldig tittel, lenke, tema eller andre felt.');
       const url = new URL(r.url).href;
       if (urls.has(url)) throw Error('Samme lenke er registrert flere ganger. Koble heller én ressurs til flere temaer.');

@@ -507,7 +507,9 @@
       "topics": [
         "truck"
       ],
-      "visible": true
+      "visible": true,
+      "watchFor": "",
+      "questions": []
     },
     {
       "id": "tll-fagfilm-lager-terminal",
@@ -520,7 +522,9 @@
         "kap1-t1",
         "kap1-t3"
       ],
-      "visible": true
+      "visible": true,
+      "watchFor": "",
+      "questions": []
     },
     {
       "id": "tll-ovelsesbank-lastsikring",
@@ -532,7 +536,9 @@
       "topics": [
         "kap5-t7"
       ],
-      "visible": true
+      "visible": true,
+      "watchFor": "",
+      "questions": []
     }
   ]
 }
