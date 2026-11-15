@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HO: Fra Python-kode til bankende hjerte – TLLfluenseren</title>
-<meta name="description" content="Gjestefag Helse- og oppvekstfag (Vg1): Lær hvordan hjertet virker, mål pulsen og få et hjerte til å slå i din egen puls med Python rett i nettleseren.">
+<title>HO: Hjertet og pulsen – TLLfluenseren</title>
+<meta name="description" content="Gjestefag Helse- og oppvekstfag (Vg1): Lær hvordan hjertet virker, mål pulsen i hvile og etter aktivitet, og forklar hjertet for en bruker.">
 <link rel="icon" href="/favicon.ico?v=1" sizes="any">
 <link rel="icon" href="/favicon.svg?v=1" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/styles.css">
@@ -60,30 +60,6 @@
   .quiz .valg .btn{padding:9px 12px;font-size:14px;text-align:left}
   .quiz .valg .btn.riktig{background:#1f5a40;border-color:var(--ok)}
   .quiz .valg .btn.galt{background:#5a1f26;border-color:#ffb3b3}
-  /* Python-verkstedet */
-  .verksted{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:14px;align-items:start}
-  .editor{position:relative;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#0b1117}
-  .editor .topp{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--panel2);border-bottom:1px solid var(--line);font-size:13px;color:var(--muted);font-weight:700}
-  .kodeflate{display:grid;grid-template-columns:auto 1fr;max-height:520px;overflow:auto}
-  .linjenr{padding:12px 8px 12px 12px;text-align:right;color:#5d7083;font:14px/1.6 ui-monospace,Menlo,Consolas,monospace;user-select:none;white-space:pre;background:#0d151d}
-  #kode{display:block;width:100%;min-height:480px;border:0;outline:none;resize:none;background:transparent;color:#e6edf3;font:14px/1.6 ui-monospace,Menlo,Consolas,monospace;padding:12px;white-space:pre;overflow-x:auto;overflow-y:hidden;tab-size:4}
-  #kode:focus-visible{box-shadow:inset 0 0 0 2px var(--hjerte)}
-  .resultat{display:flex;flex-direction:column;gap:10px}
-  .lerret{background:#fff;border-radius:14px;border:1px solid var(--line);aspect-ratio:1/1;width:100%;overflow:hidden;display:grid;place-items:center;color:#56616b;font-weight:700;text-align:center}
-  .lerret canvas{width:100%!important;height:auto!important;display:block}
-  .lerret .tom{padding:20px;line-height:1.5}
-  #utskrift{background:#0b1117;border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-height:90px;max-height:200px;overflow:auto;margin:0;font:13.5px/1.55 ui-monospace,Consolas,monospace;white-space:pre-wrap;color:#cfe3d6}
-  #utskrift .feilm{color:#ffb3b3}
-  .status{font-size:14px;color:var(--muted);font-weight:700;min-height:1.4em}
-  .oppdrag{list-style:none;padding:0;margin:8px 0;display:grid;gap:10px}
-  .oppdrag li{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
-  .oppdrag label.hake{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
-  .oppdrag input[type=checkbox]{width:20px;height:20px;margin-top:3px;flex:none;accent-color:var(--hjerte)}
-  .oppdrag .niva{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:1px 8px;margin-right:6px;color:var(--muted)}
-  .oppdrag .niva.n1{color:#8cd6ae;border-color:#3f7a5d}.oppdrag .niva.n2{color:#f2b84b;border-color:#7d6230}.oppdrag .niva.n3{color:#ff9fb6;border-color:#8a4757}
-  .oppdrag p{margin:6px 0 0;color:var(--muted);line-height:1.55}
-  .oppdrag details{margin-top:6px}.oppdrag summary{cursor:pointer;color:var(--hjerte);font-weight:700;font-size:14px}
-  .oppdrag pre,.kodebit{background:#0b1117;border:1px solid var(--line);border-radius:10px;padding:10px 12px;overflow:auto;font:13.5px/1.55 ui-monospace,Consolas,monospace;color:#e6edf3;margin:8px 0 0}
   code{font-family:ui-monospace,Consolas,monospace;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:0 5px;font-size:.92em}
   .q{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:10px 0}
   .q b{line-height:1.5}
@@ -110,18 +86,18 @@
 <main id="tll-main" tabindex="-1">
 <nav class="guest-return" aria-label="Navigasjon fra gjesterom"><a href="/gjestefag/ho/">← Gjestefag HO</a><a href="/">⌂ Til TLLfluenseren</a></nav>
 <section class="intro">
-  <div class="kicker">Gjestefag HO · Vg1 helse- og oppvekstfag · Python</div>
-  <h1>Fra Python-kode til bankende hjerte</h1>
-  <p>Hjertet ditt slår rundt 100&nbsp;000 ganger i døgnet uten at du tenker på det. Her lærer du hvordan hjertet virker, du måler pulsen din, og du skriver Python-kode som får et hjerte på skjermen til å slå i <b>akkurat din puls</b>. Python kjører rett i nettleseren – du trenger ikke installere noe.</p>
+  <div class="kicker">Gjestefag HO · Vg1 helse- og oppvekstfag</div>
+  <h1>Hjertet og pulsen</h1>
+  <p>Hjertet ditt slår rundt 100&nbsp;000 ganger i døgnet uten at du tenker på det. Her lærer du hvordan hjertet virker, du måler pulsen din i hvile og etter aktivitet, og du øver på å forklare hjertet og pulsen slik en helsearbeider gjør for en bruker.</p>
 </section>
 
 <div class="steps">
   <a class="stepc" href="#laer"><b>1 · Lær</b><p>Hjertets fire rom, blodets vei, systole og diastole.</p></a>
   <a class="stepc" href="#ov"><b>2 · Øv</b><p>Mål pulsen i hvile og etter aktivitet. Test deg selv.</p></a>
-  <a class="stepc" href="#kode-seksjon"><b>3 · Tenk</b><p>Fra tall til kode: få hjertet til å slå i din puls.</p></a>
+  <a class="stepc" href="#tenk-seksjon"><b>3 · Tenk</b><p>Hjertet i arbeid: regn med pulsen og se hjertet slå i 3D.</p></a>
   <a class="stepc" href="#voks"><b>4 · Voks</b><p>Forklar hjertet ditt for en pasient og lag kvittering.</p></a>
 </div>
-<p class="info" style="max-width:none">🫀 <b>Vil du se hjertet i 3D?</b> <a href="/gjestefag/ho/hjerte-3d/" style="color:var(--hjerte);font-weight:800">Åpne Hjertet i 3D →</a> Det er bygd med Python, og det slår i pulsen du måler her.</p>
+<p class="info" style="max-width:none">🫀 <b>Vil du se hjertet i 3D?</b> <a href="/gjestefag/ho/hjerte-3d/" style="color:var(--hjerte);font-weight:800">Åpne Hjertet i 3D →</a> Snu og vend det, ta bort deler og se det slå i pulsen du måler her.</p>
 <p class="sub"><b>Makkerpar:</b> Dere jobber to og to. Rollene står i hver del. Bytt roller underveis, slik at begge får prøve alt.</p>
 
 <!-- ====================== LÆR ====================== -->
@@ -249,7 +225,7 @@
     <p class="bpm" aria-live="polite">Puls: <span data-bpm>–</span></p>
   </div>
 </div>
-<p class="liten">Målingene lagres bare i denne nettleseren. De brukes i Python-verkstedet under.</p>
+<p class="liten">Målingene lagres bare i denne nettleseren. 3D-hjertet kan slå i pulsen din.</p>
 
 <div class="info"><b>Hvorfor stiger pulsen?</b> Når du bruker musklene, trenger de mer oksygen og næring, og de lager mer avfallsstoffer, som karbondioksid. Hjertet slår fortere for å frakte mer blod rundt i kroppen. Hos en voksen i hvile er pulsen som regel mellom 60 og 100 slag i minuttet. Godt trente personer kan ha lavere hvilepuls.</div>
 
@@ -257,58 +233,18 @@
 <div class="panel quiz" id="quiz"></div>
 <p class="bpm" id="quizSum" aria-live="polite"></p>
 
-<!-- ====================== TENK: PYTHON ====================== -->
-<h2 class="sec" id="kode-seksjon"><span class="fase">Tenk</span>Fra tall til kode</h2>
-<p class="sub"><b>Etter denne delen kan jeg</b> regne ut hvor lenge ett hjerteslag varer, og endre et Python-program slik at hjertet slår i min egen puls.</p>
+<!-- ====================== TENK ====================== -->
+<h2 class="sec" id="tenk-seksjon"><span class="fase">Tenk</span>Hjertet i arbeid</h2>
+<p class="sub"><b>Etter denne delen kan jeg</b> regne ut hvor lenge ett hjerteslag varer, og forklare hva som skjer med hjertet når pulsen stiger.</p>
 
-<div class="info"><b>Slik henger tallene sammen:</b> Ett minutt er 60 sekunder. Har du puls 60, varer ett slag 60&nbsp;/&nbsp;60 = <b>1 sekund</b>. Har du puls 120, varer ett slag 60&nbsp;/&nbsp;120 = <b>0,5 sekunder</b>. Programmet regner ut dette med linjen <code>pause = 60 / puls</code>.</div>
+<div class="info"><b>Regn med pulsen:</b> Ett minutt er 60 sekunder. Har du puls 60, varer ett slag 60&nbsp;/&nbsp;60 = <b>1 sekund</b>. Har du puls 120, varer ett slag 60&nbsp;/&nbsp;120 = <b>0,5 sekunder</b>. Hjertet bruker omtrent like lang tid på å pumpe (systole) uansett puls. Det er hvilen (diastolen) som blir kortere når pulsen stiger.</div>
 
-<p class="sub"><b>Roller:</b> Makker A sitter ved tastaturet og skriver. Makker B leser oppdraget høyt og sjekker at programmet gjør det oppdraget ber om. Bytt etter hvert oppdrag.</p>
-
-<div class="toolbar" role="group" aria-label="Sett inn puls i koden">
-  <button class="btn" type="button" id="brukHvile">Sett inn hvilepulsen min</button>
-  <button class="btn" type="button" id="brukAktivitet">Sett inn aktivitetspulsen min</button>
+<div class="panel">
+  <h3 style="margin-top:0">Dine tall</h3>
+  <div id="mineTall" class="liten" style="font-size:16px;line-height:1.7"></div>
+  <div class="toolbar"><a class="btn primary" href="/gjestefag/ho/hjerte-3d/">🫀 Se hjertet slå i din puls i 3D →</a></div>
+  <p class="liten" style="margin:0"><b>Roller:</b> Makker A styrer 3D-hjertet og bytter mellom hvilepuls og aktivitetspuls. Makker B forklarer hva som skjer i systole og diastole. Bytt roller.</p>
 </div>
-
-<div class="verksted">
-  <div>
-    <div class="editor">
-      <div class="topp"><span>hjerte.py</span><span id="lagret">Lagres automatisk i nettleseren</span></div>
-      <div class="kodeflate"><div class="linjenr" id="linjenr" aria-hidden="true">1</div><textarea id="kode" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Python-kode" wrap="off"></textarea></div>
-    </div>
-    <div class="toolbar">
-      <button class="btn primary" type="button" id="kjor">▶ Kjør</button>
-      <button class="btn" type="button" id="stopp" disabled>■ Stopp</button>
-      <button class="btn" type="button" id="nullstill">↺ Tilbake til startkoden</button>
-    </div>
-    <p class="liten" style="margin:0">Tips: Tab-tasten lager innrykk (4 mellomrom). Ctrl + Enter kjører koden.</p>
-  </div>
-  <div class="resultat">
-    <div class="lerret" id="lerret"><div class="tom">Trykk «▶ Kjør» for å starte hjertet.</div></div>
-    <p class="status" id="status" aria-live="polite"></p>
-    <pre id="utskrift" aria-live="polite" aria-label="Utskrift fra programmet"></pre>
-  </div>
-</div>
-
-<h3>Oppdrag</h3>
-<p class="sub">Kryss av når dere er ferdige. Nivå 1 skal alle gjøre. Ta nivå 2 og 3 når dere er klare.</p>
-<ol class="oppdrag" id="oppdrag">
-  <li><label class="hake"><input type="checkbox" data-oppdrag="o1"><span><span class="niva n1">Nivå 1</span><b>Start hjertet.</b><p>Trykk «▶ Kjør». Les utskriften. Finn linjen i koden som bestemmer hvor fort hjertet slår. Hva står det der?</p></span></label></li>
-  <li><label class="hake"><input type="checkbox" data-oppdrag="o2"><span><span class="niva n1">Nivå 1</span><b>Gjør hjertet til ditt.</b><p>Bytt tallet i <code>puls = 72</code> med hvilepulsen din (eller trykk «Sett inn hvilepulsen min»). Kjør. Slår hjertet fortere eller saktere enn før?</p></span></label></li>
-  <li><label class="hake"><input type="checkbox" data-oppdrag="o3"><span><span class="niva n1">Nivå 1</span><b>Etter aktivitet.</b><p>Sett inn aktivitetspulsen din og kjør igjen. Se på utskriften: Hva skjer med <code>pause</code> når pulsen blir høyere? Forklar for makkeren din hvorfor.</p></span></label></li>
-  <li><label class="hake"><input type="checkbox" data-oppdrag="o4"><span><span class="niva n2">Nivå 2</span><b>Regn med hjertet.</b><p>Legg til kode som regner ut og skriver ut hvor mange ganger hjertet slår på én time og på ett døgn med pulsen din. Sett koden rett under linjen med <code>pause</code>.</p>
-    <details><summary>Hint</summary><pre>per_time = puls * 60
-print("Slag på én time:", per_time)</pre><p>Et døgn har 24 timer. Hvordan regner du ut slag per døgn?</p></details></span></label></li>
-  <li><label class="hake"><input type="checkbox" data-oppdrag="o5"><span><span class="niva n2">Nivå 2</span><b>Lag en pulssjekk.</b><p>Bruk <code>if</code>, <code>elif</code> og <code>else</code> til å skrive ut om pulsen er <i>under 60</i>, <i>mellom 60 og 100</i> eller <i>over 100</i>. Husk: grensene gjelder en voksen i hvile, og programmet stiller ingen diagnose.</p>
-    <details><summary>Hint</summary><pre>if puls &lt; 60:
-    print("Under 60 – lavere enn vanlig hvilepuls")
-elif puls &lt;= 100:
-    print(...)
-else:
-    print(...)</pre></details></span></label></li>
-  <li><label class="hake"><input type="checkbox" data-oppdrag="o6"><span><span class="niva n3">Nivå 3</span><b>Fra hvile til trapp.</b><p>Endre programmet slik at hjertet først slår 10 slag i hvilepulsen din og deretter 10 slag i aktivitetspulsen din. Lag to variabler, <code>hvilepuls</code> og <code>aktivitetspuls</code>, og to løkker.</p></span></label></li>
-  <li><label class="hake"><input type="checkbox" data-oppdrag="o7"><span><span class="niva n3">Nivå 3</span><b>Gjør modellen bedre.</b><p>I et ekte hjerte trekker forkamrene seg sammen litt før hjertekamrene. Ved høy puls blir diastolen (hvilen) kortere. Velg én av disse og endre programmet slik at det viser det. Forklar for makkeren din hva du endret og hvorfor.</p></span></label></li>
-</ol>
 
 <h3>Tenk</h3>
 <p class="sub">Svar først hver for dere, og sammenlign så med makkeren. Svarene lagres i nettleseren og kommer med i kvitteringen.</p>
@@ -319,7 +255,7 @@ else:
 <p class="sub"><b>Etter denne delen kan jeg</b> forklare hjertet og pulsen med egne ord, slik jeg ville gjort for en pasient eller en bruker.</p>
 <div class="roller">
   <div class="panel"><h3 style="margin-top:0">Rollespill: helsearbeider og bruker</h3><p class="liten" style="line-height:1.6;margin:0"><b>Helsearbeideren</b> viser det bankende hjertet på skjermen og forklarer: hva hjertet gjør, hva pulsen betyr, og hvorfor den stiger ved aktivitet. Bruk enkle ord, ikke fagord uten å forklare dem.<br><br><b>Brukeren</b> stiller minst to spørsmål, for eksempel: «Er det farlig at pulsen min går opp når jeg går i trapper?» eller «Hvorfor kjenner du på håndleddet mitt?»<br><br>Bytt roller.</p></div>
-  <div class="panel"><h3 style="margin-top:0">Sjekk deg selv før du leverer</h3><ul style="color:var(--muted);line-height:1.7;margin:0;padding-left:20px"><li>Jeg kan vise blodets vei gjennom hjertet på tegningen.</li><li>Jeg kan forklare systole og diastole.</li><li>Jeg har målt puls og kan forklare forskjellen på hvile og aktivitet.</li><li>Jeg kan vise hvor i koden pulsen bestemmes, og forklare <code>pause = 60 / puls</code>.</li></ul></div>
+  <div class="panel"><h3 style="margin-top:0">Sjekk deg selv før du leverer</h3><ul style="color:var(--muted);line-height:1.7;margin:0;padding-left:20px"><li>Jeg kan vise blodets vei gjennom hjertet på tegningen.</li><li>Jeg kan forklare systole og diastole.</li><li>Jeg har målt puls og kan forklare forskjellen på hvile og aktivitet.</li><li>Jeg kan regne ut hvor lenge ett hjerteslag varer med pulsen min.</li></ul></div>
 </div>
 
 <h3>Exit ticket</h3>
@@ -331,10 +267,10 @@ else:
 <button class="btn primary" type="button" id="kvittBtn">Lag kvittering</button></div>
 <div id="kvitt" class="kvitt" hidden><pre id="kvittTekst"></pre><div class="toolbar"><button class="btn" type="button" id="kopierBtn">Kopier tekst</button><button class="btn" type="button" id="skrivUt">Skriv ut / PDF</button><span id="kopiert" style="color:var(--ok)"></span></div></div>
 
-<p class="sub" style="margin-top:40px;font-size:14px">Modellen på skjermen er en forenkling laget for undervisning. Den viser ikke hvordan et ekte hjerte ser ut eller slår i detalj, og den kan ikke brukes til å vurdere helsen din. Python kjører med Skulpt (MIT-lisens). Innholdet er laget for TLLfluenseren.</p>
+<p class="sub" style="margin-top:40px;font-size:14px">Tegningen og 3D-modellen er forenklinger laget for undervisning, og målingene her kan ikke brukes til å vurdere helsen din. Innholdet er laget for TLLfluenseren.</p>
 <nav class="guest-return" aria-label="Navigasjon fra gjesterom"><a href="/gjestefag/ho/">← Gjestefag HO</a><a href="/">⌂ Til TLLfluenseren</a></nav>
 </main>
 </div>
-<script type="module" src="./hjerte.js?v=1"></script>
+<script type="module" src="./hjerte.js?v=2"></script>
 </body>
 </html>

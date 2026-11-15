@@ -7,7 +7,7 @@ gjestefag/
   index.html              Inngang med alle gjestefag (åpen)
   felles/                 fag.js (liste over fag), laas.js (kryptering), gjesterom.js (låseskjerm), gjesterom.css
   <fag>/index.html        Fagets elevressurser (åpen)
-  <fag>/<ressurs>/        Elevsider, f.eks. int/skjaeredata/, kjt/motorer/, ho/bankende-hjerte/ (åpne)
+  <fag>/<ressurs>/        Elevsider, f.eks. int/skjaeredata/, kjt/motorer/, ho/hjerte-3d/ (åpne)
   <fag>/laererrom/        Gjestelærerens rom (låst med passord)
     index.html            Skall med låseskjerm
     innhold.enc.js        Kryptert innhold (HTML) – lages i /laererrom/gjesterom/
@@ -29,10 +29,6 @@ gjestefag/
 
 `/int/` og `/int/interaktiv-3d/` sender videre til de nye adressene under `/gjestefag/int/`.
 
-## Python i nettleseren
-
-`ho/bankende-hjerte/` kjører Python med Skulpt (`/assets/vendor/skulpt/`, MIT). Skulpt lastes først når eleven trykker «Kjør».
-
 ## 3D-hjertet (HO)
 
-`ho/hjerte-3d/hjerte.glb` og `blodbane.json` lages av `ho/hjerte-3d/lag_hjerte.py` (`pip install numpy trimesh`, kjør i mappen). Kjør skriptet på nytt etter endringer i geometrien. Fagteksten ligger i `deler.js` (id = navnet på delen i GLB-filen). Siden bruker `GLTFLoader` fra `/assets/vendor/three/addons/`.
+`ho/hjerte-3d/hjerte.glb` og `blodbane.json` lages av `_verktoy/hjerte3d/lag_hjerte.py` (`pip install numpy trimesh`, kjør fra rotmappen). Fagteksten ligger i `ho/hjerte-3d/deler.js` (id = navnet på delen i GLB-filen). Siden bruker `GLTFLoader` fra `/assets/vendor/three/addons/`.
