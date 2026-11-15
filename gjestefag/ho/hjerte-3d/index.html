@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HO: Hjertet i 3D – fra Python-kode til bankende hjerte – TLLfluenseren</title>
+<meta name="description" content="Gjestefag Helse- og oppvekstfag (Vg1): Et 3D-hjerte bygd med Python. Snu og vend det, ta bort deler, ta det fra hverandre og se det slå i din egen puls.">
+<link rel="icon" href="/favicon.ico?v=1" sizes="any">
+<link rel="icon" href="/favicon.svg?v=1" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/styles.css">
+<link rel="stylesheet" href="/assets/elevflyt.css?v=mobile-nav-2">
+<link rel="stylesheet" href="/assets/global-footer.css">
+<script defer src="/assets/global-footer.js?v=mobile-nav-2"></script>
+<script type="importmap">
+{ "imports": {
+  "three": "/assets/vendor/three/three.module.min.js",
+  "three/addons/": "/assets/vendor/three/addons/"
+} }
+</script>
+<style>
+  :root{--hjerte:#ff7f9e}
+  .guest-return{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0 20px}.guest-return a{display:inline-block;padding:11px 15px;border:1px solid #7297aa;border-radius:10px;background:#203d50;color:#f4fafc;text-decoration:none;font-weight:700}.guest-return a:hover,.guest-return a:focus-visible{outline:2px solid #8ed7cc;outline-offset:2px;background:#305b70}
+  .intro{padding:40px 0 10px}
+  .intro h1{font-size:clamp(32px,5.5vw,56px);margin:10px 0 14px}
+  .intro p{color:var(--muted);font-size:18px;line-height:1.6;max-width:800px}
+  .kicker{color:var(--hjerte)}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+  .stepc{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+  .stepc b{color:var(--hjerte);letter-spacing:.12em;text-transform:uppercase;font-size:13px}
+  .stepc p{margin:6px 0 0;color:var(--muted);line-height:1.5}
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
+  .toolbar .btn{padding:10px 14px;font-size:15px}
+  .btn[aria-pressed="true"]{background:var(--hjerte);border-color:var(--hjerte);color:#111820}
+  .btn.primary{background:var(--hjerte);border-color:var(--hjerte);color:#111820}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .glider{display:flex;align-items:center;gap:8px;color:var(--muted);font-weight:700}
+  .glider input[type=range]{width:150px;accent-color:var(--hjerte)}
+  .glider output{color:var(--text);min-width:4.5em}
+  .chk{display:flex;align-items:center;gap:8px;color:var(--muted);font-weight:700}.chk input{width:20px;height:20px;accent-color:var(--hjerte)}
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px;align-items:start}
+  .viewer{position:relative;height:min(72vh,680px);min-height:420px;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#0b1117;touch-action:none}
+  .viewer canvas{display:block;cursor:grab}
+  .viewer.hoverPart canvas{cursor:pointer}
+  .tip{position:absolute;pointer-events:none;font:700 13px/1.2 Inter,system-ui,sans-serif;background:rgba(17,26,35,.92);border:1px solid var(--line);padding:5px 9px;border-radius:8px;white-space:nowrap;display:none;z-index:3}
+  .hint{position:absolute;right:12px;bottom:10px;color:var(--muted);font-size:12px;background:rgba(17,26,35,.75);padding:4px 8px;border-radius:8px}
+  .hud{position:absolute;left:12px;top:12px;background:rgba(17,26,35,.9);border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:13px;min-width:220px;display:none}
+  .hud b{display:block;font-size:14px}
+  .hud .fasebar{display:flex;height:10px;border-radius:5px;overflow:hidden;margin:6px 0 4px;background:#1d2a36;position:relative}
+  .hud .fasebar i{display:block;height:100%}
+  .hud .fasebar .markor{position:absolute;top:-2px;width:3px;height:14px;background:#fff;border-radius:2px}
+  .hud small{color:var(--muted)}
+  .lasting{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-weight:700}
+  .visninger{position:absolute;right:10px;top:10px;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:60%}
+  .visninger .btn{padding:6px 10px;font-size:13px;background:rgba(23,35,46,.9)}
+  .side{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px;max-height:min(72vh,680px);min-height:420px;overflow:auto}
+  .side h2{font-size:22px;margin:4px 0 8px}
+  .side .omr{color:var(--hjerte);text-transform:uppercase;letter-spacing:.12em;font-size:12px;font-weight:900}
+  .side p,.side li{color:var(--muted);line-height:1.55}
+  .side ul{padding-left:18px}
+  .nav2{display:flex;gap:8px;margin:12px 0}
+  .nav2 .btn{flex:1;padding:10px;font-size:15px}
+  .progress{height:8px;background:var(--panel2);border-radius:6px;overflow:hidden;margin:6px 0 4px}
+  .progress i{display:block;height:100%;background:var(--ok);width:0;transition:width .3s}
+  .plist{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:4px}
+  .plist li{display:flex;align-items:center;gap:4px}
+  .plist button.del{flex:1;text-align:left;background:transparent;border:1px solid transparent;color:var(--text);padding:7px 10px;border-radius:10px;font:600 14px/1.3 inherit;cursor:pointer;display:flex;gap:8px;align-items:center}
+  .plist button.del:hover,.plist button.del:focus-visible{border-color:var(--line);background:var(--panel2)}
+  .plist button.del[aria-current="true"]{border-color:var(--hjerte);background:var(--panel2)}
+  .plist button.del:disabled{cursor:default}
+  .plist .ck{width:18px;color:var(--ok);font-weight:900}
+  .plist .prikk{width:12px;height:12px;border-radius:50%;flex:none}
+  .plist .oye{background:transparent;border:1px solid var(--line);border-radius:8px;color:var(--text);width:40px;height:34px;cursor:pointer;font-size:16px}
+  .plist .oye[aria-pressed="false"]{opacity:.45;text-decoration:line-through}
+  .plist li.skjult button.del{opacity:.5}
+  .done{background:#16302a;border:1px solid #2f6b55;border-radius:12px;padding:10px 12px;color:#bfeed6;margin-top:10px;display:none}
+  .ord{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:10px;font-size:14px;color:var(--muted);line-height:1.5}
+  .ord b{color:var(--text)}
+  .btn.small{padding:6px 10px;font-size:13px;margin-bottom:4px}
+  .quizPanel{background:var(--hjerte);color:#111820;border-radius:14px;padding:12px 16px;font-weight:800;margin:0 0 12px;line-height:1.5}
+  .quizPanel.ok{background:#8cd6ae}.quizPanel.feil{background:#ffb3b3}
+  .quizPanel small{display:block;font-weight:600}
+  .quizPanel .opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+  .quizPanel .btn{background:#111820;color:#fff;border-color:#111820;padding:10px 14px;font-size:15px}
+  .q{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:10px 0}
+  .q summary{cursor:pointer;font-weight:800;line-height:1.5}
+  .q p{color:var(--muted);line-height:1.6;margin:10px 0 0}
+  .q textarea{width:100%;min-height:70px;margin-top:10px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit}
+  .msg{color:#ffb3b3;font-weight:700;margin-top:6px}
+  h2.sec{font-size:30px;margin:48px 0 6px}
+  .sub{color:var(--muted);margin:0 0 12px;line-height:1.6;max-width:820px}
+  .info{border-left:6px solid #7fb6ff;background:#13243a;border-radius:12px;padding:12px 16px;margin:14px 0;line-height:1.6}
+  .flyt{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+  .flyt div{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;color:var(--muted);line-height:1.5;position:relative}
+  .flyt div b{display:block;color:var(--text);font-size:16px}
+  .flyt div:not(:last-child)::after{content:"→";position:absolute;right:-12px;top:50%;transform:translateY(-50%);color:var(--hjerte);font-weight:900}
+  pre.kode{background:#0b1117;border:1px solid var(--line);border-radius:12px;padding:12px 14px;overflow:auto;font:13.5px/1.55 ui-monospace,Consolas,monospace;color:#e6edf3;margin:10px 0}
+  pre.kode .k{color:#7d8b99}
+  code{font-family:ui-monospace,Consolas,monospace;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:0 5px;font-size:.92em}
+  .kvitt{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}
+  .kvitt pre{white-space:pre-wrap;font:14px/1.55 ui-monospace,Consolas,monospace;color:var(--text);margin:0}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .noWebgl{padding:30px;color:var(--muted)}
+  .hTouch{display:none}
+  @media (pointer:coarse){.hTouch{display:inline}.hMouse{display:none}}
+  @media print{body *{visibility:hidden}#kvitt,#kvitt *{visibility:visible}#kvitt{position:absolute;left:0;top:0;width:100%;background:#fff;border:0}#kvitt pre{color:#000}#kvitt .toolbar{display:none}}
+  @media (max-width:900px){
+    .layout{grid-template-columns:1fr}
+    .side{max-height:none;min-height:0}
+    .steps,.flyt{grid-template-columns:repeat(2,1fr)}
+    .flyt div::after{display:none}
+    .viewer{height:58vh;min-height:340px}
+    .visninger{max-width:100%;left:10px;right:10px;top:auto;bottom:38px;justify-content:center}
+    .hud{min-width:0;font-size:12px}
+    .hint{display:none}
+  }
+  @media (max-width:520px){.steps,.flyt{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<a class="tll-skip" href="#tll-main">Hopp til innhold</a>
+<div class="wrap">
+<header class="topbar homeTopbar"><a class="brand" href="/"><span class="brandmark">TLL</span><span>TLLfluenseren <small>Transport · Logistikk · Løfteoperasjoner · Livet</small></span></a><nav class="tll-site-nav" aria-label="Hovedmeny"><a href="/">Forside</a><a href="/#fag">Fagområder</a><a href="/yrkesretninger/">Yrkesretninger</a><a href="/ressursbank/">Ressursbank</a><a href="/assistent/">TLL-assistenten</a><a href="/laererrom/">Lærerrom</a><a href="/om/">Om</a></nav></header>
+
+<main id="tll-main" tabindex="-1">
+<nav class="guest-return" aria-label="Navigasjon fra gjesterom"><a href="/gjestefag/ho/">← Gjestefag HO</a><a href="/">⌂ Til TLLfluenseren</a></nav>
+<section class="intro">
+  <div class="kicker">Gjestefag HO · Vg1 helse- og oppvekstfag · Lær · Øv · Tenk · Voks · 3D</div>
+  <h1>Hjertet i 3D</h1>
+  <p>Dette hjertet er bygd med <b>Python-kode</b>. Programmet lager hver del – kamre, forkamre, klaffer og blodårer – og lagrer dem i en 3D-fil som nettleseren viser. Snu og vend hjertet, ta bort deler, ta det fra hverandre og se det slå i <b>din egen puls</b>.</p>
+</section>
+
+<div class="steps">
+  <div class="stepc"><b>1 · Lær</b><p>Trykk «Gå gjennom delene». Du følger blodets vei gjennom hjertet. Alle delene skal få grønn hake.</p></div>
+  <div class="stepc"><b>2 · Øv</b><p>Ta testene «Finn delen» og «Hva heter delen?». Skjul kamrene og finn klaffene.</p></div>
+  <div class="stepc"><b>3 · Tenk</b><p>Se hjertet slå i din puls og vis blodstrømmen. Svar på spørsmålene.</p></div>
+  <div class="stepc"><b>4 · Voks</b><p>Les hvordan Python bygde hjertet, og forklar hjertet for makkeren din.</p></div>
+</div>
+<p class="sub"><b>Makkerpar:</b> Én styrer modellen, den andre leser høyt og forteller hvor blodet er på vei. Bytt roller ved hver ny del av oppgaven.</p>
+
+<details class="q" id="oppdragBox" open><summary>Ditt oppdrag – <span id="oppdragSum">0 av 0 fullført</span></summary><ul id="oppdrag" class="plist" style="margin-top:8px"></ul></details>
+
+<div class="toolbar" role="group" aria-label="Hjerteslag">
+  <button class="btn primary" type="button" id="bankBtn" aria-pressed="false">▶ Bank</button>
+  <label class="glider">Puls <input type="range" id="puls" min="40" max="180" step="1" value="72" aria-describedby="pulsUt"><output id="pulsUt">72 /min</output></label>
+  <button class="btn" type="button" id="minHvile">Min hvilepuls</button>
+  <button class="btn" type="button" id="minAktiv">Min aktivitetspuls</button>
+  <label class="chk"><input type="checkbox" id="lyd"> 🔊 Hjertelyd</label>
+</div>
+<div class="toolbar" role="group" aria-label="Visning">
+  <button class="btn" type="button" id="explodeBtn">Ta fra hverandre</button>
+  <label class="glider">Sprengning <input id="explode" type="range" min="0" max="1" step="0.01" value="0" aria-label="Hvor mye hjertet er tatt fra hverandre"></label>
+  <label class="chk"><input type="checkbox" id="glass"> Gjennomsiktig</label>
+  <label class="chk"><input type="checkbox" id="stroem"> Vis blodstrømmen</label>
+</div>
+<div class="toolbar" role="group" aria-label="Oppgaver">
+  <button class="btn primary" type="button" id="tourBtn">Gå gjennom delene</button>
+  <button class="btn" type="button" id="quizBtn" data-type="finn">Test 1: Finn delen</button>
+  <button class="btn" type="button" id="quiz2Btn" data-type="navn">Test 2: Hva heter delen?</button>
+  <label class="chk"><input type="checkbox" id="taleAuto"> 🔊 Les opp automatisk</label>
+</div>
+
+<div class="quizPanel" id="quizBar" aria-live="polite" hidden></div>
+
+<div class="layout">
+  <div class="viewer" id="scene" role="region" aria-label="3D-modell av hjertet. Med tastatur bruker du listen over deler ved siden av.">
+    <div class="lasting" id="lasting">Laster 3D-hjertet …</div>
+    <div class="tip" id="tip"></div>
+    <div class="hud" id="hud" aria-hidden="true"></div>
+    <div class="visninger" role="group" aria-label="Se hjertet fra">
+      <button class="btn" type="button" data-vis="forfra">Forfra</button>
+      <button class="btn" type="button" data-vis="bakfra">Bakfra</button>
+      <button class="btn" type="button" data-vis="venstre">Fra venstre</button>
+      <button class="btn" type="button" data-vis="ovenfra">Ovenfra</button>
+      <button class="btn" type="button" id="fitBtn">Tilpass</button>
+    </div>
+    <div class="hint"><span class="hMouse">Klikk på en del · dra for å snu · høyreklikk og dra for å flytte · scroll for å zoome</span><span class="hTouch">Trykk på en del · én finger snur · to fingre zoomer</span></div>
+    <noscript><p class="noWebgl">3D-modellen trenger JavaScript.</p></noscript>
+  </div>
+
+  <aside class="side" aria-label="Informasjon om delene">
+    <div id="info" aria-live="polite">
+      <div class="omr" id="infoOmr">Velg en del</div>
+      <h2 id="infoNavn">Hjertet</h2>
+      <button class="btn small" type="button" id="lesBtn">🔊 Les opp</button>
+      <p id="infoTekst"></p>
+      <ul id="infoFakta"></ul>
+      <div class="ord" id="infoOrd" hidden></div>
+    </div>
+    <div class="nav2">
+      <button class="btn" type="button" id="prevBtn">← Forrige</button>
+      <button class="btn" type="button" id="nextBtn">Neste →</button>
+    </div>
+    <div><b id="progText">0 av 0 deler utforsket</b></div>
+    <div class="progress" aria-hidden="true"><i id="progBar"></i></div>
+    <div class="done" id="doneBox">Bra! Du har fulgt blodet gjennom hele hjertet. Ta testene nå.</div>
+    <h3 style="margin:16px 0 0;font-size:15px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em">Alle deler</h3>
+    <p style="margin:4px 0 0;font-size:13px">👁 viser eller skjuler delen.</p>
+    <ul class="plist" id="plist"></ul>
+    <div class="toolbar"><button class="btn small" type="button" id="visAlle">Vis alle</button><button class="btn small" type="button" id="skjulKamre">Skjul kamre og forkamre</button></div>
+  </aside>
+</div>
+
+<h2 class="sec">Tenk</h2>
+<p class="sub">Svar først selv eller sammen med makkeren din. Bruk modellen: én forklarer, den andre viser det i 3D. Åpne løsningsforslaget etterpå og sammenlign.</p>
+<div id="tenk"></div>
+
+<h2 class="sec" id="python">Voks: Slik ble hjertet laget</h2>
+<p class="sub">Hjertet er ikke tegnet for hånd. Et Python-program regner ut tusenvis av punkter og trekanter og lagrer dem i en 3D-fil. Det er samme idé som når du endret <code>puls</code> i Python-verkstedet – bare at koden nå bygger en hel modell.</p>
+<div class="flyt">
+  <div><b>1 · Python-kode</b><code>lag_hjerte.py</code> beskriver hver del med tall: sentrum, størrelse og retning.</div>
+  <div><b>2 · 3D-modell</b>Koden lager kamrene som avlange kuler og blodårene som rør langs en kurve.</div>
+  <div><b>3 · GLB-fil</b>Alt lagres i <code>hjerte.glb</code>, et vanlig 3D-format.</div>
+  <div><b>4 · Nettleseren</b>Siden leser filen, gir delene farge og får hjertet til å slå.</div>
+</div>
+<p class="sub">Slik beskriver koden venstre hjertekammer og aorta:</p>
+<pre class="kode"><span class="k"># Venstre hjertekammer: en avlang kule som smalner av mot hjertespissen</span>
+venstre_kammer = Kammer(sentrum=(1.0, -1.6, -0.4), radier=(1.9, 3.3, 1.9),
+                        retning=(-0.35, 1, -0.3), spiss=0.55)
+
+<span class="k"># Aorta: et rør gjennom disse punktene – opp, over i en bue og ned bak hjertet</span>
+AORTA = [(0.1, 0.8, -0.2), (-0.3, 3.0, 0.3), (-0.1, 4.6, 0.1), (0.9, 5.5, -0.8),
+         (2.0, 5.0, -1.9), (2.4, 3.4, -2.6), (2.5, 0.0, -3.0), (2.4, -4.5, -3.0)]
+'aorta': ror(AORTA, 0.78, RODT_BLOD, slutt_radius=0.62)</pre>
+<div class="info"><b>Prøv selv (Ekspert):</b> Last ned programmet og kjør det med Python (du trenger tilleggspakkene <code>numpy</code> og <code>trimesh</code>). Gjør venstre kammer større, gi aorta en annen farge eller legg til en ny blodåre. 3D-filen kan også åpnes i Blender, og den kan brukes i Unity, Unreal Engine eller MetaSteps til VR-læring.
+<div class="toolbar" style="margin-bottom:0"><a class="btn" href="lag_hjerte.py" download>⬇ Last ned lag_hjerte.py</a><a class="btn" href="hjerte.glb" download>⬇ Last ned hjerte.glb</a><a class="btn" href="/gjestefag/ho/bankende-hjerte/#kode-seksjon">Til Python-verkstedet →</a></div></div>
+<p class="sub"><b>Forklar for makkeren:</b> Vis hjertet forfra og fortell hvilken vei blodet går – fra hulvenene til aorta. Makkeren stopper deg og spør «Hvorfor?» minst to ganger. Bytt roller.</p>
+
+<h2 class="sec">Kvittering til læreren</h2>
+<p class="sub">Skriv navnet ditt, trykk «Lag kvittering» og lever slik læreren sier (kopier og lim inn, eller skriv ut / lagre som PDF). Ingenting sendes fra denne siden.</p>
+<div class="toolbar"><label class="glider">Navn <input id="elevNavn" type="text" autocomplete="off" style="padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);width:220px"></label>
+<button class="btn primary" type="button" id="kvittBtn">Lag kvittering</button></div>
+<div id="kvitt" class="kvitt" hidden><pre id="kvittTekst"></pre><div class="toolbar"><button class="btn" type="button" id="kopierBtn">Kopier tekst</button><button class="btn" type="button" id="skrivUt">Skriv ut / PDF</button><span id="kopiert" style="color:var(--ok)"></span></div></div>
+
+<p class="sub" style="margin-top:40px;font-size:14px">Modellen er forenklet og laget for undervisning. Den er ikke anatomisk nøyaktig, og fargene viser oksygenrikt (rødt) og oksygenfattig (blått) blod – ikke hvordan hjertet ser ut i virkeligheten. Modellen og teksten er laget for TLLfluenseren.</p>
+<nav class="guest-return" aria-label="Navigasjon fra gjesterom"><a href="/gjestefag/ho/">← Gjestefag HO</a><a href="/gjestefag/ho/bankende-hjerte/">Python-verkstedet og pulsmåling →</a></nav>
+</main>
+</div>
+<script type="module" src="./hjerte3d.js?v=1"></script>
+</body>
+</html>
