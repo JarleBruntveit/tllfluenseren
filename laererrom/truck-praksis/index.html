@@ -37,6 +37,16 @@ p,li{line-height:1.6}
 .locked{color:#9fb6bc;font-style:italic;font-size:14.5px;margin-top:8px}
 .dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:7px;vertical-align:-1px}
 .noprint{}
+.oLinks{display:flex;flex-wrap:wrap;gap:16px;margin-top:6px}
+.linkBtn{appearance:none;border:0;background:none;padding:0;font:inherit;font-weight:750;color:var(--teacher-accent);cursor:pointer;text-decoration:underline}
+.linkBtn:focus-visible,.oItem a:focus-visible,.oNav a:focus-visible{outline:3px solid #a5f0df;outline-offset:2px}
+.elev{border:1px solid #547b87;border-radius:10px;padding:4px 16px 10px;margin-top:12px;background:#163541}
+.elev h5{margin:14px 0 4px;font-size:13.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--teacher-accent)}
+.elev p,.elev li{color:#e4eff0}
+.oNav{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:14px 0 6px;font-weight:800}
+.oNav a{color:var(--teacher-accent);text-decoration:none}.oNav a:hover{text-decoration:underline}
+body.enkelt .teacher-intro,body.enkelt #fag,body.enkelt #metode,body.enkelt #tillatelse,body.enkelt #hms,body.enkelt #endringer,body.enkelt #kilder,body.enkelt #lockHint{display:none}
+body.enkelt .oItem{padding:18px 22px}body.enkelt .oItem h4{font-size:clamp(24px,3.4vw,34px)}
 @media print{
   .tll-site-nav,.tll-skip,.noprint,footer,.tll-global-footer,.teacher-header,.lock{display:none!important}
   html,body,body.teacher-area{background:#fff!important;color:#000!important}
@@ -44,6 +54,7 @@ p,li{line-height:1.6}
   .tp th{background:#eee}.tp th,.tp td{border-color:#999}
   .oItem,.fasit{background:#fff;border-color:#999;break-inside:avoid}
   .oItem a{color:#000}
+  .oLinks,.oNav{display:none!important}.elev{background:#fff;border-color:#999}.elev p,.elev li,.elev h5{color:#000!important}
 }
 </style>
 <link rel="stylesheet" href="/assets/global-footer.css"><script defer src="/assets/global-footer.js?v=mobile-nav-2"></script><link rel="stylesheet" href="/assets/elevflyt.css?v=mobile-nav-2">
@@ -193,9 +204,35 @@ p,li{line-height:1.6}
   document.getElementById('kildeList').innerHTML = Object.values(D.ndla).map(n => `<li><a href="${n.u}" target="_blank" rel="noopener" style="color:var(--teacher-accent)">NDLA: ${esc(n.t)}</a></li>`).join('');
 
   const fagTxt = f => f === 'BT' ? 'Bransjeteknikk' : f === 'TLL' ? 'TLL' : 'BT + TLL';
+  const q = (new URLSearchParams(location.search).get('ovelse') || '').replace('.', '-');
+  const enkelt = D.oppgaver.find(t => t.slug === 'o-' + q);
+  const nr = t => t.slug.slice(2);
+  const elevUrl = t => location.origin + '/truck/praksis/?ovelse=' + nr(t);
+  const elevTekst = t => `<div class="elev"><h5>Oppdrag (elevteksten)</h5>${t.oppdrag}<h5>Du lykkes når</h5><p>${t.lykkes}</p>${t.hms ? `<h5>HMS</h5><p>${t.hms}</p>` : ''}${t.dok ? `<h5>Dokumentasjon</h5><p>${t.dok}</p>` : ''}</div>`;
+  const lenker = (t, egen) => `<div class="oLinks noprint"><a href="/truck/praksis/?ovelse=${nr(t)}">Elevens side →</a><button type="button" class="linkBtn" data-copy="${nr(t)}">Kopier elevlenke til Teams</button>${egen ? '' : `<a href="?ovelse=${nr(t)}">Egen side med fasit →</a>`}</div>`;
+  const fasitHtml = t => fasit ? (fasit[t.id] ? `<div class="fasit">${fasit[t.id]}</div>` : '') : '<p class="locked">Fasit og lærernotat er låst. Skriv inn lærerpassordet over.</p>';
+  if (enkelt) {
+    document.body.classList.add('enkelt');
+    document.title = `Øvelse ${enkelt.id} ${enkelt.tittel} – lærerveiledning – TLLfluenseren`;
+    const back = document.querySelector('.teacher-back'); back.href = './'; back.textContent = '← Hele lærerveiledningen';
+    document.getElementById('ov-h').textContent = 'Lærerveiledning for én øvelse';
+    document.getElementById('ovelser').after(document.getElementById('vurdering'));
+  }
+  document.getElementById('ovList').addEventListener('click', async e => {
+    const b = e.target.closest('[data-copy]'); if (!b) return;
+    const url = elevUrl(D.oppgaver.find(t => nr(t) === b.dataset.copy)), old = b.textContent;
+    try { await navigator.clipboard.writeText(url); b.textContent = 'Lenken er kopiert'; } catch (x) { b.textContent = url; }
+    setTimeout(() => { b.textContent = old; }, 2500);
+  });
+
   function renderList() {
+    if (enkelt) {
+      const t = enkelt, i = D.oppgaver.indexOf(t), forr = D.oppgaver[i - 1], neste = D.oppgaver[i + 1], n = D.nivaer.find(x => x.n === t.niva);
+      document.getElementById('ovList').innerHTML = `<article class="oItem" id="${t.slug}"><div class="teacher-eyebrow">Nivå ${n.n} – ${esc(n.tittel)} (${esc(n.mestring)})</div><h4><b>${t.id}</b>${esc(t.tittel)}</h4><div class="oMeta">${t.truck.join(', ')} · ${esc(t.tid)} · ${esc(t.fase)} · ${fagTxt(t.fag)}${t.gml ? ' · gml. ' + esc(t.gml) : ''}<br>Egenvurdering: ${t.ev.map(e => D.evNavn[e[0]] + ' ' + e.slice(1)).join(', ')}</div>${lenker(t, true)}${fasitHtml(t)}${elevTekst(t)}</article><nav class="oNav noprint" aria-label="Andre øvelser">${forr ? `<a href="?ovelse=${nr(forr)}">← ${forr.id} ${esc(forr.tittel)}</a>` : '<span></span>'}${neste ? `<a href="?ovelse=${nr(neste)}">${neste.id} ${esc(neste.tittel)} →</a>` : ''}</nav>`;
+      return;
+    }
     document.getElementById('ovList').innerHTML = D.nivaer.map(n => `<h3 class="lvlHead">Nivå ${n.n} – ${esc(n.tittel)} <span style="color:#bdd0d4;font-weight:600">(${n.mestring})</span></h3>` +
-      D.oppgaver.filter(t => t.niva === n.n).map(t => `<article class="oItem" id="${t.slug}"><h4><b>${t.id}</b>${esc(t.tittel)}</h4><div class="oMeta">${t.truck.join(', ')} · ${esc(t.tid)} · ${esc(t.fase)} · ${fagTxt(t.fag)}${t.gml ? ' · gml. ' + esc(t.gml) : ''}<br>Egenvurdering: ${t.ev.map(e => D.evNavn[e[0]] + ' ' + e.slice(1)).join(', ')}</div><a href="/truck/praksis/#${t.slug}">Elevteksten →</a>${fasit ? (fasit[t.id] ? `<div class="fasit">${fasit[t.id]}</div>` : '') : '<p class="locked">Fasit og lærernotat er låst.</p>'}</article>`).join('')).join('');
+      D.oppgaver.filter(t => t.niva === n.n).map(t => `<article class="oItem" id="${t.slug}"><h4><b>${t.id}</b>${esc(t.tittel)}</h4><div class="oMeta">${t.truck.join(', ')} · ${esc(t.tid)} · ${esc(t.fase)} · ${fagTxt(t.fag)}${t.gml ? ' · gml. ' + esc(t.gml) : ''}<br>Egenvurdering: ${t.ev.map(e => D.evNavn[e[0]] + ' ' + e.slice(1)).join(', ')}</div>${lenker(t, false)}${fasitHtml(t)}</article>`).join('')).join('');
     if (location.hash) { const el = document.getElementById(location.hash.slice(1)); if (el) el.scrollIntoView({ block: 'start' }); }
   }
   renderList();
