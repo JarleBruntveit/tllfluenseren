@@ -68,7 +68,7 @@ code{background:#f1f3f5;padding:1px 5px;border-radius:4px}
   <div id="fagliste"></div>
   <details>
     <summary>Bytt adminpassordet ditt</summary>
-    <p>Lager nye filer for alle gjestefagene. Last opp alle filene, ellers virker det gamle adminpassordet fortsatt på de rommene du ikke har oppdatert.</p>
+    <p>Lager nye filer for alle gjestefagene. Send alle filene til Claude, ellers virker det gamle adminpassordet fortsatt på de rommene som ikke er oppdatert.</p>
     <label for="nyAdmin1">Nytt adminpassord (minst 12 tegn)</label><input type="password" id="nyAdmin1" autocomplete="new-password" minlength="12">
     <label for="nyAdmin2">Gjenta</label><input type="password" id="nyAdmin2" autocomplete="new-password" minlength="12">
     <div><button class="btn" type="button" id="byttAdmin">Last ned nye filer for alle fag</button></div>
@@ -79,9 +79,9 @@ code{background:#f1f3f5;padding:1px 5px;border-radius:4px}
 <section class="ark">
   <h2>Nytt gjestefag</h2>
   <ol>
-    <li>Legg faget inn i <code>gjestefag/felles/fag.js</code> (id, navn, kort, farge, beskrivelse).</li>
-    <li>Kopier mappen <code>gjestefag/kjt/</code> til <code>gjestefag/&lt;id&gt;/</code> og bytt «kjt», «KJT» og «Kjøretøy» i <code>index.html</code> og <code>laererrom/index.html</code>.</li>
-    <li>Lag det krypterte innholdet her, og last opp filen til <code>gjestefag/&lt;id&gt;/laererrom/innhold.enc.js</code>.</li>
+    <li>Be Claude lage gjestefaget. Claude lager fagsiden, elevressursene og et tomt lærerrom, og sender deg innholdet til lærerrommet.</li>
+    <li>Lim innholdet inn under «Lag lærerrom for et nytt fag», velg passord for faget, skriv adminpassordet ditt og last ned fila.</li>
+    <li>Send fila (<code>&lt;id&gt;-innhold.enc.js</code>) til Claude, så publiseres rommet.</li>
   </ol>
   <details>
     <summary>Lag lærerrom for et nytt fag</summary>
@@ -104,10 +104,11 @@ import { apne, laas, byttPassord, nyttInnhold, filTekst } from '/gjestefag/felle
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const apnet = {}; // fag -> { raw, tekst, pakke }
+let adminPassord = ''; // bare i minnet mens siden er åpen
 
 function lastNed(fag, pakke) {
   const blob = new Blob([filTekst(fag, pakke)], { type: 'text/javascript;charset=utf-8' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'innhold.enc.js';
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `${fag}-innhold.enc.js`;
   document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
 }
 const lastPakker = () => Promise.all(FAG.map(f => new Promise(res => {
@@ -134,7 +135,7 @@ $('adminSkjema').addEventListener('submit', async e => {
   b.disabled = false; b.textContent = 'Åpne alle gjesterom';
   if (!n) { m.textContent = 'Adminpassordet åpnet ingen rom. Prøv igjen.'; m.className = 'msg feil'; return; }
   m.textContent = `Åpnet ${n} av ${FAG.length} gjesterom.`; m.className = 'msg ok';
-  $('adminPw').value = '';
+  adminPassord = pw; $('adminPw').value = '';
   tegnFag();
 });
 
@@ -142,7 +143,12 @@ function tegnFag() {
   $('rom').hidden = false;
   $('fagliste').innerHTML = FAG.map(f => {
     const a = apnet[f.id];
-    if (!a) return `<div class="fagkort" style="border-top-color:${f.farge}"><h3>${f.kort} – ${esc(f.navn)}</h3><p class="msg feil">Ikke åpnet: fant ingen fil, eller filen har et annet adminpassord.</p></div>`;
+    if (!a) {
+      if (!window.GJESTEROM?.[f.id]) return `<div class="fagkort" style="border-top-color:${f.farge}"><h3>${f.kort} – ${esc(f.navn)}</h3><p class="msg feil">Fant ingen fil for dette rommet. Bruk «Lag lærerrom for et nytt fag» nederst.</p></div>`;
+      return `<div class="fagkort" style="border-top-color:${f.farge}" data-mangler="${f.id}"><h3>${f.kort} – ${esc(f.navn)}</h3><p class="msg feil">Adminpassordet ditt åpner ikke dette rommet. Rommet mangler adminnøkkel, eller den er laget med et annet adminpassord.</p>
+        <label>Skriv passordet for ${f.kort}-rommet, så legges adminnøkkelen din til<input type="password" class="fagpw" autocomplete="off"></label>
+        <button class="btn" type="button" data-act="admin">Legg til adminnøkkel og last ned fil</button><p class="msg" aria-live="polite"></p></div>`;
+    }
     const roller = a.pakke.nokler.map(s => s.rolle).join(' og ');
     return `<div class="fagkort" style="border-top-color:${f.farge}" data-fag="${f.id}"><h3>${f.kort} – ${esc(f.navn)}</h3>
       <p>Fil: <code>gjestefag/${f.id}/laererrom/innhold.enc.js</code> · Nøkler: ${roller}</p>
@@ -155,6 +161,21 @@ function tegnFag() {
         <textarea class="html"></textarea>
         <button class="btn" type="button" data-act="html">Last ned ny innhold.enc.js</button><p class="msg" aria-live="polite"></p></details></div>`;
   }).join('');
+  document.querySelectorAll('.fagkort[data-mangler]').forEach(k => {
+    const id = k.dataset.mangler;
+    k.querySelector('[data-act=admin]').addEventListener('click', async e => {
+      const m = e.target.nextElementSibling, fpw = k.querySelector('.fagpw').value;
+      e.target.disabled = true; m.textContent = 'Åpner …'; m.className = 'msg';
+      try {
+        const r = await apne(window.GJESTEROM[id], fpw);
+        const pakke = await byttPassord(window.GJESTEROM[id], r.raw, 'admin', adminPassord);
+        window.GJESTEROM[id] = pakke; apnet[id] = { raw: r.raw, tekst: r.tekst, pakke };
+        lastNed(id, pakke); tegnFag();
+        const ny = document.querySelector(`.fagkort[data-fag="${id}"] p`);
+        if (ny) ny.insertAdjacentHTML('afterend', `<p class="msg ok">Adminnøkkelen er lagt til. Fila <b>${id}-innhold.enc.js</b> er lastet ned – send den til Claude, så publiseres den. Fagpassordet er uendret.</p>`);
+      } catch (x) { e.target.disabled = false; m.textContent = 'Feil passord for rommet. Prøv igjen.'; m.className = 'msg feil'; }
+    });
+  });
   document.querySelectorAll('.fagkort[data-fag]').forEach(k => {
     const id = k.dataset.fag, a = apnet[id];
     k.querySelector('textarea.html').value = a.tekst;
@@ -164,14 +185,14 @@ function tegnFag() {
       e.target.disabled = true; m.textContent = 'Lager fil …'; m.className = 'msg';
       a.pakke = await byttPassord(a.pakke, a.raw, 'fag', p1); lastNed(id, a.pakke);
       e.target.disabled = false; k.querySelector('.p1').value = k.querySelector('.p2').value = '';
-      m.textContent = `Lastet ned. Last opp filen til gjestefag/${id}/laererrom/ og gi det nye passordet til ${id.toUpperCase()}-lærerne.`; m.className = 'msg ok';
+      m.textContent = `Lastet ned ${id}-innhold.enc.js. Send fila til Claude, og gi det nye passordet til ${id.toUpperCase()}-lærerne.`; m.className = 'msg ok';
     });
     k.querySelector('[data-act=html]').addEventListener('click', async e => {
       const m = e.target.nextElementSibling;
       e.target.disabled = true; m.textContent = 'Lager fil …'; m.className = 'msg';
       a.tekst = k.querySelector('textarea.html').value;
       a.pakke = await nyttInnhold(a.pakke, a.raw, a.tekst); lastNed(id, a.pakke);
-      e.target.disabled = false; m.textContent = `Lastet ned. Last opp filen til gjestefag/${id}/laererrom/. Passordene er uendret.`; m.className = 'msg ok';
+      e.target.disabled = false; m.textContent = `Lastet ned ${id}-innhold.enc.js. Send fila til Claude. Passordene er uendret.`; m.className = 'msg ok';
     });
   });
 }
@@ -186,7 +207,7 @@ $('byttAdmin').addEventListener('click', async () => {
     await new Promise(r => setTimeout(r, 600));
   }
   $('nyAdmin1').value = $('nyAdmin2').value = '';
-  m.textContent = `Lastet ned ${Object.keys(apnet).length} filer (alle heter innhold.enc.js – last opp én og én i riktig fagmappe: ${Object.keys(apnet).join(', ')}).`; m.className = 'msg ok';
+  m.textContent = `Lastet ned ${Object.keys(apnet).length} filer (${Object.keys(apnet).map(i => i + '-innhold.enc.js').join(', ')}). Send alle til Claude – ellers virker det gamle adminpassordet fortsatt på de rommene som ikke er oppdatert.`; m.className = 'msg ok';
 });
 
 $('lagNytt').addEventListener('click', async () => {
@@ -197,7 +218,7 @@ $('lagNytt').addEventListener('click', async () => {
   m.textContent = 'Lager fil …'; m.className = 'msg';
   const p = await laas($('nyHtml').value, [{ rolle: 'fag', passord: fpw }, { rolle: 'admin', passord: apw }]);
   lastNed(id, p);
-  m.textContent = `Lastet ned. Last opp til gjestefag/${id}/laererrom/innhold.enc.js.`; m.className = 'msg ok';
+  m.textContent = `Lastet ned ${id}-innhold.enc.js. Send fila til Claude, så publiseres rommet.`; m.className = 'msg ok';
 });
 </script>
 </body>
