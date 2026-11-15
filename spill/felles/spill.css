@@ -1,0 +1,75 @@
+/* Felles stil for TLLfluenseren-spill (minispill og Min TLL-bedrift).
+   Bygger på variablene i /assets/styles.css. */
+.sp-shell{width:min(820px,calc(100% - 24px));margin:18px auto 80px}
+.sp-shell h1{font-size:clamp(32px,6vw,54px);margin:8px 0 14px}
+.sp-shell h2{font-size:clamp(21px,3vw,26px);margin:0 0 10px;letter-spacing:-.01em}
+.sp-shell h3{font-size:18px;margin:0 0 6px}
+.sp-lead{color:var(--muted);font-size:clamp(17px,2.4vw,20px);line-height:1.55;max-width:680px}
+.sp-panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:clamp(16px,3.5vw,26px);margin:14px 0;box-shadow:var(--shadow)}
+.sp-panel p,.sp-panel li{line-height:1.6}
+.sp-panel ul,.sp-panel ol{padding-left:20px}
+.sp-muted{color:var(--muted)}
+.sp-small{font-size:14px;color:var(--muted)}
+.sp-chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 10px}
+.sp-chip{display:inline-flex;align-items:center;padding:4px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-weight:700;font-size:12.5px}
+.sp-chip.fase{background:var(--accent);border-color:var(--accent);color:#111820}
+.sp-btn{font:inherit;font-weight:800;cursor:pointer;border-radius:12px;border:1px solid var(--accent);background:var(--accent);color:#111820;padding:12px 18px;font-size:16px;text-decoration:none;display:inline-block}
+.sp-btn.ghost{background:transparent;color:var(--text);border-color:var(--line)}
+.sp-btn:disabled{opacity:.45;cursor:not-allowed}
+.sp-btn:focus-visible,.sp-opt:focus-visible,.sp-card:focus-visible,.sp-input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.sp-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;align-items:center}
+.sp-opts{display:grid;gap:10px;margin-top:12px}
+.sp-opt{font:inherit;text-align:left;color:var(--text);background:#0f1820;border:1px solid var(--line);border-radius:14px;padding:14px 16px;cursor:pointer;line-height:1.45;font-size:16.5px}
+.sp-opt:hover:not(:disabled){border-color:#4d6579}
+.sp-opt:disabled{cursor:default}
+.sp-opt.valgt{border:2px solid var(--accent)}
+.sp-opt.bes{opacity:.55}
+.sp-opt .sp-kost{float:right;margin-left:10px;font-variant-numeric:tabular-nums;color:var(--muted);font-size:14px;font-weight:700}
+.sp-fb{margin-top:14px;padding:14px 16px;border-radius:12px;border-left:5px solid;line-height:1.55;background:#0f1820}
+.sp-fb.g{border-color:var(--ok)}
+.sp-fb.m{border-color:var(--accent)}
+.sp-fb.b{border-color:#ff8a7a}
+.sp-fb strong:first-child{display:block;margin-bottom:2px}
+.sp-who{font-size:13px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.08em}
+.sp-bubble{background:#17232e;border:1px solid var(--line);border-radius:16px 16px 16px 4px;padding:14px 16px;margin:6px 0 12px;max-width:94%;font-size:17px;line-height:1.5}
+.sp-hud{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 6px}
+.sp-hud span{background:#0f1820;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-weight:700;font-size:13.5px;font-variant-numeric:tabular-nums}
+.sp-hud span.lav{border-color:#ff8a7a;color:#ffb3a8}
+.sp-bar{height:8px;background:#1b2935;border-radius:999px;overflow:hidden;margin:6px 0 4px}
+.sp-bar i{display:block;height:100%;background:var(--accent);transition:width .3s}
+@media (prefers-reduced-motion:reduce){.sp-bar i{transition:none}}
+.sp-label{display:block;font-weight:800;margin:12px 0 6px}
+.sp-input{width:100%;font:inherit;font-size:16px;color:var(--text);background:#0f1820;border:1px solid var(--line);border-radius:12px;padding:12px}
+textarea.sp-input{min-height:110px;resize:vertical}
+.sp-notice{padding:12px 14px;background:#121e27;border:1px solid var(--line);border-radius:12px;color:var(--muted);line-height:1.5;font-size:14.5px}
+.sp-table{width:100%;border-collapse:collapse;font-size:15px}
+.sp-table th,.sp-table td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+.sp-table td.num,.sp-table th.num{text-align:right;font-variant-numeric:tabular-nums}
+.sp-niva{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12.5px;font-weight:800}
+.sp-niva.n1{background:#3a2a26;color:#ffb3a8}.sp-niva.n2{background:#3a3220;color:#f2d38b}.sp-niva.n3{background:#1f3a2c;color:#8cd6ae}
+.sp-report{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;white-space:pre-wrap;word-break:break-word;background:#070c11;color:#dfe7ee;border:1px solid var(--line);padding:14px;border-radius:12px;max-height:300px;overflow:auto}
+/* Kort-oversikt (spillsiden og minispill-lista) */
+.sp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin:18px 0}
+a.sp-card{display:block;text-decoration:none;color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;transition:border-color .15s,transform .15s}
+a.sp-card:hover{border-color:#4d6579;transform:translateY(-2px)}
+@media (prefers-reduced-motion:reduce){a.sp-card{transition:none}a.sp-card:hover{transform:none}}
+.sp-card h3{font-size:20px;margin:8px 0 6px}
+.sp-card p{color:var(--muted);line-height:1.5;margin:0}
+.sp-card .sp-go{display:inline-block;margin-top:10px;color:var(--accent);font-weight:800}
+/* Bedriftsspillet */
+.sp-kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:10px 0}
+.sp-kpi>div{background:#0f1820;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.sp-kpi>div>b{display:block;font-size:20px;font-variant-numeric:tabular-nums}
+.sp-kpi>div>small{color:var(--muted);font-weight:700}
+.sp-meter{height:6px;background:#1b2935;border-radius:99px;margin-top:6px;overflow:hidden}
+.sp-meter i{display:block;height:100%;background:var(--ok)}
+.sp-meter.warn i{background:var(--accent)}.sp-meter.bad i{background:#ff8a7a}
+.sp-ordre{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:14px;border:1px solid var(--line);border-radius:14px;background:#0f1820;margin:8px 0;cursor:pointer}
+.sp-ordre input{width:22px;height:22px;margin-top:3px;accent-color:var(--accent)}
+.sp-ordre .tall{color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}
+.sp-ordre.av{opacity:.5;cursor:not-allowed}
+.sp-steps{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 2px}
+.sp-steps span{font-size:12px;font-weight:800;padding:3px 8px;border-radius:99px;border:1px solid var(--line);color:var(--muted)}
+.sp-steps span.na{background:var(--accent);color:#111820;border-color:var(--accent)}
+.sp-steps span.ferdig{color:var(--ok);border-color:#2f5a44}
+@media(max-width:560px){.sp-opt{font-size:16px}.sp-bubble{font-size:16px}}

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="nb"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spillresultater – Lærerrommet | TLLfluenseren</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/styles.css"><link rel="stylesheet" href="/assets/laererrom.css?v=2"><script defer src="/assets/global-footer.js"></script>
+<style>
+.sr-shell{width:min(1120px,calc(100% - 32px));margin:0 auto;padding-bottom:80px}
+.sr-panel{background:#142a34;border:1px solid #4e7581;border-radius:16px;padding:20px;margin:16px 0}
+.sr-panel h2{margin:0 0 8px}
+.sr-panel p{color:#c3d2d7;line-height:1.6}
+.sr-input{display:block;width:100%;box-sizing:border-box;background:#0c1921;color:#fff;border:1px solid #6f9aa3;border-radius:10px;padding:12px;font:inherit}
+textarea.sr-input{min-height:170px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px}
+.sr-btn{background:#8ed7cc;color:#0c1921;border:0;border-radius:10px;padding:11px 16px;font-weight:800;cursor:pointer;font:inherit;font-weight:800}
+.sr-btn.ghost{background:transparent;color:#8ed7cc;border:1px solid #8ed7cc}
+.sr-btn:focus-visible,.sr-input:focus-visible,summary:focus-visible{outline:3px solid #f2b84b;outline-offset:2px}
+.sr-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.sr-alert{border-left:4px solid #f2b84b;padding:12px 16px;background:#193541;border-radius:8px;color:#e6f0f2}
+.sr-wrap{overflow-x:auto}
+table.sr{border-collapse:collapse;width:100%;font-size:14.5px;min-width:640px}
+table.sr th,table.sr td{border-bottom:1px solid #3d6370;padding:8px 6px;text-align:left;vertical-align:top}
+table.sr th{color:#bdd0d4;font-size:13px}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.sp-niva{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:800;white-space:nowrap}
+.sp-niva.n1{background:#3a2a26;color:#ffb3a8}.sp-niva.n2{background:#3a3220;color:#f2d38b}.sp-niva.n3{background:#1f3a2c;color:#8cd6ae}
+.ok{color:#8cd6ae;font-weight:800}.feil{color:#ffb3a8;font-weight:800}
+details{margin-top:6px}summary{cursor:pointer;color:#8ed7cc;font-weight:700}
+.logg{font-size:13px;color:#d7e9ec;line-height:1.5;margin:6px 0 0;padding-left:18px}
+.small{font-size:13px;color:#bdd0d4}
+</style></head>
+<body class="teacher-area"><div class="sr-shell">
+<header class="teacher-header"><a class="teacher-brand" href="/" aria-label="Til forsiden"><span class="brandmark">TLL</span><span>TLLfluenseren<small>Lærerrommet</small></span></a><a class="teacher-back" href="/laererrom/">← Til Lærerrommet</a></header>
+<main id="tll-main">
+<div class="teacher-intro" style="padding-top:28px"><div class="teacher-eyebrow">Vurdering og elevoppfølging · Spill</div><h1>Spillresultater</h1>
+<p>Samle rapportene elevene leverer fra <a href="/spill/" style="color:#8ed7cc">spillene</a> (Min TLL-bedrift og minispillene). Du ser nivå per vurderingsområde, hvilke valg hver elev tok, refleksjonen deres – og hvilke steg klassen sliter mest med.</p></div>
+<p class="sr-alert"><strong>Personvern:</strong> Rapportene behandles bare i nettleseren din. Ingenting lagres eller sendes fra denne siden. Lukk fanen når du er ferdig.</p>
+
+<section class="sr-panel"><h2>1. Lim inn rapporter</h2>
+<p>Kopier innleveringene fra Teams (én eller mange) og lim alt inn her. Siden finner rapportene selv – annen tekst mellom dem gjør ingenting.</p>
+<label class="small" for="sr-tekst">Rapporttekst</label><textarea class="sr-input" id="sr-tekst" placeholder="TLLfluenseren – HMS-revisjonen&#10;Elev: …&#10;…&#10;Kontrollkode: …&#10;DATA:…"></textarea>
+<div class="sr-row"><button class="sr-btn" id="sr-les">Les rapportene</button><button class="sr-btn ghost" id="sr-tom">Tøm</button><span class="small" id="sr-status" aria-live="polite"></span></div>
+</section>
+
+<section class="sr-panel" id="sr-azure" hidden><h2>2. Hent fra Azure</h2>
+<p>Resultater elevene har sendt automatisk med elevkode (uten navn).</p>
+<div class="sr-row"><label class="small" for="sr-klasse">Klassekode</label><input class="sr-input" id="sr-klasse" style="max-width:160px" placeholder="2TLLB">
+<label class="small" for="sr-kode">Lærerkode</label><input class="sr-input" id="sr-kode" type="password" style="max-width:200px" autocomplete="off">
+<button class="sr-btn" id="sr-hent">Hent</button></div>
+</section>
+
+<div id="sr-ut"></div>
+</main></div>
+<script src="/spill/felles/konfig.js?v=1"></script>
+<script src="/spill/felles/spillmotor.js?v=1"></script>
+<script>
+(function () {
+  const { esc, nivaHtml, NIVA } = Spill;
+  let data = [];
+  const ut = document.getElementById('sr-ut');
+  const status = document.getElementById('sr-status');
+
+  document.getElementById('sr-les').onclick = () => {
+    const nye = Spill.lesRapporter(document.getElementById('sr-tekst').value);
+    const gyldige = nye.filter(d => !d._feil);
+    // Unngå duplikater (samme elev, spill og tidspunkt)
+    const nok = new Set(data.map(d => d.navn + d.spill + d.slutt));
+    gyldige.forEach(d => { if (!nok.has(d.navn + d.spill + d.slutt)) data.push(d); });
+    status.textContent = `${gyldige.length} rapport(er) funnet${nye.length - gyldige.length ? `, ${nye.length - gyldige.length} kunne ikke leses` : ''}. Totalt ${data.length}.`;
+    document.getElementById('sr-tekst').value = '';
+    vis();
+  };
+  document.getElementById('sr-tom').onclick = () => { data = []; status.textContent = ''; vis(); };
+
+  const k = window.SPILL_KONFIG || {};
+  if (k.azureUrl) {
+    document.getElementById('sr-azure').hidden = false;
+    document.getElementById('sr-hent').onclick = async () => {
+      const klasse = document.getElementById('sr-klasse').value.trim().toUpperCase();
+      const kode = document.getElementById('sr-kode').value;
+      if (!klasse || !kode) return;
+      try {
+        const r = await fetch(`${k.azureUrl.replace(/\/$/, '')}/api/resultater?klasse=${encodeURIComponent(klasse)}`, { headers: { 'x-laerer-kode': kode } });
+        if (!r.ok) throw new Error(r.status === 401 ? 'Feil lærerkode.' : 'Feil ' + r.status);
+        const liste = await r.json();
+        liste.forEach(d => data.push({ ...d, navn: d.elevkode, _ok: true, _azure: true, logg: [], ekstra: [], refleksjon: '' }));
+        status.textContent = `Hentet ${liste.length} resultat(er) fra Azure.`;
+        vis();
+      } catch (e) { alertBox('Kunne ikke hente fra Azure: ' + e.message); }
+    };
+  }
+  function alertBox(t) { ut.insertAdjacentHTML('afterbegin', `<p class="sr-alert">${esc(t)}</p>`); }
+
+  function vis() {
+    if (!data.length) { ut.innerHTML = ''; return; }
+    const spill = [...new Set(data.map(d => d.spill))];
+    ut.innerHTML = spill.map(s => {
+      const rader = data.filter(d => d.spill === s).sort((a, b) => a.navn.localeCompare(b.navn, 'nb'));
+      const omr = []; rader.forEach(d => d.omr.forEach(o => { if (!omr.find(x => x.k === o.k)) omr.push({ k: o.k, n: o.n }); }));
+      // Klassesnitt per område
+      const snitt = omr.map(o => { let p = 0, m = 0; rader.forEach(d => { const x = d.omr.find(y => y.k === o.k); if (x) { p += x.p; m += x.m; } }); return { ...o, p, m }; });
+      // Tyngste steg: lavest gjennomsnitt over alle elever
+      const steg = {};
+      rader.forEach(d => (d.logg || []).forEach(([sak, st, , p, m]) => { const sakR = sak.replace(/^Måned \d+( · )?/, ''), stR = /^Oppdrag:/.test(st) ? 'Prisvurdering av oppdrag' : st, n = sakR ? sakR + ' – ' + stR : stR; (steg[n] = steg[n] || { p: 0, m: 0, n: 0 }); steg[n].p += p; steg[n].m += m; steg[n].n++; }));
+      const tunge = Object.entries(steg).filter(([, v]) => v.n >= 2).map(([n, v]) => ({ n, r: v.p / v.m, ant: v.n })).sort((a, b) => a.r - b.r).slice(0, 6);
+      return `<section class="sr-panel"><h2>${esc(rader[0].tittel)} <span class="small">(${rader.length} elev${rader.length === 1 ? '' : 'er'})</span></h2>
+        <div class="sr-wrap"><table class="sr"><thead><tr><th>Elev</th><th>Klasse</th><th>Dato</th>${omr.map(o => `<th>${esc(o.n)}</th>`).join('')}<th class="num">Totalt</th><th>Kontroll</th></tr></thead><tbody>
+        ${rader.map(d => `<tr><td><b>${esc(d.navn)}</b>${d.logg && d.logg.length ? `<details><summary>Valg og refleksjon</summary>
+            ${(d.ekstra || []).length ? `<p class="small">${d.ekstra.map(esc).join('<br>')}</p>` : ''}
+            <ul class="logg">${d.logg.map(([sak, st, , p, m, v]) => `<li>${p}/${m} · ${esc(sak)} – ${esc(st)}: ${esc(v)}</li>`).join('')}</ul>
+            <p class="small"><b>Refleksjon:</b> ${esc(d.refleksjon || '(ikke besvart)')}</p></details>` : ''}</td>
+          <td>${esc(d.klasse)}</td><td class="small">${new Date(d.slutt).toLocaleDateString('nb-NO')}</td>
+          ${omr.map(o => { const x = d.omr.find(y => y.k === o.k); return `<td>${x ? `${nivaHtml(x.p, x.m)} <span class="small">${x.p}/${x.m}</span>` : '–'}</td>`; }).join('')}
+          <td class="num">${d.tot}/${d.maks}</td><td>${d._ok ? '<span class="ok">OK</span>' : '<span class="feil" title="Rapporten er endret etter at den ble laget">Endret</span>'}</td></tr>`).join('')}
+        <tr><td colspan="3"><b>Klassen samlet</b></td>${snitt.map(o => `<td>${nivaHtml(o.p, o.m)} <span class="small">${o.m ? Math.round(o.p / o.m * 100) : 0} %</span></td>`).join('')}<td></td><td></td></tr>
+        </tbody></table></div>
+        ${tunge.length ? `<h3 style="margin-top:18px">Her sliter klassen mest</h3><ol class="logg">${tunge.map(t => `<li>${esc(t.n)} – ${Math.round(t.r * 100)} % riktig (${t.ant} svar)</li>`).join('')}</ol>` : ''}
+        <div class="sr-row"><button class="sr-btn ghost" data-kopi="${esc(s)}">Kopier som tabell (Excel)</button><span class="small" data-msg="${esc(s)}"></span></div>
+        <p class="small">Nivå: ${NIVA.map((n, i) => `${n} = ${['under 50 %', '50–79 %', '80 % eller mer'][i]}`).join(' · ')}. Nivåene er vurderingsgrunnlag – ikke karakter. Samarbeid og innsats vurderes ikke i spillet.</p></section>`;
+    }).join('');
+    ut.querySelectorAll('[data-kopi]').forEach(b => b.onclick = async () => {
+      const s = b.dataset.kopi, rader = data.filter(d => d.spill === s);
+      const omr = []; rader.forEach(d => d.omr.forEach(o => { if (!omr.find(x => x.k === o.k)) omr.push(o); }));
+      const tsv = [['Elev', 'Klasse', 'Dato', ...omr.map(o => o.n), 'Totalt', 'Maks', 'Kontroll'].join('\t'),
+        ...rader.map(d => [d.navn, d.klasse, new Date(d.slutt).toLocaleDateString('nb-NO'), ...omr.map(o => { const x = d.omr.find(y => y.k === o.k); return x ? NIVA[Spill.niva(x.p, x.m) - 1] : ''; }), d.tot, d.maks, d._ok ? 'OK' : 'Endret'].join('\t'))].join('\n');
+      const msg = ut.querySelector(`[data-msg="${CSS.escape(s)}"]`);
+      try { await navigator.clipboard.writeText(tsv); msg.textContent = 'Kopiert – lim inn i Excel.'; } catch (e) { msg.textContent = 'Kunne ikke kopiere automatisk i denne nettleseren.'; }
+    });
+  }
+})();
+</script>
+</body></html>
