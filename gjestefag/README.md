@@ -32,3 +32,7 @@ gjestefag/
 ## Python i nettleseren
 
 `ho/bankende-hjerte/` kjører Python med Skulpt (`/assets/vendor/skulpt/`, MIT). Skulpt lastes først når eleven trykker «Kjør».
+
+## 3D-hjertet (HO)
+
+`ho/hjerte-3d/hjerte.glb` og `blodbane.json` lages av `ho/hjerte-3d/lag_hjerte.py` (`pip install numpy trimesh`, kjør i mappen). Kjør skriptet på nytt etter endringer i geometrien. Fagteksten ligger i `deler.js` (id = navnet på delen i GLB-filen). Siden bruker `GLTFLoader` fra `/assets/vendor/three/addons/`.
