@@ -1,0 +1,11 @@
+{
+  "name": "tll-spill-azure",
+  "version": "1.0.0",
+  "description": "Valgfri backend for TLLfluenseren-spillene: tar imot spillresultater uten navn og viser dem for læreren.",
+  "main": "src/functions/*.js",
+  "scripts": { "start": "func start" },
+  "dependencies": {
+    "@azure/data-tables": "^13.3.0",
+    "@azure/functions": "^4.5.0"
+  }
+}

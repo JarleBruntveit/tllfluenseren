@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Minispill – TLLfluenseren</title>
+<meta name="description" content="Korte spill fra arbeidshverdagen i transport og logistikk: HMS-revisjon, kundeklager, lastsikring, prisberegning og nesten-ulykker.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/styles.css"><link rel="stylesheet" href="/assets/footer-info.css">
+<link rel="stylesheet" href="/assets/global-footer.css"><script defer src="/assets/global-footer.js"></script>
+<link rel="stylesheet" href="/assets/elevflyt.css?v=mobile-nav-2">
+<link rel="stylesheet" href="../felles/spill.css?v=1">
+</head>
+<body><a class="tll-skip" href="#tll-main">Hopp til innhold</a><div class="wrap">
+<header class="topbar homeTopbar"><a class="brand" href="/" aria-label="TLLfluenseren forside"><span class="brandmark">TLL</span><span>TLLfluenseren <small>Transport · Logistikk · Løfteoperasjoner · Livet</small></span></a><nav class="tll-site-nav" aria-label="Hovedmeny"><a href="/">Forside</a><a href="/#fag">Fagområder</a><a href="/yrkesretninger/">Yrkesretninger</a><a href="/spill/" aria-current="page">Spill</a><a href="/video/">Video</a><a href="/ressursbank/">Ressursbank</a><a href="/assistent/">TLL-assistenten</a><a href="/laererrom/">Lærerrom</a><a href="/om/">Om</a></nav></header>
+<main class="sp-shell" id="tll-main" tabindex="-1"><noscript><p class="sp-notice">Spillene trenger JavaScript.</p></noscript></main>
+</div>
+<script src="../felles/konfig.js?v=1"></script>
+<script src="../felles/spillmotor.js?v=1"></script>
+<script src="../felles/scenarier.js?v=1"></script>
+<script>
+(function () {
+  const el = document.getElementById('tll-main');
+  const { esc } = Spill;
+  const id = new URLSearchParams(location.search).get('s');
+  const sc = id && SCENARIER[id];
+
+  if (!sc) return oversikt();
+  document.title = sc.tittel + ' – Minispill – TLLfluenseren';
+  intro();
+
+  function oversikt() {
+    el.innerHTML = `<p><a href="/spill/">← Spill</a></p><div class="kicker">Minispill</div><h1>Situasjoner fra arbeidshverdagen</h1>
+      <p class="sp-lead">Korte spill på 10–15 minutter. Du tar valg, får tilbakemelding med en gang og leverer rapporten i Teams til slutt. Alle spillene trekker nye saker hver runde.</p>
+      <div class="sp-grid">${Object.values(SCENARIER).map(s => `<a class="sp-card" href="?s=${s.id}">
+        <div class="sp-chips"><span class="sp-chip fase">${esc(s.fase)}</span><span class="sp-chip">${esc(s.niva)}</span><span class="sp-chip">ca. ${s.minutter} min</span></div>
+        <h3>${esc(s.tittel)}</h3><p>${esc(s.kort)}</p><span class="sp-go">Spill →</span></a>`).join('')}</div>`;
+  }
+
+  function intro() {
+    el.innerHTML = `<p><a href="./">← Alle minispill</a></p>
+      <div class="sp-chips"><span class="sp-chip fase">${esc(sc.fase)}</span><span class="sp-chip">${esc(sc.niva)}</span><span class="sp-chip">${esc(sc.fag)}</span><span class="sp-chip">ca. ${sc.minutter} min</span></div>
+      <h1>${esc(sc.tittel)}</h1><p class="sp-lead">${esc(sc.rolle)}</p>
+      <div class="sp-panel"><h2>Læringsmål</h2><ul>${sc.laeringsmal.map(m => `<li>${esc(m)}</li>`).join('')}</ul>
+        <p class="sp-small"><b>Kompetansemål (læreplanen):</b> ${sc.kompetansemal.map(k => `«${esc(k.tekst)}» (${esc(k.kode)})`).join('; ')}</p>
+        <p class="sp-small"><b>Les mer:</b> ${esc(sc.bok)}</p></div>
+      <div class="sp-panel"><h2>Hvem spiller?</h2><div id="sp-elev"></div></div>`;
+    Spill.elevSkjema(el.querySelector('#sp-elev'), { knapp: 'Start spillet', onStart: spill });
+  }
+
+  async function spill(elev) {
+    const start = new Date().toISOString();
+    const res = await Spill.kjorScenario(el, sc);
+    Spill.refleksjon(el, esc(sc.refleksjon), ref => {
+      const ekstra = res.brukt ? [`Brukt av budsjettet: ${Spill.kr(res.brukt)}${sc.budsjett ? ' av ' + Spill.kr(sc.budsjett) : ''}`] : [];
+      const rap = Spill.lagRapport({ spillId: sc.id, tittel: sc.tittel, elev, poeng: res.poeng, logg: res.logg, refleksjon: ref, start, ekstra });
+      Spill.visRapport(el, rap, { nyKnapp: 'Spill en ny runde', onNy: () => spill(elev), tilbake: './' });
+    });
+  }
+})();
+</script>
+</body></html>
