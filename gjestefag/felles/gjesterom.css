@@ -82,3 +82,8 @@ body.gjest-area{--gjest:#7fb6ff;--gjest-bg:#0f1824;--gjest-panel:#162334;--gjest
 .gjest-card:has(a.lenke:focus-visible){outline:3px solid var(--gjest);outline-offset:3px}
 .gjest-card a.lenke:focus-visible{outline:none;text-decoration:underline}
 @media (prefers-reduced-motion:reduce){.gjest-card:has(a.lenke):hover{transform:none}}
+/* Kort med to valg (elev og lærer): to knapper, kortet selv er ikke klikkbart */
+.gjest-card .valg{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.gjest-card .valg .gbtn{flex:1 1 140px;text-align:center}
+.gjest-card .valg .gbtn:hover{filter:brightness(1.1)}
+.gjest-card .valg .gbtn:focus-visible{outline:3px solid #fff;outline-offset:2px}

@@ -6,7 +6,7 @@
 <link rel="icon" href="/favicon.ico">
 <link rel="stylesheet" href="/assets/styles.css">
 <link rel="stylesheet" href="/assets/global-footer.css"><script defer src="/assets/global-footer.js?v=mobile-nav-2"></script><link rel="stylesheet" href="/assets/elevflyt.css?v=mobile-nav-2">
-<link rel="stylesheet" href="/gjestefag/felles/gjesterom.css?v=klikkbare-kort-1">
+<link rel="stylesheet" href="/gjestefag/felles/gjesterom.css?v=to-valg-1">
 <title>Gjestefag | TLLfluenseren</title>
 </head>
 <body class="gjest-area">
@@ -23,7 +23,7 @@
 </main>
 <script type="module">
 import { FAG } from '/gjestefag/felles/fag.js';
-document.getElementById('fagliste').innerHTML = FAG.map(f => `<article class="gjest-card" style="border-top:4px solid ${f.farge}"><span class="tag" style="color:${f.farge};border-color:${f.farge}">${f.kort}</span><h3>${f.navn}</h3><p>${f.beskrivelse}</p><a class="lenke" style="color:${f.farge}" href="/gjestefag/${f.id}/">Elevressurser →</a><a class="lenke" style="color:${f.farge}" href="/gjestefag/${f.id}/laererrom/">Lærerrom (passord) →</a></article>`).join('');
+document.getElementById('fagliste').innerHTML = FAG.map(f => `<article class="gjest-card" style="border-top:4px solid ${f.farge}"><span class="tag" style="color:${f.farge};border-color:${f.farge}">${f.kort}</span><h3>${f.navn}</h3><p>${f.beskrivelse}</p><div class="valg"><a class="gbtn" style="background:${f.farge};border-color:${f.farge}" href="/gjestefag/${f.id}/">🎓 For elever</a><a class="gbtn sek" style="color:${f.farge};border-color:${f.farge}" href="/gjestefag/${f.id}/laererrom/">🔒 For lærere</a></div></article>`).join('');
 </script>
 </body>
 </html>
