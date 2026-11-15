@@ -189,7 +189,7 @@
   const body = (t, enkelt) => {
     const nd = t.ndla ? D.ndla[t.ndla] : null;
     return `<div class="pBody"><h4>Oppdrag</h4>${t.oppdrag}${t.bilde ? `<figure class="pFig"><img src="${t.bilde.src}" alt="${esc(t.bilde.alt)}" loading="lazy"><figcaption>Sluttresultatet du skal bygge.</figcaption></figure>` : ''}<h4>Du lykkes når</h4><p>${t.lykkes}</p>${t.hms ? `<h4>HMS</h4><p class="hms">${t.hms}</p>` : ''}${t.dok ? `<h4>Dokumentasjon</h4><p>${t.dok}</p>` : ''}<h4>Egenvurdering</h4><p>Øvelsen trener disse punktene:</p><ul class="evList">${t.ev.map(e => `<li><a href="/truck/nivaer/#it-${e}"><span class="evLvl">${D.evNavn[e[0]]}</span>${esc(D.evTekst(e))}</a></li>`).join('')}</ul>
-      <div class="pLinks">${nd ? `<a href="${nd.u}" target="_blank" rel="noopener">NDLA: ${esc(nd.t)} ↗</a>` : ''}${enkelt ? '' : `<a href="?ovelse=${t.slug.slice(2)}">Åpne som egen side →</a>`}<button type="button" class="linkBtn" data-copy="${t.slug}">Kopier lenke</button><a class="teach" href="/laererrom/truck-praksis/#${t.slug}">Lærerveiledning for øvelsen →</a></div></div>`;
+      <div class="pLinks">${nd ? `<a href="${nd.u}" target="_blank" rel="noopener">NDLA: ${esc(nd.t)} ↗</a>` : ''}${enkelt ? '' : `<a href="?ovelse=${t.slug.slice(2)}">Åpne som egen side →</a>`}<button type="button" class="linkBtn" data-copy="${t.slug}">Kopier lenke</button><a class="teach" href="/laererrom/truck-praksis/?ovelse=${t.slug.slice(2)}">Lærerveiledning for øvelsen →</a></div></div>`;
   };
 
   function render() {
