@@ -1,13 +1,13 @@
 # Gjestefag
 
-Andre programfag (INT, KJT …) har egne sider på TLLfluenseren.
+Andre programfag (INT, KJT, HO …) har egne sider på TLLfluenseren.
 
 ```
 gjestefag/
   index.html              Inngang med alle gjestefag (åpen)
   felles/                 fag.js (liste over fag), laas.js (kryptering), gjesterom.js (låseskjerm), gjesterom.css
   <fag>/index.html        Fagets elevressurser (åpen)
-  <fag>/<ressurs>/        Elevsider, f.eks. int/skjaeredata/, kjt/motorer/ (åpne)
+  <fag>/<ressurs>/        Elevsider, f.eks. int/skjaeredata/, kjt/motorer/, ho/bankende-hjerte/ (åpne)
   <fag>/laererrom/        Gjestelærerens rom (låst med passord)
     index.html            Skall med låseskjerm
     innhold.enc.js        Kryptert innhold (HTML) – lages i /laererrom/gjesterom/
@@ -28,3 +28,7 @@ gjestefag/
 ## Gamle adresser
 
 `/int/` og `/int/interaktiv-3d/` sender videre til de nye adressene under `/gjestefag/int/`.
+
+## Python i nettleseren
+
+`ho/bankende-hjerte/` kjører Python med Skulpt (`/assets/vendor/skulpt/`, MIT). Skulpt lastes først når eleven trykker «Kjør».

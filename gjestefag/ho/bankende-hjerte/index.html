@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HO: Fra Python-kode til bankende hjerte – TLLfluenseren</title>
+<meta name="description" content="Gjestefag Helse- og oppvekstfag (Vg1): Lær hvordan hjertet virker, mål pulsen og få et hjerte til å slå i din egen puls med Python rett i nettleseren.">
+<link rel="icon" href="/favicon.ico?v=1" sizes="any">
+<link rel="icon" href="/favicon.svg?v=1" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/styles.css">
+<link rel="stylesheet" href="/assets/elevflyt.css?v=mobile-nav-2">
+<link rel="stylesheet" href="/assets/global-footer.css">
+<script defer src="/assets/global-footer.js?v=mobile-nav-2"></script>
+<style>
+  :root{--hjerte:#ff7f9e;--bla:#7fb6ff}
+  .guest-return{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0 20px}.guest-return a{display:inline-block;padding:11px 15px;border:1px solid #7297aa;border-radius:10px;background:#203d50;color:#f4fafc;text-decoration:none;font-weight:700}.guest-return a:hover,.guest-return a:focus-visible{outline:2px solid #8ed7cc;outline-offset:2px;background:#305b70}
+  .intro{padding:40px 0 10px}
+  .intro h1{font-size:clamp(32px,5.5vw,56px);margin:10px 0 14px}
+  .intro p{color:var(--muted);font-size:18px;line-height:1.6;max-width:780px}
+  .kicker{color:var(--hjerte)}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+  .stepc{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 16px;text-decoration:none;color:inherit;display:block}
+  a.stepc:hover,a.stepc:focus-visible{border-color:var(--hjerte);outline:none}
+  .stepc b{color:var(--hjerte);letter-spacing:.12em;text-transform:uppercase;font-size:13px}
+  .stepc p{margin:6px 0 0;color:var(--muted);line-height:1.5}
+  h2.sec{font-size:30px;margin:52px 0 6px;scroll-margin-top:20px}
+  h2.sec .fase{display:inline-block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;background:var(--hjerte);color:#111820;border-radius:6px;padding:3px 8px;margin-right:10px;vertical-align:middle}
+  h3{margin:26px 0 8px}
+  .sub{color:var(--muted);margin:0 0 12px;line-height:1.6;max-width:820px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:12px 0}
+  .to{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;align-items:start}
+  .kort ul{margin:0;padding-left:20px}.kort li{color:var(--muted);line-height:1.6;margin:4px 0}.kort li b{color:var(--text)}
+  .diagram svg{width:100%;height:auto;display:block}
+  .ordliste{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:10px 0}
+  .ordliste div{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:15px;color:var(--muted);line-height:1.5}
+  .ordliste b{color:var(--text);display:block}
+  .safety{border-left:6px solid #e8762d;background:#2a1a10;border-radius:12px;padding:12px 16px;margin:18px 0;line-height:1.6}
+  .info{border-left:6px solid var(--bla);background:#13243a;border-radius:12px;padding:12px 16px;margin:14px 0;line-height:1.6}
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
+  .toolbar .btn{padding:10px 14px;font-size:15px}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .btn.primary{background:var(--hjerte);border-color:var(--hjerte)}
+  .felt{display:flex;flex-direction:column;gap:6px;font-weight:700;color:var(--muted)}
+  .felt input,.felt select{padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font:inherit;width:140px}
+  .malere{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .maler h4{margin:0 0 8px;font-size:18px}
+  .tid{font:900 44px/1 ui-monospace,Consolas,monospace;color:var(--hjerte);margin:8px 0}
+  .bpm{font-size:20px;font-weight:800;margin:8px 0 0}
+  .bpm span{color:var(--hjerte)}
+  .rekke{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+  .rekke .btn{padding:9px 12px;font-size:14px}
+  .rekke .btn.brukt{opacity:.35;pointer-events:none}
+  ol.svar{margin:8px 0;padding-left:24px;color:var(--text);line-height:1.8;min-height:20px}
+  .tilbake{font-weight:800;min-height:1.5em;margin:6px 0}
+  .tilbake.ok{color:var(--ok)}.tilbake.feil{color:#ffb3b3}
+  .quiz .spm{border-top:1px solid var(--line);padding:12px 0}
+  .quiz .spm:first-child{border-top:0}
+  .quiz .spm p{margin:0 0 8px;font-weight:700;line-height:1.5}
+  .quiz .valg{display:flex;flex-wrap:wrap;gap:8px}
+  .quiz .valg .btn{padding:9px 12px;font-size:14px;text-align:left}
+  .quiz .valg .btn.riktig{background:#1f5a40;border-color:var(--ok)}
+  .quiz .valg .btn.galt{background:#5a1f26;border-color:#ffb3b3}
+  /* Python-verkstedet */
+  .verksted{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:14px;align-items:start}
+  .editor{position:relative;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#0b1117}
+  .editor .topp{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--panel2);border-bottom:1px solid var(--line);font-size:13px;color:var(--muted);font-weight:700}
+  .kodeflate{display:grid;grid-template-columns:auto 1fr;max-height:520px;overflow:auto}
+  .linjenr{padding:12px 8px 12px 12px;text-align:right;color:#5d7083;font:14px/1.6 ui-monospace,Menlo,Consolas,monospace;user-select:none;white-space:pre;background:#0d151d}
+  #kode{display:block;width:100%;min-height:480px;border:0;outline:none;resize:none;background:transparent;color:#e6edf3;font:14px/1.6 ui-monospace,Menlo,Consolas,monospace;padding:12px;white-space:pre;overflow-x:auto;overflow-y:hidden;tab-size:4}
+  #kode:focus-visible{box-shadow:inset 0 0 0 2px var(--hjerte)}
+  .resultat{display:flex;flex-direction:column;gap:10px}
+  .lerret{background:#fff;border-radius:14px;border:1px solid var(--line);aspect-ratio:1/1;width:100%;overflow:hidden;display:grid;place-items:center;color:#56616b;font-weight:700;text-align:center}
+  .lerret canvas{width:100%!important;height:auto!important;display:block}
+  .lerret .tom{padding:20px;line-height:1.5}
+  #utskrift{background:#0b1117;border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-height:90px;max-height:200px;overflow:auto;margin:0;font:13.5px/1.55 ui-monospace,Consolas,monospace;white-space:pre-wrap;color:#cfe3d6}
+  #utskrift .feilm{color:#ffb3b3}
+  .status{font-size:14px;color:var(--muted);font-weight:700;min-height:1.4em}
+  .oppdrag{list-style:none;padding:0;margin:8px 0;display:grid;gap:10px}
+  .oppdrag li{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+  .oppdrag label.hake{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+  .oppdrag input[type=checkbox]{width:20px;height:20px;margin-top:3px;flex:none;accent-color:var(--hjerte)}
+  .oppdrag .niva{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:1px 8px;margin-right:6px;color:var(--muted)}
+  .oppdrag .niva.n1{color:#8cd6ae;border-color:#3f7a5d}.oppdrag .niva.n2{color:#f2b84b;border-color:#7d6230}.oppdrag .niva.n3{color:#ff9fb6;border-color:#8a4757}
+  .oppdrag p{margin:6px 0 0;color:var(--muted);line-height:1.55}
+  .oppdrag details{margin-top:6px}.oppdrag summary{cursor:pointer;color:var(--hjerte);font-weight:700;font-size:14px}
+  .oppdrag pre,.kodebit{background:#0b1117;border:1px solid var(--line);border-radius:10px;padding:10px 12px;overflow:auto;font:13.5px/1.55 ui-monospace,Consolas,monospace;color:#e6edf3;margin:8px 0 0}
+  code{font-family:ui-monospace,Consolas,monospace;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:0 5px;font-size:.92em}
+  .q{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:10px 0}
+  .q b{line-height:1.5}
+  .q textarea,.kvittfelt textarea{width:100%;min-height:74px;margin-top:10px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit}
+  .roller{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .kvitt{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}
+  .kvitt pre{white-space:pre-wrap;font:14px/1.55 ui-monospace,Consolas,monospace;color:var(--text);margin:0}
+  .liten{font-size:14px;color:var(--muted)}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  @media print{body *{visibility:hidden}#kvitt,#kvitt *{visibility:visible}#kvitt{position:absolute;left:0;top:0;width:100%;background:#fff;border:0}#kvitt pre{color:#000}#kvitt .toolbar{display:none}}
+  @media (max-width:900px){
+    .steps{grid-template-columns:repeat(2,1fr)}
+    .to,.verksted,.malere,.roller{grid-template-columns:1fr}
+    .lerret{max-width:460px;margin:0 auto}
+  }
+  @media (max-width:520px){.steps{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<a class="tll-skip" href="#tll-main">Hopp til innhold</a>
+<div class="wrap">
+<header class="topbar homeTopbar"><a class="brand" href="/"><span class="brandmark">TLL</span><span>TLLfluenseren <small>Transport · Logistikk · Løfteoperasjoner · Livet</small></span></a><nav class="tll-site-nav" aria-label="Hovedmeny"><a href="/">Forside</a><a href="/#fag">Fagområder</a><a href="/yrkesretninger/">Yrkesretninger</a><a href="/ressursbank/">Ressursbank</a><a href="/assistent/">TLL-assistenten</a><a href="/laererrom/">Lærerrom</a><a href="/om/">Om</a></nav></header>
+
+<main id="tll-main" tabindex="-1">
+<nav class="guest-return" aria-label="Navigasjon fra gjesterom"><a href="/gjestefag/ho/">← Gjestefag HO</a><a href="/">⌂ Til TLLfluenseren</a></nav>
+<section class="intro">
+  <div class="kicker">Gjestefag HO · Vg1 helse- og oppvekstfag · Python</div>
+  <h1>Fra Python-kode til bankende hjerte</h1>
+  <p>Hjertet ditt slår rundt 100&nbsp;000 ganger i døgnet uten at du tenker på det. Her lærer du hvordan hjertet virker, du måler pulsen din, og du skriver Python-kode som får et hjerte på skjermen til å slå i <b>akkurat din puls</b>. Python kjører rett i nettleseren – du trenger ikke installere noe.</p>
+</section>
+
+<div class="steps">
+  <a class="stepc" href="#laer"><b>1 · Lær</b><p>Hjertets fire rom, blodets vei, systole og diastole.</p></a>
+  <a class="stepc" href="#ov"><b>2 · Øv</b><p>Mål pulsen i hvile og etter aktivitet. Test deg selv.</p></a>
+  <a class="stepc" href="#kode-seksjon"><b>3 · Tenk</b><p>Fra tall til kode: få hjertet til å slå i din puls.</p></a>
+  <a class="stepc" href="#voks"><b>4 · Voks</b><p>Forklar hjertet ditt for en pasient og lag kvittering.</p></a>
+</div>
+<p class="sub"><b>Makkerpar:</b> Dere jobber to og to. Rollene står i hver del. Bytt roller underveis, slik at begge får prøve alt.</p>
+
+<!-- ====================== LÆR ====================== -->
+<h2 class="sec" id="laer"><span class="fase">Lær</span>Hjertet – kroppens pumpe</h2>
+<p class="sub"><b>Etter denne delen kan jeg</b> forklare hvilken vei blodet går gjennom hjertet, og hva som skjer i systole og diastole.</p>
+
+<div class="to">
+  <div class="panel kort">
+    <h3 style="margin-top:0">Kort fortalt</h3>
+    <ul>
+      <li>Hjertet er en <b>muskel</b> omtrent på størrelse med knyttneven din. Det ligger midt i brystet, bak brystbeinet, litt mot venstre.</li>
+      <li>Hjertet har <b>fire rom</b>: to <b>forkamre</b> øverst og to <b>hjertekamre</b> nederst.</li>
+      <li><b>Høyre side</b> tar imot oksygenfattig blod fra kroppen og pumper det til <b>lungene</b>. <b>Venstre side</b> tar imot oksygenrikt blod fra lungene og pumper det ut i <b>hele kroppen</b>.</li>
+      <li>Venstre hjertekammer har den tykkeste muskelveggen, fordi det må pumpe blodet lengst.</li>
+      <li><b>Hjerteklaffene</b> fungerer som enveisventiler. De hindrer at blodet renner feil vei.</li>
+      <li>Hvert hjerteslag har to faser: i <b>systole</b> trekker hjertet seg sammen og pumper blodet ut. I <b>diastole</b> slapper hjertet av og fylles med blod igjen.</li>
+      <li>Hjertet har sin egen «taktgiver», <b>sinusknuten</b>, som sender elektriske signaler. Et <b>EKG</b> måler disse signalene.</li>
+      <li>For hvert slag går det en trykkbølge ut i arteriene. Den kan du kjenne som <b>puls</b>. Pulsen oppgis i <b>slag per minutt</b>.</li>
+    </ul>
+  </div>
+  <figure class="panel diagram" style="margin:12px 0">
+    <svg viewBox="0 0 520 405" role="img" aria-labelledby="dTittel dBesk">
+      <title id="dTittel">Forenklet tegning av hjertets fire rom</title>
+      <desc id="dBesk">Hjertet sett forfra. Til venstre på bildet er hjertets høyre side med høyre forkammer og høyre hjertekammer, farget blå. Til høyre på bildet er venstre side med venstre forkammer og venstre hjertekammer, farget rød. Piler viser at blodet kommer fra kroppen inn i høyre forkammer, går til høyre kammer og videre til lungene. Fra lungene kommer blodet til venstre forkammer, går til venstre kammer og ut i kroppen gjennom aorta. Klaffer mellom forkamre og kamre hindrer at blodet renner tilbake.</desc>
+      <defs>
+        <marker id="pil" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker>
+      </defs>
+      <text x="260" y="18" text-anchor="middle" fill="#aab7c4" font-size="13" font-weight="700">Sett forfra – pasientens høyre side er til venstre på bildet</text>
+      <!-- Ut av hjertet -->
+      <path d="M215 285 C245 285 246 270 246 245 V58" stroke="#9cc4ff" stroke-width="4" fill="none" marker-end="url(#pil)"/>
+      <text x="238" y="46" text-anchor="end" fill="#9cc4ff" font-size="13" font-weight="800">Til lungene</text>
+      <path d="M305 285 C275 285 274 270 274 245 V58" stroke="#ffb3c3" stroke-width="4" fill="none" marker-end="url(#pil)"/>
+      <text x="282" y="46" fill="#ffb3c3" font-size="13" font-weight="800">Til kroppen (aorta)</text>
+      <!-- Forkamre -->
+      <rect x="100" y="80" width="130" height="95" rx="22" fill="#2f5d9a" stroke="#9cc4ff" stroke-width="3"/>
+      <rect x="290" y="80" width="130" height="95" rx="22" fill="#a33a4e" stroke="#ffb3c3" stroke-width="3"/>
+      <!-- Kamre (venstre kammer har tykkere vegg) -->
+      <path d="M100 200 h130 v75 q-25 55 -65 70 q-50 -30 -65 -100z" fill="#2f5d9a" stroke="#9cc4ff" stroke-width="3"/>
+      <path d="M290 200 h130 v75 q-15 55 -65 70 q-50 -30 -65 -100z" fill="#a33a4e" stroke="#ffb3c3" stroke-width="8"/>
+      <!-- Klaffer -->
+      <line x1="125" y1="188" x2="205" y2="188" stroke="#f2b84b" stroke-width="5" stroke-dasharray="12 8"/>
+      <line x1="315" y1="188" x2="395" y2="188" stroke="#f2b84b" stroke-width="5" stroke-dasharray="12 8"/>
+      <text x="165" y="114" text-anchor="middle" fill="#fff" font-size="15" font-weight="800">Høyre</text>
+      <text x="165" y="133" text-anchor="middle" fill="#fff" font-size="15" font-weight="800">forkammer</text>
+      <text x="355" y="114" text-anchor="middle" fill="#fff" font-size="15" font-weight="800">Venstre</text>
+      <text x="355" y="133" text-anchor="middle" fill="#fff" font-size="15" font-weight="800">forkammer</text>
+      <text x="160" y="250" text-anchor="middle" fill="#fff" font-size="15" font-weight="800">Høyre</text>
+      <text x="160" y="269" text-anchor="middle" fill="#fff" font-size="15" font-weight="800">hjertekammer</text>
+      <text x="360" y="250" text-anchor="middle" fill="#fff" font-size="15" font-weight="800">Venstre</text>
+      <text x="360" y="269" text-anchor="middle" fill="#fff" font-size="15" font-weight="800">hjertekammer</text>
+      <!-- Inn i hjertet og ned i kamrene -->
+      <path d="M8 150 H94" stroke="#9cc4ff" stroke-width="4" fill="none" marker-end="url(#pil)"/>
+      <text x="8" y="140" fill="#9cc4ff" font-size="13" font-weight="800">Fra kroppen</text>
+      <path d="M512 150 H426" stroke="#ffb3c3" stroke-width="4" fill="none" marker-end="url(#pil)"/>
+      <text x="512" y="140" text-anchor="end" fill="#ffb3c3" font-size="13" font-weight="800">Fra lungene</text>
+      <path d="M165 145 V222" stroke="#f5f7f9" stroke-width="3" fill="none" marker-end="url(#pil)"/>
+      <path d="M355 145 V222" stroke="#f5f7f9" stroke-width="3" fill="none" marker-end="url(#pil)"/>
+      <!-- Forklaring -->
+      <rect x="20" y="380" width="14" height="14" rx="3" fill="#2f5d9a"/><text x="40" y="392" fill="#cfd8e1" font-size="13">oksygenfattig blod</text>
+      <rect x="185" y="380" width="14" height="14" rx="3" fill="#a33a4e"/><text x="205" y="392" fill="#cfd8e1" font-size="13">oksygenrikt blod</text>
+      <line x1="345" y1="387" x2="380" y2="387" stroke="#f2b84b" stroke-width="5" stroke-dasharray="10 6"/><text x="388" y="392" fill="#cfd8e1" font-size="13">hjerteklaff</text>
+    </svg>
+    <figcaption class="liten" style="margin-top:6px">Forenklet tegning. Et ekte hjerte har ikke rette rom, og blodårene går inn og ut på andre steder enn på bildet.</figcaption>
+  </figure>
+</div>
+
+<h3>Fagord</h3>
+<div class="ordliste">
+  <div><b>Forkammer (atrium)</b>Rommet øverst på hver side. Tar imot blodet som kommer til hjertet.</div>
+  <div><b>Hjertekammer (ventrikkel)</b>Rommet nederst på hver side. Pumper blodet ut av hjertet.</div>
+  <div><b>Hjerteklaff</b>Enveisventil som hindrer at blodet renner tilbake.</div>
+  <div><b>Aorta</b>Den største arterien. Fører blodet fra venstre hjertekammer ut i kroppen.</div>
+  <div><b>Systole</b>Fasen der hjertet trekker seg sammen og pumper.</div>
+  <div><b>Diastole</b>Fasen der hjertet slapper av og fylles.</div>
+  <div><b>Puls</b>Antall hjerteslag per minutt, kjent som trykkbølger i arteriene.</div>
+  <div><b>Sinusknute</b>Hjertets egen taktgiver. Sender elektriske signaler som starter hvert slag.</div>
+</div>
+
+<h3>Øv på blodets vei</h3>
+<p class="sub">Blodet kommer fra kroppen. Trykk på stegene i riktig rekkefølge. <b>Makker A</b> trykker, <b>makker B</b> peker på tegningen og forklarer. Bytt roller og ta den én gang til.</p>
+<div class="panel">
+  <div class="rekke" id="veiValg" role="group" aria-label="Steg i blodets vei"></div>
+  <ol class="svar" id="veiSvar" aria-live="polite"></ol>
+  <p class="tilbake" id="veiTilbake" aria-live="polite"></p>
+  <button class="btn" type="button" id="veiNullstill">Start på nytt</button>
+</div>
+
+<!-- ====================== ØV ====================== -->
+<h2 class="sec" id="ov"><span class="fase">Øv</span>Mål pulsen</h2>
+<p class="sub"><b>Etter denne delen kan jeg</b> måle puls på håndleddet og forklare hvorfor pulsen stiger når jeg er i aktivitet.</p>
+
+<div class="safety"><b>⚠ Trygg måling</b><br>
+• Det er frivillig å dele egne målinger. Du kan bruke tall fra makkeren din eller eksempeltall i stedet.<br>
+• Har du hjerte- eller lungeplager, eller føler du deg uvel? Ikke ta aktivitetsdelen. Vær teller og skriver i stedet.<br>
+• Stopp aktiviteten hvis du blir svimmel, kvalm eller får vondt i brystet, og si fra til læreren.<br>
+• Denne siden er en øvelse og stiller ingen diagnose. Er du bekymret for pulsen din, snakk med helsesykepleier eller lege.</div>
+
+<div class="panel">
+  <h3 style="margin-top:0">Slik måler du pulsen (radialispuls)</h3>
+  <ol style="color:var(--muted);line-height:1.7;margin:0;padding-left:22px">
+    <li>Personen som skal måles, sitter rolig i minst to minutter.</li>
+    <li>Legg <b>pekefingeren og langfingeren</b> på innsiden av håndleddet, på tommelsiden. Bruk ikke tommelen – den har sin egen puls.</li>
+    <li>Trykk lett til du kjenner slagene. Trykker du for hardt, forsvinner pulsen.</li>
+    <li>Trykk «Start 30 sekunder» og tell slagene til klokka stopper. Gang antallet med 2.</li>
+    <li>Kjenn også etter: Er slagene <b>jevne</b>? Er de <b>kraftige eller svake</b>? En helsearbeider observerer både tall, rytme og styrke.</li>
+  </ol>
+  <p class="liten" style="margin:10px 0 0"><b>Roller:</b> Makker A blir målt og sitter rolig. Makker B måler, teller og skriver inn. Bytt roller etter hvilemålingen.</p>
+</div>
+
+<div class="malere">
+  <div class="panel maler" data-maling="hvile">
+    <h4>1 · Hvilepuls</h4>
+    <p class="liten" style="margin:0">Sitt rolig i to minutter før du måler.</p>
+    <div class="tid" aria-live="off">30</div>
+    <div class="toolbar"><button class="btn primary" type="button" data-start>Start 30 sekunder</button></div>
+    <label class="felt">Antall slag på 30 sekunder <input type="number" min="0" max="150" inputmode="numeric" data-antall></label>
+    <p class="bpm" aria-live="polite">Puls: <span data-bpm>–</span></p>
+  </div>
+  <div class="panel maler" data-maling="aktivitet">
+    <h4>2 · Puls etter aktivitet</h4>
+    <p class="liten" style="margin:0">Ta 1 minutt med rolige knebøy (eller gå opp og ned en trapp). Mål med én gang.</p>
+    <div class="tid" aria-live="off">30</div>
+    <div class="toolbar"><button class="btn primary" type="button" data-start>Start 30 sekunder</button></div>
+    <label class="felt">Antall slag på 30 sekunder <input type="number" min="0" max="150" inputmode="numeric" data-antall></label>
+    <p class="bpm" aria-live="polite">Puls: <span data-bpm>–</span></p>
+  </div>
+</div>
+<p class="liten">Målingene lagres bare i denne nettleseren. De brukes i Python-verkstedet under.</p>
+
+<div class="info"><b>Hvorfor stiger pulsen?</b> Når du bruker musklene, trenger de mer oksygen og næring, og de lager mer avfallsstoffer, som karbondioksid. Hjertet slår fortere for å frakte mer blod rundt i kroppen. Hos en voksen i hvile er pulsen som regel mellom 60 og 100 slag i minuttet. Godt trente personer kan ha lavere hvilepuls.</div>
+
+<h3>Test deg selv</h3>
+<div class="panel quiz" id="quiz"></div>
+<p class="bpm" id="quizSum" aria-live="polite"></p>
+
+<!-- ====================== TENK: PYTHON ====================== -->
+<h2 class="sec" id="kode-seksjon"><span class="fase">Tenk</span>Fra tall til kode</h2>
+<p class="sub"><b>Etter denne delen kan jeg</b> regne ut hvor lenge ett hjerteslag varer, og endre et Python-program slik at hjertet slår i min egen puls.</p>
+
+<div class="info"><b>Slik henger tallene sammen:</b> Ett minutt er 60 sekunder. Har du puls 60, varer ett slag 60&nbsp;/&nbsp;60 = <b>1 sekund</b>. Har du puls 120, varer ett slag 60&nbsp;/&nbsp;120 = <b>0,5 sekunder</b>. Programmet regner ut dette med linjen <code>pause = 60 / puls</code>.</div>
+
+<p class="sub"><b>Roller:</b> Makker A sitter ved tastaturet og skriver. Makker B leser oppdraget høyt og sjekker at programmet gjør det oppdraget ber om. Bytt etter hvert oppdrag.</p>
+
+<div class="toolbar" role="group" aria-label="Sett inn puls i koden">
+  <button class="btn" type="button" id="brukHvile">Sett inn hvilepulsen min</button>
+  <button class="btn" type="button" id="brukAktivitet">Sett inn aktivitetspulsen min</button>
+</div>
+
+<div class="verksted">
+  <div>
+    <div class="editor">
+      <div class="topp"><span>hjerte.py</span><span id="lagret">Lagres automatisk i nettleseren</span></div>
+      <div class="kodeflate"><div class="linjenr" id="linjenr" aria-hidden="true">1</div><textarea id="kode" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Python-kode" wrap="off"></textarea></div>
+    </div>
+    <div class="toolbar">
+      <button class="btn primary" type="button" id="kjor">▶ Kjør</button>
+      <button class="btn" type="button" id="stopp" disabled>■ Stopp</button>
+      <button class="btn" type="button" id="nullstill">↺ Tilbake til startkoden</button>
+    </div>
+    <p class="liten" style="margin:0">Tips: Tab-tasten lager innrykk (4 mellomrom). Ctrl + Enter kjører koden.</p>
+  </div>
+  <div class="resultat">
+    <div class="lerret" id="lerret"><div class="tom">Trykk «▶ Kjør» for å starte hjertet.</div></div>
+    <p class="status" id="status" aria-live="polite"></p>
+    <pre id="utskrift" aria-live="polite" aria-label="Utskrift fra programmet"></pre>
+  </div>
+</div>
+
+<h3>Oppdrag</h3>
+<p class="sub">Kryss av når dere er ferdige. Nivå 1 skal alle gjøre. Ta nivå 2 og 3 når dere er klare.</p>
+<ol class="oppdrag" id="oppdrag">
+  <li><label class="hake"><input type="checkbox" data-oppdrag="o1"><span><span class="niva n1">Nivå 1</span><b>Start hjertet.</b><p>Trykk «▶ Kjør». Les utskriften. Finn linjen i koden som bestemmer hvor fort hjertet slår. Hva står det der?</p></span></label></li>
+  <li><label class="hake"><input type="checkbox" data-oppdrag="o2"><span><span class="niva n1">Nivå 1</span><b>Gjør hjertet til ditt.</b><p>Bytt tallet i <code>puls = 72</code> med hvilepulsen din (eller trykk «Sett inn hvilepulsen min»). Kjør. Slår hjertet fortere eller saktere enn før?</p></span></label></li>
+  <li><label class="hake"><input type="checkbox" data-oppdrag="o3"><span><span class="niva n1">Nivå 1</span><b>Etter aktivitet.</b><p>Sett inn aktivitetspulsen din og kjør igjen. Se på utskriften: Hva skjer med <code>pause</code> når pulsen blir høyere? Forklar for makkeren din hvorfor.</p></span></label></li>
+  <li><label class="hake"><input type="checkbox" data-oppdrag="o4"><span><span class="niva n2">Nivå 2</span><b>Regn med hjertet.</b><p>Legg til kode som regner ut og skriver ut hvor mange ganger hjertet slår på én time og på ett døgn med pulsen din. Sett koden rett under linjen med <code>pause</code>.</p>
+    <details><summary>Hint</summary><pre>per_time = puls * 60
+print("Slag på én time:", per_time)</pre><p>Et døgn har 24 timer. Hvordan regner du ut slag per døgn?</p></details></span></label></li>
+  <li><label class="hake"><input type="checkbox" data-oppdrag="o5"><span><span class="niva n2">Nivå 2</span><b>Lag en pulssjekk.</b><p>Bruk <code>if</code>, <code>elif</code> og <code>else</code> til å skrive ut om pulsen er <i>under 60</i>, <i>mellom 60 og 100</i> eller <i>over 100</i>. Husk: grensene gjelder en voksen i hvile, og programmet stiller ingen diagnose.</p>
+    <details><summary>Hint</summary><pre>if puls &lt; 60:
+    print("Under 60 – lavere enn vanlig hvilepuls")
+elif puls &lt;= 100:
+    print(...)
+else:
+    print(...)</pre></details></span></label></li>
+  <li><label class="hake"><input type="checkbox" data-oppdrag="o6"><span><span class="niva n3">Nivå 3</span><b>Fra hvile til trapp.</b><p>Endre programmet slik at hjertet først slår 10 slag i hvilepulsen din og deretter 10 slag i aktivitetspulsen din. Lag to variabler, <code>hvilepuls</code> og <code>aktivitetspuls</code>, og to løkker.</p></span></label></li>
+  <li><label class="hake"><input type="checkbox" data-oppdrag="o7"><span><span class="niva n3">Nivå 3</span><b>Gjør modellen bedre.</b><p>I et ekte hjerte trekker forkamrene seg sammen litt før hjertekamrene. Ved høy puls blir diastolen (hvilen) kortere. Velg én av disse og endre programmet slik at det viser det. Forklar for makkeren din hva du endret og hvorfor.</p></span></label></li>
+</ol>
+
+<h3>Tenk</h3>
+<p class="sub">Svar først hver for dere, og sammenlign så med makkeren. Svarene lagres i nettleseren og kommer med i kvitteringen.</p>
+<div id="tenk"></div>
+
+<!-- ====================== VOKS ====================== -->
+<h2 class="sec" id="voks"><span class="fase">Voks</span>Forklar hjertet ditt</h2>
+<p class="sub"><b>Etter denne delen kan jeg</b> forklare hjertet og pulsen med egne ord, slik jeg ville gjort for en pasient eller en bruker.</p>
+<div class="roller">
+  <div class="panel"><h3 style="margin-top:0">Rollespill: helsearbeider og bruker</h3><p class="liten" style="line-height:1.6;margin:0"><b>Helsearbeideren</b> viser det bankende hjertet på skjermen og forklarer: hva hjertet gjør, hva pulsen betyr, og hvorfor den stiger ved aktivitet. Bruk enkle ord, ikke fagord uten å forklare dem.<br><br><b>Brukeren</b> stiller minst to spørsmål, for eksempel: «Er det farlig at pulsen min går opp når jeg går i trapper?» eller «Hvorfor kjenner du på håndleddet mitt?»<br><br>Bytt roller.</p></div>
+  <div class="panel"><h3 style="margin-top:0">Sjekk deg selv før du leverer</h3><ul style="color:var(--muted);line-height:1.7;margin:0;padding-left:20px"><li>Jeg kan vise blodets vei gjennom hjertet på tegningen.</li><li>Jeg kan forklare systole og diastole.</li><li>Jeg har målt puls og kan forklare forskjellen på hvile og aktivitet.</li><li>Jeg kan vise hvor i koden pulsen bestemmes, og forklare <code>pause = 60 / puls</code>.</li></ul></div>
+</div>
+
+<h3>Exit ticket</h3>
+<div id="exit"></div>
+
+<h3>Kvittering til læreren</h3>
+<p class="sub">Skriv navnet ditt, trykk «Lag kvittering» og lever slik læreren sier (kopier og lim inn, eller skriv ut / lagre som PDF). Ingenting sendes fra denne siden.</p>
+<div class="toolbar"><label class="felt" style="flex-direction:row;align-items:center">Navn <input id="elevNavn" type="text" autocomplete="off" style="width:220px"></label>
+<button class="btn primary" type="button" id="kvittBtn">Lag kvittering</button></div>
+<div id="kvitt" class="kvitt" hidden><pre id="kvittTekst"></pre><div class="toolbar"><button class="btn" type="button" id="kopierBtn">Kopier tekst</button><button class="btn" type="button" id="skrivUt">Skriv ut / PDF</button><span id="kopiert" style="color:var(--ok)"></span></div></div>
+
+<p class="sub" style="margin-top:40px;font-size:14px">Modellen på skjermen er en forenkling laget for undervisning. Den viser ikke hvordan et ekte hjerte ser ut eller slår i detalj, og den kan ikke brukes til å vurdere helsen din. Python kjører med Skulpt (MIT-lisens). Innholdet er laget for TLLfluenseren.</p>
+<nav class="guest-return" aria-label="Navigasjon fra gjesterom"><a href="/gjestefag/ho/">← Gjestefag HO</a><a href="/">⌂ Til TLLfluenseren</a></nav>
+</main>
+</div>
+<script type="module" src="./hjerte.js?v=1"></script>
+</body>
+</html>
