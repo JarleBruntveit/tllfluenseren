@@ -69,7 +69,7 @@
 
   /* ---------- Tilstand ---------- */
   const S = { key: null, salt: null, data: null, fil: null, filStatus: '', filLagret: null, ulagret: false, fane: 'registrer', elev: null, katalog: [], katalogFeil: '', fag: 'TLL', aar: null, inkKar: true };
-  const nyData = () => ({ format: 'tll-kmr-data', versjon: 1, opprettet: naa(), elever: [], vurderinger: [], terminer: [], egneOppgaver: [], logg: [], yffMaal: [], sosialeMaal: SOSIALE_FORSLAG.map(([tekst, ser]) => ({ id: uid(), tekst, ser, forslag: true })), sosial: [], ub: { bedrifter: [], veiledning: [], milepaler: [] } });
+  const nyData = () => ({ format: 'tll-kmr-data', versjon: 1, opprettet: naa(), elever: [], vurderinger: [], terminer: [], egneOppgaver: [], logg: [], yffMaal: [], sosialeMaal: SOSIALE_FORSLAG.map(([tekst, ser]) => ({ id: uid(), tekst, ser, forslag: true })), sosial: [], egneSosMaal: [], ub: { bedrifter: [], veiledning: [], milepaler: [] } });
   function logg(hva) { S.data.logg.unshift({ tid: naa(), hva }); if (S.data.logg.length > 2000) S.data.logg.length = 2000; }
   const elevNavn = id => (S.data.elever.find(e => e.id === id) || {}).navn || '(slettet elev)';
   const aktiveVurd = () => S.data.vurderinger.filter(v => !v.slettet);
@@ -462,7 +462,7 @@
       const el = S.data.elever.find(x => x.id === s.dataset.slettElev);
       modal(`<h2>Slette ${esc(el.navn)} permanent?</h2><p>Eleven, alle vurderingene, terminkarakterene og historikken slettes. Det kan ikke angres. Vil du bare skjule eleven, bruk «Deaktiver».</p><label for="xs">Skriv SLETT for å bekrefte</label><input id="xs" name="s" autocomplete="off" required><p class="err"></p><div class="actions"><button class="btn danger" type="submit">Slett permanent</button><button class="btn sec" value="avbryt" formnovalidate>Avbryt</button></div>`, f => {
         if (f.elements.s.value.trim() !== 'SLETT') { f.querySelector('.err').textContent = 'Skriv SLETT med store bokstaver.'; return false; }
-        S.data.vurderinger = S.data.vurderinger.filter(v => v.elev !== el.id); S.data.terminer = S.data.terminer.filter(t => t.elev !== el.id); S.data.sosial = S.data.sosial.filter(x => x.elev !== el.id); S.data.ub.bedrifter.forEach(b => { b.medlemmer = b.medlemmer.filter(m => m.elev !== el.id); }); S.data.elever = S.data.elever.filter(x => x !== el);
+        S.data.vurderinger = S.data.vurderinger.filter(v => v.elev !== el.id); S.data.terminer = S.data.terminer.filter(t => t.elev !== el.id); S.data.sosial = S.data.sosial.filter(x => x.elev !== el.id); S.data.egneSosMaal = S.data.egneSosMaal.filter(x => x.elev !== el.id); S.data.ub.bedrifter.forEach(b => { b.medlemmer = b.medlemmer.filter(m => m.elev !== el.id); }); S.data.elever = S.data.elever.filter(x => x !== el);
         S.data.logg.forEach(l => { l.hva = l.hva.split(el.navn).join('(slettet elev)'); });
         endret('Slettet en elev permanent'); tegnElever();
       });
@@ -505,7 +505,7 @@
     const rader = [['Skoleår', 'Dato', 'Elev', 'Klasse', 'Oppgave', 'Kompetansemål', 'Fag', 'Dokumentasjon', 'Status', 'Karakter', 'Faglig tilbakemelding', 'Fremovermelding', 'Internt notat', 'Antall endringer']];
     aktiveVurd().slice().sort((a, b) => a.dato.localeCompare(b.dato)).forEach(v => { const e = S.data.elever.find(x => x.id === v.elev) || {}; rader.push([skolear(v.dato), v.dato, e.navn, e.klasse, v.oppgave.tittel, v.maal.join(' '), [...new Set(v.maal.map(fagAv))].join(' '), v.type, v.status, v.karakter ? v.karakter + (v.tendens || '') : '', v.tilbakemelding, v.fremover, v.notat, v.historikk.length]); });
     S.data.terminer.forEach(t => { const e = S.data.elever.find(x => x.id === t.elev) || {}; rader.push([t.skolear, t.dato, e.navn, e.klasse, t.type, '', t.fag, 'Helhetlig vurdering', '', t.karakter, t.begrunnelse, '', '', t.historikk.length]); });
-    S.data.sosial.forEach(x => { const e = S.data.elever.find(y => y.id === x.elev) || {}; rader.push([skolear(x.dato), x.dato, e.navn, e.klasse, x.situasjon, x.maal.map(id => (S.data.sosialeMaal.find(m => m.id === id) || {}).tekst).join(' | '), 'Sosial læring', 'Observasjon', '', x.niva ? SOS_NIVA[x.niva] : '', x.observasjon, x.fremover, '', 0]); });
+    S.data.sosial.forEach(x => { const e = S.data.elever.find(y => y.id === x.elev) || {}; rader.push([skolear(x.dato), x.dato, e.navn, e.klasse, x.situasjon, x.maal.map(sosMaalNavn).join(' | '), 'Sosial læring', 'Observasjon', '', x.niva ? SOS_NIVA[x.niva] : '', x.observasjon, x.fremover, '', 0]); });
     const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + rader.map(r => r.map(q).join(';')).join('\r\n')], { type: 'text/csv;charset=utf-8' }));
     a.download = `vurderinger-${idag()}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); logg('Eksporterte vurderinger til CSV');
   }
@@ -619,40 +619,125 @@
 
   /* ---------- Sosial læring ---------- */
   const SOS_NIVA = { 1: 'Under utvikling', 2: 'På god vei', 3: 'Mestrer godt' };
+  const egneAktive = id => S.data.egneSosMaal.filter(m => m.elev === id && m.status === 'aktiv');
+  const sosMaalNavn = id => (S.data.sosialeMaal.find(m => m.id === id) || S.data.egneSosMaal.find(m => m.id === id) || {}).tekst || '(fjernet mål)';
+  const sisteObs = (elev, mid) => { const l = S.data.sosial.filter(x => x.elev === elev && x.maal.includes(mid) && x.niva).sort((a, b) => a.dato.localeCompare(b.dato)); return l[l.length - 1]; };
+  let sosImport = null;
   function tegnSosial() {
     const V = $('#view'), mål = S.data.sosialeMaal, el = S.data.elever.filter(e => e.aktiv);
     if (!S.sosDato) S.sosDato = idag();
     const siste = (e, m) => { const l = S.data.sosial.filter(x => x.elev === e.id && x.maal.includes(m.id) && x.niva && skolear(x.dato) === S.aar).sort((a, b) => a.dato.localeCompare(b.dato)); return l[l.length - 1]; };
+    const egneTxt = e => { const a = egneAktive(e.id), n = S.data.egneSosMaal.filter(m => m.elev === e.id && m.status === 'nådd').length, obs = S.data.sosial.filter(x => x.elev === e.id && x.maal.some(id => a.some(m => m.id === id))).map(x => x.dato).sort().pop(); return a.length || n ? `${a.length} ${a.length === 1 ? 'aktivt' : 'aktive'}${n ? ` · ${n} nådd` : ''}${obs ? ` · sist observert ${datoTxt(obs)}` : a.length ? ' · <span class="varsel">ikke observert ennå</span>' : ''}` : '<span class="muted">ingen</span>'; };
     V.innerHTML = `<h2>Sosial læring</h2>
       <p class="veil">Sosial læring vurderes for seg. Det påvirker ikke karakterene i fagene, og det er heller ikke vurderingen i orden og atferd. Beskriv det du faktisk så eleven gjøre, og gi en fremovermelding.</p>
       <section class="card"><h3>Klassens sosiale mål</h3>${mål.length ? `<ul class="sosList">${mål.map(m => `<li><b>${esc(m.tekst)}</b>${m.forslag ? ' <span class="tag">forslag</span>' : ''}${m.ser ? `<br><span class="muted">Dette ser jeg etter: ${esc(m.ser)}</span>` : ''} <button type="button" class="linkBtn" data-sosmaal="${m.id}">Endre</button></li>`).join('')}</ul>` : ''}
         <p class="muted">Målene merket «forslag» er mine forslag. Bytt dem ut med verdiene klassen har blitt enige om.</p><button type="button" class="btn sec small" data-sosmaal="ny">+ Nytt sosialt mål</button></section>
-      ${mål.length && el.length ? `<form id="fSos" class="card" novalidate><h3>Registrer observasjon</h3>
-        <fieldset class="maalSet"><legend>Hvilke mål gjelder det?</legend>${mål.map(m => `<label class="chk"><input type="checkbox" name="sm" value="${m.id}"> ${esc(m.tekst)}</label>`).join('')}</fieldset>
+      <details class="card" id="sImp" ${sosImport ? 'open' : ''}><summary><b>Legg inn elevenes egne mål fra SNA</b> <span class="muted">– hele klassen på én gang</span></summary>
+        <p class="muted">Lim inn målene fra nettverksanalysen. Lagre bare selve målene – ikke sosiogrammet, hvem som valgte hvem eller andre svar fra undersøkelsen. Hver elev kan også få mål i elevkortet.</p>
+        <p class="muted">Begge formatene fungerer:<br><code>Elev 01; Jeg tar initiativ til å jobbe med noen nye; Ser at eleven velger ny makker</code> (én linje per mål, «dette ser jeg etter» er valgfritt)<br>eller elevnavnet på én linje, med målene som punkter under (- mål).</p>
+        <div class="grid2 tight"><div><label for="iKilde">Kilde</label><input id="iKilde" value="SNA" maxlength="40"></div><div><label for="iTil">Vurderes sammen med eleven (dato)</label><input id="iTil" type="date"></div></div>
+        <label for="iTekst">Målene</label><textarea id="iTekst" rows="7"></textarea>
+        <div class="actions"><button type="button" class="btn sec" id="iLes">Les inn og vis</button></div>
+        <div id="iRes">${sosImport ? sosImportVis() : ''}</div></details>
+      ${el.length ? `<form id="fSos" class="card" novalidate><h3>Registrer observasjon</h3>
+        ${mål.length ? `<fieldset class="maalSet"><legend>Klassens mål (gjelder alle radene du fyller ut)</legend>${mål.map(m => `<label class="chk"><input type="checkbox" name="sm" value="${m.id}"> ${esc(m.tekst)}</label>`).join('')}</fieldset>` : ''}
+        <p class="muted">Elevens egne mål står i hver rad. Kryss av for målene observasjonen gjelder.</p>
         <div class="grid2 tight"><div><label for="sDato">Dato</label><input id="sDato" type="date" value="${S.sosDato}"></div><div><label for="sSit">Situasjon</label><input id="sSit" maxlength="120" placeholder="F.eks. lastsikring i par, UB-møte"></div></div>
-        <div class="tblWrap"><table class="regTbl"><thead><tr><th>Elev</th><th>Nivå</th><th>Hva du så</th><th>Fremovermelding</th></tr></thead><tbody>
-          ${el.map(e => `<tr data-elev="${e.id}"><th scope="row">${esc(e.navn)}</th><td><select name="n" aria-label="Nivå"><option value="">–</option>${[1, 2, 3].map(k => `<option value="${k}">${SOS_NIVA[k]}</option>`).join('')}</select></td><td><textarea name="o" rows="2" maxlength="1000"></textarea></td><td><textarea name="f" rows="2" maxlength="1000"></textarea></td></tr>`).join('')}
+        <div class="tblWrap"><table class="regTbl"><thead><tr><th>Elev</th><th>Elevens egne mål</th><th>Nivå</th><th>Hva du så</th><th>Fremovermelding</th></tr></thead><tbody>
+          ${el.map(e => { const a = egneAktive(e.id); return `<tr data-elev="${e.id}"><th scope="row">${esc(e.navn)}</th><td class="egneMaal">${a.length ? a.map(m => `<label class="chk"><input type="checkbox" name="em" value="${m.id}"> <span>${esc(m.tekst)}</span></label>`).join('') : '<span class="muted">Ingen</span>'}</td><td><select name="n" aria-label="Nivå"><option value="">–</option>${[1, 2, 3].map(k => `<option value="${k}">${SOS_NIVA[k]}</option>`).join('')}</select></td><td><textarea name="o" rows="2" maxlength="1000"></textarea></td><td><textarea name="f" rows="2" maxlength="1000"></textarea></td></tr>`; }).join('')}
         </tbody></table></div><button class="btn" type="submit">Lagre</button><p class="err" role="alert"></p><div id="sRes"></div></form>
-      <h3 class="mt">Oversikt ${S.aar}</h3><div class="tblWrap"><table class="ovTbl"><thead><tr><th>Elev</th>${mål.map(m => `<th>${esc(m.tekst)}</th>`).join('')}</tr></thead><tbody>
-        ${el.map(e => `<tr><th scope="row"><button type="button" class="linkBtn" data-fane="elevkort" data-elev="${e.id}">${esc(e.navn)}</button></th>${mål.map(m => { const x = siste(e, m); return `<td class="${x ? nKl(x.niva) : 'k0'}">${x ? SOS_NIVA[x.niva] : ''}</td>`; }).join('')}</tr>`).join('')}
-      </tbody></table></div>` : ''}`;
+      <h3 class="mt">Oversikt ${S.aar}</h3><div class="tblWrap"><table class="ovTbl"><thead><tr><th>Elev</th><th>Egne mål</th>${mål.map(m => `<th>${esc(m.tekst)}</th>`).join('')}</tr></thead><tbody>
+        ${el.map(e => `<tr><th scope="row"><button type="button" class="linkBtn" data-fane="elevkort" data-elev="${e.id}">${esc(e.navn)}</button></th><td>${egneTxt(e)}</td>${mål.map(m => { const x = siste(e, m); return `<td class="${x ? nKl(x.niva) : 'k0'}">${x ? SOS_NIVA[x.niva] : ''}</td>`; }).join('')}</tr>`).join('')}
+      </tbody></table></div>` : '<p class="status warn">Ingen aktive elever.</p>'}`;
+    $('#iLes').addEventListener('click', () => { sosImport = lesSosImport($('#iTekst').value, $('#iKilde').value.trim(), $('#iTil').value); $('#iRes').innerHTML = sosImportVis(); });
     const f = $('#fSos'); if (!f) return;
     $('#sDato').addEventListener('change', x => { S.sosDato = x.target.value; });
     f.addEventListener('submit', x => {
       x.preventDefault(); const err = f.querySelector('.err'), mm = [...f.querySelectorAll('input[name=sm]:checked')].map(c => c.value), dato = $('#sDato').value;
-      if (!mm.length) { err.textContent = 'Velg minst ett sosialt mål.'; return; }
+      f.querySelectorAll('tr.feil').forEach(r => r.classList.remove('feil'));
       if (!dato || dato > idag()) { err.textContent = 'Sjekk datoen.'; return; }
-      const rader = [];
-      f.querySelectorAll('tbody tr').forEach(r => { const g = n => r.querySelector(`[name=${n}]`).value.trim(); if (!g('n') && !g('o') && !g('f')) return; rader.push({ id: uid(), elev: r.dataset.elev, dato, maal: mm, situasjon: $('#sSit').value.trim(), niva: +g('n') || null, observasjon: g('o'), fremover: g('f'), opprettet: naa() }); });
+      const rader = [], uten = [];
+      f.querySelectorAll('tbody tr').forEach(r => {
+        const g = n => r.querySelector(`[name=${n}]`).value.trim(), em = [...r.querySelectorAll('input[name=em]:checked')].map(c => c.value);
+        if (!g('n') && !g('o') && !g('f')) return;
+        const maal = mm.concat(em); if (!maal.length) { uten.push(r); return; }
+        rader.push({ id: uid(), elev: r.dataset.elev, dato, maal, situasjon: $('#sSit').value.trim(), niva: +g('n') || null, observasjon: g('o'), fremover: g('f'), opprettet: naa() });
+      });
+      if (uten.length) { uten.forEach(r => r.classList.add('feil')); err.textContent = 'Velg et av klassens mål øverst, eller kryss av for et av elevens egne mål i de markerte radene.'; return; }
       if (!rader.length) { err.textContent = 'Ingen rader er fylt ut.'; return; }
       S.data.sosial.push(...rader); endret(`Sosial læring: ${rader.length} observasjoner (${dato})`); tegnSosial();
       $('#sRes').innerHTML = `<p class="status ok">Lagret ${rader.length} ${rader.length === 1 ? 'observasjon' : 'observasjoner'}.</p>`;
     });
   }
+  function lesSosImport(txt, kilde, til) {
+    const finn = n => S.data.elever.find(e => e.navn.toLowerCase() === n.trim().toLowerCase());
+    const mal = [], ukjent = [], tomme = []; let cur = null;
+    txt.split(/\r?\n/).forEach(rå => {
+      const l = rå.trim(); if (!l) return;
+      const deler = l.split(/\t|;|\|/).map(s => s.trim());
+      if (deler.length >= 2 && deler[1]) { const e = finn(deler[0]); if (e) mal.push({ elev: e.id, tekst: deler[1], ser: deler[2] || '' }); else ukjent.push(l); cur = null; return; }
+      const punkt = l.match(/^(?:[-–•*]|\d+[.)])\s*(.+)$/);
+      if (punkt && cur) { mal.push({ elev: cur.id, tekst: punkt[1].trim(), ser: '' }); return; }
+      const e = finn(l.replace(/:$/, '')); if (e) { cur = e; return; }
+      const kolon = l.match(/^([^:]+):\s*(.+)$/); if (kolon && finn(kolon[1])) { mal.push({ elev: finn(kolon[1]).id, tekst: kolon[2].trim(), ser: '' }); return; }
+      (cur ? tomme : ukjent).push(l);
+    });
+    return { mal: mal.filter(m => m.tekst), ukjent: ukjent.concat(tomme), kilde: kilde || 'SNA', til };
+  }
+  function sosImportVis() {
+    const I = sosImport; if (!I) return '';
+    const per = {}; I.mal.forEach(m => (per[m.elev] = per[m.elev] || []).push(m));
+    const mange = Object.entries(per).filter(([id, l]) => l.length + egneAktive(id).length > 3).map(([id]) => elevNavn(id));
+    return `${I.mal.length ? `<div class="tblWrap"><table class="ovTbl"><thead><tr><th>Elev</th><th>Mål som legges inn</th></tr></thead><tbody>${Object.entries(per).map(([id, l]) => `<tr><th scope="row">${esc(elevNavn(id))}</th><td><ul class="tett">${l.map(m => `<li>${esc(m.tekst)}${m.ser ? ` <span class="muted">– ser etter: ${esc(m.ser)}</span>` : ''}</li>`).join('')}</ul></td></tr>`).join('')}</tbody></table></div>` : '<p class="status warn">Fant ingen mål. Sjekk at elevnavnene er skrevet likt som under «Elever».</p>'}
+      ${I.ukjent.length ? `<p class="status warn">Disse linjene ble ikke forstått eller hører til en elev som ikke finnes i registeret: ${I.ukjent.map(esc).join(' · ')}</p>` : ''}
+      ${mange.length ? `<p class="status warn">${mange.map(esc).join(', ')} får mer enn tre aktive mål. To–tre om gangen er nok til at eleven og du klarer å følge dem opp.</p>` : ''}
+      ${I.mal.length ? `<div class="actions"><button type="button" class="btn" id="iOk">Legg inn ${I.mal.length} mål</button><button type="button" class="btn sec" id="iAvbryt">Avbryt</button></div>` : ''}`;
+  }
+  document.addEventListener('click', e => {
+    if (!S.data) return;
+    if (e.target.id === 'iAvbryt') { sosImport = null; tegnSosial(); return; }
+    if (e.target.id === 'iOk' && sosImport) {
+      const I = sosImport;
+      I.mal.forEach(m => S.data.egneSosMaal.push({ id: uid(), elev: m.elev, tekst: m.tekst.slice(0, 200), ser: m.ser.slice(0, 300), kilde: I.kilde, fra: idag(), til: I.til || '', sammen: false, status: 'aktiv', oppsummering: '', opprettet: naa() }));
+      endret(`La inn ${I.mal.length} egne sosiale mål fra ${I.kilde}`); sosImport = null; tegnSosial();
+      $('#iRes') && ($('#view h2').insertAdjacentHTML('afterend', `<p class="status ok">La inn ${I.mal.length} mål. Du finner dem i elevkortene og i registreringen.</p>`));
+    }
+  });
+  function egenMaalSkjema(elevId, id) {
+    const m = id && S.data.egneSosMaal.find(x => x.id === id), brukt = m && S.data.sosial.some(x => x.maal.includes(m.id));
+    const f = modal(`<h2>${m ? 'Endre elevens mål' : 'Nytt mål for ' + esc(elevNavn(elevId))}</h2>
+      <label for="emT">Målet, formulert som noe eleven gjør</label><input id="emT" name="t" value="${esc(m ? m.tekst : '')}" maxlength="200" required placeholder="F.eks. Jeg spør en jeg ikke kjenner så godt om å jobbe sammen">
+      <label for="emS">Dette ser jeg etter</label><textarea id="emS" name="s" rows="2" maxlength="300">${esc(m ? m.ser : '')}</textarea>
+      <div class="grid3"><div><label for="emK">Kilde</label><input id="emK" name="k" value="${esc(m ? m.kilde : 'SNA')}" maxlength="40"></div><div><label for="emF">Fra</label><input id="emF" name="fra" type="date" value="${m ? m.fra : idag()}"></div><div><label for="emTil">Vurderes</label><input id="emTil" name="til" type="date" value="${m ? m.til : ''}"></div></div>
+      <label class="chk"><input type="checkbox" name="sammen" ${m && m.sammen ? 'checked' : ''}> Målet er gjennomgått og formulert sammen med eleven</label>
+      <div class="grid2 tight"><div><label for="emSt">Status</label><select id="emSt" name="st">${[['aktiv', 'Aktivt'], ['nådd', 'Nådd'], ['avsluttet', 'Avsluttet']].map(([v, t]) => `<option value="${v}" ${(m ? m.status : 'aktiv') === v ? 'selected' : ''}>${t}</option>`).join('')}</select></div></div>
+      <label for="emO">Oppsummering når perioden er over (hva ble nådd, hva nå?)</label><textarea id="emO" name="o" rows="3" maxlength="1000">${esc(m ? m.oppsummering : '')}</textarea>
+      <p class="err"></p><div class="actions"><button class="btn" type="submit">Lagre</button><button class="btn sec" value="avbryt" formnovalidate>Avbryt</button>${m ? `<button class="btn danger" type="button" id="emSlett">${brukt ? 'Slett målet (observasjonene beholdes)' : 'Slett målet'}</button>` : ''}</div>`, f => {
+      const g = n => f.elements[n].value.trim(), t = g('t'); if (!t) return false;
+      if (!m && egneAktive(elevId).length >= 3 && g('st') === 'aktiv' && !f.dataset.ok) { f.dataset.ok = 1; f.querySelector('.err').textContent = 'Eleven har allerede tre aktive mål. To–tre om gangen er nok. Trykk Lagre en gang til hvis du likevel vil legge til.'; return false; }
+      const ny = { tekst: t, ser: g('s'), kilde: g('k'), fra: g('fra'), til: g('til'), sammen: f.elements.sammen.checked, status: g('st'), oppsummering: g('o') };
+      if (m) Object.assign(m, ny, { endret: naa() }); else S.data.egneSosMaal.push({ id: uid(), elev: elevId, ...ny, opprettet: naa() });
+      endret(`${m ? 'Endret' : 'Nytt'} eget sosialt mål for ${elevNavn(elevId)}${m ? ' (' + ny.status + ')' : ''}`); tegn();
+    });
+    if (m) f.querySelector('#emSlett').addEventListener('click', () => { S.data.egneSosMaal = S.data.egneSosMaal.filter(x => x !== m); endret('Slettet et eget sosialt mål for ' + elevNavn(elevId)); $('#modal').close(); tegn(); });
+  }
+  document.addEventListener('click', e => {
+    if (!S.data) return;
+    const b = e.target.closest('[data-egenmaal]'); if (b) egenMaalSkjema(b.dataset.elev, b.dataset.egenmaal === 'ny' ? null : b.dataset.egenmaal);
+  });
   function sosialKort(e) {
     const l = S.data.sosial.filter(x => x.elev === e.id && skolear(x.dato) === S.aar).sort((a, b) => b.dato.localeCompare(a.dato));
-    const mNavn = id => (S.data.sosialeMaal.find(m => m.id === id) || {}).tekst || '(fjernet mål)';
-    return `<section class="card sosKort"><h3>Sosial læring</h3><p class="muted">Holdes adskilt fra den faglige vurderingen.</p>${l.length ? `<div class="vList">${l.map(x => `<article class="vItem"><div class="vTop"><span class="chip ${nKl(x.niva)}"><span class="kv">${x.niva ? SOS_NIVA[x.niva] : '–'}</span></span><div><b>${x.maal.map(mNavn).map(esc).join(' · ')}</b><div class="muted">${datoTxt(x.dato)}${x.situasjon ? ' · ' + esc(x.situasjon) : ''}</div></div><button type="button" class="btn sec small noprint" data-slettsos="${x.id}">Slett</button></div>${x.observasjon ? `<p><b>Observert:</b> ${esc(x.observasjon)}</p>` : ''}${x.fremover ? `<p><b>Fremovermelding:</b> ${esc(x.fremover)}</p>` : ''}</article>`).join('')}</div>` : '<p class="muted">Ingen observasjoner dette skoleåret.</p>'}</section>`;
+    const egne = S.data.egneSosMaal.filter(m => m.elev === e.id).sort((a, b) => (a.status === 'aktiv' ? 0 : 1) - (b.status === 'aktiv' ? 0 : 1) || b.fra.localeCompare(a.fra));
+    const aktive = egne.filter(m => m.status === 'aktiv');
+    const merk = [];
+    if (aktive.length > 3) merk.push(`${aktive.length} aktive mål. To–tre om gangen er nok.`);
+    aktive.filter(m => m.til && m.til < idag()).forEach(m => merk.push(`Perioden for «${m.tekst}» er ute. Vurder målet sammen med eleven og sett status.`));
+    aktive.filter(m => !m.sammen).length && merk.push('Ikke alle aktive mål er gjennomgått med eleven ennå.');
+    return `<section class="card sosKort"><h3>Sosial læring</h3><p class="muted">Holdes adskilt fra den faglige vurderingen.</p>
+      <h4>Elevens egne mål</h4>${egne.length ? `<div class="vList">${egne.map(m => { const s = sisteObs(e.id, m.id), n = S.data.sosial.filter(x => x.elev === e.id && x.maal.includes(m.id)).length; return `<article class="vItem egen ${m.status !== 'aktiv' ? 'lukket' : ''}"><div class="vTop"><span class="chip ${m.status === 'nådd' ? 'k-hoy' : m.status === 'avsluttet' ? 'k0' : s ? nKl(s.niva) : 'k0'}"><span class="kv">${m.status === 'aktiv' ? (s ? SOS_NIVA[s.niva] : 'Ikke observert') : m.status === 'nådd' ? 'Nådd' : 'Avsluttet'}</span></span><div><b>${esc(m.tekst)}</b><div class="muted">${esc(m.kilde || '')}${m.fra ? ' · fra ' + datoTxt(m.fra) : ''}${m.til ? ' · vurderes ' + datoTxt(m.til) : ''} · ${n} ${n === 1 ? 'observasjon' : 'observasjoner'}${m.sammen ? ' · gjennomgått med eleven' : ''}</div></div><button type="button" class="btn sec small noprint" data-egenmaal="${m.id}" data-elev="${e.id}">Endre</button></div>${m.ser ? `<p class="muted">Ser etter: ${esc(m.ser)}</p>` : ''}${m.oppsummering ? `<p><b>Oppsummering:</b> ${esc(m.oppsummering)}</p>` : ''}</article>`; }).join('')}</div>` : '<p class="muted">Ingen egne mål ennå.</p>'}
+      ${merk.length ? `<ul class="merk">${merk.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
+      <button type="button" class="btn sec small noprint" data-egenmaal="ny" data-elev="${e.id}">+ Nytt eget mål</button>
+      <h4>Observasjoner ${S.aar}</h4>${l.length ? `<div class="vList">${l.map(x => `<article class="vItem"><div class="vTop"><span class="chip ${nKl(x.niva)}"><span class="kv">${x.niva ? SOS_NIVA[x.niva] : '–'}</span></span><div><b>${x.maal.map(sosMaalNavn).map(esc).join(' · ')}</b><div class="muted">${datoTxt(x.dato)}${x.situasjon ? ' · ' + esc(x.situasjon) : ''}</div></div><button type="button" class="btn sec small noprint" data-slettsos="${x.id}">Slett</button></div>${x.observasjon ? `<p><b>Observert:</b> ${esc(x.observasjon)}</p>` : ''}${x.fremover ? `<p><b>Fremovermelding:</b> ${esc(x.fremover)}</p>` : ''}</article>`).join('')}</div>` : '<p class="muted">Ingen observasjoner dette skoleåret.</p>'}</section>`;
   }
   document.addEventListener('click', e => {
     if (!S.data) return;
