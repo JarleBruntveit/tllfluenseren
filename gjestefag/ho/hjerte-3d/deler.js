@@ -1,6 +1,6 @@
 // Faginnhold for 3D-hjertet (HO – gjestefag på TLLfluenseren). Egenprodusert tekst.
 // Rekkefølgen = blodets vei gjennom hjertet («Gå gjennom delene»).
-// id = navnet på delen i hjerte.glb (laget av lag_hjerte.py).
+// id = navnet på delen i hjerte.glb (lages av _verktoy/hjerte3d/lag_hjerte.py).
 // ut = hvor delen flyttes når hjertet tas fra hverandre (x, y, z).
 
 export const DELER = [

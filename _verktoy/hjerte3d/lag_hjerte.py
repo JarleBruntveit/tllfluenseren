@@ -7,9 +7,10 @@ ta fra hverandre og se hjertet slå.
 
 Modellen er laget for undervisning. Den er ikke anatomisk nøyaktig.
 
-Slik kjører du programmet selv:
+Verktøy for TLLfluenseren (publiseres ikke). Kjør fra rotmappen:
     pip install numpy trimesh
-    python lag_hjerte.py
+    python _verktoy/hjerte3d/lag_hjerte.py
+Filene lagres i gjestefag/ho/hjerte-3d/.
 
 Koordinater (omtrent centimeter):
     x  = sideveis. Negativ x er pasientens HØYRE side (til venstre på skjermen).
@@ -18,6 +19,7 @@ Koordinater (omtrent centimeter):
 GLB-filen kan også åpnes i Blender, Unity, Unreal Engine eller MetaSteps.
 """
 import json
+import os
 import numpy as np
 import trimesh
 
@@ -229,7 +231,8 @@ deler = {
 scene = trimesh.Scene()
 for navn, mesh in deler.items():
     scene.add_geometry(mesh, node_name=navn, geom_name=navn)
-scene.export('hjerte.glb')
+UT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'gjestefag', 'ho', 'hjerte-3d')
+scene.export(os.path.join(UT, 'hjerte.glb'))
 
 # ------------------------------------------------------------------
 # 4. Blodets vei – brukes til å animere blodstrømmen på nettsiden
@@ -240,7 +243,7 @@ blodbane = {
     'rod': [LUNGEVENER[0][0], (-0.8, 2.2, -2.2), (0.6, 1.9, -1.9), (0.7, 0.5, -1.3), (1.4, -2.2, -0.2),
             (0.9, -0.6, -0.3), (0.1, 0.8, -0.2)] + AORTA[1:],
 }
-with open('blodbane.json', 'w', encoding='utf-8') as f:
+with open(os.path.join(UT, 'blodbane.json'), 'w', encoding='utf-8') as f:
     json.dump({k: [list(map(float, p)) for p in v] for k, v in blodbane.items()}, f)
 
 print('Ferdig! Lagret hjerte.glb med', len(deler), 'deler og blodbane.json')

@@ -1,5 +1,5 @@
 /* Hjertet i 3D – gjestefag HO på TLLfluenseren.
-   Modellen (hjerte.glb) og blodbanen (blodbane.json) er laget av lag_hjerte.py.
+   Modellen (hjerte.glb) og blodbanen (blodbane.json) lages av _verktoy/hjerte3d/lag_hjerte.py.
    Elevdata lagres bare i elevens nettleser. */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/OrbitControls.js';
@@ -70,7 +70,7 @@ function byggDeler(gltf) {
     if (!id || P[id]) return;
     const geo = o.geometry.clone().applyMatrix4(o.matrixWorld);
     if (!geo.attributes.normal) geo.computeVertexNormals();
-    // Fargen kommer fra Python-koden (vertex color i GLB-filen)
+    // Fargen kommer fra GLB-filen (vertex color)
     const farge = new THREE.Color();
     const c = geo.attributes.color;
     if (c) farge.setRGB(c.getX(0), c.getY(0), c.getZ(0), THREE.SRGBColorSpace); else farge.set(0xcc4455);
@@ -238,7 +238,7 @@ $('puls').oninput = e => settPuls(+e.target.value, false);
 [['minHvile', 'hvile'], ['minAktiv', 'aktivitet']].forEach(([knapp, type]) => {
   const b = $(knapp);
   if (maling[type]) { b.textContent += ` (${maling[type]})`; b.onclick = () => settPuls(maling[type], true); }
-  else { b.title = 'Mål pulsen din på siden «Fra Python-kode til bankende hjerte» først'; b.onclick = () => { $('pulsUt').textContent = 'Mål først!'; setTimeout(() => $('pulsUt').textContent = state.puls + ' /min', 2200); }; }
+  else { b.title = 'Mål pulsen din på siden «Hjertet og pulsen» først'; b.onclick = () => { $('pulsUt').textContent = 'Mål først!'; setTimeout(() => $('pulsUt').textContent = state.puls + ' /min', 2200); }; }
 });
 $('bankBtn').onclick = () => {
   state.banker = !state.banker;

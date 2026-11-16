@@ -1,5 +1,4 @@
-/* Fra Python-kode til bankende hjerte – gjestefag HO.
-   Python kjører i nettleseren med Skulpt (/assets/vendor/skulpt/). Alt lagres bare i elevens nettleser. */
+/* Hjertet og pulsen – gjestefag HO. Alt lagres bare i elevens nettleser. */
 
 const $ = id => document.getElementById(id);
 const NOKKEL = 'ho-hjerte-v1';
@@ -66,7 +65,7 @@ const QUIZ = [
   { s: 'Du teller 38 slag på 30 sekunder. Hva er pulsen?', v: ['38', '68', '76', '114'], r: 2, f: '38 × 2 = 76 slag i minuttet.' },
   { s: 'Hva gjør hjerteklaffene?', v: ['Lager de elektriske signalene', 'Hindrer at blodet renner feil vei', 'Tar opp oksygen'], r: 1, f: 'Klaffene er enveisventiler. Sinusknuten lager de elektriske signalene, og lungene tar opp oksygen.' },
   { s: 'Hvor pumper høyre hjertekammer blodet?', v: ['Til lungene', 'Ut i kroppen', 'Til venstre forkammer'], r: 0, f: 'Høyre hjertekammer pumper oksygenfattig blod til lungene, der det tar opp oksygen.' },
-  { s: 'I programmet står det puls = 60. Hvor lenge varer ett hjerteslag (pause = 60 / puls)?', v: ['0,6 sekunder', '1 sekund', '60 sekunder'], r: 1, f: '60 / 60 = 1 sekund per slag.' },
+  { s: 'Pulsen er 120. Hvor lenge varer ett hjerteslag?', v: ['0,5 sekunder', '1,2 sekunder', '2 sekunder'], r: 0, f: '60 sekunder / 120 slag = 0,5 sekunder per slag.' },
   { s: 'Pulsen går opp når du tar knebøy. Hva er hovedgrunnen?', v: ['Musklene trenger mer oksygen, og hjertet må frakte mer blod', 'Hjertet blir varmt', 'Lungene slutter å virke'], r: 0, f: 'Musklene i arbeid trenger mer oksygen og næring, og avfallsstoffer må fraktes bort.' }
 ];
 function tegnQuiz() {
@@ -93,163 +92,25 @@ $('quiz').addEventListener('click', e => {
 });
 tegnQuiz();
 
-/* ---------- Tenk: Python-verkstedet ---------- */
-const STARTKODE = `import turtle
-import math
-import time
-
-puls = 72              # slag per minutt – bytt til din puls
-pause = 60 / puls      # sekunder per hjerteslag
-
-print("Puls:", puls, "slag i minuttet")
-print("Ett hjerteslag varer", round(pause, 2), "sekunder")
-
-skjerm = turtle.Screen()
-skjerm.tracer(0)
-penn = turtle.Turtle()
-penn.hideturtle()
-penn.color("red")
-
-def tegn_hjerte(storrelse):
-    penn.clear()
-    penn.penup()
-    penn.begin_fill()
-    for grader in range(0, 361, 5):
-        t = math.radians(grader)
-        x = 16 * math.sin(t) ** 3
-        y = 13*math.cos(t) - 5*math.cos(2*t) - 2*math.cos(3*t) - math.cos(4*t)
-        penn.goto(x * storrelse, y * storrelse)
-        penn.pendown()
-    penn.end_fill()
-    skjerm.update()
-
-for slag in range(30):
-    tegn_hjerte(10)          # systole: trekker seg sammen
-    time.sleep(pause * 0.35)
-    tegn_hjerte(12)          # diastole: slapper av, fylles
-    time.sleep(pause * 0.65)
-
-print("Ferdig! Hjertet slo", slag + 1, "ganger.")
-`;
-const kode = $('kode');
-kode.value = S.kode || STARTKODE;
-function oppdaterLinjer() {
-  const n = kode.value.split('\n').length;
-  $('linjenr').textContent = Array.from({ length: n }, (_, i) => i + 1).join('\n');
-  kode.style.height = 'auto'; kode.style.height = kode.scrollHeight + 'px';
+/* ---------- Tenk: dine tall ---------- */
+function visTall() {
+  const linje = (navn, b) => b ? `${navn}: <b>${b} slag i minuttet</b> → ett slag varer <b>${(60 / b).toFixed(2).replace('.', ',')} sekunder</b>` : `${navn}: <i>ikke målt ennå</i>`;
+  $('mineTall').innerHTML = linje('Hvilepuls', S.maling.hvile) + '<br>' + linje('Puls etter aktivitet', S.maling.aktivitet);
 }
-let lagreTm;
-kode.addEventListener('input', () => { oppdaterLinjer(); clearTimeout(lagreTm); lagreTm = setTimeout(() => { S.kode = kode.value; lagre(); $('lagret').textContent = 'Lagret'; setTimeout(() => $('lagret').textContent = 'Lagres automatisk i nettleseren', 1500); }, 400); });
-kode.addEventListener('keydown', e => {
-  if (e.key === 'Tab' && !e.shiftKey) { e.preventDefault(); const s = kode.selectionStart; kode.setRangeText('    ', s, kode.selectionEnd, 'end'); kode.dispatchEvent(new Event('input')); }
-  else if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); kjor(); }
-  else if (e.key === 'Escape') { kode.blur(); } // gir tastaturbrukere en vei ut av kodefeltet
-});
-oppdaterLinjer();
-
-function settPuls(type) {
-  const b = S.maling[type];
-  if (!b) { status(`Mål ${type === 'hvile' ? 'hvilepulsen' : 'pulsen etter aktivitet'} først (under «Mål pulsen»).`); document.querySelector(`[data-maling="${type}"] [data-antall]`).focus(); return; }
-  const ny = kode.value.replace(/^(\s*puls\s*=\s*)\d+(\.\d+)?/m, `$1${b}`);
-  if (ny === kode.value && !/^\s*puls\s*=/m.test(kode.value)) { status('Fant ingen linje som starter med «puls =». Skriv tallet inn selv.'); return; }
-  kode.value = ny; kode.dispatchEvent(new Event('input'));
-  status(`Satte puls = ${b}. Trykk «▶ Kjør».`);
-}
-$('brukHvile').addEventListener('click', () => settPuls('hvile'));
-$('brukAktivitet').addEventListener('click', () => settPuls('aktivitet'));
-$('nullstill').addEventListener('click', () => { if (kode.value !== STARTKODE && !confirmNullstill()) return; kode.value = STARTKODE; kode.dispatchEvent(new Event('input')); status('Startkoden er tilbake.'); });
-let nullstillKlikk = 0;
-function confirmNullstill() { // dobbeltklikk-bekreftelse uten nettleserdialog
-  if (Date.now() - nullstillKlikk < 4000) return true;
-  nullstillKlikk = Date.now(); status('Trykk «↺ Tilbake til startkoden» én gang til for å slette endringene dine.'); return false;
-}
-
-const status = t => { $('status').textContent = t; };
-const ut = $('utskrift');
-const skriv = (t, feil) => { const s = document.createElement('span'); if (feil) s.className = 'feilm'; s.textContent = t; ut.appendChild(s); ut.scrollTop = ut.scrollHeight; };
-
-let skulpt = null;
-function lastSkulpt() {
-  if (skulpt) return skulpt;
-  const last = src => new Promise((ok, feil) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = () => feil(new Error(src)); document.head.appendChild(s); });
-  skulpt = last('/assets/vendor/skulpt/skulpt.min.js').then(() => last('/assets/vendor/skulpt/skulpt-stdlib.js'));
-  skulpt.catch(() => { skulpt = null; });
-  return skulpt;
-}
-
-/* Oversetter vanlige Python-feil til hjelp på norsk */
-function forklarFeil(e) {
-  const navn = e?.tp$name || e?.constructor?.name || 'Feil';
-  let linje = null;
-  try { if (e.traceback?.length) linje = e.traceback[0].lineno; } catch (x) {}
-  const melding = (() => { try { return e.toString(); } catch (x) { return String(e); } })();
-  const hjelp = {
-    SyntaxError: 'Python forstår ikke skrivemåten. Sjekk kolon (:) på slutten av if/for/def, parenteser og anførselstegn.',
-    IndentationError: 'Innrykket stemmer ikke. Linjene inne i en løkke, if eller def skal ha 4 mellomrom foran.',
-    NameError: 'Python kjenner ikke et navn. Har du skrevet variabelen likt overalt (store/små bokstaver, æøå)?',
-    TypeError: 'Du blander typer, for eksempel tekst og tall. Husk komma mellom tekst og tall i print().',
-    ZeroDivisionError: 'Du deler på null. Pulsen kan ikke være 0 – da står hjertet stille!',
-    ValueError: 'Et tall eller en verdi passer ikke. Sjekk tallene du har skrevet.'
-  }[navn];
-  return `${melding}${linje ? `\n→ Se linje ${linje}.` : ''}${hjelp ? `\n💡 ${hjelp}` : ''}`;
-}
-
-let kjorer = false, stoppBedt = false;
-async function kjor() {
-  if (kjorer) return;
-  kjorer = true; stoppBedt = false;
-  $('kjor').disabled = true; $('stopp').disabled = false;
-  ut.textContent = ''; status('Laster Python …');
-  try { await lastSkulpt(); } catch (e) {
-    status(''); skriv('Fikk ikke lastet Python. Sjekk nettforbindelsen og last siden på nytt.', true);
-    kjorer = false; $('kjor').disabled = false; $('stopp').disabled = true; return;
-  }
-  const Sk = window.Sk;
-  const lerret = $('lerret'); lerret.innerHTML = '<div id="turtleMaal"></div>';
-  Sk.configure({
-    output: t => skriv(t),
-    read: x => { if (Sk.builtinFiles === undefined || Sk.builtinFiles.files[x] === undefined) throw new Error(`Fant ikke modulen ${x}`); return Sk.builtinFiles.files[x]; },
-    __future__: Sk.python3,
-    yieldLimit: 30,
-    execLimit: null,
-    killableWhile: true, killableFor: true
-  });
-  (Sk.TurtleGraphics ||= {}).target = 'turtleMaal';
-  Sk.TurtleGraphics.width = 400; Sk.TurtleGraphics.height = 400;
-  status('Hjertet slår …');
-  try {
-    await Sk.misceval.asyncToPromise(() => Sk.importMainWithBody('<stdin>', false, kode.value, true), {
-      '*': () => { if (stoppBedt) throw new Error('STOPP'); }
-    });
-    status('Programmet er ferdig. Endre koden og kjør igjen.');
-  } catch (e) {
-    if (e?.message === 'STOPP' || stoppBedt) status('Stoppet.');
-    else { status('Programmet stoppet med en feil.'); skriv('\n' + forklarFeil(e) + '\n', true); }
-  } finally {
-    kjorer = false; $('kjor').disabled = false; $('stopp').disabled = true;
-    S.kjort = (S.kjort || 0) + 1; lagre();
-  }
-}
-$('kjor').addEventListener('click', kjor);
-$('stopp').addEventListener('click', () => { stoppBedt = true; status('Stopper …'); });
-
-/* Oppdrag – avkrysning */
-document.querySelectorAll('[data-oppdrag]').forEach(c => {
-  c.checked = !!S.oppdrag[c.dataset.oppdrag];
-  c.addEventListener('change', () => { S.oppdrag[c.dataset.oppdrag] = c.checked; lagre(); });
-});
+visTall();
+document.querySelectorAll('[data-antall]').forEach(i => i.addEventListener('input', visTall));
 
 /* ---------- Tenk og exit ticket ---------- */
 const TENK = [
   ['t1', 'Hvorfor slår hjertet raskere når du er i aktivitet? Bruk ordene oksygen og blod i svaret.'],
-  ['t2', 'Hva skjer med tallet pause i programmet når pulsen øker? Forklar med regnestykket.'],
-  ['t3', 'Programmet er en modell. Nevn to ting et ekte hjerte gjør som modellen på skjermen ikke viser.'],
+  ['t2', 'Regn ut hvor lenge ett hjerteslag varer med hvilepulsen din og med pulsen etter aktivitet. Hvilken del av hjerteslaget blir kortere?'],
+  ['t3', 'Se hjertet slå i 3D. Nevn to ting et ekte hjerte gjør som modellen ikke viser.'],
   ['t4', 'En bruker på sykehjem har puls 118 mens hun sitter i stolen. Hennes vanlige hvilepuls er rundt 70. Hva gjør du som helsearbeider?']
 ];
 const EXIT = [
   ['e1', 'Hva er puls, og hvordan måler du den riktig?'],
   ['e2', 'Hva er forskjellen på systole og diastole?'],
-  ['e3', 'Hvilken linje i koden bestemmer hvor fort hjertet slår, og hva betyr pause = 60 / puls?']
+  ['e3', 'Hvorfor slår hjertet fortere når du er i aktivitet?']
 ];
 function tekstfelt(el, liste, lager) {
   el.innerHTML = liste.map(([id, s], i) => `<div class="q"><label for="${id}"><b>${i + 1}. ${esc(s)}</b></label><textarea id="${id}" data-id="${id}"></textarea></div>`).join('');
@@ -265,9 +126,8 @@ $('kvittBtn').addEventListener('click', () => {
   const navn = $('elevNavn').value.trim();
   if (!navn) { $('elevNavn').focus(); $('kopiert').textContent = ''; return; }
   const qn = Object.keys(S.quiz).length, qr = Object.entries(S.quiz).filter(([i, j]) => QUIZ[i]?.r === j).length;
-  const oppdrag = [...document.querySelectorAll('[data-oppdrag]')].map((c, i) => `  ${c.checked ? '[x]' : '[ ]'} Oppdrag ${i + 1} (${c.closest('li').querySelector('.niva').textContent})`).join('\n');
   const svar = (liste, lager) => liste.map(([id, s], i) => `${i + 1}. ${s}\n   ${(lager[id] || '(ikke besvart)').trim().replace(/\n/g, '\n   ')}`).join('\n\n');
-  const tekst = `KVITTERING – Fra Python-kode til bankende hjerte (HO Vg1)
+  const tekst = `KVITTERING – Hjertet og pulsen (HO Vg1)
 Navn: ${navn}
 Dato: ${new Date().toLocaleDateString('nb-NO')}
 
@@ -279,18 +139,11 @@ LÆR
   Puls etter aktivitet: ${S.maling.aktivitet ? S.maling.aktivitet + ' slag/min' : 'ikke registrert'}
   Test deg selv: ${qr} av ${QUIZ.length} riktige (${qn} besvart)
 
-TENK – PYTHON
-  Programmet kjørt ${S.kjort || 0} ganger
-${oppdrag}
-
 TENK – SPØRSMÅL
 ${svar(TENK, S.tenk)}
 
 EXIT TICKET
 ${svar(EXIT, S.exit)}
-
-MIN KODE
-${kode.value.trim()}
 `;
   $('kvittTekst').textContent = tekst; $('kvitt').hidden = false; $('kopiert').textContent = '';
   $('kvitt').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
