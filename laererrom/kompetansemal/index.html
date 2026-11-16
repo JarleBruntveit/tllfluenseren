@@ -113,6 +113,18 @@ td.k0{background:transparent}
 .logg li{padding:4px 0;border-bottom:1px solid #2c4d58}
 .veil{background:#13303b;border-left:4px solid var(--teacher-accent);padding:9px 13px;border-radius:8px;color:#d1dfe2;font-size:14.5px}
 .mList{list-style:none;padding:0;margin:6px 0;font-size:14.5px}
+.mt{margin-top:22px}
+tr.valgt th,tr.valgt td{background:#1f4552}
+.heat td{text-align:center;font-weight:900;min-width:56px}
+.tag{display:inline-block;font-size:12px;font-weight:800;border:1px solid #a8873a;color:#ffe3a3;border-radius:999px;padding:0 8px;margin-left:4px}
+.medl{display:grid;gap:6px;max-height:46vh;overflow:auto}
+.medlRad{display:grid;grid-template-columns:1fr 1.2fr;gap:8px;align-items:center}
+.medlRad .chk{margin:0}
+.ovTbl td select,.ovTbl td input{padding:6px 8px;font-size:14px;min-width:130px}
+.ubDet td select[data-ubniva]{min-width:175px}
+tr.ferdig th,tr.ferdig td{opacity:.75}
+.vItem.lukket{opacity:.65}
+.sosList{padding-left:18px}.sosList li{margin:6px 0}
 dialog{border:1px solid #8dc9c6;border-radius:16px;background:#163541;color:#f1f7f7;padding:20px 22px;width:min(680px,calc(100% - 24px));max-height:calc(100vh - 40px)}
 dialog::backdrop{background:rgba(5,15,20,.7)}
 dialog h2{margin-top:0}
@@ -138,12 +150,12 @@ dialog h2{margin-top:0}
   <div class="kIntro">
     <div class="teacher-eyebrow">Privat lærerverktøy · Vurdering</div>
     <h1>Kompetansemålsregnskap</h1>
-    <p>Vurderinger per kompetansemål i Bransjeteknikk, TLL og Bransjelære. Eleven får faglig tilbakemelding og fremovermelding i Teams. Her samler du vurderingsgrunnlaget, følger utviklingen og setter karakter til 1. termin og standpunkt. Alt er kryptert med passordet ditt og lagres bare i filen din og i denne nettleseren.</p>
+    <p>Vurderinger per kompetansemål i Bransjeteknikk, TLL, Bransjelære og YFF, med egne deler for ungdomsbedrift og sosial læring. Eleven får faglig tilbakemelding og fremovermelding i Teams. Her samler du vurderingsgrunnlaget, følger utviklingen og setter karakter til 1. termin og standpunkt. Alt er kryptert med passordet ditt og lagres bare i filen din og i denne nettleseren.</p>
   </div>
   <div id="lock"><p class="muted">Laster …</p></div>
   <div id="app" hidden></div>
 </main>
 <dialog id="modal" aria-label="Skjema"></dialog>
-<script src="kmr.js?v=1"></script>
+<script src="kmr.js?v=2"></script>
 </body>
 </html>
