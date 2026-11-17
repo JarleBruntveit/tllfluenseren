@@ -1,0 +1,9 @@
+/* Enkle strektegninger øverst på fagsidene (pynt). Vises på store skjermer, skjules på mobil. */
+.fag-tegning{display:none}
+.fag-tegning .fs2{stroke:var(--muted,#aab7c4)}
+@media (min-width:1100px){
+  .har-tegning{position:relative}
+  .truckHero.har-tegning{max-width:none}
+  .har-tegning>.fag-tegning{display:block;position:absolute;right:0;top:50%;transform:translateY(-50%);width:clamp(280px,26vw,360px);height:auto;color:var(--accent,#f2b84b);pointer-events:none}
+  .har-tegning>:not(.fag-tegning){max-width:min(760px,calc(100% - 400px))}
+}
