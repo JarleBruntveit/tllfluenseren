@@ -47,6 +47,7 @@ Valgfrie felt i `data.js`:
 | `fotnote` | Egen bunntekst (HTML). |
 | `kompetansemal` | Kan være en liste med flere mål. |
 | `ressurser.ndlaEmneNavn` | Lenketekst for NDLA-emnet. `arbeidsbok` kan utelates. |
+| `tema.figur` | Egen forklaringstegning under «Kort fortalt»: `{ svg, tekst }` eller en liste med flere. Tegningen er en egenprodusert SVG med `role="img"` og `aria-label`; `tekst` blir bildetekst. |
 | `tema.ekstra` | HTML-panel under «Kort fortalt» (f.eks. en øvingsannonse). |
 | `aktivitet.vis` | HTML-panel som vises over oppgaven. |
 | `tema.ndla` | Lenker kan være hele URL-er (`https://…`), ikke bare TLL-stier. |

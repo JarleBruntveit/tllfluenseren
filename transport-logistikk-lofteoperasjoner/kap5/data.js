@@ -124,6 +124,204 @@ const MERKNAD_UTDATERT = `<div class="note warn"><span aria-hidden="true">⚠️
   I testen <b>«Lastsikring – hva har du lært?»</b> er alternativet «hele lastens vekt forover og halve til sidene og bakover» den gamle regelen.
   <b>Dette gjelder i dag</b> (forskrift om bruk av kjøretøy § 3-3): tunge kjøretøy (M2, M3, N2, N3, O3, O4) skal tåle <b>0,8 × vekta framover</b> og <b>0,5 × vekta bakover og sidevegs</b>. Lettere kjøretøy som varebil og små tilhengere: <b>1,0 × vekta framover</b>. Fra 1. juni 2026 krever § 3-2a også skriftlig sikringsdokumentasjon ved gods med høy transportrisiko.</span></div>`;
 
+/* ---------- Forklaringstegninger (tema.figur) – egne SVG-er laget for TLLfluenseren ---------- */
+const F = { ink:'#1b2128', gra:'#5c6670', lys:'#9aa3ab', bla:'#1d6fb8', ora:'#e07b00', gul:'#f2b84b', tre:'#d9b98a', trek:'#8b6a38', pap:'#f4f1ea', gronn:'#1f8a4c', rod:'#c0392b' };
+const fSvg = (w, h, label, innhold) => `<svg viewBox="0 0 ${w} ${h}" ${S} role="img" aria-label="${label}"><rect width="${w}" height="${h}" fill="#ffffff"/>${innhold}</svg>`;
+const fPilDef = (id, farge) => `<defs><marker id="${id}" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="${farge}"/></marker></defs>`;
+const fPil = (id, x1, y1, x2, y2, farge, b, ekstra) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${farge}" stroke-width="${b || 3}" marker-end="url(#${id})" ${ekstra || ''}/>`;
+/* Tekst over flere linjer: linjer er en liste */
+const fT = (x, y, linjer, o) => { o = o || {}; const st = o.s || 14, lh = o.lh || st * 1.25;
+  return `<text x="${x}" y="${y}" font-size="${st}" font-weight="${o.w || 400}" fill="${o.f || F.ink}" text-anchor="${o.a || 'start'}">${[].concat(linjer).map((l, i) => `<tspan x="${x}" dy="${i ? lh : 0}">${l}</tspan>`).join('')}</text>`; };
+const fBoks = (x, y, w, h, fyll, kant, r) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r == null ? 8 : r}" fill="${fyll}" stroke="${kant || F.gra}" stroke-width="2"/>`;
+/* Pil fra kanten av én boks til kanten av en annen (boksene gitt ved midtpunkt og halv bredde/høyde) */
+const fKant = (ax, ay, bx, by, hw, hh, gap) => { const dx = bx - ax, dy = by - ay, t = Math.min(dx ? hw / Math.abs(dx) : 1e9, dy ? hh / Math.abs(dy) : 1e9), L = Math.hypot(dx, dy), g = (gap || 6) / L;
+  return [ax + dx * (t + g), ay + dy * (t + g), bx - dx * (t + g), by - dy * (t + g)].map(v => Math.round(v)); };
+const fNr = (x, y, n, farge) => `<circle cx="${x}" cy="${y}" r="13" fill="${farge || F.ink}"/><text x="${x}" y="${y + 5}" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">${n}</text>`;
+const fPall = (x, y, w) => `<g fill="${F.tre}" stroke="${F.trek}" stroke-width="1.5"><rect x="${x}" y="${y}" width="${w}" height="5"/><rect x="${x}" y="${y + 5}" width="10" height="8"/><rect x="${x + w / 2 - 5}" y="${y + 5}" width="10" height="8"/><rect x="${x + w - 10}" y="${y + 5}" width="10" height="8"/><rect x="${x}" y="${y + 13}" width="${w}" height="4"/></g>`;
+const fHjul = (x, y, r) => `<circle cx="${x}" cy="${y}" r="${r || 12}" fill="${F.ink}"/><circle cx="${x}" cy="${y}" r="${(r || 12) * .4}" fill="${F.lys}"/>`;
+/* Tykk pil med eget pilhode (for kraftpiler) */
+const fKraft = (x1, y1, x2, y2, farge, b) => { const L = Math.hypot(x2 - x1, y2 - y1), ux = (x2 - x1) / L, uy = (y2 - y1) / L, hl = b * 2.6, hb = b * 1.6, bx = x2 - ux * hl, by = y2 - uy * hl;
+  return `<line x1="${x1}" y1="${y1}" x2="${bx}" y2="${by}" stroke="${farge}" stroke-width="${b}"/><path d="M${x2} ${y2} L${bx - uy * hb} ${by + ux * hb} L${bx + uy * hb} ${by - ux * hb} Z" fill="${farge}"/>`; };
+
+/* A-01 Kravene i § 3-3 (tunge kjøretøy) */
+const FIG_KRAV = (() => {
+  let s = fPilDef('k5a', F.rod) + fPilDef('k5b', F.ink);
+  s += fT(20, 30, 'Hva sikringen må holde igjen (tunge kjøretøy)', { s: 15, w: 800 });
+  s += fT(420, 62, 'Kjøreretning', { s: 13, w: 700, a: 'end' }) + fPil('k5b', 430, 58, 560, 58, F.ink, 2.5);
+  s += `<rect x="250" y="135" width="100" height="100" fill="${F.tre}" stroke="${F.trek}" stroke-width="3"/>` + fT(300, 180, ['Lasten', 'sett ovenfra'], { s: 13, w: 700, a: 'middle', lh: 16 });
+  s += fKraft(354, 185, 514, 185, F.rod, 7) + fT(430, 168, '0,8 × vekta', { s: 16, w: 900, f: F.rod, a: 'middle' }) + fT(430, 212, 'framover', { s: 13, w: 700, a: 'middle' });
+  s += fKraft(246, 185, 146, 185, F.rod, 7) + fT(200, 168, '0,5 × vekta', { s: 16, w: 900, f: F.rod, a: 'middle' }) + fT(200, 212, 'bakover', { s: 13, w: 700, a: 'middle' });
+  s += fKraft(300, 131, 300, 81, F.rod, 7) + fKraft(300, 239, 300, 289, F.rod, 7);
+  s += fT(326, 100, '0,5 × vekta sidevegs', { s: 14, w: 800, f: F.rod }) + fT(326, 276, '0,5 × vekta sidevegs', { s: 14, w: 800, f: F.rod });
+  s += fBoks(20, 300, 560, 46, F.pap, F.lys) + fT(300, 320, 'Varebil (N1) og små tilhengere (O1, O2): 1,0 × vekta framover', { s: 13, w: 700, a: 'middle' }) + fT(300, 338, 'Sikringen skal også hindre at lasten heller eller velter.', { s: 13, f: F.gra, a: 'middle' });
+  return fSvg(600, 356, 'Lasten sett ovenfra med piler: 0,8 ganger vekta framover og 0,5 ganger vekta bakover og til hver side', s);
+})();
+
+/* A-02 Treghet: hvor vil lasten? */
+const FIG_TREGHET = (() => {
+  let s = fPilDef('k5c', F.rod) + fPilDef('k5d', F.gra);
+  const bil = `<rect x="0" y="20" width="110" height="46" fill="#f4f1ea" stroke="${F.gra}" stroke-width="2"/><path d="M113 30 h22 q12 0 16 14 l3 10 v12 h-41 z" fill="#c9ced3" stroke="${F.gra}" stroke-width="2"/>${fHjul(28, 72, 9)}${fHjul(132, 72, 9)}<rect x="34" y="34" width="40" height="32" fill="${F.tre}" stroke="${F.trek}" stroke-width="2"/>`;
+  const panel = (x, tittel, kraft, inn) => fBoks(x, 10, 188, 210, F.pap, F.lys, 12) + fT(x + 94, 38, tittel, { s: 16, w: 800, a: 'middle' }) + inn + fT(x + 94, 200, kraft, { s: 14, w: 800, f: F.rod, a: 'middle' });
+  s += panel(4, 'Bremsing', 'ca. 8 N per kg', `<g transform="translate(${4 + 16} 70)">${bil}</g>` + fKraft(98, 120, 150, 120, F.rod, 5) + fT(94, 172, 'Lasten vil framover', { s: 13, a: 'middle' }));
+  s += panel(206, 'Akselerasjon', 'ca. 5 N per kg', `<g transform="translate(${206 + 16} 70)">${bil}</g>` + fKraft(252, 120, 214, 120, F.rod, 5) + fT(300, 172, 'Lasten vil bakover', { s: 13, a: 'middle' }));
+  s += panel(408, 'Sving', 'ca. 5 N per kg', `<path d="M428 62 Q502 178 576 62" fill="none" stroke="${F.lys}" stroke-width="22"/><path d="M428 62 Q502 178 576 62" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="8 8"/><rect x="485" y="101" width="34" height="20" fill="${F.tre}" stroke="${F.trek}" stroke-width="2"/>` + fKraft(502, 125, 502, 156, F.rod, 5) + fT(502, 180, 'Lasten vil utover', { s: 13, a: 'middle' }));
+  s += fT(300, 246, 'Kjøreretning er mot høyre. Lasten vil fortsette i samme fart og retning (treghet).', { s: 13, f: F.gra, a: 'middle' });
+  return fSvg(600, 256, 'Tre tegninger: ved bremsing vil lasten framover, ved akselerasjon bakover og i sving utover', s);
+})();
+
+/* A-02 Friksjon holder igjen en del – resten må sikres */
+const FIG_FRIKSJON = (() => {
+  const x0 = 40, k = 0.065;
+  let s = fT(20, 30, 'Eksempel: 1 000 kg, friksjon µ = 0,3', { s: 15, w: 800 });
+  s += fT(20, 54, 'Tyngde ca. 10 000 N. Kravet framover: 0,8 × 10 000 N = 8 000 N', { s: 13, f: F.gra });
+  s += `<rect x="${x0}" y="80" width="${8000 * k}" height="54" fill="none" stroke="${F.ink}" stroke-width="2"/>`;
+  s += `<rect x="${x0}" y="80" width="${3000 * k}" height="54" fill="#dceccc" stroke="${F.gronn}" stroke-width="2"/>` + fT(x0 + 1500 * k, 104, 'Friksjonen', { s: 14, w: 800, a: 'middle', f: F.gronn }) + fT(x0 + 1500 * k, 123, '3 000 N', { s: 14, w: 700, a: 'middle' });
+  s += `<rect x="${x0 + 3000 * k}" y="80" width="${5000 * k}" height="54" fill="#fff0e0" stroke="${F.ora}" stroke-width="2"/>` + fT(x0 + 5500 * k, 104, 'Må sikres med blokkering eller surring', { s: 14, w: 800, a: 'middle', f: '#8a4b00' }) + fT(x0 + 5500 * k, 123, '5 000 N', { s: 14, w: 700, a: 'middle' });
+  s += `<path d="M${x0} 146 v8 H${x0 + 8000 * k} v-8" fill="none" stroke="${F.ink}" stroke-width="2"/>` + fT(x0 + 4000 * k, 174, 'Kravet framover: 8 000 N', { s: 14, w: 800, a: 'middle' });
+  s += fT(20, 206, 'Friksjonen holder igjen tyngden × µ = 10 000 N × 0,3 = 3 000 N.', { s: 13 });
+  s += fT(20, 226, 'Ujevn veg kan få godset til å lette – da forsvinner friksjonen et øyeblikk.', { s: 13, f: F.gra });
+  return fSvg(600, 240, 'Stolpe som viser at friksjonen holder igjen 3 000 av 8 000 newton, og at 5 000 newton må sikres', s);
+})();
+
+/* B-01 Blokkering sett ovenfra */
+const FIG_BLOKKERING = (() => {
+  let s = fPilDef('k5e', F.ink);
+  s += fT(20, 26, '← KJØRERETNING', { s: 13, w: 700 });
+  s += `<rect x="20" y="70" width="56" height="150" rx="10" fill="#c9ced3" stroke="${F.gra}" stroke-width="2"/>`;
+  s += `<text x="48" y="145" font-size="11" font-weight="700" fill="${F.ink}" text-anchor="middle" transform="rotate(-90 48 145)">FØRERHUS</text>`;
+  s += `<rect x="86" y="44" width="490" height="202" fill="${F.pap}" stroke="${F.gra}" stroke-width="2"/>`;
+  s += `<rect x="86" y="44" width="12" height="202" fill="${F.bla}"/><rect x="564" y="44" width="12" height="202" fill="${F.ora}"/>`;
+  const pall = (x, y) => `<rect x="${x}" y="${y}" width="76" height="92" fill="${F.tre}" stroke="${F.trek}" stroke-width="2"/>`;
+  s += pall(100, 56) + pall(178, 56) + pall(256, 56) + pall(100, 150) + pall(178, 150) + pall(256, 150);
+  s += `<rect x="334" y="150" width="40" height="92" fill="#e9e2d2" stroke="${F.trek}" stroke-width="2" stroke-dasharray="5 3"/>` + pall(334, 56);
+  s += `<rect x="414" y="52" width="10" height="190" fill="${F.gul}" stroke="${F.trek}"/>`;
+  s += `<line x1="100" y1="150" x2="100" y2="242" stroke="none"/>`;
+  /* forklaringer */
+  const lapp = (x1, y1, x2, y2, tekst, o) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${F.ink}" stroke-width="1.5"/><circle cx="${x1}" cy="${y1}" r="3.5" fill="${F.ink}"/>` + fT(x2, y2 + (o && o.dy || 0), tekst, Object.assign({ s: 13, w: 700 }, o || {}));
+  s += lapp(92, 240, 92, 276, ['Inntil frontveggen'], { a: 'middle', dy: 14 });
+  s += lapp(354, 230, 300, 276, ['Mellomlegg fyller', 'tomrommet'], { a: 'middle', dy: 14 });
+  s += lapp(419, 236, 460, 276, ['Sperrebom der', 'lasten slutter'], { a: 'middle', dy: 14 });
+  s += lapp(570, 236, 570, 276, ['Baklem'], { a: 'middle', dy: 14 });
+  s += `<path d="M300 44 v-12 M300 56 v0" stroke="${F.ink}"/>`;
+  s += fT(300, 26, 'Maks 15 cm luft mot sidekarmen', { s: 13, w: 700, a: 'middle', f: F.rod });
+  return fSvg(600, 316, 'Lasteplan sett ovenfra: paller inntil frontveggen, mellomlegg, sperrebom og baklem', s);
+})();
+
+/* B-01 Blokkering mot velt */
+const FIG_VELT = (() => {
+  const panel = (x, tittel, h, ok) => {
+    const kx = x + 70, gy = 200;
+    return fBoks(x, 10, 288, 220, F.pap, F.lys, 12) + fT(x + 144, 38, tittel, { s: 15, w: 800, a: 'middle', f: ok ? F.gronn : F.rod })
+      + `<line x1="${x + 20}" y1="${gy}" x2="${x + 268}" y2="${gy}" stroke="${F.ink}" stroke-width="4"/>`
+      + `<rect x="${kx}" y="${gy - 140}" width="70" height="140" fill="${F.tre}" stroke="${F.trek}" stroke-width="2"/>`
+      + `<circle cx="${kx + 35}" cy="${gy - 70}" r="7" fill="${F.ink}"/>` + fT(kx + 35, gy - 80, 'TP', { s: 12, w: 800, a: 'middle' })
+      + `<rect x="${kx + 72}" y="${gy - h}" width="30" height="${h}" fill="${ok ? '#dceccc' : '#fbe7e4'}" stroke="${ok ? F.gronn : F.rod}" stroke-width="2"/>`
+      + `<line x1="${kx + 35}" y1="${gy - 70}" x2="${kx + 112}" y2="${gy - 70}" stroke="${F.gra}" stroke-dasharray="4 4"/>`
+      + fT(kx + 112, gy - h + 16, ok ? ['Blokkering', 'opp til TP'] : ['Blokkering', 'for lav'], { s: 13, w: 700, lh: 16 });
+  };
+  const s = panel(4, 'Kan velte', 40, false) + panel(308, 'Velter ikke den veien', 72, true)
+    + fT(300, 252, 'TP = tyngdepunktet. Høyt tyngdepunkt gir større fare for velt.', { s: 13, f: F.gra, a: 'middle' });
+  return fSvg(600, 262, 'Et høyt kolli med blokkering som er for lav, og et kolli med blokkering opp til tyngdepunktet', s);
+})();
+
+/* B-02 Surringsvinkelen ved overfallssurring */
+const FIG_VINKEL = (() => {
+  const cx = 60, cy = 255, r = 205;
+  const pt = (g, rr) => [cx + (rr || r) * Math.cos(g * Math.PI / 180), cy - (rr || r) * Math.sin(g * Math.PI / 180)].map(v => v.toFixed(1));
+  const sektor = (a, b, fyll) => { const [x1, y1] = pt(a), [x2, y2] = pt(b); return `<path d="M${cx} ${cy} L${x1} ${y1} A${r} ${r} 0 0 0 ${x2} ${y2} Z" fill="${fyll}" stroke="#fff" stroke-width="2"/>`; };
+  let s = sektor(0, 30, '#fbe7e4') + sektor(30, 75, '#fdf0d2') + sektor(75, 90, '#dceccc');
+  s += `<line x1="${cx - 20}" y1="${cy}" x2="${cx + r + 4}" y2="${cy}" stroke="${F.ink}" stroke-width="4"/>` + fT(cx + r + 4, cy + 20, 'planet', { s: 12, f: F.gra, a: 'end' });
+  const [lx, ly] = pt(55, r - 10);
+  s += `<line x1="${cx}" y1="${cy}" x2="${lx}" y2="${ly}" stroke="${F.ora}" stroke-width="6" stroke-linecap="round"/>` + fT(+lx + 10, +ly + 4, 'stroppen', { s: 13, w: 700, f: F.ora });
+  const [ax, ay] = pt(55, 50);
+  s += `<path d="M${cx + 50} ${cy} A50 50 0 0 0 ${ax} ${ay}" fill="none" stroke="${F.ink}" stroke-width="2"/>` + fT(cx + 58, cy - 18, 'vinkel', { s: 12, w: 700 });
+  [30, 75, 90].forEach(g => { const [x, y] = pt(g, r + 14); s += fT(x, +y + 5, g + '°', { s: 13, w: 800, a: g === 90 ? 'middle' : 'start' }); });
+  const forklar = (y, fyll, kant, tittel, tekst) => fBoks(390, y, 200, 62, fyll, kant) + fT(402, y + 22, tittel, { s: 14, w: 800 }) + fT(402, y + 42, tekst, { s: 12, lh: 15 });
+  s += forklar(30, '#dceccc', F.gronn, '75–90°', ['Tabellen gjelder']) + forklar(102, '#fdf0d2', F.ora, '30–75°', ['Dobbelt så mange stropper']) + forklar(174, '#fbe7e4', F.rod, 'Under 30°', ['Velg en annen metode']);
+  s += fT(20, 292, 'Jo brattere stroppen står, desto mer presser den lasten ned mot planet.', { s: 13, f: F.gra });
+  return fSvg(600, 302, 'Kvartsirkel som viser surringsvinkler: 75 til 90 grader gir full effekt, 30 til 75 grader krever dobbelt så mange stropper, under 30 grader må du velge en annen metode', s);
+})();
+
+/* B-02 Merkelappen på et surrebånd */
+const FIG_MERKELAPP = (() => {
+  let s = `<rect x="0" y="118" width="284" height="34" fill="${F.ora}" opacity=".85"/>`;
+  s += `<rect x="40" y="24" width="210" height="236" rx="6" fill="#e3f1f4" stroke="${F.bla}" stroke-width="3"/>`;
+  s += fT(145, 52, 'SURREBÅND', { s: 15, w: 900, a: 'middle', f: F.bla });
+  const linje = (y, tekst, o) => fT(58, y, tekst, Object.assign({ s: 15, w: 800 }, o || {}));
+  s += linje(88, 'LC 1 600 daN') + linje(120, 'SHF 50 daN') + linje(152, 'STF 400 daN');
+  s += linje(186, 'Produsent · år · materiale', { s: 12, w: 400, f: F.gra }) + linje(206, 'EN 12195-2', { s: 12, w: 400, f: F.gra });
+  s += `<rect x="54" y="220" width="182" height="26" rx="4" fill="${F.rod}"/>` + fT(145, 238, 'NOT FOR LIFTING', { s: 13, w: 900, a: 'middle', f: '#fff' });
+  const pil = (y, tittel, tekst) => `<line x1="200" y1="${y - 5}" x2="290" y2="${y - 5}" stroke="${F.ink}" stroke-width="1.5"/><circle cx="290" cy="${y - 5}" r="3.5" fill="${F.ink}"/>` + fT(300, y - 8, tittel, { s: 14, w: 800 }) + fT(300, y + 10, tekst, { s: 12, f: F.gra });
+  s += pil(88, 'LC – lashing capacity', 'Det båndet tåler i rett strekk. Dette regner du med.');
+  s += pil(130, 'SHF – standard håndkraft', 'Kraften du bruker på strammeren.');
+  s += pil(172, 'STF – strammekraft', 'Kraften du oppnår i båndet.');
+  s += fT(300, 218, 'Ikke forveksle LC med bruddstyrken', { s: 13, w: 800, f: F.rod }) + fT(300, 236, '(f.eks. 4 000 kg) som også kan stå på lappen.', { s: 12, f: F.gra });
+  s += fT(300, 262, 'Mangler lappen? Kasser båndet.', { s: 13, w: 800 });
+  return fSvg(600, 280, 'Merkelapp på et surrebånd med LC, SHF og STF forklart', s);
+})();
+
+/* C-01 Fart i sving og klosser for ruller */
+const FIG_SVING = (() => {
+  let s = fT(150, 28, 'Kraften utover i sving', { s: 15, w: 800, a: 'middle' });
+  const bar = (x, enhet, fart, kraft) => `<rect x="${x}" y="${220 - enhet * 17}" width="56" height="${enhet * 17}" fill="${F.rod}" opacity="${.35 + enhet / 15}"/>` + fT(x + 28, 214 - enhet * 17, kraft, { s: 14, w: 900, a: 'middle', f: F.rod }) + fT(x + 28, 240, fart, { s: 13, w: 700, a: 'middle' });
+  s += bar(40, 1, '1 × fart', '1 ×') + bar(122, 4, '2 × fart', '4 ×') + bar(204, 9, '3 × fart', '9 ×');
+  s += `<line x1="30" y1="220" x2="276" y2="220" stroke="${F.ink}" stroke-width="2"/>`;
+  s += fT(150, 266, 'Dobbel fart gir fire ganger så stor kraft.', { s: 12, f: F.gra, a: 'middle' });
+  s += `<line x1="306" y1="16" x2="306" y2="276" stroke="${F.lys}" stroke-dasharray="4 4"/>`;
+  s += fT(450, 28, 'Klosser for ruller', { s: 15, w: 800, a: 'middle' });
+  const cx = 440, cy = 140, r = 78, gy = cy + r, kh = Math.round(r / 3);
+  s += `<line x1="326" y1="${gy}" x2="590" y2="${gy}" stroke="${F.ink}" stroke-width="4"/>`;
+  s += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#efe9ff" stroke="${F.gra}" stroke-width="2"/><circle cx="${cx}" cy="${cy}" r="18" fill="#fff" stroke="${F.gra}" stroke-width="2"/>`;
+  s += `<line x1="${cx}" y1="${cy}" x2="${cx}" y2="${gy}" stroke="${F.bla}" stroke-width="2"/>` + fT(cx + 6, cy + 46, 'r', { s: 15, w: 800, f: F.bla });
+  s += `<path d="M${cx - 76} ${gy} L${cx - 48} ${gy - kh} L${cx - 40} ${gy - kh} L${cx - 40} ${gy} Z" fill="${F.gul}" stroke="${F.trek}" stroke-width="2" transform="translate(-28 0)"/>`;
+  s += `<path d="M${cx + 76} ${gy} L${cx + 48} ${gy - kh} L${cx + 40} ${gy - kh} L${cx + 40} ${gy} Z" fill="${F.gul}" stroke="${F.trek}" stroke-width="2" transform="translate(28 0)"/>`;
+  s += fT(cx + 86, gy + 20, 'min. ⅓ r', { s: 13, w: 800, a: 'middle' }) + fT(cx - 86, gy + 20, 'min. ⅓ r', { s: 13, w: 800, a: 'middle' });
+  s += fT(450, 262, ['Én eller to ruller: kloss minst ⅓ av radien.', 'Surr fast i tillegg.'], { s: 12, f: F.gra, a: 'middle', lh: 15 });
+  return fSvg(600, 286, 'Søylediagram som viser at dobbel fart gir fire ganger så stor kraft i sving, og en rull med klosser på minst en tredel av radien', s);
+})();
+
+/* C-02 Slik bruker du lastsikringsheftet */
+const FIG_HEFTE = (() => {
+  let s = fPilDef('k5f', F.gra);
+  const st = [['Finn fakta', ['Vekt, friksjon µ', '(ukjent: 0,20),', 'H/B og H/L']], ['Slå opp', ['Hva én sikring', 'holder – gli og', 'tippe']], ['Regn ut', ['Vekt ÷ tabell-', 'verdi. Rund', 'alltid opp.']], ['Velg', ['Gjør det for alle', 'retninger. Høyeste', 'antall gjelder.']]];
+  const w = 134, g = 17;
+  st.forEach(([t, u], i) => { const x = 6 + i * (w + g); s += fBoks(x, 20, w, 140, i === 3 ? '#dceccc' : '#e3f1f4') + fNr(x + 22, 44, i + 1, F.bla) + fT(x + 42, 49, t, { s: 15, w: 800 }) + fT(x + 12, 82, u, { s: 13, lh: 18 });
+    if (i < 3) s += fPil('k5f', x + w + 2, 90, x + w + g - 2, 90, F.gra, 3); });
+  s += fBoks(6, 176, 588, 76, F.pap, F.lys) + fT(20, 200, 'Tabellene i heftet forutsetter:', { s: 14, w: 800 })
+    + fT(20, 222, ['LC 1 600 daN · SHF 50 daN · STF 400 daN · surrefester 2 000 daN', 'Annet utstyr? Bruk en omregningsfaktor, f.eks. aktuell STF ÷ 400.'], { s: 13, f: F.gra, lh: 18 });
+  return fSvg(600, 262, 'Fire steg for å bruke lastsikringsheftet: finn fakta, slå opp, regn ut og velg høyeste antall', s);
+})();
+
+/* C-03 H/B og H/L */
+const FIG_HB = (() => {
+  const vis = (x, tittel, bredde, navn, verdi, resultat) => {
+    const kx = x + 150 - bredde / 2, gy = 220, h = 150;
+    return fT(x + 150, 30, tittel, { s: 15, w: 800, a: 'middle' }) + `<line x1="${x + 20}" y1="${gy}" x2="${x + 280}" y2="${gy}" stroke="${F.ink}" stroke-width="4"/>`
+      + `<rect x="${kx}" y="${gy - h}" width="${bredde}" height="${h}" fill="${F.tre}" stroke="${F.trek}" stroke-width="2"/><circle cx="${x + 150}" cy="${gy - h / 2}" r="6" fill="${F.ink}"/>`
+      + `<path d="M${kx - 16} ${gy - h} v${h} M${kx - 22} ${gy - h} h12 M${kx - 22} ${gy} h12" stroke="${F.bla}" stroke-width="2"/>` + fT(kx - 26, gy - h / 2 + 5, 'H = 1,8', { s: 13, w: 800, f: F.bla, a: 'end' })
+      + `<path d="M${kx} ${gy + 16} h${bredde} M${kx} ${gy + 10} v12 M${kx + bredde} ${gy + 10} v12" stroke="${F.ora}" stroke-width="2"/>` + fT(x + 150, gy + 38, `${navn} = ${verdi}`, { s: 13, w: 800, f: F.ora, a: 'middle' })
+      + fBoks(x + 40, 272, 220, 40, F.pap, F.lys) + fT(x + 150, 297, resultat, { s: 14, w: 800, a: 'middle' });
+  };
+  const s = vis(0, 'Sett bakfra (sidevegs)', 90, 'B', '1,2', 'H/B = 1,8 ÷ 1,2 = 1,5') + vis(300, 'Sett fra siden (framover/bakover)', 180, 'L', '2,4', 'H/L = 1,8 ÷ 2,4 = 0,75')
+    + `<line x1="300" y1="14" x2="300" y2="316" stroke="${F.lys}" stroke-dasharray="4 4"/>`
+    + fT(300, 340, 'Rund opp til nærmeste tabellverdi i heftet. Prikken er tyngdepunktet. Mål i meter.', { s: 13, f: F.gra, a: 'middle' });
+  return fSvg(600, 352, 'Et kolli sett bakfra og fra siden med mål for høyde, bredde og lengde, og utregning av H/B og H/L', s);
+})();
+
+const FIGUR = {
+  t1: { svg: FIG_KRAV, tekst: 'Kravene i forskrift om bruk av kjøretøy § 3-3 for tunge kjøretøy. Pilene viser hvor stor del av lastens vekt sikringen må tåle i hver retning.' },
+  t2: [{ svg: FIG_TREGHET, tekst: 'Lasten står ikke fast av seg selv. Den vil fortsette i samme fart og retning når bilen bremser, akselererer eller svinger.' },
+       { svg: FIG_FRIKSJON, tekst: 'Friksjonen tar en del av kraften. Resten må du sikre med blokkering eller surring.' }],
+  t3: [{ svg: FIG_BLOKKERING, tekst: 'Blokkering betyr at lasten står tett inntil noe som hindrer den i å flytte seg: frontveggen, mellomlegg, sperrebommer og baklemmen.' },
+       { svg: FIG_VELT, tekst: 'Mot velt må blokkeringen gå høyt nok – helt opp til tyngdepunktet.' }],
+  t4: [{ svg: FIG_VINKEL, tekst: 'Surringsvinkelen er vinkelen mellom planet og stroppen. Tabellene for overfallssurring gjelder ved 75–90°.' },
+       { svg: FIG_MERKELAPP, tekst: 'Merkingen på et surrebånd etter EN 12195-2. Båndet skal aldri brukes til løft.' }],
+  t5: { svg: FIG_SVING, tekst: 'Kraften utover i sving øker med farten i andre. Ruller sikres med klosser og surring.' },
+  t6: { svg: FIG_HEFTE, tekst: 'Fire steg når du regner med lastsikringsheftet «Lastsikring ved vegtransport».' },
+  t7: { svg: FIG_HB, tekst: 'Til tippetabellene trenger du H/B og H/L. Målene her er bare et eksempel.' }
+};
+
+
 TLL.registrer({
   id: 'kap5',
   fag: 'Transport, logistikk og løfteoperasjoner',
@@ -156,6 +354,7 @@ TLL.registrer({
   /* ================================================================ T1 */
   {
     id: 't1', lok: 'A-01', tittel: 'Regelverket for sikring av last',
+    figur: FIGUR.t1,
     kort: 'Hvorfor lasten må sikres, forskrift om bruk av kjøretøy §§ 3-2 og 3-3, kravene 0,8 og 0,5, kjøretøygrupper, standarder og veiledere.',
     bok: 'Læreboka 5.1–5.3 (s. 118–123)',
     mal: ['forklare hvorfor både sjåfører og logistikkoperatører må kunne sikre last','gjengi hvor mye lastsikringen minst skal tåle framover, bakover og sidevegs','finne ut hvilket krav som gjelder for ulike kjøretøygrupper','nevne de godkjente sikringsmetodene og hvor reglene og veilederne finnes','forklare når transportforetaket må gi sjåføren skriftlig sikringsdokumentasjon'],
@@ -267,6 +466,7 @@ TLL.registrer({
   /* ================================================================ T2 */
   {
     id: 't2', lok: 'A-02', tittel: 'Krefter, friksjon og tyngdepunkt',
+    figur: FIGUR.t2,
     podkast: { tittel: 'Fysikken bak lastsikring på norske veier' },
     kort: 'Treghetskrefter ved bremsing, akselerasjon og sving, tyngdekraft i newton, Newtons lover, friksjonskoeffisient og hvor mye friksjonen holder igjen.',
     bok: 'Læreboka 5.4 (s. 124–130)',
@@ -375,6 +575,7 @@ TLL.registrer({
   /* ================================================================ T3 */
   {
     id: 't3', lok: 'B-01', tittel: 'Låsing og blokkering',
+    figur: FIGUR.t3,
     kort: 'Konteinerlåser, blokkering mot frontvegg, baklem og sidekarmer, mellomlegg, sperrebommer, strekk- og krympefilm og blokkering mot velt.',
     bok: 'Læreboka 5.5–5.6 (s. 131–134) og 5.9 (s. 149)',
     mal: ['forklare forskjellen på låsing og blokkering','blokkere last framover, bakover og sidevegs','forklare 15 cm-regelen og når du trenger mellomlegg','forklare hvor høyt du må blokkere for å hindre velt'],
@@ -483,6 +684,7 @@ TLL.registrer({
   /* ================================================================ T4 */
   {
     id: 't4', lok: 'B-02', tittel: 'Surring og surringsutstyr',
+    figur: FIGUR.t4,
     kort: 'Overfalls-, loop-, grime- og direktesurring, surringsvinkler, etterstramming, merking av surrebånd (LC, STF, SHF), kjetting og surringsfester.',
     bok: 'Læreboka 5.7 (s. 135–148)',
     mal: ['kjenne igjen de fire surringsteknikkene og vite hva hver av dem brukes til','forklare hvordan surringsvinkelen påvirker kraften','lese merkingen på et surrebånd og vite når utstyret skal kasseres','bruke en tabellverdi til å regne ut hvor mange surringer du trenger'],
@@ -621,6 +823,7 @@ TLL.registrer({
   /* ================================================================ T5 */
   {
     id: 't5', lok: 'C-01', tittel: 'Ulike lasttyper og kombinert transport',
+    figur: FIGUR.t5,
     kort: 'Velt i sving, ruller, rør, tromler, materialpakker, kjøretøy, tømmer, betongelementer, løsmasser og stykkgods – og lastsikring på ferje og tog.',
     bok: 'Læreboka 5.8–5.10 (s. 149–158)',
     mal: ['forklare hvorfor farten i sving har så mye å si for veltefaren','velge riktig sikring for runde kolli, kjøretøy, tømmer, betong og løsmasser','forklare hvorfor presenning og nett ikke er lastsikringsutstyr','forklare hva som gjelder når lasten skal på ferje eller tog'],
@@ -735,6 +938,7 @@ TLL.registrer({
   /* ================================================================ T6 */
   {
     id: 't6', lok: 'C-02', tittel: 'Lastsikringsheftet og dokumenter',
+    figur: FIGUR.t6,
     kort: 'Dokumentene du trenger: hjelpedokument for sikringsplan, NLF-heftet «Lastsikring ved vegtransport» og NLF-standarden for betongelementer – med oppgaver der du slår opp og regner som en sjåfør.',
     bok: 'Læreboka 5.3 og 5.7 (s. 122–148)',
     mal: ['finne fram i lastsikringsheftet og vite hvilke forutsetninger tabellene bygger på','slå opp friksjon og hvor mye én surring holder','regne ut hvor mange surringer som trengs mot glidning og tipping','lage en enkel sikringsplan for et kolli'],
@@ -890,6 +1094,7 @@ TLL.registrer({
   ,
   {
     id: 't7', lok: 'C-03', tittel: 'Oppgavebank: regn med lastsikringsheftet',
+    figur: FIGUR.t7,
     kort: 'Mange oppgaver der du slår opp i NLF-heftet «Lastsikring ved vegtransport» og regner ut sikringen – fra grunnreglene til hele case med overfalls-, loop-, grime- og direktesurring.',
     bok: 'Læreboka 5.3 og 5.7 (s. 122–148)',
     mal: ['regne ut hvor mange tonn lasten må sikres for framover, sidevegs og bakover','finne friksjonen og riktig tabellverdi i lastsikringsheftet','regne ut antall surringer for hver retning og velge det høyeste','justere for vinkel, omregningsfaktor og last i flere lag','velge og begrunne en sikringsmetode'],
