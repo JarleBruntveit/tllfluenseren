@@ -368,15 +368,15 @@ const GEN = {
     do {
       if (a.medMateriale){ mat = F[rnd(0,F.length-1)]; rad = T.rader.find(r => r.mu === mat[1]); }
       else { rad = rader[rnd(0,rader.length-1)]; mat = null; }
-      fram = rnd(0,1) === 1 || !rad.side; kg = rnd(5,40)*100; need = kg*(fram ? 8 : 5)/10;
+      fram = rnd(0,1) === 1 || !rad.side; kg = rnd(5,40)*100; need = kg; /* Kravet (0,8/0,5) er allerede regnet inn i tabellen – ikke gang vekta med det. */
       cap = fram ? rad.fram : rad.side; ans = cap ? Math.ceil(need/cap) : 0;
     } while (!cap || ans < 1 || ans > 8);
     const mu = tidel2(rad.mu), retn = fram ? 'framover' : 'sidevegs';
     return { task:`Et kolli på <b>${fmt(kg)} kg</b> skal sikres med overfallssurringer på en lastebil (N3). ${mat ? `Kontaktflaten er <b>${mat[0]}</b>.` : `Friksjonen mellom kolliet og planet er <b>µ = ${mu}</b>.`} Bruk øvingstabellen. Hvor mange overfallssurringer trenger du for å sikre <b>${retn}</b>?`,
       ans, unit:'surringer', steps:[
         ...(mat ? [`Friksjonstabellen: ${mat[0]} → µ = ${mu}`] : []),
-        `Øvingstabellen, rad µ = ${mu}, kolonne ${retn}: én surring holder ${fmt(cap)} kg`,
-        `Krav ${retn} = ${fmt(kg)} × ${fram ? '0,8' : '0,5'} = ${fmt(need)} kg`,
+        `Øvingstabellen, rad µ = ${mu}, kolonne ${retn}: én surring sikrer ${fmt(cap)} kg gods`,
+        `Kravet (${fram ? '0,8' : '0,5'} × vekta) er allerede regnet inn i tabellen. Derfor deler du hele lastens vekt – ikke gang med ${fram ? '0,8' : '0,5'} først.`,
         `${fmt(need)} ÷ ${fmt(cap)} = ${(need/cap).toLocaleString('nb-NO',{maximumFractionDigits:2})} → rund alltid <b>opp</b>: <b>${ans}</b> surringer`] }; },
   fart(){ const v1 = [10,15,20,25,30][rnd(0,4)], k = rnd(2,3), v2 = v1*k;
     return { task:`Du kjører gjennom en krapp sving i <b>${v1} km/t</b>. Neste gang kjører du gjennom den samme svingen i <b>${v2} km/t</b>. Hvor mange ganger større blir kraften som skyver lasten utover?`,
