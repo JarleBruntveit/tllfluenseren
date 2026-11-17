@@ -829,6 +829,12 @@ function bootKapittel(){
     if (a) runBank($('#stage'), a, pct => { TLL.registrerResultat(K.id, store, a.id, pct); });
     return !!valgt;
   }
+  /* Valgfritt: tema.figur = { svg, tekst } eller en liste med slike. Egne forklaringstegninger under «Kort fortalt». */
+  function figurer(t){
+    if (!t.figur) return '';
+    const liste = Array.isArray(t.figur) ? t.figur : [t.figur];
+    return `<div class="figurer">${liste.map(f => `<figure class="panel figur">${f.svg}${f.tekst ? `<figcaption>${f.tekst}</figcaption>` : ''}</figure>`).join('')}</div>`;
+  }
   function pageTema(t){
     if (erListeBank(t)) return pageBank(t, null);
     header(`<a href="#/">${KN}</a> <span>›</span> <span>${esc(t.lok)}</span>`, temaNavn(t), esc(t.kort), false);
@@ -852,6 +858,7 @@ function bootKapittel(){
             ${t.ndla.map(([tt,u,ty]) => `<li><span class="tag ndla">${esc(ty)}</span><a href="${/^https?:/.test(u) ? u : NDLA+u}" target="_blank" rel="noopener">${esc(tt)}</a></li>`).join('')}
             ${t.arbeidsbok ? `<li><span class="tag">Arbeidsbok</span><span>Oppgave ${esc(t.arbeidsbok)}</span></li>` : ''}</ul></div>
         </div>
+        ${figurer(t)}
         ${t.ekstra ? `<div class="panel" style="margin-top:14px">${t.ekstra}</div>` : ''}
         <section data-resource-topic="${K.id}-${t.id}"></section>
         <div style="margin-top:12px">${cards(FASER[0])}</div>

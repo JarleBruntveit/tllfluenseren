@@ -75,6 +75,239 @@ const SVG_SORT = `<svg viewBox="0 0 600 370" ${S} role="img" aria-label="Skisse 
   <g pointer-events="none" fill="#c69c5d" stroke="#8b6a38"><rect x="48" y="282" width="20" height="12"/><rect x="250" y="38" width="16" height="10"/><rect x="420" y="86" width="16" height="10"/></g>
 </svg>`;
 
+/* ---------- Forklaringstegninger (tema.figur) – egne SVG-er laget for TLLfluenseren ---------- */
+const F = { ink:'#1b2128', gra:'#5c6670', lys:'#9aa3ab', bla:'#1d6fb8', ora:'#e07b00', gul:'#f2b84b', tre:'#d9b98a', trek:'#8b6a38', pap:'#f4f1ea', gronn:'#1f8a4c', rod:'#c0392b' };
+const fSvg = (w, h, label, innhold) => `<svg viewBox="0 0 ${w} ${h}" ${S} role="img" aria-label="${label}"><rect width="${w}" height="${h}" fill="#ffffff"/>${innhold}</svg>`;
+const fPilDef = (id, farge) => `<defs><marker id="${id}" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="${farge}"/></marker></defs>`;
+const fPil = (id, x1, y1, x2, y2, farge, b, ekstra) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${farge}" stroke-width="${b || 3}" marker-end="url(#${id})" ${ekstra || ''}/>`;
+/* Tekst over flere linjer: linjer er en liste */
+const fT = (x, y, linjer, o) => { o = o || {}; const st = o.s || 14, lh = o.lh || st * 1.25;
+  return `<text x="${x}" y="${y}" font-size="${st}" font-weight="${o.w || 400}" fill="${o.f || F.ink}" text-anchor="${o.a || 'start'}">${[].concat(linjer).map((l, i) => `<tspan x="${x}" dy="${i ? lh : 0}">${l}</tspan>`).join('')}</text>`; };
+const fBoks = (x, y, w, h, fyll, kant, r) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r == null ? 8 : r}" fill="${fyll}" stroke="${kant || F.gra}" stroke-width="2"/>`;
+/* Pil fra kanten av én boks til kanten av en annen (boksene gitt ved midtpunkt og halv bredde/høyde) */
+const fKant = (ax, ay, bx, by, hw, hh, gap) => { const dx = bx - ax, dy = by - ay, t = Math.min(dx ? hw / Math.abs(dx) : 1e9, dy ? hh / Math.abs(dy) : 1e9), L = Math.hypot(dx, dy), g = (gap || 6) / L;
+  return [ax + dx * (t + g), ay + dy * (t + g), bx - dx * (t + g), by - dy * (t + g)].map(v => Math.round(v)); };
+const fNr = (x, y, n, farge) => `<circle cx="${x}" cy="${y}" r="13" fill="${farge || F.ink}"/><text x="${x}" y="${y + 5}" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">${n}</text>`;
+const fPall = (x, y, w) => `<g fill="${F.tre}" stroke="${F.trek}" stroke-width="1.5"><rect x="${x}" y="${y}" width="${w}" height="5"/><rect x="${x}" y="${y + 5}" width="10" height="8"/><rect x="${x + w / 2 - 5}" y="${y + 5}" width="10" height="8"/><rect x="${x + w - 10}" y="${y + 5}" width="10" height="8"/><rect x="${x}" y="${y + 13}" width="${w}" height="4"/></g>`;
+const fHjul = (x, y, r) => `<circle cx="${x}" cy="${y}" r="${r || 12}" fill="${F.ink}"/><circle cx="${x}" cy="${y}" r="${(r || 12) * .4}" fill="${F.lys}"/>`;
+/* Tykk pil med eget pilhode (for kraftpiler) */
+const fKraft = (x1, y1, x2, y2, farge, b) => { const L = Math.hypot(x2 - x1, y2 - y1), ux = (x2 - x1) / L, uy = (y2 - y1) / L, hl = b * 2.6, hb = b * 1.6, bx = x2 - ux * hl, by = y2 - uy * hl;
+  return `<line x1="${x1}" y1="${y1}" x2="${bx}" y2="${by}" stroke="${farge}" stroke-width="${b}"/><path d="M${x2} ${y2} L${bx - uy * hb} ${by + ux * hb} L${bx + uy * hb} ${by - ux * hb} Z" fill="${farge}"/>`; };
+
+/* A-01 Varekretsløpet */
+const FIG_KRETSLOP = (() => {
+  const n = [
+    [300, 45, ['Primærnæringer'], 'råvarer', '#dceccc'],
+    [512, 120, ['Industri'], 'råvarer blir varer', '#e9e2d2'],
+    [512, 240, ['Lager og terminal'], 'oppbevarer, sorterer', '#fdf0d2'],
+    [300, 315, ['Handel'], 'varene selges', '#e3f1f4'],
+    [88, 240, ['Forbruker'], 'varene brukes', '#efe9ff'],
+    [88, 120, ['Gjenvinning'], 'blir nye råvarer', '#dceccc']];
+  const hw = 76, hh = 30;
+  let s = fPilDef('k1a', F.gra);
+  n.forEach((a, i) => { const b = n[(i + 1) % n.length]; const [x1, y1, x2, y2] = fKant(a[0], a[1], b[0], b[1], hw, hh, 5); s += fPil('k1a', x1, y1, x2, y2, F.gra, 3); });
+  n.forEach(([x, y, t, u, c], i) => { s += fBoks(x - hw, y - hh, hw * 2, hh * 2, c, i === 2 ? F.ora : F.gra) + (i === 2 ? `<rect x="${x - hw}" y="${y - hh}" width="${hw * 2}" height="${hh * 2}" rx="8" fill="none" stroke="${F.ora}" stroke-width="4"/>` : '')
+    + fT(x, y - 4, t, { s: 15, w: 800, a: 'middle' }) + fT(x, y + 16, u, { s: 13, f: F.gra, a: 'middle' }); });
+  s += fT(300, 165, 'VAREKRETSLØPET', { s: 18, w: 900, a: 'middle' }) + fT(300, 190, ['Mellom hvert ledd trengs', 'transport og logistikk'], { s: 14, f: F.gra, a: 'middle' });
+  s += fT(512, 292, 'Her jobber du!', { s: 13, w: 700, f: F.ora, a: 'middle' });
+  return fSvg(600, 350, 'Varekretsløpet: primærnæringer, industri, lager og terminal, handel, forbruker og gjenvinning i en sirkel', s);
+})();
+
+/* A-02 Lagerkjeden */
+const FIG_LAGERKJEDE = (() => {
+  const b = [['Fabrikk', 'inn- og utland'], ['Sentrallager', 'kjøper inn stort'], ['Regionlager', '(grossistlager)'], ['Butikklager', 'i butikken'], ['Kunden', '']];
+  const w = 104, g = 18, y = 70, h = 64;
+  let s = fPilDef('k1b', F.gra);
+  b.forEach(([t, u], i) => { const x = 6 + i * (w + g);
+    s += fBoks(x, y, w, h, i === 0 ? '#e9e2d2' : i === 4 ? '#efe9ff' : '#fdf0d2') + fT(x + w / 2, u ? y + 28 : y + 37, t, { s: 15, w: 800, a: 'middle' }) + fT(x + w / 2, y + 47, u, { s: 12, f: F.gra, a: 'middle' });
+    if (i < b.length - 1) s += fPil('k1b', x + w + 2, y + h / 2, x + w + g - 2, y + h / 2, F.gra, 3); });
+  const x0 = 6, x1 = 6 + w + g, x2 = 6 + 3 * (w + g);
+  s += `<path d="M${x0 + w / 2} 150 v10 H${x1 + w / 2} v-10" fill="none" stroke="${F.ora}" stroke-width="3"/>` + fT((x0 + x1 + w) / 2, 182, ['Lang ledetid', '(f.eks. båt fra Asia: ca. 2 måneder)'], { s: 13, w: 700, f: F.ora, a: 'middle' });
+  s += `<path d="M${x1 + w / 2} 205 v10 H${x2 + w / 2} v-10" fill="none" stroke="${F.gronn}" stroke-width="3"/>` + fT((x1 + x2 + w) / 2, 237, 'Kort ledetid', { s: 13, w: 700, f: F.gronn, a: 'middle' });
+  s += fT(x1 + w / 2, 30, ['Sentrale innkjøp', 'gir volumrabatt'], { s: 13, f: F.gra, a: 'middle' });
+  s += fT(300, 262, 'Ledetid = tida fra bestilling til levering', { s: 13, f: F.gra, a: 'middle' });
+  return fSvg(600, 272, 'Lagerkjeden fra fabrikk via sentrallager, regionlager og butikklager til kunden, med lang og kort ledetid', s);
+})();
+
+/* A-02 Bestillingspunkt og sikkerhetslager */
+const FIG_BESTILLING = (() => {
+  const X0 = 70, X1 = 480, Ytop = 40, Ybunn = 270, Ysik = 232, Ybp = 170;
+  let s = fPilDef('k1c', F.ink);
+  s += `<rect x="${X0}" y="${Ysik}" width="${X1 - X0}" height="${Ybunn - Ysik}" fill="#fbe7e4"/>` + fT(X1 + 10, Ysik + 14, ['Sikkerhets-', 'lager'], { s: 13, w: 700, f: F.rod, lh: 16 });
+  s += `<line x1="${X0}" y1="${Ybp}" x2="${X1}" y2="${Ybp}" stroke="${F.bla}" stroke-width="2.5" stroke-dasharray="8 6"/>` + fT(X1 + 10, Ybp - 4, ['Bestillings-', 'punkt'], { s: 13, w: 700, f: F.bla, lh: 16 });
+  s += fPil('k1c', X0, Ybunn, X0, Ytop - 10, F.ink, 2) + fPil('k1c', X0, Ybunn, X1 + 4, Ybunn, F.ink, 2);
+  s += fT(X0 - 10, Ytop + 10, ['Lager-', 'saldo'], { s: 13, w: 700, a: 'end' }) + fT(X1 + 10, Ybunn + 5, 'Tid', { s: 13, w: 700 });
+  /* tre «tagger»: salget trekker saldoen ned, varene kommer og fyller opp */
+  const tagger = [[80, 60, 210, 232], [210, 60, 340, 232], [340, 60, 465, 255]];
+  let d = '';
+  tagger.forEach(([xa, ya, xb, yb], i) => { d += (i ? ` L${xa} ${ya}` : `M${xa} ${ya}`) + ` L${xb} ${yb}`;
+    const xk = xa + (xb - xa) * (Ybp - ya) / (yb - ya);
+    s += `<circle cx="${xk}" cy="${Ybp}" r="6" fill="${F.bla}"/>`;
+    s += `<path d="M${xk} 112 v-8 H${xb} v8" fill="none" stroke="${F.gra}" stroke-width="2"/>` + fT((xk + xb) / 2, 98, 'ledetid', { s: 12, f: F.gra, a: 'middle' }); });
+  d += ' L465 62';
+  s += `<path d="${d}" fill="none" stroke="${F.ink}" stroke-width="3.5" stroke-linejoin="round"/>`;
+  s += fT(70, 300, '● = systemet lager innkjøpsforslag', { s: 13, f: F.bla, w: 700 });
+  s += fT(70, 320, 'Økt salg eller forsinkelse? Sikkerhetslageret tar støyten.', { s: 13, f: F.rod, w: 700 });
+  return fSvg(600, 332, 'Graf over lagersaldo over tid med bestillingspunkt, ledetid og sikkerhetslager', s);
+})();
+
+/* B-01 Tre kontroller i varemottaket */
+const FIG_KONTROLL = (() => {
+  const p = (x, nr, tittel, sporsmal, gjor, ikon) => fBoks(x, 10, 188, 250, F.pap, F.lys, 12) + fNr(x + 24, 36, nr, F.bla)
+    + fT(x + 44, 41, tittel, { s: 16, w: 800 }) + `<g transform="translate(${x + 94} 105)">${ikon}</g>`
+    + fT(x + 94, 175, sporsmal, { s: 14, w: 700, a: 'middle' }) + fT(x + 94, 205, gjor, { s: 13, f: F.gra, a: 'middle', lh: 17 });
+  const dok = `<rect x="-28" y="-38" width="56" height="70" rx="3" fill="#fff" stroke="${F.gra}" stroke-width="2"/>${[0, 1, 2, 3].map(i => `<line x1="-16" y1="${-24 + i * 14}" x2="18" y2="${-24 + i * 14}" stroke="${F.lys}" stroke-width="2"/><path d="M-24 ${-26 + i * 14} l3 4 l6 -7" fill="none" stroke="${F.gronn}" stroke-width="2.5"/>`).join('')}`;
+  const kasse = `<rect x="-36" y="-30" width="72" height="56" fill="${F.tre}" stroke="${F.trek}" stroke-width="2"/><line x1="-36" y1="-12" x2="36" y2="-12" stroke="${F.trek}" stroke-width="2"/><path d="M8 -30 l-6 14 l10 8 l-8 14 l6 10" fill="none" stroke="${F.rod}" stroke-width="3"/>`;
+  const pall = `<g transform="translate(-45 -10)">${fPall(0, 0, 90)}</g><text x="0" y="-22" font-size="13" font-weight="800" fill="${F.trek}" text-anchor="middle">EUR</text>`;
+  const s = p(4, 1, 'Kjøpsavtalen', 'Fikk vi det vi bestilte?', ['Kryss av kolli for kolli', 'mot pakkseddelen.', 'Sjekk fakturaen senere.'], dok)
+    + p(206, 2, 'Fraktavtalen', 'Er godset skadet?', ['Skriv skaden i merknads-', 'rubrikken i fraktbrevet.', 'Sjåføren signerer.'], kasse)
+    + p(408, 3, 'Lastbærerne', 'Er pallene hele?', ['Tell og kontroller', 'pallene – de har verdi', 'og skal godskrives.'], pall);
+  return fSvg(600, 270, 'Tre kontroller i varemottaket: kjøpsavtalen, fraktavtalen og lastbærerne', s);
+})();
+
+/* B-02 F-, D- og T-pak og plassering av A- og C-varer */
+const FIG_PAK = (() => {
+  let s = fPilDef('k1d', F.gra);
+  s += fT(150, 28, 'Forpakningsnivåer', { s: 15, w: 800, a: 'middle' });
+  /* F-pak */
+  s += `<rect x="22" y="150" width="20" height="34" rx="3" fill="#7db8f0" stroke="${F.bla}" stroke-width="2"/>`;
+  s += fT(32, 214, ['F-pak', 'forbruker'], { s: 13, w: 700, a: 'middle', lh: 16 });
+  s += fPil('k1d', 52, 168, 74, 168, F.gra, 2.5);
+  /* D-pak */
+  s += `<rect x="80" y="138" width="66" height="46" fill="${F.tre}" stroke="${F.trek}" stroke-width="2"/>` + [0, 1, 2].map(i => `<rect x="${86 + i * 20}" y="146" width="14" height="32" rx="2" fill="#7db8f0" opacity=".8"/>`).join('');
+  s += fT(113, 214, ['D-pak', 'detaljist'], { s: 13, w: 700, a: 'middle', lh: 16 });
+  s += fPil('k1d', 154, 168, 176, 168, F.gra, 2.5);
+  /* T-pak */
+  for (let r = 0; r < 3; r++) for (let c = 0; c < 3; c++) s += `<rect x="${184 + c * 34}" y="${96 + r * 28}" width="32" height="26" fill="${F.tre}" stroke="${F.trek}" stroke-width="1.5"/>`;
+  s += fPall(182, 180, 106);
+  s += fT(235, 214, ['T-pak', 'transport'], { s: 13, w: 700, a: 'middle', lh: 16 });
+  s += fT(150, 262, ['Plukklager: D-pak i golvplan', 'Volumlager: T-pak i høyden'], { s: 13, f: F.gra, a: 'middle', lh: 17 });
+  /* ABC-plassering */
+  s += `<line x1="306" y1="20" x2="306" y2="290" stroke="${F.lys}" stroke-width="1.5" stroke-dasharray="4 4"/>`;
+  s += fT(450, 28, 'Hvor står varene?', { s: 15, w: 800, a: 'middle' });
+  const sone = (y, h, fyll, bokstav, tekst) => fBoks(330, y, 240, h, fyll, F.lys, 4) + fT(352, y + h / 2 + 7, bokstav, { s: 22, w: 900 }) + fT(382, y + h / 2 + 5, tekst, { s: 13 });
+  s += sone(42, 52, '#f4f1ea', 'C', 'slow-movers – lengst unna') + sone(98, 52, '#fdf0d2', 'B', 'plukkes av og til') + sone(154, 52, '#dceccc', 'A', 'plukkes oftest – nærmest');
+  s += fBoks(330, 216, 240, 40, '#fff0e0', F.ora, 4) + fT(450, 241, 'Oppstillingsområde', { s: 14, w: 800, a: 'middle', f: '#8a4b00' });
+  s += fT(450, 282, 'Mange korte turer – få lange', { s: 13, f: F.gra, a: 'middle' });
+  return fSvg(600, 296, 'F-pak, D-pak og T-pak, og et lager der A-varer står nærmest oppstillingsområdet og C-varer lengst unna', s);
+})();
+
+/* C-01 Fra kundeordre til ferdig pall */
+const FIG_ORDREFLYT = (() => {
+  const st = [['Kundeordre', ['Ordrebekreftelse:', 'avtalen er bindende']], ['Delordrer', ['Frys · kjøl · tørr ·', 'frukt og grønt']], ['Plukk', ['Liste, skjerm eller', 'talestyrt (voicepick)']],
+    ['Sammenstill', ['på kundepall:', 'tungt nederst']], ['Film og merking', ['Strekkfilm mot svinn.', 'Kundens navn og adresse']], ['Oppstilling', ['i innlastings-', 'rekkefølge']]];
+  const pos = [[10, 20], [210, 20], [410, 20], [410, 130], [210, 130], [10, 130]], w = 180, h = 84;
+  let s = fPilDef('k1e', F.gra);
+  st.forEach(([t, u], i) => { const [x, y] = pos[i]; s += fBoks(x, y, w, h, i < 3 ? '#e3f1f4' : '#fdf0d2') + fNr(x + 20, y + 22, i + 1, F.bla) + fT(x + 40, y + 27, t, { s: 15, w: 800 }) + fT(x + 14, y + 52, u, { s: 13, f: F.gra, lh: 16 }); });
+  s += fPil('k1e', 192, 62, 208, 62, F.gra, 3) + fPil('k1e', 392, 62, 408, 62, F.gra, 3) + fPil('k1e', 500, 106, 500, 128, F.gra, 3) + fPil('k1e', 408, 172, 392, 172, F.gra, 3) + fPil('k1e', 208, 172, 192, 172, F.gra, 3);
+  return fSvg(600, 226, 'Seks steg fra kundeordre til pallen står klar på oppstillingsområdet', s);
+})();
+
+/* C-01 LIFO ved innlasting */
+const FIG_LIFO = (() => {
+  let s = fPilDef('k1f', F.ink);
+  s += fBoks(40, 60, 400, 120, '#f4f1ea', F.gra, 4) + `<rect x="36" y="60" width="8" height="120" fill="${F.ora}"/>` + fT(40, 52, 'Bakdør', { s: 13, w: 700, f: F.ora, a: 'middle' });
+  s += `<path d="M445 80 h55 q30 0 40 30 l8 30 v40 h-103 z" fill="#c9ced3" stroke="${F.gra}" stroke-width="2"/><rect x="460" y="90" width="45" height="30" rx="3" fill="#e3f1f4" stroke="${F.gra}"/>`;
+  s += fHjul(110, 192) + fHjul(150, 192) + fHjul(500, 192) + `<line x1="20" y1="205" x2="590" y2="205" stroke="${F.ink}" stroke-width="2"/>`;
+  const pall = (x, tekst, fyll) => `<rect x="${x}" y="88" width="110" height="64" fill="${fyll}" stroke="${F.trek}" stroke-width="2"/>${fPall(x, 152, 110)}` + fT(x + 55, 126, tekst, { s: 15, w: 800, a: 'middle' });
+  s += pall(52, 'Stopp 1', '#dceccc') + pall(178, 'Stopp 2', F.tre) + pall(304, 'Stopp 3', '#e9e2d2');
+  s += fT(107, 238, ['Lastes inn sist –', 'leveres først'], { s: 13, w: 700, a: 'middle', f: F.gronn, lh: 16 });
+  s += fT(359, 238, ['Lastes inn først –', 'leveres sist'], { s: 13, w: 700, a: 'middle', lh: 16 });
+  s += fT(450, 30, 'Kjøreretning', { s: 13, w: 700, a: 'end' }) + fPil('k1f', 460, 26, 540, 26, F.ink, 2.5);
+  s += fT(20, 30, 'LIFO: last in – first out', { s: 15, w: 800 });
+  return fSvg(600, 270, 'Distribusjonsbil sett fra siden: pallen til siste stopp står innerst, pallen til første stopp står ved bakdøra', s);
+})();
+
+/* C-02 Partene i fraktavtalen */
+const FIG_FRAKTAVTALE = (() => {
+  let s = fPilDef('k1g', F.gra);
+  const part = (x, t, u, fyll) => fBoks(x, 70, 150, 62, fyll) + fT(x + 75, 98, t, { s: 16, w: 800, a: 'middle' }) + fT(x + 75, 118, u, { s: 12, f: F.gra, a: 'middle' });
+  s += part(10, 'Avsender', 'vanligvis selgeren', '#e3f1f4') + part(225, 'Fraktfører', 'transportøren', '#fdf0d2') + part(440, 'Mottaker', 'vanligvis kjøperen', '#efe9ff');
+  s += fPil('k1g', 164, 101, 221, 101, F.gra, 3) + fPil('k1g', 379, 101, 436, 101, F.gra, 3) + fT(192, 94, 'gods', { s: 12, f: F.gra, a: 'middle' }) + fT(407, 94, 'gods', { s: 12, f: F.gra, a: 'middle' });
+  s += `<path d="M85 64 v-14 H300 v14" fill="none" stroke="${F.bla}" stroke-width="2.5"/>` + fT(192, 20, ['Fraktavtale – bindende når fraktføreren', 'har signert fraktbrevet'], { s: 13, w: 700, f: F.bla, a: 'middle', lh: 16 });
+  s += fBoks(205, 146, 190, 112, '#ffffff', F.ora) + fT(300, 168, 'Fraktføreren skal:', { s: 14, w: 800, a: 'middle', f: '#8a4b00' })
+    + fT(220, 192, ['✓ kontrollere fraktbrevet', '✓ undersøke godset (§ 12)', '✓ ta forbehold ved behov', '✓ beregne frakt'], { s: 13, lh: 18 });
+  s += fBoks(10, 270, 285, 52, F.pap, F.lys) + fT(152, 292, 'Innenlands', { s: 14, w: 800, a: 'middle' }) + fT(152, 311, 'fraktbrev (vegfraktloven)', { s: 13, f: F.gra, a: 'middle' });
+  s += fBoks(305, 270, 285, 52, F.pap, F.lys) + fT(447, 292, 'Internasjonalt', { s: 14, w: 800, a: 'middle' }) + fT(447, 311, 'CMR-fraktbrev (CMR-konvensjonen)', { s: 13, f: F.gra, a: 'middle' });
+  return fSvg(600, 332, 'Avsender, fraktfører og mottaker i fraktavtalen, fraktførerens plikter og forskjellen på fraktbrev og CMR', s);
+})();
+
+/* D-01 Terminalnettet */
+const FIG_TERMINALNETT = (() => {
+  let s = fPilDef('k1h', F.gra) + fPilDef('k1i', F.gronn);
+  const b = [['Avsender', '', '#e3f1f4'], ['Avsender-', 'terminal', '#fdf0d2'], ['Sentral-', 'terminal', '#f2b84b'], ['Mottaker-', 'terminal', '#fdf0d2'], ['Mottaker', '', '#efe9ff']];
+  const w = 100, g = 23;
+  b.forEach(([t, u, f], i) => { const x = 6 + i * (w + g); s += fBoks(x, 50, w, 64, f) + fT(x + w / 2, u ? 78 : 88, u ? [t, u] : t, { s: 14, w: 800, a: 'middle', lh: 17 });
+    if (i && i < 4) s += `<g transform="translate(${x + w / 2 - 20} 124)">${[0, 3, 5, 9, 11, 14, 18, 21, 25, 28, 31, 35, 38].map(v => `<rect x="${v}" y="0" width="${v % 2 ? 1.5 : 2.5}" height="16" fill="${F.ink}"/>`).join('')}</g>` + fT(x + w / 2, 156, 'skannes', { s: 12, f: F.gra, a: 'middle' });
+    if (i < 4) s += fPil('k1h', x + w + 2, 82, x + w + g - 2, 82, F.gra, 3); });
+  s += fT(6 + 2 * (w + g) + w / 2, 38, 'Osloområdet – mest gods', { s: 12, f: F.gra, a: 'middle' });
+  s += fT(300, 186, 'Mellom regionene: konteiner på bil eller kombitransport (bil + tog / bil + båt)', { s: 13, f: F.gra, a: 'middle' });
+  s += `<line x1="10" y1="206" x2="590" y2="206" stroke="${F.lys}" stroke-dasharray="4 4"/>`;
+  s += fT(10, 236, 'Lokalgods:', { s: 14, w: 800, f: F.gronn });
+  s += fBoks(110, 216, 100, 34, '#e3f1f4') + fT(160, 238, 'Avsender', { s: 13, w: 700, a: 'middle' }) + fPil('k1i', 214, 233, 246, 233, F.gronn, 3)
+    + fBoks(250, 216, 120, 34, '#fdf0d2') + fT(310, 238, 'Én terminal', { s: 13, w: 700, a: 'middle' }) + fPil('k1i', 374, 233, 406, 233, F.gronn, 3)
+    + fBoks(410, 216, 100, 34, '#efe9ff') + fT(460, 238, 'Mottaker', { s: 13, w: 700, a: 'middle' });
+  return fSvg(600, 262, 'Terminalnettet: gods går fra avsenderterminal via sentralterminal til mottakerterminal, mens lokalgods bare er innom én terminal', s);
+})();
+
+/* D-01 Automatisk sorteringsanlegg */
+const FIG_SORTERING = (() => {
+  let s = '';
+  s += `<line x1="10" y1="270" x2="590" y2="270" stroke="${F.ink}" stroke-width="3"/>`;
+  /* innmating og skanner */
+  s += `<rect x="20" y="226" width="140" height="10" fill="${F.lys}"/><rect x="60" y="204" width="40" height="22" fill="${F.tre}" stroke="${F.trek}" stroke-width="2"/><g transform="translate(66 209)">${[0, 4, 7, 12, 15, 20, 24].map(v => `<rect x="${v}" y="0" width="2" height="9" fill="${F.ink}"/>`).join('')}</g>`;
+  s += `<path d="M140 236 V176 H180 V236" fill="none" stroke="${F.bla}" stroke-width="4"/><circle cx="160" cy="184" r="4" fill="${F.rod}"/>`;
+  /* stigende bånd og mesanin */
+  s += `<line x1="180" y1="231" x2="296" y2="92" stroke="${F.lys}" stroke-width="10"/>`;
+  s += `<rect x="290" y="96" width="290" height="6" fill="${F.gra}"/>` + [300, 570].map(x => `<rect x="${x}" y="102" width="6" height="168" fill="${F.gra}"/>`).join('');
+  s += [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(i => i === 6 ? '' : `<rect x="${296 + i * 22}" y="84" width="20" height="8" fill="${F.gul}" stroke="${F.trek}"/>`).join('');
+  s += `<rect x="428" y="80" width="20" height="8" fill="${F.gul}" stroke="${F.trek}" transform="rotate(28 438 84)"/><rect x="430" y="68" width="18" height="14" fill="${F.tre}" stroke="${F.trek}" transform="rotate(28 438 84)"/>`;
+  /* rutsjebane og konteiner */
+  s += `<path d="M440 104 L470 190" stroke="${F.bla}" stroke-width="8" fill="none"/><rect x="470" y="186" width="34" height="8" fill="${F.lys}"/>`;
+  s += fBoks(500, 196, 70, 74, '#e9e2d2', F.gra, 2) + `<rect x="508" y="236" width="22" height="18" fill="${F.tre}" stroke="${F.trek}"/><rect x="534" y="240" width="26" height="14" fill="${F.tre}" stroke="${F.trek}"/>`;
+  s += fNr(80, 182, 1, F.bla) + fNr(160, 158, 2, F.bla) + fNr(222, 150, 3, F.bla) + fNr(340, 62, 4, F.bla) + fNr(438, 44, 5, F.bla) + fNr(445, 160, 6, F.bla) + fNr(535, 180, 7, F.bla);
+  s += fT(20, 26, ['1 Innmating – strekkoden opp', '2 Skanning', '3 Opp til sorteringsbåndet', '4 Kolliet får egen lamell'], { s: 13, lh: 17 });
+  s += fT(20, 102, ['5 Lamellen vippes ved riktig avkast', '6 Rutsjebane ned', '7 Inn i konteiner – stues manuelt'], { s: 13, lh: 17 });
+  s += fT(530, 124, 'mesanin', { s: 12, f: F.gra, a: 'middle' });
+  return fSvg(600, 282, 'Skisse av et automatisk sorteringsanlegg med sju nummererte steg fra innmating til konteiner', s);
+})();
+
+/* D-02 Kombinertterminal og universell utforming */
+const FIG_PASSASJER = (() => {
+  let s = fPilDef('k1j', F.gra);
+  s += fBoks(200, 70, 200, 96, '#fdf0d2', F.ora, 12) + fT(300, 108, 'Kombinertterminal', { s: 17, w: 900, a: 'middle' }) + fT(300, 130, ['Her går du på, går av', 'eller bytter transportmiddel'], { s: 13, f: F.gra, a: 'middle', lh: 16 });
+  const buss = `<rect x="-40" y="-18" width="80" height="34" rx="6" fill="#7db8f0" stroke="${F.bla}" stroke-width="2"/>${[-32, -14, 4, 22].map(x => `<rect x="${x}" y="-12" width="12" height="11" fill="#fff"/>`).join('')}${fHjul(-22, 18, 7)}${fHjul(24, 18, 7)}`;
+  const tog = `<path d="M-48 16 V-16 H34 L48 0 V16 Z" fill="#dceccc" stroke="${F.gronn}" stroke-width="2"/>${[-40, -22, -4, 14].map(x => `<rect x="${x}" y="-10" width="12" height="10" fill="#fff"/>`).join('')}<line x1="-56" y1="24" x2="56" y2="24" stroke="${F.gra}" stroke-width="3"/>`;
+  const bat = `<path d="M-50 0 H50 L36 18 H-38 Z" fill="${F.bla}"/><rect x="-26" y="-18" width="44" height="18" fill="#e3f1f4" stroke="${F.bla}" stroke-width="2"/><path d="M-58 26 q10 -6 20 0 t20 0 t20 0 t20 0 t20 0 t20 0" fill="none" stroke="#7db8f0" stroke-width="2"/>`;
+  const fly = `<path d="M-46 0 H40 q10 0 10 5 q0 5 -10 5 H-46 Z M-6 2 L-24 -26 H-14 L14 2 Z M-6 8 L-24 34 H-14 L14 8 Z M-44 2 L-52 -14 H-44 L-34 2 Z" fill="#c9ced3" stroke="${F.gra}" stroke-width="1.5"/>`;
+  const modus = (x, y, ikon, navn) => `<g transform="translate(${x} ${y})">${ikon}</g>` + fT(x, y + 46, navn, { s: 14, w: 800, a: 'middle' });
+  s += modus(80, 50, buss, 'Buss') + modus(520, 50, tog, 'Tog') + modus(80, 175, bat, 'Båt') + modus(520, 175, fly, 'Fly');
+  s += `<line x1="138" y1="72" x2="196" y2="98" stroke="${F.gra}" stroke-width="3" marker-start="url(#k1j)" marker-end="url(#k1j)"/><line x1="462" y1="72" x2="404" y2="98" stroke="${F.gra}" stroke-width="3" marker-start="url(#k1j)" marker-end="url(#k1j)"/>`;
+  s += `<line x1="138" y1="172" x2="196" y2="146" stroke="${F.gra}" stroke-width="3" marker-start="url(#k1j)" marker-end="url(#k1j)"/><line x1="462" y1="172" x2="404" y2="146" stroke="${F.gra}" stroke-width="3" marker-start="url(#k1j)" marker-end="url(#k1j)"/>`;
+  s += `<line x1="10" y1="246" x2="590" y2="246" stroke="${F.lys}" stroke-dasharray="4 4"/>` + fT(300, 272, 'Universell utforming = terminalen kan brukes av alle', { s: 15, w: 800, a: 'middle' });
+  const uu = (x, ikon, t) => `<g transform="translate(${x} 316)">${ikon}</g>` + fT(x, 360, t, { s: 13, a: 'middle' });
+  s += uu(90, `<rect x="-18" y="-24" width="36" height="44" fill="#e3f1f4" stroke="${F.bla}" stroke-width="2"/><line x1="0" y1="-24" x2="0" y2="20" stroke="${F.bla}" stroke-width="2"/><path d="M-10 -8 l5 -6 l5 6 M0 0 l5 6 l5 -6" fill="none" stroke="${F.bla}" stroke-width="2"/>`, 'Heis')
+    + uu(230, `<path d="M-30 18 L30 -16 V18 Z" fill="#dceccc" stroke="${F.gronn}" stroke-width="2"/>`, 'Rampe uten trinn')
+    + uu(370, `<rect x="-32" y="-8" width="64" height="20" fill="${F.gul}"/>${[-26, -14, -2, 10, 22].map(x => `<line x1="${x}" y1="-4" x2="${x}" y2="8" stroke="${F.trek}" stroke-width="2"/>`).join('')}`, 'Ledelinje i golvet')
+    + uu(510, `<rect x="-34" y="-20" width="68" height="34" rx="4" fill="${F.ink}"/><text x="0" y="2" font-size="12" font-weight="800" fill="${F.gul}" text-anchor="middle">SPOR 2 →</text>`, 'Tydelige skilt');
+  return fSvg(600, 376, 'Kombinertterminal der buss, tog, båt og fly møtes, og eksempler på universell utforming', s);
+})();
+
+const FIGUR = {
+  t1: { svg: FIG_KRETSLOP, tekst: 'Varekretsløpet: Råvarer blir til varer, varene selges og brukes, og til slutt gjenvinnes de. Lager og terminal er leddet der varene oppbevares og sorteres på veien.' },
+  t2: [{ svg: FIG_LAGERKJEDE, tekst: 'Sentrallageret kjøper inn store kvanta fra fabrikkene og forsyner regionlagrene, som forsyner butikkene. Jo lenger bak i kjeden, desto lengre ledetid.' },
+       { svg: FIG_BESTILLING, tekst: 'Salget trekker lagersaldoen ned. Når saldoen når bestillingspunktet, lager systemet et innkjøpsforslag, og varene kommer etter ledetida. Sikkerhetslageret er bufferen hvis salget øker eller leveransen blir forsinket.' }],
+  t3: { svg: FIG_KONTROLL, tekst: 'I varemottaket kontrollerer du tre ting: kjøpsavtalen, fraktavtalen og lastbærerne.' },
+  t4: { svg: FIG_PAK, tekst: 'Varene kommer i tre forpakningsnivåer. A-varer plukkes oftest og står nærmest oppstillingsområdet. Da får plukkerne mange korte turer og få lange.' },
+  t5: [{ svg: FIG_ORDREFLYT, tekst: 'Slik går en butikkordre gjennom regionlageret – fra kundeordre til ferdig pall på oppstillingsområdet.' },
+       { svg: FIG_LIFO, tekst: 'Distribusjonssjåføren laster etter LIFO: Pallen som skal leveres sist, lastes inn først og står innerst.' }],
+  t6: { svg: FIG_FRAKTAVTALE, tekst: 'Fraktavtalen inngås mellom avsender og fraktfører. Fraktføreren har undersøkelsesplikt og kan ta forbehold i merknadsrubrikken.' },
+  t7: [{ svg: FIG_TERMINALNETT, tekst: 'De fleste kolli er innom tre terminaler og skannes på hver av dem, så sporingen blir oppdatert. Lokalgods er bare innom én terminal.' },
+       { svg: FIG_SORTERING, tekst: 'Slik virker et automatisk sorteringsanlegg. Sorteringen styres av strekkoden – derfor må den ikke skades.' }],
+  t8: { svg: FIG_PASSASJER, tekst: 'En kombinertterminal er lagt til rette for overgang mellom transportformer. Universell utforming betyr at alle skal kunne bruke terminalen uten egne tilpasninger.' }
+};
+
+
 TLL.registrer({
   id: 'kap1',
   fag: 'Transport, logistikk og løfteoperasjoner',
@@ -99,6 +332,7 @@ TLL.registrer({
   /* ================================================================ T1 */
   {
     id: 't1', lok: 'A-01', tittel: 'Lager og terminaler i samfunnet',
+    figur: FIGUR.t1,
     kort: 'Varekretsløpet, handelsnæringen, forskjellen på vare og gods – og hvorfor vi trenger lagre og terminaler.',
     bok: 'Læreboka 1.1 (s. 10–11)',
     mal: ['forklare hvorfor et industrisamfunn trenger varelagre, godsterminaler og transport','beskrive varekretsløpet fra råvare til gjenvinning','forklare forskjellen på en vare og gods, og hvem som er partene i en fraktavtale','skille mellom dagligvarehandel, faghandel og servicehandel'],
@@ -194,6 +428,7 @@ TLL.registrer({
   /* ================================================================ T2 */
   {
     id: 't2', lok: 'A-02', tittel: 'Lagertyper og lagerstyring',
+    figur: FIGUR.t2,
     kort: 'Sentrallager, regionlager og butikklager, ERP- og WMS-systemer, hovedprosessene på et lager og bestillingspunkt.',
     bok: 'Læreboka 1.3 (s. 12–20)',
     mal: ['forklare forskjellen på sentrallager, regionlager og butikklager','forklare hva ERP, OLFI og WMS er','nevne de fire hovedprosessene et lager må styre','regne ut lagersaldo og bestillingspunkt, og forklare sikkerhetslager'],
@@ -288,6 +523,7 @@ TLL.registrer({
   /* ================================================================ T3 */
   {
     id: 't3', lok: 'B-01', tittel: 'Varemottak og kontroll',
+    figur: FIGUR.t3,
     kort: 'De tre kontrollene i varemottaket: kjøpsavtalen, fraktavtalen og pallene – og hva du gjør ved skader.',
     bok: 'Læreboka 1.3 – kontroll av varer og lastbærere (s. 20–22)',
     mal: ['gjennomføre de tre kontrollene i et varemottak','krysse varer mot pakkseddel og faktura','skrive riktig merknad i fraktbrevet ved skade, manko og tidsgaranti','forklare hvorfor pallene har verdi, og hva som skjer ved retur og leie av paller'],
@@ -395,6 +631,7 @@ TLL.registrer({
   /* ================================================================ T4 */
   {
     id: 't4', lok: 'B-02', tittel: 'Vareplassering og innrydding',
+    figur: FIGUR.t4,
     kort: 'Lagersoner, F-, D- og T-pak, plukklager og volumlager, A- og C-varer, slow-movers, FIFO, LIFO og crossdocking.',
     bok: 'Læreboka 1.3 – tildeling av lageradresser og plukkprinsipper (s. 22–24)',
     mal: ['forklare reglene datasystemet bruker for å gi en vare en lokasjon','forklare F-, D- og T-pak og forskjellen på plukklager og volumlager','forklare hvor A-varer og C-varer skal stå, og hvorfor slow-movers ofte lagres sentralt','velge riktig prinsipp: holdbarhetsdato, FIFO eller LIFO/crossdocking'],
@@ -502,6 +739,7 @@ TLL.registrer({
   /* ================================================================ T5 */
   {
     id: 't5', lok: 'C-01', tittel: 'Ordre, plukk og klargjøring',
+    figur: FIGUR.t5,
     kort: 'Fra kundeordre til ferdig pall: ordrebekreftelse, plukklister, talestyrt plukk, sammenstilling, emballering og innlasting.',
     bok: 'Læreboka 1.3 – delprosesser, ordre og plukk (s. 16–18 og 25–27)',
     mal: ['beskrive veien fra kundeordre til ferdig pall','forklare hva talestyrt plukk er, og hvordan det foregår','bygge en stabil kundepall og forklare hvorfor den pakkes i strekkfilm','forklare etterfylling og i hvilken rekkefølge pallene lastes inn'],
@@ -614,6 +852,7 @@ TLL.registrer({
   /* ================================================================ T6 */
   {
     id: 't6', lok: 'C-02', tittel: 'Godsterminaler, oppdrag og fraktbrev',
+    figur: FIGUR.t6,
     kort: 'Typer godsterminaler, ulike transportoppdrag, fraktbrev og CMR, fraktførerens undersøkelsesplikt, forbehold og farlig gods.',
     bok: 'Læreboka 1.4 (s. 27–31)',
     mal: ['nevne ulike typer godsterminaler og hva slags gods de håndterer','dele inn transportoppdrag etter kunde, oppdrag og godstype','forklare hva fraktføreren skal gjøre når gods leveres inn, og når fraktavtalen blir bindende','vite når jeg må ta forbehold eller be om opplysninger om farlig gods'],
@@ -742,6 +981,7 @@ TLL.registrer({
   /* ================================================================ T7 */
   {
     id: 't7', lok: 'D-01', tittel: 'Sortering og postpakker',
+    figur: FIGUR.t7,
     kort: 'Terminalnettet, sortering etter postnummer, det automatiske sorteringsanlegget, distribusjon og forskjellen på postpakker og samlastgods.',
     bok: 'Læreboka 1.4 – terminalnett, sortering og postpakker (s. 28–29 og 32–36)',
     mal: ['forklare hvordan et kolli går via avsender-, sentral- og mottakerterminal','forklare hva gods sorteres etter, og hvordan et automatisk sorteringsanlegg virker','sortere gods som skal videre lokalt og til andre regioner','forklare forskjellen på postsendinger og samlastgods'],
@@ -848,6 +1088,7 @@ TLL.registrer({
   /* ================================================================ T8 */
   {
     id: 't8', lok: 'D-02', tittel: 'Passasjerterminaler',
+    figur: FIGUR.t8,
     kort: 'Omstigning mellom transportmidler, kombinertterminaler, arbeidsoppgaver på passasjerterminaler og universell utforming.',
     bok: 'Læreboka 1.2 og 1.5 (s. 11–12 og 36–37)',
     mal: ['forklare hvorfor vi har passasjerterminaler, og hva en kombinertterminal er','beskrive arbeidsoppgaver for logistikkoperatører på passasjerterminaler','forklare hva universell utforming er, og gi eksempler fra en terminal'],
