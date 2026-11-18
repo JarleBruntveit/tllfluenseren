@@ -342,7 +342,7 @@ TLL.registrer({
   ],
   ressurser: {
     // KUN egenprodusert materiell her (f.eks. egne lysark). IKKE last opp forlagets presentasjon eller PDF-er.
-    presentasjon: '',
+    presentasjon: 'https://gamma.app/docs/Kapittel-5-Sikring-av-last-pxxgviezgffefo9',
     laerebok: 'Læreboka, kapittel 5 (s. 117–158)',
     arbeidsbok: 'Arbeidsboka, kapittel 5 (oppgave 5.1–5.21)',
     ndlaEmne: NDLA_E,
