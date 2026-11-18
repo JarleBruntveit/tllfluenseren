@@ -322,7 +322,7 @@ TLL.registrer({
   ],
   ressurser: {
     // KUN egenprodusert materiell her (f.eks. egne lysark). IKKE last opp forlagets presentasjon eller PDF-er.
-    presentasjon: '',
+    presentasjon: 'https://gamma.app/docs/Lager-og-terminal-grunnleggende-prinsipper-figdool374xgnkn',
     laerebok: 'Læreboka, kapittel 1 (s. 9 og utover)',
     arbeidsbok: 'Arbeidsboka, kapittel 1 (oppgave 1.1–1.33)',
     ndlaEmne: NDLA_E,
