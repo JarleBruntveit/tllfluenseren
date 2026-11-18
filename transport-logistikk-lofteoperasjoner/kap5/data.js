@@ -955,6 +955,7 @@ TLL.registrer({
     ],
     ekstra: MERKNAD_UTDATERT + `<h3 style="font-size:22px;margin-top:14px">Dokumenter</h3>
       <ul class="reslist">
+        <li><span class="tag">Formler</span><span><a href="dokumenter/formelark-lastsikring.html" target="_blank" rel="noopener">Formelark – lastsikring med heftet</a><br><span class="small muted">Alle formlene, regnerekkefølgen steg for steg og eksempler. Kan skrives ut.</span></span></li>
         <li><span class="tag">PDF</span><span><a href="dokumenter/Sikring_av_last_hjelpedokument.pdf" target="_blank" rel="noopener">Sikring av last – hjelpedokument (sikringsplan)</a><br><span class="small muted">Skriv ut og fyll inn for kolliet du skal sikre. Laget av Jarle Bruntveit.</span></span></li>
         <li><span class="tag ndla">NDLA</span><span><a href="${NDLA_R + N.brosjyre[1]}" target="_blank" rel="noopener">Lastsikring ved vegtransport – lastsikringsheftet (NLF)</a><br><span class="small muted">Åpne PDF-en fra NDLA-siden. Klassen har også papireksemplarer – spør læreren.</span></span></li>
         <li><span class="tag">Bok</span><span>Lastsikring av betongelementer under transport (NLF-standard)<br><span class="small muted">Standarden selges av Norges Lastebileier-Forbund og legges ikke ut her. Bruk skolens eksemplar.</span></span></li>
@@ -1110,6 +1111,7 @@ TLL.registrer({
       <ul class="reslist">
         <li><span class="tag">Øv</span><span><a href="#/t8">Øvelsesbank: lastsikringsheftet (ØB-01)</a><br><span class="small muted">110 oppgaver, fra «bli kjent med heftet» til ekspert.</span></span></li>
         <li><span class="tag ndla">NDLA</span><span><a href="${NDLA_R + N.brosjyre[1]}" target="_blank" rel="noopener">Lastsikring ved vegtransport – lastsikringsheftet (NLF)</a><br><span class="small muted">Åpne PDF-en fra NDLA-siden, eller bruk papireksemplaret i klassen.</span></span></li>
+        <li><span class="tag">Formler</span><span><a href="dokumenter/formelark-lastsikring.html" target="_blank" rel="noopener">Formelark – lastsikring med heftet</a><br><span class="small muted">Alle formlene, regnerekkefølgen steg for steg og eksempler. Kan skrives ut.</span></span></li>
         <li><span class="tag">PDF</span><span><a href="dokumenter/Sikring_av_last_hjelpedokument.pdf" target="_blank" rel="noopener">Sikring av last – hjelpedokument (sikringsplan)</a><br><span class="small muted">Bruk det som kladd når du regner gjennom casene.</span></span></li>
       </ul>`,
     ndla: [N.brosjyre, N.friksjon, N.krefter],
@@ -1319,6 +1321,7 @@ TLL.registrer({
     ekstra: `<h3 style="font-size:22px;margin-top:0">Det du trenger</h3>
       <ul class="reslist">
         <li><span class="tag ndla">NDLA</span><span><a href="${NDLA_R + N.brosjyre[1]}" target="_blank" rel="noopener">Lastsikring ved vegtransport – lastsikringsheftet (NLF)</a><br><span class="small muted">Åpne PDF-en fra NDLA-siden, eller bruk papireksemplaret i klassen.</span></span></li>
+        <li><span class="tag">Formler</span><span><a href="dokumenter/formelark-lastsikring.html" target="_blank" rel="noopener">Formelark – lastsikring med heftet</a><br><span class="small muted">Alle formlene, regnerekkefølgen steg for steg og eksempler. Kan skrives ut.</span></span></li>
         <li><span class="tag">PDF</span><span><a href="dokumenter/Sikring_av_last_hjelpedokument.pdf" target="_blank" rel="noopener">Sikring av last – hjelpedokument (sikringsplan)</a><br><span class="small muted">Bruk det som kladd når du regner.</span></span></li>
       </ul>`,
     ndla: [N.brosjyre, N.friksjon, N.krefter],

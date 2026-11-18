@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="/favicon.ico">
+<title>Formelark – lastsikring med heftet | TLLfluenseren</title>
+<meta name="description" content="Formler og regnerekkefølge for lastsikring med NLF-heftet «Lastsikring ved vegtransport». Vg2 TLL, kapittel 5.">
+<link rel="stylesheet" href="/assets/global-footer.css"><script defer src="/assets/global-footer.js?v=mobile-nav-2"></script><link rel="stylesheet" href="/assets/elevflyt.css?v=mobile-nav-2">
+<style>
+:root{--ink:#1b2128;--text:#1b2128;--line:#c9d0d6;--blekk:#1b2128;--mild:#5c6670;--linje:#c9d0d6;--teal:#14889b;--tealbg:#eef7f9;--gul:#f2b84b;--gulbg:#fff6e3;--rod:#c0392b;--rodbg:#fdecea;--gronn:#2e7d4f;--gronnbg:#eaf6ee}
+body{background:#f5f6f7;color:var(--blekk);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:0}
+main{max-width:900px;margin:28px auto 60px;padding:0 18px}
+h1{font-size:clamp(28px,4vw,38px);margin:8px 0 6px}
+h2{font-size:24px;margin:0 0 6px}
+p,li{line-height:1.6;font-size:17px}
+a{color:var(--teal)}
+.ingress{font-size:19px;color:#2b333b}
+.tilbake{display:inline-block;margin-top:8px;font-weight:600}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 22px}
+.btn{display:inline-block;padding:12px 20px;background:var(--teal);color:#fff;border:0;border-radius:10px;text-decoration:none;font:inherit;font-weight:600;cursor:pointer}
+.btn.lys{background:#fff;color:var(--teal);border:2px solid var(--teal)}
+.btn:focus-visible,a:focus-visible{outline:3px solid var(--gul);outline-offset:3px}
+.kort{background:#fff;border:1px solid var(--linje);border-radius:16px;padding:20px 22px;margin:16px 0;break-inside:avoid}
+.kort .nr{display:inline-block;background:var(--teal);color:#fff;font-weight:700;border-radius:8px;padding:2px 10px;margin-right:8px;font-size:15px;vertical-align:middle}
+.formel{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:clamp(20px,3vw,26px);background:var(--tealbg);border-left:6px solid var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0;line-height:1.5}
+.formel small{display:block;font-family:system-ui,sans-serif;font-size:15px;color:var(--mild);margin-top:4px}
+.naar{color:var(--mild);margin:4px 0 0}
+.eks{background:var(--gronnbg);border-radius:10px;padding:10px 16px;margin:10px 0}
+.eks b{color:var(--gronn)}
+.feil{background:var(--rodbg);border-radius:10px;padding:10px 16px;margin:10px 0}
+.feil b{color:var(--rod)}
+.rekke{counter-reset:steg;list-style:none;padding:0;margin:10px 0}
+.rekke li{counter-increment:steg;position:relative;padding:8px 0 8px 52px;border-bottom:1px dashed var(--linje)}
+.rekke li:last-child{border-bottom:0}
+.rekke li::before{content:counter(steg);position:absolute;left:0;top:6px;width:36px;height:36px;border-radius:50%;background:var(--gul);color:var(--blekk);font-weight:800;display:flex;align-items:center;justify-content:center}
+table{border-collapse:collapse;width:100%;margin:8px 0;font-size:16px}
+th,td{border:1px solid var(--linje);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--gulbg)}
+.ord{font-size:15px;color:#2b333b}
+.kilde{font-size:14px;color:var(--mild);margin-top:26px}
+@media (max-width:600px){.kort{padding:16px}.rekke li{padding-left:46px}}
+@media print{
+  .tll-site-nav,.tll-skip,.noprint,footer,.tll-global-footer{display:none!important}
+  body{background:#fff}
+  main{margin:0;max-width:none;padding:0}
+  p,li{font-size:11pt;line-height:1.4}
+  .kort{border:1px solid #999;padding:10px 14px;margin:8px 0}
+  .formel{font-size:15pt;padding:8px 12px}
+  h1{font-size:22pt}
+}
+</style>
+</head>
+<body>
+<a class="tll-skip" href="#tll-main">Hopp til innhold</a>
+<nav class="tll-site-nav tll-standalone-nav" aria-label="Hovedmeny"><a href="/">Forside</a><a href="/#fag">Fagområder</a><a href="/ressursbank/">Ressursbank</a><a href="/assistent/">TLL-assistenten</a><a href="/laererrom/">Lærerrom</a><a href="/om/">Om</a></nav>
+<main id="tll-main" tabindex="-1">
+<a class="tilbake noprint" href="../#/t7">← Tilbake til kap 5</a>
+<h1>Formelark – lastsikring med heftet</h1>
+<p class="ingress">Alle formlene du trenger når du regner med NLF-heftet «Lastsikring ved vegtransport». Ha heftet ved siden av deg, for tallene i tabellene finner du der.</p>
+<div class="actions noprint">
+  <button class="btn" type="button" onclick="window.print()">Skriv ut formelarket</button>
+  <a class="btn lys" href="../#/t8">Øv i øvelsesbanken</a>
+</div>
+
+<section class="kort" aria-labelledby="h-viktig" style="border:2px solid var(--gul)">
+  <h2 id="h-viktig">Det viktigste å huske</h2>
+  <p>Tallet i tabellen sier hvor mange <b>tonn gods</b> én stropp sikrer. Kravene (0,8 × vekta fremover og 0,5 × vekta sideveis og bakover) er <b>allerede regnet inn</b> i tabellene. Derfor deler du alltid <b>hele vekta</b> på tabellverdien.</p>
+  <div class="formel">Antall stropper = lastens vekt ÷ tabellverdien<small>Rund alltid <b>opp</b> til et helt tall. Det <b>høyeste</b> antallet av alle retningene gjelder.</small></div>
+</section>
+
+<section class="kort" aria-labelledby="h-rekke">
+  <h2 id="h-rekke">Regnerekkefølgen – steg for steg</h2>
+  <ol class="rekke">
+    <li><b>Finn vekta</b> på lasten i tonn. 1 500 kg = 1,5 t.</li>
+    <li><b>Finn friksjonen µ</b> i friksjonstabellen. Er det flere flater (pall på plan, kartong på pall), bruker du den <b>laveste</b>.</li>
+    <li><b>Kan lasten blokkeres?</b> Står den inntil frontvegg, karmer eller annen last, slipper du å regne den retningen (se formel 6).</li>
+    <li><b>Gli:</b> Slå opp tabellverdien for metoden og retningen. Regn <i>vekt ÷ tabellverdi</i> for fremover, sideveis og bakover.</li>
+    <li><b>Tippe:</b> Regn H/B og H/L (formel 2). Slå opp tabellverdien og regn <i>vekt ÷ tabellverdi</i>.</li>
+    <li><b>Juster tabellverdien</b> hvis vinkelen eller stroppen er annerledes (formel 3, 4 og 5). Det gjør du <i>før</i> du deler.</li>
+    <li><b>Rund opp</b> hvert svar. Bruk det <b>høyeste</b> antallet.</li>
+    <li><b>Kontroller:</b> antall stropper × tabellverdi skal være minst like mye som vekta.</li>
+  </ol>
+</section>
+
+<section class="kort" aria-labelledby="h-f1">
+  <h2 id="h-f1"><span class="nr">1</span>Antall stropper</h2>
+  <p class="naar">Brukes for alle sikringsmetodene i heftet, både mot å gli og mot å tippe.</p>
+  <div class="formel">N = m ÷ T<small>N = antall stropper · m = lastens vekt i tonn · T = tonn gods én stropp sikrer (fra tabellen)</small></div>
+  <div class="eks"><b>Eksempel:</b> 4 t gods, µ = 0,15, overfallssurring sideveis. Tabellen gir 0,31.<br>4 ÷ 0,31 = 12,9 → <b>13 stropper</b>. Kontroll: 13 × 0,31 = 4,03 t ≥ 4 t ✓</div>
+  <div class="feil"><b>Vanlig feil:</b> å gange vekta med 0,5 eller 0,8 før du deler (4 × 0,5 = 2, og 2 ÷ 0,31 → 7). Da regner du kravet to ganger og får <b>for få</b> stropper.</div>
+</section>
+
+<section class="kort" aria-labelledby="h-f2">
+  <h2 id="h-f2"><span class="nr">2</span>Fare for tipping: H/B og H/L</h2>
+  <p class="naar">Brukes for å finne riktig rad i tippetabellene.</p>
+  <div class="formel">H/B = høyde ÷ bredde &nbsp;&nbsp;·&nbsp;&nbsp; H/L = høyde ÷ lengde<small>H/B brukes for sideveis og H/L for fremover og bakover. Rund opp til nærmeste <b>høyere</b> tallet i tabellen. Bredden og lengden måles på hele lasteseksjonen.</small></div>
+  <div class="eks"><b>Eksempel:</b> Kolli 2,0 m høyt og 0,8 m bredt. H/B = 2,0 ÷ 0,8 = 2,5 → bruk raden <b>2,6</b>.<br>Velg kolonne etter hvor mange rader seksjonen har. Antall stropper = vekt ÷ tallet i tabellen (formel 1).</div>
+  <div class="feil"><b>Vanlig feil:</b> å runde ned til 2,4. Lavere H/B gjør lasten «stødigere» enn den er.</div>
+</section>
+
+<section class="kort" aria-labelledby="h-f3">
+  <h2 id="h-f3"><span class="nr">3</span>Vinkel ved overfallssurring</h2>
+  <p class="naar">Vinkelen mellom stroppen og lasteplanet.</p>
+  <table>
+    <thead><tr><th>Vinkel</th><th>Slik gjør du</th></tr></thead>
+    <tbody>
+      <tr><td>75–90°</td><td>Bruk tabellverdien slik den står.</td></tr>
+      <tr><td>30–75°</td><td>T<sub>ny</sub> = T ÷ 2 (eller dobbelt så mange stropper)</td></tr>
+      <tr><td>under 30°</td><td>Velg en annen sikringsmetode.</td></tr>
+    </tbody>
+  </table>
+  <div class="eks"><b>Eksempel:</b> 5 t, tabellverdi 6,4 t, vinkel 60°. T<sub>ny</sub> = 6,4 ÷ 2 = 3,2.<br>5 ÷ 3,2 = 1,6 → <b>2 stropper</b>.</div>
+</section>
+
+<section class="kort" aria-labelledby="h-f4">
+  <h2 id="h-f4"><span class="nr">4</span>Sidevinkel ved grimesurring</h2>
+  <p class="naar">Når grimen går skrått til siden i stedet for rett frem eller bak.</p>
+  <table>
+    <thead><tr><th>Vinkel til siden</th><th>Ny tabellverdi</th></tr></thead>
+    <tbody>
+      <tr><td>0–5°</td><td>T (ingen endring)</td></tr>
+      <tr><td>5–30°</td><td>T<sub>ny</sub> = T × 0,85</td></tr>
+      <tr><td>30–45°</td><td>T<sub>ny</sub> = T × 0,70</td></tr>
+    </tbody>
+  </table>
+  <div class="eks"><b>Eksempel:</b> Grimesurring, tabellverdi 4,1 t, sidevinkel 20°. T<sub>ny</sub> = 4,1 × 0,85 = 3,5 t.</div>
+  <p><b>Direktesurring:</b> Her endrer du ikke tabellverdien. Vinkelen skal ligge mellom 30° og 60°, både på langs, på tvers og i høyden.</p>
+</section>
+
+<section class="kort" aria-labelledby="h-f5">
+  <h2 id="h-f5"><span class="nr">5</span>Annen stropp enn LC 1 600 daN / S<sub>TF</sub> 400 daN</h2>
+  <p class="naar">Tabellene gjelder for stropper med LC 1 600 daN og S<sub>TF</sub> 400 daN. Andre stropper krever en omregningsfaktor k. Les LC og S<sub>TF</sub> på merkelappen.</p>
+  <table>
+    <thead><tr><th>Metode</th><th>Omregningsfaktor k</th></tr></thead>
+    <tbody>
+      <tr><td>Overfallssurring mot å <b>gli</b></td><td>k = S<sub>TF</sub> ÷ 400</td></tr>
+      <tr><td>Overfallssurring mot å <b>tippe</b></td><td>den <b>minste</b> av S<sub>TF</sub> ÷ 400 og LC ÷ 1 600</td></tr>
+      <tr><td>Loop-, grime- og direktesurring</td><td>k = LC ÷ 1 600</td></tr>
+    </tbody>
+  </table>
+  <div class="formel">T<sub>ny</sub> = T × k<small>Bruk så T<sub>ny</sub> i formel 1.</small></div>
+  <div class="eks"><b>Eksempel:</b> Overfallssurring fremover, tabellverdi 0,63 t, stroppen har S<sub>TF</sub> 300 daN.<br>k = 300 ÷ 400 = 0,75 · T<sub>ny</sub> = 0,63 × 0,75 = 0,47 t.</div>
+  <div class="feil"><b>Vanlig feil:</b> å bruke bruddstyrken (f.eks. 4 000 kg) som LC. Står bare bruddstyrken på en kjetting, er LC = bruddstyrke × 0,5.</div>
+</section>
+
+<section class="kort" aria-labelledby="h-f6">
+  <h2 id="h-f6"><span class="nr">6</span>Blokkering</h2>
+  <p class="naar">Blokkeringstabellen viser hvor mange tonn gods som kan stå mot en blokkering med BC 1 000 daN. Har blokkeringen en annen kapasitet, bruker du en faktor.</p>
+  <div class="formel">k = BC ÷ 1 000 &nbsp;&nbsp;·&nbsp;&nbsp; godsvekt som kan blokkeres = T × k</div>
+  <table>
+    <thead><tr><th>L-kjøretøy</th><th>BC</th><th>k</th></tr></thead>
+    <tbody>
+      <tr><td>Frontvegg</td><td>5 000 daN</td><td>5</td></tr>
+      <tr><td>Bakkarm</td><td>3 500 daN</td><td>3,5</td></tr>
+    </tbody>
+  </table>
+  <div class="eks"><b>Eksempel:</b> µ = 0,30. Tabellen gir 2,0 t fremover. Frontvegg på et L-kjøretøy: 2,0 × 5 = <b>10 t</b> kan blokkeres mot frontveggen.</div>
+</section>
+
+<section class="kort" aria-labelledby="h-f7">
+  <h2 id="h-f7"><span class="nr">7</span>Last i flere lag (overfallssurring sideveis)</h2>
+  <ol>
+    <li>Regn antall stropper for <b>hele</b> seksjonen mot å gli, med friksjonen mot lasteplanet.</li>
+    <li>Regn antall stropper for det <b>øverste laget</b> mot å gli, med friksjonen mellom lagene.</li>
+    <li>Regn antall stropper for hele seksjonen mot å <b>tippe</b>.</li>
+  </ol>
+  <p>Det <b>høyeste</b> av de tre svarene gjelder.</p>
+</section>
+
+<section class="kort" aria-labelledby="h-f8">
+  <h2 id="h-f8"><span class="nr">8</span>Hva skal sikringen tåle? (krav i forskriften)</h2>
+  <div class="formel">Fremover: 0,8 × vekta &nbsp;&nbsp;·&nbsp;&nbsp; Sideveis og bakover: 0,5 × vekta<small>Gjelder tunge kjøretøy (N2/N3). Brukes når du skal <b>forklare</b> kreftene eller sjekke utstyr. Ikke bruk det når du teller stropper med heftets tabeller, for der er kravet allerede med.</small></div>
+  <div class="eks"><b>Eksempel:</b> 6 t last. Sikringen skal tåle 0,8 × 6 = 4,8 t fremover og 0,5 × 6 = 3,0 t sideveis og bakover.</div>
+</section>
+
+<section class="kort" aria-labelledby="h-tips">
+  <h2 id="h-tips">Kalkulatortips</h2>
+  <ul>
+    <li><b>Rund opp</b> hvis svaret har desimaler: 12,1 → 13 · 2,02 → 3 · 0,4 → 1. Blir svaret et helt tall (3,0), er det 3.</li>
+    <li>Regn om kg til tonn før du deler: 2 500 kg = 2,5 t.</li>
+    <li>Skriv opp hver retning for seg, så er det lett å se hvilket svar som er høyest.</li>
+  </ul>
+  <p class="ord"><b>Ord:</b> <i>µ</i> = friksjonstall · <i>T</i> = tabellverdi (tonn gods per stropp) · <i>LC</i> = sikringskapasitet · <i>S<sub>TF</sub></i> = forspenning · <i>BC</i> = blokkeringskapasitet · <i>daN</i> = dekanewton (1 daN ≈ 1 kg)</p>
+</section>
+
+<p class="kilde">Formelarket er laget for TLLfluenseren av Jarle Bruntveit. Det bygger på NLF-heftet «Lastsikring ved vegtransport», men tabellene står ikke her. Slå dem opp i heftet.</p>
+</main>
+</body>
+</html>
