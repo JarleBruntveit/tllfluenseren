@@ -794,7 +794,7 @@ function bootKapittel(){
       ${K.visKapittelkilder ? `<section data-resource-chapter="${esc(K.id)}"></section>` : ''}
       <div class="section-h"><h2>Ressurser</h2></div>
       <div class="panel"><ul class="reslist">
-        ${r.presentasjon ? `<li><span class="tag">Lysark</span><a href="${esc(r.presentasjon)}" target="_blank" rel="noopener">Lysark til kapittel ${K.nr}</a></li>` : ''}
+        ${r.presentasjon ? `<li><span class="tag lysark">Lysark</span><a href="${esc(r.presentasjon)}" target="_blank" rel="noopener">Lysark til kapittel ${K.nr}</a></li>` : ''}
         ${r.laerebok ? `<li><span class="tag">Bok</span><span>${esc(r.laerebok)}</span></li>` : ''}
         ${r.arbeidsbok ? `<li><span class="tag">Bok</span><span>${esc(r.arbeidsbok)}</span></li>` : ''}
         <li><span class="tag ndla">${esc(r.ndlaEmneTag || 'NDLA')}</span><a href="${r.ndlaEmne}" target="_blank" rel="noopener">${esc(r.ndlaEmneNavn || 'Emnet «Drift på terminal og lager» på NDLA')}</a></li>

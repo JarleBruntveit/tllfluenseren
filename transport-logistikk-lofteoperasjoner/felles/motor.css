@@ -94,6 +94,7 @@ main{padding:22px 0 60px}
 .reslist li:first-child{border-top:0}
 .tag{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 7px;border-radius:5px;background:var(--line);color:var(--ink);white-space:nowrap}
 .tag.ndla{background:#2b6cb0;color:#fff}
+.tag.lysark{background:var(--yellow);color:var(--yellow-ink)}
 .brandlink{display:inline-flex;gap:8px;align-items:center;text-decoration:none;font-weight:900;color:#fff;margin-bottom:10px}
 .brandlink .bm{width:30px;height:30px;border-radius:9px;background:var(--yellow);color:#111820;display:grid;place-items:center;font-size:11px}
 
