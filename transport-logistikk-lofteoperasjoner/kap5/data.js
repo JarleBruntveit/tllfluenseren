@@ -327,6 +327,8 @@ TLL.registrer({
   fag: 'Transport, logistikk og løfteoperasjoner',
   nr: 5,
   tittel: 'Sikring av last etter gjeldende forskrifter',
+  kortTittel: 'Sikring av last',
+  oppsett: 'fokus',   // forsøk: enklere kapittelside (se felles/README.md)
   ingress: 'Hvorfor lasten må sitte fast, hvilke krefter den utsettes for, og hvordan du sikrer den med låsing, blokkering og surring – etter regelverket som gjelder i dag.',
   kompetansemal: [
     { kode: 'TOL02-01 · KV427', tekst: 'sikre last etter gjeldende forskrifter' },

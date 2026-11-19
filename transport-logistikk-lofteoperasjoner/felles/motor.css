@@ -384,3 +384,63 @@ input.sel{font:inherit;padding:8px 10px;border:2px solid var(--line);border-radi
 .figur svg{display:block;width:100%;max-width:760px;height:auto;margin:0 auto;border-radius:10px;background:#fff}
 .figur figcaption{max-width:760px;margin:10px auto 0;font-size:15px;color:var(--muted);line-height:1.5}
 @media (max-width:600px){.figur{overflow-x:auto;-webkit-overflow-scrolling:touch}.figur svg{min-width:520px}}
+
+/* ===== Valgfritt oppsett «fokus» (data.js: oppsett: 'fokus') – enklere kapittelside, prøves i kap 5 ===== */
+.oppsett-fokus .levelbar{display:none}
+.oppsett-fokus .top .wrap{position:relative}
+.oppsett-fokus .top h1{font-size:clamp(28px,5vw,40px)}
+.hdr-tema{position:absolute;top:18px;right:16px;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.3);color:#fff}
+.hdr-tema:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.fokus-hero{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;padding:22px 24px;margin:6px 0 16px;background:var(--panel);border:2px solid var(--yellow);border-radius:var(--r);text-decoration:none;box-shadow:var(--shadow)}
+.fokus-hero-tekst{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}
+.fokus-hero .merke{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.fokus-hero-tittel{font-size:clamp(22px,4vw,28px);font-weight:900;letter-spacing:-.02em;line-height:1.15}
+.fokus-hero-kort{color:var(--muted);max-width:60ch}
+.fokus-hero .framdrift{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted);margin-top:8px}
+.fokus-hero .prog{width:220px;margin:0;flex:none}
+.fokus-knapp{background:var(--yellow);color:var(--yellow-ink);font-weight:800;font-size:20px;padding:14px 26px;border-radius:10px;white-space:nowrap;border:2px solid #8d5609}
+.fokus-hero:hover .fokus-knapp{background:#ffd378}
+.fokus-hero:focus-visible,.fokus-rad:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.fokus-lagring{align-items:center}
+.fokus-lagring>span:nth-child(2){flex:1}
+.fokus-lagring .btn{padding:6px 14px;white-space:nowrap}
+.fokus-liste{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.fokus-rad{display:flex;align-items:center;gap:14px;padding:12px 16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;text-decoration:none;min-height:56px}
+.fokus-rad:hover{border-color:var(--muted)}
+.fokus-rad.na{border:2px solid var(--yellow)}
+.fokus-status{width:28px;height:28px;flex:none;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-weight:900;font-size:14px}
+.fokus-rad.ferdig .fokus-status{background:var(--ok);border-color:var(--ok);color:#111820}
+.fokus-rad.na .fokus-status{background:var(--yellow);border-color:var(--yellow);color:var(--yellow-ink)}
+.fokus-lok{font-weight:800;font-size:14px;color:var(--muted);min-width:48px}
+.fokus-navn{flex:1;display:flex;flex-direction:column;min-width:0}
+.fokus-navn b{font-size:17px}
+.fokus-navn small{color:var(--muted);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fokus-info{font-size:14px;color:var(--muted);white-space:nowrap}
+.fokus-rad.na .fokus-info{color:var(--ink);font-weight:800}
+.fokus-om ul{margin:0;padding-left:20px}
+.fokus-niva{margin:14px 0 4px}
+.fokus-niva h2{font-size:22px}
+.fokus-niva p{margin:4px 0 0}
+.fokus-niva-valg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.fokus-niva-valg button{text-align:left;background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-height:48px}
+.fokus-niva-valg button b{display:flex;align-items:center;gap:8px;font-size:17px}
+.fokus-niva-valg button>span{color:var(--muted);font-size:14px}
+.fokus-niva-valg .dot{width:10px;height:10px;border-radius:50%;flex:none}
+.fokus-niva-valg .n1 .dot{background:var(--n1)} .fokus-niva-valg .n2 .dot{background:var(--n2)} .fokus-niva-valg .n3 .dot{background:var(--n3)}
+.fokus-niva-valg button:hover{border-color:var(--muted)}
+.fokus-niva-valg .n1[aria-pressed="true"]{border-color:var(--n1);box-shadow:inset 0 0 0 1px var(--n1)}
+.fokus-niva-valg .n2[aria-pressed="true"]{border-color:var(--n2);box-shadow:inset 0 0 0 1px var(--n2)}
+.fokus-niva-valg .n3[aria-pressed="true"]{border-color:var(--n3);box-shadow:inset 0 0 0 1px var(--n3)}
+.fokus-niva-valg button[aria-pressed="true"] b::after{content:"✓ Valgt";margin-left:auto;font-size:13px;color:var(--muted)}
+.fokus-alle{margin-top:10px;background:none;border:0;padding:6px 0;color:var(--muted);text-decoration:underline;font-size:14px}
+.fokus-alle[aria-pressed="true"]{color:var(--ink);text-decoration:none;font-weight:700}
+.fokus-niva button:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+@media (max-width:640px){
+  .fokus-niva-valg{grid-template-columns:1fr}
+  .fokus-navn small{display:none}
+  .fokus-hero{padding:18px}
+  .fokus-knapp{width:100%;text-align:center}
+  .fokus-hero .prog{width:120px}
+  .fokus-lok{min-width:0}
+  .hdr-tema{top:14px;right:12px}
+}

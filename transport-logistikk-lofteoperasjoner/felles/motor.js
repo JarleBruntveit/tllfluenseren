@@ -724,6 +724,10 @@ function bootKapittel(){
   const visible = a => !a.nivaa || store.lvl === 0 || a.nivaa === store.lvl;
   const aktiviteter = t => FASER.flatMap(f => t.aktiviteter.filter(a => visible(a) && faseAv(a) === f.id));
   const temaNavn = t => `${esc(t.lok)} – ${esc(t.tittel)}`;
+  /* Valgfritt: K.oppsett = 'fokus' gir en enklere kapittelside – én «Start/Fortsett»-knapp, temaene som en liste,
+     og nivået velges inne i hvert tema. Prøves først i kap 5. Kapitler uten feltet ser ut som før. */
+  const FOKUS = K.oppsett === 'fokus';
+  if (FOKUS) document.body.classList.add('oppsett-fokus');
 
   const LEVEL_HELP = {0:'Alle: vis aktiviteter fra alle nivåene. Du kan velge ett nivå for å få færre aktiviteter om gangen.',1:'Nybegynner: bli kjent med begrepene.',2:'Trygg: bruk kunnskapen i praktiske oppgaver.',3:'Ekspert: begrunn valg og løs mer sammensatte oppgaver.'};
   function renderLevels(){
@@ -740,6 +744,26 @@ function bootKapittel(){
       <h1>${title}</h1>
       ${sub ? `<div class="sub">${sub}</div>` : ''}
       ${showKm ? [].concat(K.kompetansemal).map(m => `<div class="km"><b>Kompetansemål</b><span>${esc(m.tekst)} <span style="opacity:.7">(${esc(m.kode)})</span></span></div>`).join('') : ''}`;
+    // Fokus-oppsett: nivålinjen er skjult, så lyst/mørkt-knappen flyttes opp i toppfeltet
+    if (FOKUS && themeBtn){ themeBtn.classList.add('hdr-tema'); $('#hdr').appendChild(themeBtn); }
+  }
+  /* Fokus-oppsett: nivået velges inne i temaet, etter læringsmålene */
+  const NIVA_VALG = [[1,'Nytt for meg','Start med begrepene og enkle oppgaver.'],[2,'Kan litt','Bruk kunnskapen i praktiske oppgaver.'],[3,'Kan det godt','Begrunn valg og løs sammensatte oppgaver.']];
+  function nivaValg(){
+    if (!FOKUS) return '';
+    return `<section class="panel fokus-niva" aria-labelledby="niva-h"><h2 id="niva-h">Hvor trygg er du på dette temaet?</h2>
+      <p class="muted small">Velg ett nivå, så ser du bare oppgavene som passer. Du kan bytte når du vil.</p>
+      <div class="fokus-niva-valg" role="group" aria-label="Velg nivå">${NIVA_VALG.map(([n,navn,tekst]) =>
+        `<button type="button" class="n${n}" data-lvl="${n}" aria-pressed="${store.lvl===n}"><b><span class="dot" aria-hidden="true"></span>${navn}</b><span>${tekst}</span></button>`).join('')}</div>
+      <button type="button" class="fokus-alle" data-lvl="0" aria-pressed="${store.lvl===0}">${store.lvl===0 ? 'Du ser oppgaver fra alle nivåene' : 'Vis oppgaver fra alle nivåene'}</button></section>`;
+  }
+  function koblNivaValg(){
+    if (!FOKUS) return;
+    app.querySelectorAll('.fokus-niva [data-lvl]').forEach(b => b.onclick = () => {
+      store.lvl = +b.dataset.lvl; save(); renderLevels();
+      const y = window.scrollY; route(); window.scrollTo(0, y);
+      const f = app.querySelector(`.fokus-niva [data-lvl="${store.lvl}"]`); if (f) f.focus({preventScroll: true});
+    });
   }
   $('#ftr').innerHTML = K.fotnote || `${esc(K.fag)} · Kapittel ${K.nr}. Tekster, oppgaver og tegninger er egenprodusert. Fagstoff fra <a href="${K.ressurser.ndlaEmne}" target="_blank" rel="noopener">NDLA</a> er lenket til, ikke kopiert. Kompetansemål fra Utdanningsdirektoratet (NLOD). Henvisninger til lærebok og arbeidsbok gjelder sidetall og oppgavenummer i elevens egne bøker. Resultater lagres bare i nettleseren på denne enheten – <a href="#/lagring">les om lagring</a> · <a href="#/rapport">lever fremdrift</a>.`;
 
@@ -747,7 +771,7 @@ function bootKapittel(){
   const done = id => pct => { TLL.registrerResultat(K.id, store, id, pct); };
 
   function pageHome(){
-    header(`<span>${esc(K.kortnavn || 'Kapittel ' + K.nr)}</span>`, K.kortnavn ? esc(K.tittel) : `Kap ${K.nr} · ${esc(K.tittel)}`, esc(K.ingress), true);
+    header(`<span>${esc(K.kortnavn || 'Kapittel ' + K.nr)}</span>`, K.kortnavn ? esc(K.tittel) : `Kap ${K.nr} · ${esc(FOKUS && K.kortTittel || K.tittel)}`, esc(K.ingress), !FOKUS);
     const r = K.ressurser;
     const forsteTema = K.temaer[0];
     // Temaer merket ovelsesbank: true vises i egen seksjon (jobbes med hele skoleåret), ikke i «Velg tema»
@@ -761,7 +785,47 @@ function bootKapittel(){
             <div class="progtxt">${p.done} av ${p.total} aktiviteter gjort</div>
             <div class="prog"><i style="width:${p.total?100*p.done/p.total:0}%"></i></div></div>
         </a>`; };
-    app.innerHTML = `
+    const ferdigT = t => { const p = temaProg(t); return p.total > 0 && p.done >= p.total; };
+    const nesteT = vanlige.find(t => !ferdigT(t));
+    const startet = Object.keys(store.best).length > 0;
+    const nFerdig = vanlige.filter(ferdigT).length;
+    const proveLever = `
+        ${K.prove === false ? '' : `<a class="tcard" href="../prove/?kap=${K.id}">
+          <div class="lab"><span class="lok" style="background:var(--asphalt);color:var(--yellow)">TEST</span><span class="bars"></span></div>
+          <div class="body"><span class="ftag">Øv</span><h3>Kapittelprøve</h3><p>Tilfeldige spørsmål fra hele kapitlet på nivået du velger. Se hvilke tema du må øve mer på.</p></div>
+        </a>`}
+        <a class="tcard" href="#/rapport">
+          <div class="lab"><span class="lok" style="background:var(--n2);color:#111820">LEVER</span><span class="bars"></span></div>
+          <div class="body"><h3>Lever fremdrift</h3><p>Last ned en PDF med det du har gjort og det som gjenstår. Lever den i Teams.</p></div>
+        </a>
+`;
+    const hero = !nesteT
+      ? { merke: 'Bra jobba!', tittel: 'Du har gjort alle temaene', tekst: K.prove === false ? 'Lever fremdriften din i Teams.' : 'Sjekk hva du kan med kapittelprøven.', knapp: K.prove === false ? 'Lever fremdrift →' : 'Ta kapittelprøven →', href: K.prove === false ? '#/rapport' : `../prove/?kap=${K.id}` }
+      : { merke: startet ? 'Du er her' : 'Start her', tittel: temaNavn(nesteT), tekst: esc(nesteT.kort), knapp: startet ? 'Fortsett →' : 'Start →', href: `#/${nesteT.id}` };
+    const temarad = t => { const p = temaProg(t), fe = ferdigT(t), na = t === nesteT;
+      return `<li><a class="fokus-rad${na ? ' na' : ''}${fe ? ' ferdig' : ''}" href="#/${t.id}"${na ? ' aria-current="step"' : ''}>
+        <span class="fokus-status" aria-hidden="true">${fe ? '✓' : na ? '→' : ''}</span>
+        <span class="fokus-lok">${esc(t.lok)}</span>
+        <span class="fokus-navn"><b>${esc(t.tittel)}</b><small>${esc(t.kort)}</small></span>
+        <span class="fokus-info">${fe ? 'Ferdig' : na ? (startet ? 'Fortsett her' : 'Start her') : `${p.done} av ${p.total}`}</span></a></li>`; };
+    const toppFokus = () => `
+      <a class="fokus-hero" href="${hero.href}">
+        <span class="fokus-hero-tekst"><span class="merke">${hero.merke}</span><span class="fokus-hero-tittel">${hero.tittel}</span><span class="fokus-hero-kort">${hero.tekst}</span>
+          <span class="framdrift"><span class="prog"><i style="width:${vanlige.length ? 100*nFerdig/vanlige.length : 0}%"></i></span>${nFerdig} av ${vanlige.length} temaer ferdig</span></span>
+        <span class="fokus-knapp">${hero.knapp}</span>
+      </a>
+      ${store.lagringSett ? '' : `<div class="note fokus-lagring"><span aria-hidden="true">💾</span><span>Svarene dine lagres bare på denne PC-en. Når du er ferdig, leverer du <a href="#/rapport">fremdriftsrapport</a> i Teams. <a href="#/lagring">Les mer</a></span><button type="button" class="btn ghost" id="lagringOk">Skjønner</button></div>`}
+      <div class="section-h"><h2>Alle temaer i kapitlet</h2><span class="muted small">Ta dem i rekkefølge</span></div>
+      <ol class="fokus-liste">${vanlige.map(temarad).join('')}</ol>
+      <div class="section-h"><h2>Når du er ferdig med temaene</h2></div>
+      <div class="grid">${proveLever}</div>
+`;
+    const omKapitlet = !FOKUS ? '' : `
+      <div class="section-h"><h2>Om kapitlet</h2></div>
+      <div class="panel fokus-om"><p style="margin-top:0"><b>Kapittel ${K.nr}: ${esc(K.tittel)}</b></p>
+        <p class="small muted" style="margin-bottom:4px">Kompetansemål fra læreplanen:</p>
+        <ul>${[].concat(K.kompetansemal).map(m => `<li>${esc(m.tekst)} <span class="muted small">(${esc(m.kode)})</span></li>`).join('')}</ul></div>`;
+    app.innerHTML = (FOKUS ? toppFokus() : `
       <div class="note ${store.saveText ? 'warn' : ''}" style="margin-top:4px"><span aria-hidden="true">${store.saveText ? '💾' : '🔒'}</span><span>
         <b>Lagring på denne PC-en:</b> Resultatene dine lagres bare i denne nettleseren. Læreren ser dem når du leverer en <a href="#/rapport">fremdriftsrapport</a> i Teams.
         ${store.saveText ? 'Det du skriver i skriveoppgavene lagres også her – andre som bruker PC-en kan se det.' : 'Det du skriver i skriveoppgavene lagres ikke.'}
@@ -779,6 +843,7 @@ function bootKapittel(){
           <div class="body"><h3>Lever fremdrift</h3><p>Last ned en PDF med det du har gjort og det som gjenstår. Lever den i Teams.</p></div>
         </a>
       </div>
+`) + `
       ${K.visKapittelkilder || K.ressursomrade === false ? '' : `<section data-resource-area="${esc(K.ressursomrade || 'tll')}"></section>`}
       ${banker.length ? `<section aria-labelledby="ovelsesbank-heading">
         <div class="section-h"><h2 id="ovelsesbank-heading">Øvelsesbank</h2><span class="muted small">Jobb med disse gjennom hele skoleåret</span></div>
@@ -799,7 +864,8 @@ function bootKapittel(){
         ${r.arbeidsbok ? `<li><span class="tag">Bok</span><span>${esc(r.arbeidsbok)}</span></li>` : ''}
         <li><span class="tag ndla">${esc(r.ndlaEmneTag || 'NDLA')}</span><a href="${r.ndlaEmne}" target="_blank" rel="noopener">${esc(r.ndlaEmneNavn || 'Emnet «Drift på terminal og lager» på NDLA')}</a></li>
         ${r.ordliste ? `<li><span class="tag ndla">${esc(r.ordlisteTag || 'NDLA')}</span><a href="${r.ordliste}" target="_blank" rel="noopener">${esc(r.ordlisteNavn || 'Ordliste for lager og logistikk')}</a></li>` : ''}
-      </ul></div>`;
+      </ul></div>` + omKapitlet;
+    const ok = $('#lagringOk'); if (ok) ok.onclick = () => { store.lagringSett = true; save(); const y = window.scrollY; pageHome(); window.scrollTo(0, y); };
     const items = {};
     K.temaer.forEach((t,i) => findEpisode(i+1, () => {
       const box = $('#podlist'), ul = $('#podul'); if (!box || !ul) return;
@@ -817,6 +883,7 @@ function bootKapittel(){
     const B = store.bank || {};
     app.innerHTML = `
       ${t.mal ? `<section class="panel mal"><h2>Læringsmål</h2><p>Etter å ha jobbet med øvelsesbanken kan jeg …</p><ul>${t.mal.map(m => `<li>${esc(m)}</li>`).join('')}</ul></section>` : ''}
+      ${nivaValg()}
       <div class="theory" style="margin-top:14px">
         <div class="panel kort"><h3 style="font-size:22px">Slik jobber du</h3><ul>${t.punkter.map(p => `<li>${p}</li>`).join('')}</ul></div>
         ${t.ekstra ? `<div class="panel">${t.ekstra}</div>` : ''}
@@ -824,8 +891,9 @@ function bootKapittel(){
       <nav class="bank-tabs" aria-label="Deler av øvelsesbanken">${deler.map(d => { const n = bankKlart(d, B);
         return `<a class="bank-tab" href="#/${t.id}/${d.id}" ${d === a ? 'aria-current="page"' : ''}><span class="lvl n${d.nivaa || 0}">${d.nivaa ? NIVA_KORT[d.nivaa] : 'Alle'}</span><b>${esc(d.tittel)}</b><span class="small muted">${n} av ${d.oppg.length} klart</span><span class="meter"><i style="width:${100*n/d.oppg.length}%"></i></span></a>`; }).join('')}</nav>
       ${a ? `<section class="bank-del" id="bankdel"><h2 class="bank-h">${esc(a.tittel)}</h2><div id="stage"></div></section>`
-          : `<p class="muted">Ingen deler på nivået du har valgt. Velg «Alle» øverst.</p>`}
+          : `<p class="muted">Ingen deler på nivået du har valgt. ${FOKUS ? 'Velg et annet nivå over.' : 'Velg «Alle» øverst.'}</p>`}
       <nav class="step-nav" aria-label="Naviger"><a class="btn ghost step-overview" href="#/">Tilbake til alle tema</a></nav>`;
+    koblNivaValg();
     if (a) runBank($('#stage'), a, pct => { TLL.registrerResultat(K.id, store, a.id, pct); });
     return !!valgt;
   }
@@ -848,6 +916,7 @@ function bootKapittel(){
       return list.length ? `<div class="acts">${list.map(a => actCard(t,a)).join('')}</div>` : `<p class="muted small">Ingen aktiviteter i ${f.navn} på nivået du har valgt.</p>`; };
     app.innerHTML = `
       ${t.mal ? `<section class="panel mal"><h2>Læringsmål</h2><p>Etter dette temaet kan jeg …</p><ul>${t.mal.map(m => `<li>${esc(m)}</li>`).join('')}</ul></section>` : ''}
+      ${nivaValg()}
       <section class="phase" id="laer">${phaseHead(FASER[0])}
         <div id="pod" hidden></div>
         <div class="theory">
@@ -870,6 +939,7 @@ function bootKapittel(){
         <a class="btn ghost step-overview" href="#/">Tilbake til alle tema</a>
         ${neste ? `<a class="btn yellow step-next" href="#/${neste.id}"><span>Neste tema →</span><small>${temaNavn(neste)}</small></a>` : ''}
       </nav>`;
+    koblNivaValg();
     const nr = index + 1;
     const el = $('#pod');
     findEpisode(nr, src => { if (!el.isConnected) return; el.hidden = false; el.innerHTML = podPlayer(nr, t, src); wirePlayer(el); });
