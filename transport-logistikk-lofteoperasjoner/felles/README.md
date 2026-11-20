@@ -51,3 +51,11 @@ Valgfrie felt i `data.js`:
 | `tema.ekstra` | HTML-panel under «Kort fortalt» (f.eks. en øvingsannonse). |
 | `aktivitet.vis` | HTML-panel som vises over oppgaven. |
 | `tema.ndla` | Lenker kan være hele URL-er (`https://…`), ikke bare TLL-stier. |
+
+## Forsøk: enklere kapittelside (`oppsett: 'fokus'`)
+Valgfritt felt i `data.js`. Prøves først i kap 5 (november 2026) etter tilbakemeldinger om at det er «så mange knapper».
+- Kapittelsiden får én stor «Start/Fortsett»-knapp som peker på første tema som ikke er ferdig, og temaene vises som en liste med status.
+- Nivålinjen øverst skjules. Eleven velger nivå inne i temaet («Hvor trygg er du på dette temaet?»), etter læringsmålene.
+- Lagringsinfoen vises én gang med «Skjønner» (lagres som `lagringSett` i elevens nettleser). Kompetansemålene står under «Om kapitlet» nederst.
+- `kortTittel` (valgfritt) gir kortere overskrift på kapittelsiden, f.eks. «Sikring av last».
+Kapitler uten feltet ser ut som før. Hvis forsøket faller godt ut, kan feltet legges til i alle kapitler (eller bli standard).
