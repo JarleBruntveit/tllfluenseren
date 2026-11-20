@@ -190,6 +190,78 @@
       "url": "/bransjeteknikk/adr/#/oppdrag"
     },
     {
+      "id": "forerkort-b-veien",
+      "title": "Førerkort B – veien til førerkortet",
+      "area": "bransjeteknikk",
+      "url": "/bransjeteknikk/forerkort-b/#/veien"
+    },
+    {
+      "id": "forerkort-b-regler",
+      "title": "Førerkort B – trafikkregler og førerens ansvar",
+      "area": "bransjeteknikk",
+      "url": "/bransjeteknikk/forerkort-b/#/regler"
+    },
+    {
+      "id": "forerkort-b-skilt",
+      "title": "Førerkort B – skilt og vegoppmerking",
+      "area": "bransjeteknikk",
+      "url": "/bransjeteknikk/forerkort-b/#/skilt"
+    },
+    {
+      "id": "forerkort-b-bilen",
+      "title": "Førerkort B – bilen, kontroll og last",
+      "area": "bransjeteknikk",
+      "url": "/bransjeteknikk/forerkort-b/#/bilen"
+    },
+    {
+      "id": "forerkort-b-risiko",
+      "title": "Førerkort B – fart, stopplengde og risiko",
+      "area": "bransjeteknikk",
+      "url": "/bransjeteknikk/forerkort-b/#/risiko"
+    },
+    {
+      "id": "forerkort-b-samspill",
+      "title": "Førerkort B – samspill, mørke og uhell",
+      "area": "bransjeteknikk",
+      "url": "/bransjeteknikk/forerkort-b/#/samspill"
+    },
+    {
+      "id": "g11-roller",
+      "title": "G11 – roller, regelverk og ulykker",
+      "area": "bransjeteknikk",
+      "url": "/bransjeteknikk/g11/#/roller"
+    },
+    {
+      "id": "g11-redskap",
+      "title": "G11 – typer løfteredskap",
+      "area": "bransjeteknikk",
+      "url": "/bransjeteknikk/g11/#/redskap"
+    },
+    {
+      "id": "g11-kontroll",
+      "title": "G11 – merking, kontroll og kassering",
+      "area": "bransjeteknikk",
+      "url": "/bransjeteknikk/g11/#/kontroll"
+    },
+    {
+      "id": "g11-tabell",
+      "title": "G11 – løftetabeller og vinkler",
+      "area": "bransjeteknikk",
+      "url": "/bransjeteknikk/g11/#/tabell"
+    },
+    {
+      "id": "g11-anhuking",
+      "title": "G11 – anhuking i praksis",
+      "area": "bransjeteknikk",
+      "url": "/bransjeteknikk/g11/#/anhuking"
+    },
+    {
+      "id": "g11-signaler",
+      "title": "G11 – signaler og kommunikasjon",
+      "area": "bransjeteknikk",
+      "url": "/bransjeteknikk/g11/#/signaler"
+    },
+    {
       "id": "bransjelaere",
       "title": "Bransjelære – generelt",
       "area": "bransjelaere",
