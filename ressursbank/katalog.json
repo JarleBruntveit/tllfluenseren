@@ -227,7 +227,7 @@
     },
     {
       "id": "g11-roller",
-      "title": "G11 – roller, regelverk og ulykker",
+      "title": "G11 – roller, regelverk og opplæring",
       "area": "bransjeteknikk",
       "url": "/bransjeteknikk/g11/#/roller"
     },
@@ -245,7 +245,7 @@
     },
     {
       "id": "g11-tabell",
-      "title": "G11 – løftetabeller og vinkler",
+      "title": "G11 – løftetabeller og arbeidsvinkel",
       "area": "bransjeteknikk",
       "url": "/bransjeteknikk/g11/#/tabell"
     },
@@ -260,6 +260,18 @@
       "title": "G11 – signaler og kommunikasjon",
       "area": "bransjeteknikk",
       "url": "/bransjeteknikk/g11/#/signaler"
+    },
+    {
+      "id": "g11-ulykker",
+      "title": "G11 – lær av ulykker",
+      "area": "bransjeteknikk",
+      "url": "/bransjeteknikk/g11/#/ulykker"
+    },
+    {
+      "id": "g11-ovelsesbank",
+      "title": "G11 – øvelsesbank: løfteredskap og løftetabeller",
+      "area": "bransjeteknikk",
+      "url": "/bransjeteknikk/g11/#/ovelsesbank"
     },
     {
       "id": "bransjelaere",

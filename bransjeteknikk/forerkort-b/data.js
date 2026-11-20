@@ -50,6 +50,8 @@ TLL.registrer({
   id: 'forerkort-b',
   fag: 'Bransjeteknikk',
   kortnavn: 'Førerkort B',
+  kortTittel: 'Førerkort klasse B',
+  oppsett: 'fokus',
   nr: 'B',
   tittel: 'Førerkort klasse B',
   ingress: 'Lær reglene, forstå risikoen og ta trygge valg bak rattet. Temaene følger veien fra trafikalt grunnkurs til førerprøven.',
