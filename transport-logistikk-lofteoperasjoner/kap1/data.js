@@ -313,6 +313,8 @@ TLL.registrer({
   fag: 'Transport, logistikk og løfteoperasjoner',
   nr: 1,
   tittel: 'Grunnleggende prinsipper ved lager- og terminalarbeid',
+  kortTittel: 'Lager og terminal',
+  oppsett: 'fokus',   // enklere kapittelside som kap 5 (se felles/README.md)
   ingress: 'Hvordan varer og gods flyter fra fabrikk til kunde – og hva du gjør på lageret og terminalen for at det skal gå effektivt og riktig.',
   kompetansemal: { kode: 'TOL02-01 · KV427', tekst: 'gjøre rede for grunnleggende prinsipper for effektiv drift av lager og terminal' },
   visKapittelkilder: true,
