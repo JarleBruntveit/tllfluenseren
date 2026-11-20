@@ -6,6 +6,8 @@ TLL.registrer({
   id: 'adr',
   fag: 'Bransjeteknikk',
   kortnavn: 'ADR',
+  kortTittel: 'Farlig gods',
+  oppsett: 'fokus',
   nr: 'ADR',
   tittel: 'Transport av farlig gods',
   ingress: 'Bruk ADR-boka som et arbeidsverktøy. Finn regelen, forklar hva den betyr, og ta et trygt valg i transportoppdraget.',

@@ -561,6 +561,8 @@ function runSim(st, a, done){
 /* =================== ØVELSESBANK (type 'bank') ===================
    En liste med oppgaver som vises samtidig, slik at eleven ser hele banken og velger selv.
    a.oppg: [{ k:'mc'|'num'|'open', q, o, r, ans, tol, u, s (side i heftet), h (hint), f (forklaring), tema }]
+   Valgfritt: a.kilde (f.eks. 'Boka') erstatter ordet «Heftet» i sidehenvisningene, og a.rundOpp:false fjerner
+   påminnelsen om å runde opp antall stropper (den gjelder lastsikring). 
    Status per oppgave lagres i store.bank; resultatet (andel klart) registreres på aktiviteten. */
 const bankFilter = { tema: '', apne: false };
 const tall = v => Number(String(v).replace(/\s/g,'').replace(',','.'));
@@ -578,7 +580,8 @@ function runBank(st, a, done){
   };
   const progHtml = n => `<div class="row"><span class="counter">${n} av ${total} oppgaver klart</span></div><div class="meter"><i style="width:${100*n/total}%"></i></div>`;
   const temaer = [...new Set(a.oppg.map(o => o.tema).filter(Boolean))];
-  const side = o => o.s ? `<span class="tag">Heftet ${/^\d/.test(o.s) ? 's. ' : ': '}${esc(o.s)}</span>` : '';
+  const KILDE = a.kilde || 'Heftet', kildeLite = KILDE.charAt(0).toLowerCase() + KILDE.slice(1);
+  const side = o => o.s ? `<span class="tag">${esc(KILDE)} ${/^\d/.test(o.s) ? 's. ' : ': '}${esc(o.s)}</span>` : '';
   const kort = (o, i) => {
     const x = B[key(i)] || {}, klart = x.ok || (o.k === 'open' && x.self === 'ja');
     let kropp;
@@ -623,9 +626,9 @@ function runBank(st, a, done){
     const vis = (cls, html) => { fb.innerHTML = `<div class="fb ${cls}">${html}</div>`; };
     const merk = () => { el.classList.add('klart'); const m = el.querySelector('.bank-meta'); if (!m.querySelector('.bank-ok')) m.insertAdjacentHTML('beforeend', '<span class="tag bank-ok">✓ Klart</span>'); };
     const hb = el.querySelector('[data-hint]');
-    if (hb) hb.onclick = () => { if (!el.querySelector('.bank-hint')) fb.insertAdjacentHTML('beforebegin', `<div class="fb bank-hint">💡 ${esc(o.h || ('Se heftet: ' + o.s))}</div>`); };
+    if (hb) hb.onclick = () => { if (!el.querySelector('.bank-hint')) fb.insertAdjacentHTML('beforebegin', `<div class="fb bank-hint">💡 ${esc(o.h || ('Se ' + kildeLite + ': ' + o.s))}</div>`); };
     const fasit = () => o.k === 'mc' ? esc(o.o[o.r]) : `${String(o.ans).replace('.', ',')} ${esc(o.u || '')}`;
-    const feil = s => { const n = s.forsok; vis('bad', `<b>Ikke helt.</b> Prøv igjen. Bruk hintet eller se i heftet${o.s && /^\d/.test(o.s) ? ' på s. ' + esc(o.s) : ''}.${o.k === 'num' ? ' Husk å runde <b>opp</b> når du teller stropper.' : ''}${n >= 2 ? ` <button class="btn ghost" data-fasit style="margin-top:8px">Vis riktig svar</button>` : ''}`);
+    const feil = s => { const n = s.forsok; vis('bad', `<b>Ikke helt.</b> Prøv igjen. Bruk hintet eller se i ${esc(kildeLite)}${o.s && /^\d/.test(o.s) ? ' på s. ' + esc(o.s) : ''}.${o.k === 'num' && a.rundOpp !== false ? ' Husk å runde <b>opp</b> når du teller stropper.' : ''}${n >= 2 ? ` <button class="btn ghost" data-fasit style="margin-top:8px">Vis riktig svar</button>` : ''}`);
       const fb2 = fb.querySelector('[data-fasit]'); if (fb2) fb2.onclick = () => vis('', `<b>Riktig svar:</b> ${fasit()}<br>${esc(o.f || '')}`); };
     if (o.k === 'mc'){
       el.querySelectorAll('.opt').forEach(b => b.onclick = () => {
@@ -789,7 +792,12 @@ function bootKapittel(){
     const nesteT = vanlige.find(t => !ferdigT(t));
     const startet = Object.keys(store.best).length > 0;
     const nFerdig = vanlige.filter(ferdigT).length;
-    const proveLever = `
+    const AP = K.avsluttendeProve;
+    const apKort = !AP ? '' : `<a class="tcard" href="#/avsluttende-prove">
+          <div class="lab"><span class="lok" style="background:var(--asphalt);color:var(--yellow)">PRØVE</span><span class="bars"></span></div>
+          <div class="body"><span class="ftag">Tenk</span><h3>${esc(AP.tittel)}</h3><p>${esc(AP.kort || '')}</p></div>
+        </a>`;
+    const proveLever = `${apKort}
         ${K.prove === false ? '' : `<a class="tcard" href="../prove/?kap=${K.id}">
           <div class="lab"><span class="lok" style="background:var(--asphalt);color:var(--yellow)">TEST</span><span class="bars"></span></div>
           <div class="body"><span class="ftag">Øv</span><h3>Kapittelprøve</h3><p>Tilfeldige spørsmål fra hele kapitlet på nivået du velger. Se hvilke tema du må øve mer på.</p></div>
@@ -799,7 +807,9 @@ function bootKapittel(){
           <div class="body"><h3>Lever fremdrift</h3><p>Last ned en PDF med det du har gjort og det som gjenstår. Lever den i Teams.</p></div>
         </a>
 `;
-    const hero = !nesteT
+    const hero = !nesteT && AP
+      ? { merke: 'Bra jobba!', tittel: 'Du har gjort alle temaene', tekst: 'Vis hva du kan på den avsluttende prøven.', knapp: 'Ta prøven →', href: '#/avsluttende-prove' }
+      : !nesteT
       ? { merke: 'Bra jobba!', tittel: 'Du har gjort alle temaene', tekst: K.prove === false ? 'Lever fremdriften din i Teams.' : 'Sjekk hva du kan med kapittelprøven.', knapp: K.prove === false ? 'Lever fremdrift →' : 'Ta kapittelprøven →', href: K.prove === false ? '#/rapport' : `../prove/?kap=${K.id}` }
       : { merke: startet ? 'Du er her' : 'Start her', tittel: temaNavn(nesteT), tekst: esc(nesteT.kort), knapp: startet ? 'Fortsett →' : 'Start →', href: `#/${nesteT.id}` };
     const temarad = t => { const p = temaProg(t), fe = ferdigT(t), na = t === nesteT;
@@ -822,7 +832,7 @@ function bootKapittel(){
 `;
     const omKapitlet = !FOKUS ? '' : `
       <div class="section-h"><h2>Om kapitlet</h2></div>
-      <div class="panel fokus-om"><p style="margin-top:0"><b>Kapittel ${K.nr}: ${esc(K.tittel)}</b></p>
+      <div class="panel fokus-om"><p style="margin-top:0"><b>${/^\d+$/.test(String(K.nr)) ? 'Kapittel ' + K.nr + ': ' : ''}${esc(K.tittel)}</b></p>
         <p class="small muted" style="margin-bottom:4px">Kompetansemål fra læreplanen:</p>
         <ul>${[].concat(K.kompetansemal).map(m => `<li>${esc(m.tekst)} <span class="muted small">(${esc(m.kode)})</span></li>`).join('')}</ul></div>`;
     app.innerHTML = (FOKUS ? toppFokus() : `
@@ -833,7 +843,7 @@ function bootKapittel(){
       <section class="panel tll-start" aria-labelledby="start-heading"><h2 id="start-heading">Første gang her?</h2><p>Start med «${esc(forsteTema.tittel)}». Les eller lytt til forklaringen, og prøv oppgavene etterpå. Har læreren gitt deg et annet tema, velger du det nedenfor.</p><a class="tll-action" href="#/${forsteTema.id}">Start med ${temaNavn(forsteTema)} →</a></section>
       <div class="section-h"><h2>Velg tema</h2><span class="muted small">${alle.d} av ${alle.n} aktiviteter gjort · ${alle.n - alle.d} gjenstår</span></div>
       <div class="phase-steps" style="margin:-4px 0 14px">${FASER.map(f => `<span>${f.navn.toUpperCase()}</span>`).join('')}</div>
-      <div class="grid">${vanlige.map(t => temakort(t)).join('')}
+      <div class="grid">${vanlige.map(t => temakort(t)).join('')}${apKort}
         ${K.prove === false ? '' : `<a class="tcard" href="../prove/?kap=${K.id}">
           <div class="lab"><span class="lok" style="background:var(--asphalt);color:var(--yellow)">TEST</span><span class="bars"></span></div>
           <div class="body"><span class="ftag">Øv</span><h3>Kapittelprøve</h3><p>Tilfeldige spørsmål fra hele kapitlet på nivået du velger. Se hvilke tema du må øve mer på.</p></div>
@@ -967,6 +977,24 @@ function bootKapittel(){
       </nav>`;
     RUN[a.type]($('#stage'), a, done(a.id), t);
   }
+  /* Valgfritt: K.avsluttendeProve = { tittel, kort, tekst (HTML), bestaatt (prosent), sp: [quiz-spørsmål] }
+     gir en egen prøve på kapittelsiden (brukes når kapitlet ikke er med på den felles prøvesiden). Alle spørsmål
+     tas i tilfeldig rekkefølge, og resultatet lagres sammen med de andre prøvene og kommer med i fremdriftsrapporten. */
+  function pageAvsluttende(){
+    const AP = K.avsluttendeProve;
+    header(`<a href="#/">${KN}</a>`, esc(AP.tittel), `${AP.sp.length} spørsmål${AP.bestaatt ? ' · ' + AP.bestaatt + ' % riktig for å bestå' : ''}`, false);
+    const start = () => {
+      const qs = shuffle(AP.sp).map(q => Object.assign({ _tema: q.tema || '' }, q));
+      app.innerHTML = `<div class="stage" id="stage"></div>`;
+      runQuiz($('#stage'), { sp: qs }, (pct, info) => {
+        TLL.lagreProve({ dato: new Date().toISOString(), navn: AP.tittel, kap: [K.id], niva: 0, seed: null, antall: info.antall, riktige: info.riktige, pct: Math.round(pct), perTema: info.perTema });
+      }, null, { questions: qs, perTema: true, restart: start,
+        etter: `<p style="margin:6px 0 14px">${AP.bestaatt ? `Du trenger ${AP.bestaatt} % riktige for å bestå. ` : ''}Resultatet er lagret på denne PC-en. <a href="#/rapport">Lever fremdrift til læreren →</a></p>` });
+    };
+    app.innerHTML = `<div class="stage"><div class="panel">${AP.tekst || ''}
+      <div class="row" style="margin-top:14px"><a class="btn ghost" href="#/">← Tilbake</a><span class="spacer"></span><button class="btn yellow" id="apStart">Start prøven</button></div></div></div>`;
+    $('#apStart').onclick = start;
+  }
   function pageRapport(){
     header(`<a href="#/">${KN}</a>`, 'Lever fremdrift', 'Last ned en rapport og lever den i Teams', false);
     app.innerHTML = `<div class="stage" id="stage"></div>`;
@@ -1023,6 +1051,7 @@ function bootKapittel(){
     if (parts[0] === 'prove' && K.prove !== false) location.replace('../prove/?kap=' + K.id);
     else if (parts[0] === 'lagring') pageLagring();
     else if (parts[0] === 'rapport') pageRapport();
+    else if (parts[0] === 'avsluttende-prove' && K.avsluttendeProve) pageAvsluttende();
     else {
       const t = K.temaer.find(x => x.id === parts[0]);
       const a = t && t.aktiviteter.find(x => x.id === parts[1]);

@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="no">
+<head>
+<link rel="icon" href="/favicon.ico?v=1" sizes="any">
+<link rel="icon" href="/favicon.svg?v=1" type="image/svg+xml">
+<link rel="icon" href="/favicon-32x32.png?v=1" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=1" sizes="180x180">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>G11 – få teoriprøven lest opp – TLLfluenseren</title>
+<link rel="stylesheet" href="../../../assets/styles.css">
+<link rel="stylesheet" href="/assets/global-footer.css">
+<script defer src="/assets/global-footer.js?v=mobile-nav-2"></script>
+<link rel="stylesheet" href="/assets/elevflyt.css?v=mobile-nav-2">
+<meta name="description" content="Få G11-teoriprøven lest opp på norsk, engelsk eller ukrainsk. Åpnes med passord fra læreren.">
+<style>
+.langPick{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 4px}
+.langPick button{padding:10px 16px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--text);font-weight:800;cursor:pointer}
+.langPick button[aria-pressed="true"]{background:var(--accent);color:#111820;border-color:var(--accent)}
+.langPick button:focus-visible,.testCard:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.lockBox{display:grid;gap:10px;max-width:440px;margin-top:18px}
+.lockBox input{padding:14px 16px;border-radius:12px;border:1px solid var(--line);background:#0e171f;color:var(--text);font-size:18px}
+.lockErr{color:#ff8a80;min-height:1.4em;margin:0}
+.orig{margin-top:6px;color:var(--muted);font-size:15px;line-height:1.45}
+.orig::before{content:"Norsk: ";font-weight:800}
+.textHidden .orig{filter:blur(8px);user-select:none}
+.qimg{max-width:min(360px,100%);background:#fff;border-radius:12px;padding:6px}
+</style>
+</head>
+<body class="playerPage"><a class="tll-skip" href="#tll-main">Hopp til innhold</a>
+<header class="playerHeader">
+  <div class="wrap topbar" style="padding:0">
+    <a class="brand" href="../../../">
+      <span class="brandmark">TLL</span>
+      <span>TLLfluenseren <small>Bransjeteknikk · G11 Løfteredskap – opplesning</small></span>
+    </a>
+    <nav class="tll-site-nav" aria-label="Hovedmeny"><a href="/">Forside</a><a href="/#fag">Fagområder</a><a href="/yrkesretninger/">Yrkesretninger</a><a href="/ressursbank/">Ressursbank</a><a href="/assistent/">TLL-assistenten</a><a href="/laererrom/">Lærerrom</a><a href="/om/">Om</a></nav>
+  </div>
+</header><div class="tll-return"><a href="/bransjeteknikk/g11/">← Tilbake til G11 Løfteredskap</a></div>
+
+<main id="tll-main" tabindex="-1" class="playerShell">
+  <section id="lock">
+    <div class="kicker">G11 · Prøveopplesning</div>
+    <h1 style="font-size:clamp(38px,7vw,64px)">Få teoriprøven lest opp</h1>
+    <p class="notice">Prøven er låst. Skriv passordet du har fått av læreren på prøvedagen.</p>
+    <form class="lockBox" id="lockForm" autocomplete="off">
+      <label for="pw"><b>Passord</b></label>
+      <input id="pw" type="password" autocomplete="off" required>
+      <button class="btn primary" type="submit" id="unlockBtn">Åpne prøven</button>
+      <p class="lockErr" id="lockErr" role="alert"></p>
+    </form>
+    <p class="small" style="margin-top:22px">Vil du øve først? <a href="/bransjeteknikk/g11/">Gå til G11 Løfteredskap – temaer, øvelsesbank og øveprøve →</a></p>
+  </section>
+
+  <section id="picker" class="hidden">
+    <div class="kicker" data-t="kicker">G11 · Prøveopplesning</div>
+    <h1 style="font-size:clamp(38px,7vw,64px)" data-t="h1">Få teoriprøven lest opp</h1>
+    <p class="notice" data-t="notice"></p>
+    <h2 style="font-size:20px;margin:18px 0 0" data-t="langH">Språk</h2>
+    <div class="langPick" role="group" aria-label="Velg språk">
+      <button type="button" data-lang="nb" lang="nb">Norsk</button>
+      <button type="button" data-lang="en" lang="en">English</button>
+      <button type="button" data-lang="uk" lang="uk">Українська</button>
+    </div>
+    <div class="testPicker" style="margin-top:18px">
+      <button class="testCard" data-test="1"><span class="tag" data-t="n30">30 spørsmål</span><h2 data-t="t1">Teoriprøve 1</h2><p data-t="tap">Trykk for å starte opplesningen.</p></button>
+      <button class="testCard" data-test="2"><span class="tag" data-t="n30">30 spørsmål</span><h2 data-t="t2">Teoriprøve 2</h2><p data-t="tap">Trykk for å starte opplesningen.</p></button>
+    </div>
+  </section>
+
+  <section id="player" class="hidden">
+    <div class="progressMeta">
+      <span id="testTitle">Teoriprøve</span>
+      <span id="counter">1 av 30</span>
+    </div>
+    <div class="progress" aria-hidden="true"><div id="bar"></div></div>
+
+    <article class="questionPanel" id="questionPanel">
+      <div class="qnum" id="qnum">Spørsmål 1</div>
+      <div class="questionText" id="questionText"></div>
+      <div class="orig hidden" id="qOrig"></div>
+      <img id="qimg" class="qimg hidden" alt="">
+      <button class="speakAll" id="speakAll">🔊 Les hele spørsmålet</button>
+      <div class="options" id="options"></div>
+    </article>
+
+    <div class="tools">
+      <label><span data-t="rate">Hastighet</span>
+        <select id="rate">
+          <option value="0.75">0,75×</option>
+          <option value="0.9" selected>0,90×</option>
+          <option value="1">1,00×</option>
+          <option value="1.15">1,15×</option>
+          <option value="1.3">1,30×</option>
+        </select>
+      </label>
+      <label><span data-t="voice">Stemme</span>
+        <select id="voice"></select>
+      </label>
+      <label class="modeToggle"><input type="checkbox" id="showOrig" checked> <span data-t="showOrig">Vis norsk tekst også</span></label>
+      <label class="modeToggle"><input type="checkbox" id="hideText"> <span data-t="hide">Skjul tekst visuelt</span></label>
+      <button class="btn" id="stop" data-t="stop">■ Stopp lyd</button>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="prev" data-t="prev">← Forrige</button>
+      <button class="btn ghost" id="backToPicker" data-t="change">Bytt prøve</button>
+      <button class="btn primary" id="next">Neste →</button>
+    </div>
+    <p class="small" data-t="tips">Tips: Du kan også bruke piltastene for forrige/neste. Opplesningen går aldri videre automatisk.</p>
+  </section>
+
+  <section id="finished" class="questionPanel endPanel hidden">
+    <div class="kicker" data-t="done">Ferdig</div>
+    <h2 data-t="doneH">Det var siste spørsmål. Prøven er ferdig opplest.</h2>
+    <button class="btn primary" id="restart" data-t="restart">Tilbake til valg av prøve</button>
+  </section>
+</main>
+
+<script src="prove.enc.js"></script>
+<script type="module" src="opplesning.js?v=1"></script>
+</body>
+</html>
