@@ -45,6 +45,12 @@ Ikke lag egne sider med eget design inne i et kapittel – alt skal gå gjennom 
 - Regneoppgaver (`calc`) trenger en generator i `GEN` i `motor.js`. Ny generator = endring i motoren (se under).
 - `sim` er en lagersimulering som er skreddersydd for kap 1 – ikke gjenbruk den uten å utvide motoren.
 
+## Bransjelære-kapitlene
+Bransjelære-kapitler ligger i `bransjelaere/kapN/` og bruker den samme motoren og de samme kravene som TLL-kapitlene,
+med egen kapittelliste (`bransjelaere/felles/kapitler.js`) og egen prøveside (`bransjelaere/prove/`). Id er `bl-kapN`.
+Se `transport-logistikk-lofteoperasjoner/felles/README.md`. Kontroll: `node _verktoy/sjekk-kapitler.js --fag bransjelaere`.
+Valgfritt **UB-spor**: oppgaver der elever med ungdomsbedrift bruker sin egen bedrift, mens andre bruker kapitlets case.
+
 ## Opphavsrett – absolutt krav
 Alt som publiseres, skal være **egenprodusert**. Læreboka, arbeidsboka og fasiten (PDF-ene i Claude-prosjektet)
 brukes bare som faglig grunnlag: ikke kopier tekst, oppgaver, figurer eller bilder fra forlaget. Lenk til NDLA i stedet

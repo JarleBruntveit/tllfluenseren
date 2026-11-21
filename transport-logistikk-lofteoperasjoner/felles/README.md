@@ -79,3 +79,12 @@ Disse fylles ut automatisk og trenger ikke stå i feltet: `laeringsmal` (egen si
 ### Exit ticket (`exitTicket`)
 Liste med tre korte spørsmål: to faglige og ett om hva eleven har lært og er usikker på. Gir siden `#/exit`.
 Eleven skriver svarene og trykker «Kopier svarene» for å lime dem inn i Teams. Ingenting lagres i nettleseren.
+
+## Bransjelære-kapitler (`bransjelaere/kapN/`)
+Bransjelære bruker den samme motoren, men har egen kapittelliste og egen prøveside:
+- `bransjelaere/felles/kapitler.js` – liste over Bransjelære-kapitlene (`TLL.FAG` = Bransjelære).
+- `bransjelaere/prove/` – kapittelprøve for Bransjelære.
+- `bransjelaere/kapN/index.html` lenker til motoren med absolutt sti (`/transport-logistikk-lofteoperasjoner/felles/…`).
+- Kapittel-id er `bl-kapN` (ikke `kapN`), slik at fremdriften ikke blandes med TLL-kapitlene i elevens nettleser.
+- `fastePoster.begreper` settes til `/transport-logistikk-lofteoperasjoner/ordbok/?kap=bl:N`, og `ressursomrade: 'bransjelaere'`.
+- Kontroll: `node _verktoy/sjekk-kapitler.js --fag bransjelaere`.
