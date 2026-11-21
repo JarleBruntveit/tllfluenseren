@@ -1,0 +1,56 @@
+{
+  "oppdatert": "2026-11-21",
+  "episoder": [
+    {
+      "id": "bl-kap1-ep1",
+      "fag": "Bransjelære",
+      "fagKort": "BL",
+      "kapittel": 1,
+      "kapittelTittel": "Etablering, ledelse og økonomisk styring",
+      "episode": 1,
+      "lok": "A-01",
+      "tittel": "Forretningsidé og rammer",
+      "beskrivelse": "Hva en forretningsidé er, hva den skal svare på, og hvilke indre og ytre rammer en bedrift må forholde seg til.",
+      "lyd": "/bransjelaere/kap1/lyd/episode-1.mp3",
+      "type": "audio/mpeg",
+      "bytes": 2516992,
+      "sekunder": 157,
+      "tema": "/bransjelaere/kap1/#/t1",
+      "dato": "2026-11-21"
+    },
+    {
+      "id": "tll-kap1-ep1",
+      "fag": "Transport, logistikk og løfteoperasjoner",
+      "fagKort": "TLL",
+      "kapittel": 1,
+      "kapittelTittel": "Grunnleggende prinsipper ved lager- og terminalarbeid",
+      "episode": 1,
+      "lok": "A-01",
+      "tittel": "Lager og terminaler i samfunnet",
+      "beskrivelse": "Varekretsløpet, handelsnæringen, forskjellen på vare og gods – og hvorfor vi trenger lagre og terminaler.",
+      "lyd": "/transport-logistikk-lofteoperasjoner/kap1/lyd/episode-1.mp3",
+      "type": "audio/mpeg",
+      "bytes": 2766817,
+      "sekunder": 346,
+      "tema": "/transport-logistikk-lofteoperasjoner/kap1/#/t1",
+      "dato": "2026-11-21"
+    },
+    {
+      "id": "tll-kap5-ep2",
+      "fag": "Transport, logistikk og løfteoperasjoner",
+      "fagKort": "TLL",
+      "kapittel": 5,
+      "kapittelTittel": "Sikring av last etter gjeldende forskrifter",
+      "episode": 2,
+      "lok": "A-02",
+      "tittel": "Fysikken bak lastsikring på norske veier",
+      "beskrivelse": "Treghetskrefter ved bremsing, akselerasjon og sving, tyngdekraft i newton, Newtons lover, friksjonskoeffisient og hvor mye friksjonen holder igjen.",
+      "lyd": "/transport-logistikk-lofteoperasjoner/kap5/lyd/episode-2.m4a",
+      "type": "audio/mp4",
+      "bytes": 4423899,
+      "sekunder": 365,
+      "tema": "/transport-logistikk-lofteoperasjoner/kap5/#/t2",
+      "dato": "2026-11-21"
+    }
+  ]
+}

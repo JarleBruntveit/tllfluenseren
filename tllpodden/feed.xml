@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<channel>
+  <title>TLL-podden</title>
+  <link>https://tllfluenseren.no/tllpodden/</link>
+  <atom:link href="https://tllfluenseren.no/tllpodden/feed.xml" rel="self" type="application/rss+xml"/>
+  <language>no</language>
+  <copyright>© TLLfluenseren.no · Jarle Bruntveit</copyright>
+  <description>Korte podkastepisoder til hvert tema i Vg2 transport, logistikk og løfteoperasjoner og bransjelære – laget for elever, av læreren Jarle Bruntveit. Stemmene er KI-generert.</description>
+  <itunes:summary>Korte podkastepisoder til hvert tema i Vg2 transport, logistikk og løfteoperasjoner og bransjelære – laget for elever, av læreren Jarle Bruntveit. Stemmene er KI-generert.</itunes:summary>
+  <itunes:author>Jarle Bruntveit · TLLfluenseren</itunes:author>
+  <itunes:owner><itunes:name>Jarle Bruntveit</itunes:name><itunes:email>jarle@tllfluenseren.no</itunes:email></itunes:owner>
+  <itunes:image href="https://tllfluenseren.no/tllpodden/omslag.png"/>
+  <image><url>https://tllfluenseren.no/tllpodden/omslag.png</url><title>TLL-podden</title><link>https://tllfluenseren.no/tllpodden/</link></image>
+  <itunes:category text="Education"><itunes:category text="Courses"/></itunes:category>
+  <itunes:explicit>false</itunes:explicit>
+  <itunes:type>episodic</itunes:type>
+  <item>
+    <title>TLL kap. 5 · Fysikken bak lastsikring på norske veier</title>
+    <description>Treghetskrefter ved bremsing, akselerasjon og sving, tyngdekraft i newton, Newtons lover, friksjonskoeffisient og hvor mye friksjonen holder igjen. Oppgaver til temaet: https://tllfluenseren.no/transport-logistikk-lofteoperasjoner/kap5/#/t2</description>
+    <link>https://tllfluenseren.no/transport-logistikk-lofteoperasjoner/kap5/#/t2</link>
+    <guid isPermaLink="false">tll-kap5-ep2</guid>
+    <pubDate>Sat, 21 Nov 2026 08:00:00 GMT</pubDate>
+    <enclosure url="https://tllfluenseren.no/transport-logistikk-lofteoperasjoner/kap5/lyd/episode-2.m4a" length="4423899" type="audio/mp4"/>
+    <itunes:duration>00:06:05</itunes:duration>
+    <itunes:episode>2</itunes:episode>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>Bransjelære kap. 1 · Forretningsidé og rammer</title>
+    <description>Hva en forretningsidé er, hva den skal svare på, og hvilke indre og ytre rammer en bedrift må forholde seg til. Oppgaver til temaet: https://tllfluenseren.no/bransjelaere/kap1/#/t1</description>
+    <link>https://tllfluenseren.no/bransjelaere/kap1/#/t1</link>
+    <guid isPermaLink="false">bl-kap1-ep1</guid>
+    <pubDate>Sat, 21 Nov 2026 08:00:00 GMT</pubDate>
+    <enclosure url="https://tllfluenseren.no/bransjelaere/kap1/lyd/episode-1.mp3" length="2516992" type="audio/mpeg"/>
+    <itunes:duration>00:02:37</itunes:duration>
+    <itunes:episode>1</itunes:episode>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+  <item>
+    <title>TLL kap. 1 · Lager og terminaler i samfunnet</title>
+    <description>Varekretsløpet, handelsnæringen, forskjellen på vare og gods – og hvorfor vi trenger lagre og terminaler. Oppgaver til temaet: https://tllfluenseren.no/transport-logistikk-lofteoperasjoner/kap1/#/t1</description>
+    <link>https://tllfluenseren.no/transport-logistikk-lofteoperasjoner/kap1/#/t1</link>
+    <guid isPermaLink="false">tll-kap1-ep1</guid>
+    <pubDate>Sat, 21 Nov 2026 08:00:00 GMT</pubDate>
+    <enclosure url="https://tllfluenseren.no/transport-logistikk-lofteoperasjoner/kap1/lyd/episode-1.mp3" length="2766817" type="audio/mpeg"/>
+    <itunes:duration>00:05:46</itunes:duration>
+    <itunes:episode>1</itunes:episode>
+    <itunes:explicit>false</itunes:explicit>
+  </item>
+</channel>
+</rss>
