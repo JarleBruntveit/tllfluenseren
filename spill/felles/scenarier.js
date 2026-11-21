@@ -17,7 +17,8 @@
     service: { kode: 'TOL02-01 · KV427', tekst: 'yte service og gi kundebehandling ved ulike typer oppdrag og kartlegge kundens behov og krav til utførelse' },
     last: { kode: 'TOL02-01 · KV427', tekst: 'sikre last etter gjeldende forskrifter' },
     truck: { kode: 'TOL02-01 · KV427', tekst: 'håndtere og transportere varer med truck etter gjeldende forskrifter' },
-    utstyr: { kode: 'TOL02-01 · KV427', tekst: 'bruke og vedlikeholde manuelt, teknisk og digitalt arbeidsutstyr' }
+    utstyr: { kode: 'TOL02-01 · KV427', tekst: 'bruke og vedlikeholde manuelt, teknisk og digitalt arbeidsutstyr' },
+    lager: { kode: 'TOL02-01 · KV427', tekst: 'gjøre rede for grunnleggende prinsipper for effektiv drift av lager og terminal' }
   };
   const kr = n => Math.round(n).toLocaleString('nb-NO') + ' kr';
   const t2 = n => n.toLocaleString('nb-NO', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -465,6 +466,131 @@
             { t: 'Det ser lett ut, men en truck kan velte eller klemme noen. Derfor kreves det opplæring. Jeg tar den for deg.', s: 3, fb: 'Forklarer hvorfor, uten å nedvurdere henne.' },
             { t: 'Det er ulovlig, punktum.', s: 1, fb: 'Riktig, men en begrunnelse skaper forståelse.' },
             { t: 'Neida, sett deg opp.', s: 0, fb: 'Farlig – og du kan bli medansvarlig.' }] }
+        ]
+      }
+    ]
+  };
+
+
+  /* =============== 6. Varemottaket (TLL kap. 1) =============== */
+  S['varemottak'] = {
+    id: 'varemottak', tittel: 'Varemottaket', fag: 'Transport, logistikk og løfteoperasjoner', fase: 'Øv', niva: 'Nybegynner', minutter: 10,
+    kort: 'Bilene kommer inn med varer. Kontroller leveransen, skriv riktig merknad og rydd varene inn på riktig plass.',
+    rolle: 'Du jobber i varemottaket på et lager. Hver bil som kommer inn, skal kontrolleres før du kvitterer, og varene skal ryddes inn riktig.',
+    kompetansemal: [KM.lager],
+    laeringsmal: ['Etter spillet kan jeg gjøre de tre kontrollene i varemottaket.', 'Etter spillet kan jeg skrive riktig merknad når noe er feil med leveransen.', 'Etter spillet kan jeg velge riktig plass og rekkefølge når varene ryddes inn.'],
+    bok: 'TLL kap. 1 (varemottak og kontroll, vareplassering og innrydding)',
+    omrader: { kontroll: 'Kontroll av varene', dokumentasjon: 'Merknad og dokumenter', innrydding: 'Innrydding', kommunikasjon: 'Kommunikasjon' },
+    delNavn: 'Bil', antall: 3,
+    refleksjon: 'Hvorfor er det viktig å kontrollere leveransen før du kvitterer? Hva kan skje hvis du hopper over kontrollen?',
+    videre: { tekst: 'Klar for mer? I Speditøren driver du et helt transport- og lagerfirma mot konkurrenter.', url: '/spill/speditoren/', knapp: 'Prøv Speditøren →' },
+    pool: [
+      {
+        tittel: 'Pall med knust hjørne', etikett: 'Lastebil · 12 paller',
+        funn: 'Pakkseddelen sier 12 paller med kjøkkenutstyr. Alle pallene er der, men på én av dem er hjørnet knust og flere kartonger er trykket inn.',
+        steg: [
+          { type: 'valg', kort: 'Kontroll', sporsmal: 'Hva gjør du før du kvitterer?', omrade: 'kontroll', alternativer: [
+            { t: 'Ser nærmere på den skadde pallen sammen med sjåføren, finner ut hvor mye som er skadet og veier det skadde godset.', s: 3, fb: 'Riktig. Transportøren erstatter skader etter vekt, så du må vite hvor mye det skadde godset veier.' },
+            { t: 'Kvitterer for alt og melder fra om skaden i morgen.', s: 0, fb: 'Når du har kvittert uten merknad, er det vanskelig å bevise at skaden skjedde under transporten.' },
+            { t: 'Nekter å ta imot hele leveransen.', s: 1, fb: 'Elleve paller er i orden. Ta imot leveransen og skriv merknad om den skadde pallen.' }] },
+          { type: 'valg', kort: 'Merknad', sporsmal: 'Hva skriver du i fraktbrevet?', omrade: 'dokumentasjon', alternativer: [
+            { t: 'I merknadsrubrikken: hvilken pall, hva slags skade og vekta på det skadde godset. Sjåføren signerer.', s: 3, fb: 'Godt. En tydelig merknad med vekt og signatur gjør det mulig å kreve erstatning.' },
+            { t: '«Tatt imot med forbehold.»', s: 1, fb: 'Bedre enn ingenting, men uten detaljer og vekt er merknaden lite verdt.' },
+            { t: 'Ingenting – jeg tar et bilde med mobilen i stedet.', s: 0, fb: 'Et bilde er et fint tillegg, men merknaden i fraktbrevet er det som teller.' }] },
+          { type: 'dialog', kort: 'Samtale', hvem: 'Sjåføren', sier: '«Jeg har fem leveranser til i dag. Kan du ikke bare signere?»', omrade: 'kommunikasjon', alternativer: [
+            { t: 'Jeg skjønner at du har det travelt. Det tar to minutter å skrive merknaden, så er du på vei igjen.', s: 3, fb: 'Høflig, men tydelig. Du viser forståelse og gjør jobben riktig.' },
+            { t: 'Greit, jeg signerer.', s: 0, fb: 'Du gir etter for press, og bedriften kan tape erstatningen.' },
+            { t: 'Det er ikke mitt problem at du har dårlig tid.', s: 1, fb: 'Riktig avgjørelse, men måten du sier det på kan skape dårlig stemning.' }] }
+        ]
+      },
+      {
+        tittel: 'Tre kartonger mangler', etikett: 'Varebil · 40 kartonger',
+        funn: 'Pakkseddelen sier 40 kartonger med skruer og beslag. Du teller 37 kartonger på lasterampa.',
+        steg: [
+          { type: 'valg', kort: 'Kontroll', sporsmal: 'Hva gjør du?', omrade: 'kontroll', alternativer: [
+            { t: 'Krysser av kolli for kolli mot pakkseddelen, og teller én gang til sammen med sjåføren.', s: 3, fb: 'Riktig. Kryss av kolli for kolli, så du er sikker på hva som faktisk mangler.' },
+            { t: 'Godtar det – tre kartonger er ikke så mye.', s: 0, fb: 'Bedriften betaler for 40. Manko skal alltid noteres.' },
+            { t: 'Ringer leverandøren før du teller ferdig.', s: 1, fb: 'Tell ferdig først, så vet du hva du skal si.' }] },
+          { type: 'valg', kort: 'Dokumenter', sporsmal: 'Det mangler tre kartonger. Hva gjør du nå og senere?', omrade: 'dokumentasjon', alternativer: [
+            { t: 'Skriver mankoen på fraktbrevet med sjåførens signatur, og sjekker senere at fakturaen bare gjelder de 37 kartongene vi har fått.', s: 3, fb: 'Godt. Merknad nå og fakturakontroll senere sørger for at bedriften bare betaler for det den har fått.' },
+            { t: 'Skriver det på en lapp som du henger på kontoret.', s: 1, fb: 'Lappen hjelper deg å huske, men den er ikke en merknad transportøren har signert på.' },
+            { t: 'Betaler fakturaen for 40 og håper resten kommer.', s: 0, fb: 'Da betaler bedriften for varer den ikke har fått.' }] },
+          { type: 'dialog', kort: 'Samtale', hvem: 'Kollega', sier: '«Fakturaen kom med 40 kartonger. Bare godkjenn den, så slipper vi styr.»', omrade: 'kommunikasjon', alternativer: [
+            { t: 'Vi fikk bare 37, og det står i fraktbrevet. Jeg sier fra til leverandøren, så får vi en riktig faktura.', s: 3, fb: 'Saklig og løsningsorientert. Du har dokumentasjonen på plass.' },
+            { t: 'Ok, det er sikkert riktig.', s: 0, fb: 'Du vet at det ikke stemmer. Ta det opp.' },
+            { t: 'Jeg godkjenner ikke noe. Gjør det selv.', s: 1, fb: 'Riktig å ikke godkjenne, men forklar hvorfor og hjelp til med å løse det.' }] }
+        ]
+      },
+      {
+        tittel: 'Åpnet og teipet igjen', etikett: 'Pakkebil · tidsgaranti',
+        funn: 'Sendingen med mobiltelefoner har tidsgaranti til kl. 10.00. Bilen kommer kl. 11.20. Én av kartongene ser ut til å være åpnet og teipet igjen med annen teip.',
+        steg: [
+          { type: 'valg', kort: 'Kontroll', sporsmal: 'Hva gjør du med kartongen?', omrade: 'kontroll', alternativer: [
+            { t: 'Brutt emballasje kan bety at noe er tatt ut. Jeg åpner kartongen og teller innholdet sammen med sjåføren.', s: 3, fb: 'Riktig. Ved brutt emballasje må kontrollen være ekstra grundig.' },
+            { t: 'Setter den på hylla med de andre.', s: 0, fb: 'Mangler det telefoner, oppdager dere det for sent.' },
+            { t: 'Rister på kartongen for å høre om noe mangler.', s: 1, fb: 'Det sier lite. Åpne og tell.' }] },
+          { type: 'valg', kort: 'Tidsgaranti', sporsmal: 'Sendingen kom for sent. Hva gjør du?', omrade: 'dokumentasjon', alternativer: [
+            { t: 'Skriver ankomsttida (11.20) i fraktbrevet og får sjåføren til å signere.', s: 3, fb: 'Godt. Med tidsgaranti må ankomsttida dokumenteres, ellers kan dere ikke kreve noe.' },
+            { t: 'Sender en sur e-post til transportøren.', s: 1, fb: 'Det er greit å si fra, men uten notert ankomsttid har dere lite å vise til.' },
+            { t: 'Ingenting – varene kom jo.', s: 0, fb: 'Bedriften har betalt for tidsgaranti. Noter når bilen faktisk kom.' }] },
+          { type: 'dialog', kort: 'Samtale', hvem: 'Sjåføren', sier: '«Den kartongen var sånn da jeg hentet den. Det er ikke min feil.»', omrade: 'kommunikasjon', alternativer: [
+            { t: 'Jeg sier ikke at det er din feil. Men vi må telle innholdet og notere det, så blir saken riktig for alle.', s: 3, fb: 'Du skiller mellom skyld og dokumentasjon. Rolig og ryddig.' },
+            { t: 'Da har du stjålet noe.', s: 0, fb: 'Du anklager uten grunnlag. Det skaper konflikt.' },
+            { t: 'Ok, da gjør vi ikke noe med det.', s: 0, fb: 'Uansett hvem som har skylda, må det dokumenteres.' }] }
+        ]
+      },
+      {
+        tittel: 'Knuste glass dagen etter', etikett: 'Skjult skade',
+        funn: 'I går kom en pall med drikkeglass. Emballasjen så hel ut, og du kvitterte uten merknad. I dag åpner du en kartong og finner flere knuste glass.',
+        steg: [
+          { type: 'valg', kort: 'Kontroll', sporsmal: 'Hva slags skade er dette?', omrade: 'kontroll', alternativer: [
+            { t: 'En skjult skade – den kunne ikke ses utenpå da varene kom.', s: 3, fb: 'Riktig. Skjulte skader oppdages først når emballasjen åpnes.' },
+            { t: 'En skade vi har gjort selv, så vi kan ikke gjøre noe.', s: 1, fb: 'Det vet du ikke. Skaden kan ha skjedd under transporten.' },
+            { t: 'Manko.', s: 0, fb: 'Manko betyr at noe mangler. Her er varene der, men de er skadet.' }] },
+          { type: 'valg', kort: 'Melding', sporsmal: 'Hva gjør du?', omrade: 'dokumentasjon', alternativer: [
+            { t: 'Tar vare på emballasjen og sender en besiktigelsesrapport til transportøren med en gang.', s: 3, fb: 'Godt. Fristene for å melde skjulte skader er korte, så det må skje raskt.' },
+            { t: 'Venter til fredag og sender alle skadene samlet.', s: 0, fb: 'Da kan fristen være gått ut.' },
+            { t: 'Kaster de knuste glassene og bestiller nye.', s: 0, fb: 'Da har du ikke noe å vise transportøren, og bedriften betaler for skaden selv.' }] },
+          { type: 'dialog', kort: 'Samtale', hvem: 'Lederen din', sier: '«Det er bare noen glass. Er det verdt bryet?»', omrade: 'kommunikasjon', alternativer: [
+            { t: 'Det tar ti minutter å melde det, og skjer det ofte, blir det mye penger. Da ser transportøren også at de må pakke bedre.', s: 3, fb: 'Du kobler en liten sak til økonomi og forbedring.' },
+            { t: 'Nei, du har sikkert rett.', s: 1, fb: 'En enkelt gang er beløpet lite, men skader som ikke meldes, blir aldri rettet opp.' },
+            { t: 'Du forstår ikke hvordan et lager fungerer.', s: 0, fb: 'Uhøflig – og du overbeviser ingen.' }] }
+        ]
+      },
+      {
+        tittel: 'Yoghurt og skadde paller', etikett: 'Kjølebil · 8 paller',
+        funn: 'Åtte europaller med yoghurt kommer fra meieriet. To av pallene har knekte bord. På lageret står det allerede yoghurt med eldre dato.',
+        steg: [
+          { type: 'valg', kort: 'Paller', sporsmal: 'Hva gjør du med de to skadde pallene?', omrade: 'kontroll', alternativer: [
+            { t: 'Noterer dem i mottaket og sorterer dem ut. Europaller har verdi, og skadde paller skal ikke regnes som hele.', s: 3, fb: 'Riktig. Lastbærerne er den tredje kontrollen. Leverandøren fakturerer ofte pallene, så de må telles riktig.' },
+            { t: 'Ingenting – paller er gratis.', s: 0, fb: 'En europall koster penger, og leverandøren fakturerer dem ofte.' },
+            { t: 'Kaster dem i containeren.', s: 1, fb: 'Noter dem først, så antallet stemmer når pallene skal godskrives eller faktureres.' }] },
+          { type: 'valg', kort: 'Innrydding', sporsmal: 'Hvordan rydder du inn yoghurten?', omrade: 'innrydding', alternativer: [
+            { t: 'I kjølesonen, etter holdbarhetsdato: den eldste datoen fremst, så den plukkes først.', s: 3, fb: 'Riktig. Varer med holdbarhetsdato ryddes inn og plukkes etter dato.' },
+            { t: 'De nye pallene fremst, fordi de er lettest å komme til.', s: 0, fb: 'Da blir den gamle yoghurten stående og går ut på dato.' },
+            { t: 'I tørrlageret, der det er mest plass.', s: 0, fb: 'Yoghurt skal i kjølesonen. Feil lagersone kan ødelegge varen.' }] },
+          { type: 'dialog', kort: 'Samtale', hvem: 'Kollega', sier: '«Bare sett de nye pallene foran, det går mye fortere.»', omrade: 'kommunikasjon', alternativer: [
+            { t: 'Det tar litt lengre tid nå, men da slipper vi å kaste yoghurt som har gått ut på dato. Skal vi ta det sammen?', s: 3, fb: 'Du forklarer hvorfor, og du tilbyr hjelp.' },
+            { t: 'Ok, du bestemmer.', s: 0, fb: 'Du vet at det blir svinn. Si fra.' },
+            { t: 'Det er feil, og det vet du.', s: 1, fb: 'Riktig, men en kort begrunnelse fungerer bedre.' }] }
+        ]
+      },
+      {
+        tittel: 'Vann og reservedeler', etikett: 'Lastebil · blandet',
+        funn: 'Ordren var på 2 paller flaskevann. Bilen har med 3 paller flaskevann og én pall med en reservedel som selges et par ganger i året.',
+        steg: [
+          { type: 'valg', kort: 'Kontroll', sporsmal: 'Du har fått én pall vann mer enn du bestilte. Hva gjør du?', omrade: 'kontroll', alternativer: [
+            { t: 'Noterer avviket og tar kontakt med leverandøren: enten får vi ekstra rabatt, eller så tar de pallen i retur og betaler frakten.', s: 3, fb: 'Riktig. Får du mer enn du har bestilt, kan du forhandle eller sende det tilbake.' },
+            { t: 'Tar imot alt og sier ingenting.', s: 0, fb: 'Da kan bedriften få faktura på noe den ikke har bestilt.' },
+            { t: 'Sender pallen tilbake med sjåføren uten å notere noe.', s: 1, fb: 'Det kan være en løsning, men noter det og gi beskjed til leverandøren.' }] },
+          { type: 'valg', kort: 'Innrydding', sporsmal: 'Hvor plasserer du vannet og reservedelen?', omrade: 'innrydding', alternativer: [
+            { t: 'Vannet er en A-vare og står nær oppstillingsområdet. Reservedelen er en C-vare og står lengst unna.', s: 3, fb: 'Riktig. Da blir det mange korte turer og få lange.' },
+            { t: 'Begge der det tilfeldigvis er ledig plass.', s: 1, fb: 'Systemet gir varene lokasjon etter faste regler. Tilfeldig plassering gir lange plukkturer.' },
+            { t: 'Reservedelen nærmest, fordi den er dyrest.', s: 0, fb: 'Plasseringen avgjøres av hvor ofte varen plukkes, ikke av prisen.' }] },
+          { type: 'dialog', kort: 'Samtale', hvem: 'Ny kollega', sier: '«Hvorfor kan vi ikke bare sette alt der det er ledig?»', omrade: 'kommunikasjon', alternativer: [
+            { t: 'Varer som plukkes ofte, står nær utgangen, så plukkerne sparer mange meter. Jeg kan vise deg hvordan systemet finner plassen.', s: 3, fb: 'Kort forklaring og et tilbud om hjelp. Godt.' },
+            { t: 'Fordi sjefen sier det.', s: 1, fb: 'En begrunnelse gjør at kollegaen forstår og husker det.' },
+            { t: 'Det skjønner du når du har jobbet her lenge nok.', s: 0, fb: 'Nedlatende, og kollegaen lærer ingenting.' }] }
         ]
       }
     ]
