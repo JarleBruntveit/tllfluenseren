@@ -1,6 +1,6 @@
 # tittel: Bransjelære kap 1 · A-01 Forretningsidé og rammer
 # ut: bransjelaere/kap1/lyd/episode-1.mp3
-# modell: eleven_v3
+# modell: eleven_v4
 # JARLE skrives på haugesundsk, LINE på bokmål. Stemmene er KI-generert (sies i introen).
 JARLE: Hei, og velkommen te TLL-podden! Eg heite Jarle, og stemmå du høre, e laga med KI – men innholdet e det eg som står for. I dag starte me på bransjelære, kapittel én: koss en starte en egen bedrift. Med meg har eg Line. Ho drive et lite transportfirma her i distriktet. Line e ei oppdikta person, men alt ho seie, bygge på det dokker lære i faget. Velkommen, Line!
 LINE: Takk, Jarle. Hyggelig å være her.
