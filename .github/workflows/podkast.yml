@@ -1,0 +1,56 @@
+name: Lag podkast (ElevenLabs)
+# Lager MP3 fra manus i _podkast/manus/ og legger lydfila der manuset sier (linja «# ut: …»).
+# Kjører bare på grener som starter med «podkast/», aldri på main.
+# Nøkkelen ligger som hemmelighet ELEVENLABS_API_KEY i GitHub (vises aldri i loggen).
+on:
+  push:
+    branches: ['podkast/**']
+    paths: ['_podkast/manus/**', '_podkast/stemmer.json']
+  workflow_dispatch:
+    inputs:
+      manus:
+        description: 'Manusfil (f.eks. _podkast/manus/bl-kap1-episode-1.txt). Tom = alle endrede.'
+        required: false
+permissions:
+  contents: write
+concurrency:
+  group: podkast-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  lag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Installer ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - name: Finn manus som skal lages
+        id: finn
+        run: |
+          if [ -n "${{ github.event.inputs.manus }}" ]; then
+            echo "filer=${{ github.event.inputs.manus }}" >> "$GITHUB_OUTPUT"
+          else
+            FORRIGE="${{ github.event.before }}"
+            if [ -z "$FORRIGE" ] || ! git cat-file -e "$FORRIGE" 2>/dev/null; then FORRIGE=$(git merge-base origin/main HEAD); fi
+            FILER=$(git diff --name-only "$FORRIGE" HEAD -- '_podkast/manus/*.txt' | tr '\n' ' ')
+            echo "filer=$FILER" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Lag lyd
+        if: steps.finn.outputs.filer != ''
+        env:
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+        run: |
+          for f in ${{ steps.finn.outputs.filer }}; do
+            [ -f "$f" ] && node _podkast/lag-episode.mjs "$f"
+          done
+      - name: Lagre lydfilene på grenen
+        if: steps.finn.outputs.filer != ''
+        run: |
+          git config user.name "TLL-podden (automatisk)"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A -- '*.mp3' _podkast
+          git diff --cached --quiet || (git commit -m "Podkast: nye lydfiler fra ElevenLabs" && git push)

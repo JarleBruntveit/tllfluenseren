@@ -1,0 +1,17 @@
+# tittel: Bransjelære kap 1 · A-01 Forretningsidé og rammer
+# ut: bransjelaere/kap1/lyd/episode-1.mp3
+# modell: eleven_v3
+# JARLE skrives på haugesundsk, LINE på bokmål. Stemmene er KI-generert (sies i introen).
+JARLE: Hei, og velkommen te TLL-podden! Eg heite Jarle, og stemmå du høre, e laga med KI – men innholdet e det eg som står for. I dag starte me på bransjelære, kapittel én: koss en starte en egen bedrift. Med meg har eg Line. Ho drive et lite transportfirma her i distriktet. Line e ei oppdikta person, men alt ho seie, bygge på det dokker lære i faget. Velkommen, Line!
+LINE: Takk, Jarle. Hyggelig å være her.
+JARLE: Line, ka va det første du gjorde då du ville starte for deg sjøl?
+LINE: Jeg startet med en idé. Jeg kjørte for et stort firma og så at mange byggevarehandlere kjørte varene sine selv. Det tok tid, og leveransene kom ofte for sent. Så tenkte jeg: Det kan jeg gjøre bedre. Det er en forretningsidé – en idé om hvordan du skal tjene penger.
+JARLE: Og en god forretningsidé ska svare på fem ting. Kan du ta di?
+LINE: Ja. Hvilket behov finnes i markedet? Hvilke tjenester skal jeg tilby? Hvem er kundene? Hvilket område skal jeg kjøre i? Og hvordan skal jeg tjene penger? For meg var svaret presis levering til en pris kundene syntes var rimelig.
+JARLE: Det e lurt å skrive det ned. Men så e det någe som heite rammer. Ka e det?
+LINE: Noen rammer bestemmer jeg selv. Det er de indre rammene: forretningsideen, målene, strategien og hvem som gjør hva i bedriften. Så finnes det ytre rammer som jeg må følge, enten jeg vil eller ikke. Det er lover og forskrifter, tariffavtaler, og det folk flest mener er rett og galt.
+JARLE: Så om du bryte arbeidsmiljøloven, kan du ikkje bare sei at det passa dårlig?
+LINE: Nei. Og bryter du det folk mener er greit, for eksempel at du behandler sjåførene dårlig, så forsvinner kundene. Det er like farlig som en bot.
+JARLE: Ett siste spørsmål: Ka gjorde du om ideen ikkje fungerte?
+LINE: Da justerer du den. Og viser det seg at ingen vil betale, må du være ærlig nok til å begynne på nytt. Det er ikke å mislykkes. Det er å lære billig.
+JARLE: Godt sagt. Til dokker som høre på: Gå inn på tema A-01 på TLLfluenseren, og skriv forretningsideen te Ryfylke Nærfrakt – eller te din egen ungdomsbedrift. Neste gang snakke me om foretaksform og løyve. Vi høres!

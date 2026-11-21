@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'transport-logistikk-lofteoperasjoner/**'
+      - 'bransjelaere/**'
       - 'ressursbank/katalog.json'
       - 'sitemap.xml'
       - '_verktoy/**'
@@ -15,3 +16,4 @@ jobs:
         with:
           node-version: '20'
       - run: node _verktoy/sjekk-kapitler.js
+      - run: node _verktoy/sjekk-kapitler.js --fag bransjelaere
