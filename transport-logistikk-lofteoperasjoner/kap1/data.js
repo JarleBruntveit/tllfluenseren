@@ -325,7 +325,7 @@ TLL.registrer({
   /* Faste poster (se felles/README.md): lenke = klar, false = ikke tilgjengelig, utelatt = «Kommer» */
   fastePoster: {
     avatarvideo: '/video/#lager-terminal-film',
-    spill: '/spill/speditoren/',
+    spill: '/spill/minispill/?s=varemottak',   // minispillet lenker videre til Speditøren
     ovelsesbank: false   // kap 1 skal ikke ha øvelsesbank
   },
   exitTicket: [

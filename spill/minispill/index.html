@@ -16,7 +16,7 @@
 </div>
 <script src="../felles/konfig.js?v=1"></script>
 <script src="../felles/spillmotor.js?v=1"></script>
-<script src="../felles/scenarier.js?v=1"></script>
+<script src="../felles/scenarier.js?v=varemottak-1"></script>
 <script>
 (function () {
   const el = document.getElementById('tll-main');
@@ -54,6 +54,7 @@
       const ekstra = res.brukt ? [`Brukt av budsjettet: ${Spill.kr(res.brukt)}${sc.budsjett ? ' av ' + Spill.kr(sc.budsjett) : ''}`] : [];
       const rap = Spill.lagRapport({ spillId: sc.id, tittel: sc.tittel, elev, poeng: res.poeng, logg: res.logg, refleksjon: ref, start, ekstra });
       Spill.visRapport(el, rap, { nyKnapp: 'Spill en ny runde', onNy: () => spill(elev), tilbake: './' });
+      if (sc.videre) el.insertAdjacentHTML('beforeend', `<div class="sp-panel"><h2>Videre</h2><p>${esc(sc.videre.tekst)}</p><div class="sp-row"><a class="sp-btn" href="${esc(sc.videre.url)}">${esc(sc.videre.knapp || 'Gå videre →')}</a></div></div>`);
     });
   }
 })();
