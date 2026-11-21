@@ -87,7 +87,7 @@ TLL.registrer({
   ],
   ressursomrade: 'bransjelaere',
   /* Faste poster (se transport-logistikk-lofteoperasjoner/felles/README.md):
-     lenke = klar, false = ikke tilgjengelig, utelatt = «Kommer». Lysark og avatarvideo er under arbeid. */
+     lenke = klar, false = ikke tilgjengelig, utelatt = «Kommer». Avatarvideo er under arbeid. */
   fastePoster: {
     begreper: '/transport-logistikk-lofteoperasjoner/ordbok/?kap=bl:1',
     ovelsesbank: false
@@ -98,6 +98,8 @@ TLL.registrer({
     'Hva er det viktigste du har lært i dette kapitlet, og hva er du fortsatt usikker på?'
   ],
   ressurser: {
+    // KUN egenprodusert materiell her (f.eks. egne lysark).
+    presentasjon: 'https://gamma.app/docs/Etablering-ledelse-og-konomisk-styring-bg0th08hrudlx6g',
     laerebok: 'Bransjelære, kapittel 1 (s. 10–45)',
     arbeidsbok: 'Arbeidsboka i bransjelære, kapittel 1 (oppgave 1.1–1.33)',
     ndlaEmne: N.emne[1],
