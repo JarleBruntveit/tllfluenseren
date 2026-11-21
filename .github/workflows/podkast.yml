@@ -36,7 +36,11 @@ jobs:
           else
             FORRIGE="${{ github.event.before }}"
             if [ -z "$FORRIGE" ] || ! git cat-file -e "$FORRIGE" 2>/dev/null; then FORRIGE=$(git merge-base origin/main HEAD); fi
-            FILER=$(git diff --name-only "$FORRIGE" HEAD -- '_podkast/manus/*.txt' | tr '\n' ' ')
+            if git diff --name-only "$FORRIGE" HEAD | grep -q '^_podkast/stemmer.json$'; then
+              FILER=$(ls _podkast/manus/*.txt | tr '\n' ' ')   # ny stemme: lag alle på nytt
+            else
+              FILER=$(git diff --name-only "$FORRIGE" HEAD -- '_podkast/manus/*.txt' | tr '\n' ' ')
+            fi
             echo "filer=$FILER" >> "$GITHUB_OUTPUT"
           fi
       - name: Lag lyd

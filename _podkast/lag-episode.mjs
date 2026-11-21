@@ -6,7 +6,7 @@
 
    Manusformat (ren tekst, UTF-8):
      # ut: bransjelaere/kap1/lyd/episode-1.mp3     ← hvor MP3-fila skal ligge (påkrevd)
-     # modell: eleven_v3                           ← valgfritt (standard: eleven_v3)
+     # modell: eleven_v3                           ← valgfritt (standard: eleven_v4)
      # tittel: …                                   ← valgfritt, bare for oversikt
      JARLE: Hei, og velkommen te TLL-podden!
      LINE: Takk for at eg fikk komme.
@@ -70,7 +70,7 @@ if (bit.length) biter.push(bit);
 
 const totalt = replikker.reduce((a, r) => a + r.tekst.length, 0);
 const ord = replikker.reduce((a, r) => a + r.tekst.split(/\s+/).length, 0);
-console.log(`Manus: ${manusSti}\n  ${replikker.length} replikker · ${ord} ord (ca. ${(ord / 140).toFixed(1)} min) · ${totalt} tegn · ${biter.length} forespørsel(er)\n  Ut: ${meta.ut}\n  Modell: ${meta.modell || 'eleven_v3'}`);
+console.log(`Manus: ${manusSti}\n  ${replikker.length} replikker · ${ord} ord (ca. ${(ord / 140).toFixed(1)} min) · ${totalt} tegn · ${biter.length} forespørsel(er)\n  Ut: ${meta.ut}\n  Modell: ${meta.modell || 'eleven_v4'}`);
 if (bareSjekk) { console.log('✓ Manuset ser riktig ut (ingen lyd laget).'); process.exit(0); }
 
 const NOKKEL = process.env.ELEVENLABS_API_KEY;
@@ -79,7 +79,7 @@ if (!NOKKEL) feil('Mangler ELEVENLABS_API_KEY.');
 /* ---------- kall ElevenLabs ---------- */
 async function lagBit(inputs, nr) {
   const url = 'https://api.elevenlabs.io/v1/text-to-dialogue?output_format=mp3_44100_128';
-  const body = JSON.stringify({ inputs, model_id: meta.modell || 'eleven_v3' });
+  const body = JSON.stringify({ inputs, model_id: meta.modell || 'eleven_v4' });
   for (let forsok = 1; forsok <= 4; forsok++) {
     const svar = await fetch(url, { method: 'POST', headers: { 'xi-api-key': NOKKEL, 'Content-Type': 'application/json', Accept: 'audio/mpeg' }, body });
     if (svar.ok) return Buffer.from(await svar.arrayBuffer());
