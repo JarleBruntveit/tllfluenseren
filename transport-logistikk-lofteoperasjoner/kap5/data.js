@@ -345,8 +345,13 @@ TLL.registrer({
   /* Faste poster (se felles/README.md): lenke = klar, false = ikke tilgjengelig, utelatt = «Kommer» */
   fastePoster: {
     spill: '/spill/minispill/?s=lastsikring'
-    // avatarvideo, exitTicket: kommer
+    // avatarvideo: kommer
   },
+  exitTicket: [
+    'Du kjører en tung lastebil med 10 tonn last. Hvor mange tonn må sikringen minst tåle framover, og hvor mange til sidene og bakover?',
+    'Forklar forskjellen på blokkering og surring. Gi ett eksempel på hver.',
+    'Hva er det viktigste du har lært i dette kapitlet, og hva er du fortsatt usikker på?'
+  ],
   ressurser: {
     // KUN egenprodusert materiell her (f.eks. egne lysark). IKKE last opp forlagets presentasjon eller PDF-er.
     presentasjon: 'https://gamma.app/docs/Kapittel-5-Sikring-av-last-pxxgviezgffefo9',

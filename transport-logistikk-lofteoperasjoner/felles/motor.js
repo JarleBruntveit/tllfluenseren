@@ -847,12 +847,12 @@ function bootKapittel(){
         ['podkast', '🎧', 'TLLpodden', fpVerdi(FP.podkast, null)],
         ['spill', '🎮', 'Spill', fpVerdi(FP.spill, null)],
         ['prove', '📝', 'Kapittelprøve', fpVerdi(FP.prove, K.prove === false ? false : `../prove/?kap=${K.id}`)],
-        ['exit', '🎟️', 'Exit ticket', fpVerdi(FP.exitTicket, null)]
+        ['exit', '🎟️', 'Exit ticket', fpVerdi(FP.exitTicket, K.exitTicket && K.exitTicket.length ? '#/exit' : null)]
       ];
       const post = ([id, ikon, navn, v]) => v
         ? `<li><a class="fp klar" data-fp="${id}" href="${esc(v)}"${/^https?:/.test(v) ? ' target="_blank" rel="noopener"' : ''}><span class="fp-ikon" aria-hidden="true">${ikon}</span><span class="fp-navn">${navn}</span></a></li>`
         : `<li><span class="fp ${v === false ? 'na' : 'kommer'}" data-fp="${id}"><span class="fp-ikon" aria-hidden="true">${ikon}</span><span class="fp-navn">${navn}</span><small>${v === false ? 'Ikke tilgjengelig' : 'Kommer'}</small></span></li>`;
-      return `<section class="fposter" aria-labelledby="fp-h"><div class="section-h"><h2 id="fp-h">Alt i kapitlet</h2><span class="muted small">Grå = kommer senere</span></div>
+      return `<section class="fposter" aria-labelledby="fp-h"><div class="section-h"><h2 id="fp-h">Alt i kapitlet</h2><span class="muted small">Grå = ikke klar</span></div>
         <ul class="fp-grid">${poster.map(post).join('')}</ul></section>`;
     })();
     const omKapitlet = !FOKUS ? '' : `
@@ -932,6 +932,24 @@ function bootKapittel(){
       ${K.temaer.filter(t => t.ndla && t.ndla.length).map(t => `<div class="panel" style="margin-top:14px"><h3 style="font-size:18px">${temaNavn(t)}</h3><ul class="reslist">
         ${t.ndla.map(([tt,u,ty]) => `<li><span class="tag ndla">${esc(ty)}</span><a href="${/^https?:/.test(u) ? u : NDLA+u}" target="_blank" rel="noopener">${esc(tt)}</a></li>`).join('')}</ul></div>`).join('')}
       <p style="margin-top:14px"><a class="btn ghost" href="#/">← Tilbake til kapitlet</a></p></div>`;
+  }
+
+  /* Exit ticket (valgfritt felt K.exitTicket: liste med tre korte spørsmål). Svarene lagres ikke – eleven kopierer dem til Teams. */
+  function pageExit(){
+    header(`<a href="#/">${KN}</a> <span>›</span> <span>Exit ticket</span>`, 'Exit ticket', 'Tre korte spørsmål – vis hva du har lært i kapitlet', false);
+    const sp = K.exitTicket;
+    app.innerHTML = `<div class="stage">
+      <div class="note"><span aria-hidden="true">🎟️</span><span>Svar kort, 1–3 setninger på hvert spørsmål. Bruk egne ord. Svarene lagres ikke på PC-en: trykk «Kopier svarene» og lim dem inn i Teams.</span></div>
+      <label class="panel" style="display:block;margin-top:14px"><b>Navn (bare for teksten du kopierer)</b><input id="exNavn" type="text" autocomplete="off" style="display:block;width:100%;margin-top:6px;padding:8px;font:inherit;border-radius:10px;border:1px solid var(--line);background:transparent;color:inherit"></label>
+      ${sp.map((q, i) => `<div class="panel" style="margin-top:14px"><label for="ex${i}"><b>${i + 1}. ${esc(q)}</b></label>
+        <textarea id="ex${i}" rows="4" style="display:block;width:100%;margin-top:8px;padding:10px;font:inherit;border-radius:10px;border:1px solid var(--line);background:transparent;color:inherit"></textarea></div>`).join('')}
+      <div class="row" style="margin-top:14px;gap:10px;flex-wrap:wrap"><button type="button" class="btn yellow" id="exKopi">Kopier svarene</button><a class="btn ghost" href="#/">← Tilbake til kapitlet</a></div>
+      <textarea id="exUt" aria-hidden="true" tabindex="-1" style="position:absolute;left:-9999px"></textarea></div>`;
+    $('#exKopi').onclick = () => {
+      const ut = $('#exUt');
+      ut.value = `Exit ticket – ${K.kortnavn || 'Kap ' + K.nr} ${K.kortTittel || K.tittel}\nNavn: ${$('#exNavn').value}\n\n` + sp.map((q, i) => `${i + 1}. ${q}\nSvar: ${$('#ex' + i).value.trim() || '(ikke svart)'}`).join('\n\n');
+      copyText(ut, $('#exKopi'));
+    };
   }
 
   const erListeBank = t => t.ovelsesbank && t.aktiviteter.length && t.aktiviteter.every(a => a.type === 'bank');
@@ -1102,6 +1120,7 @@ function bootKapittel(){
     else if (parts[0] === 'rapport') pageRapport();
     else if (parts[0] === 'laeringsmal' && K.fastePoster) pageLaeringsmal();
     else if (parts[0] === 'ndla' && K.fastePoster) pageNdla();
+    else if (parts[0] === 'exit' && K.exitTicket && K.exitTicket.length) pageExit();
     else if (parts[0] === 'avsluttende-prove' && K.avsluttendeProve) pageAvsluttende();
     else {
       const t = K.temaer.find(x => x.id === parts[0]);

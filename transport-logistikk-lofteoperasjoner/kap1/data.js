@@ -324,9 +324,15 @@ TLL.registrer({
   ],
   /* Faste poster (se felles/README.md): lenke = klar, false = ikke tilgjengelig, utelatt = «Kommer» */
   fastePoster: {
-    avatarvideo: '/video/#lager-terminal-film'
-    // spill, exitTicket, ovelsesbank: kommer
+    avatarvideo: '/video/#lager-terminal-film',
+    spill: '/spill/speditoren/',
+    ovelsesbank: false   // kap 1 skal ikke ha øvelsesbank
   },
+  exitTicket: [
+    'Det kommer en lastebil med varer til lageret. Nevn de tre kontrollene du gjør i varemottaket, og hva du gjør hvis en kartong er skadet.',
+    'Hvorfor skal A-varer stå nær plukkstedet, og hvor kan C-varer stå?',
+    'Hva er det viktigste du har lært i dette kapitlet, og hva er du fortsatt usikker på?'
+  ],
   ressurser: {
     // KUN egenprodusert materiell her (f.eks. egne lysark). IKKE last opp forlagets presentasjon eller PDF-er.
     presentasjon: 'https://gamma.app/docs/Lager-og-terminal-grunnleggende-prinsipper-figdool374xgnkn',

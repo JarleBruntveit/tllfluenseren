@@ -74,4 +74,8 @@ med de samme ti postene i samme rekkefølge: **Læringsmål, Lysark, Avatarvideo
 Disse fylles ut automatisk og trenger ikke stå i feltet: `laeringsmal` (egen side `#/laeringsmal` med temaenes læringsmål),
 `ndla` (egen side `#/ndla` med alle NDLA-lenkene), `lysark` (fra `ressurser.presentasjon`), `begreper`
 (ordboka filtrert på kapitlet), `ovelsesbank` (hvis et tema har `ovelsesbank: true`), `podkast` (når en episode finnes i `lyd/`)
-og `prove`. Alle kan overstyres. Sider uten feltet (Norsk, bransjeteknikk) ser ut som før.
+`prove` og `exit` (hvis kapitlet har `exitTicket`). Alle kan overstyres. Sider uten feltet (Norsk, bransjeteknikk) ser ut som før.
+
+### Exit ticket (`exitTicket`)
+Liste med tre korte spørsmål: to faglige og ett om hva eleven har lært og er usikker på. Gir siden `#/exit`.
+Eleven skriver svarene og trykker «Kopier svarene» for å lime dem inn i Teams. Ingenting lagres i nettleseren.
