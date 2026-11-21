@@ -59,3 +59,19 @@ Valgfritt felt i `data.js`. Prøves først i kap 5 (november 2026) etter tilbake
 - Lagringsinfoen vises én gang med «Skjønner» (lagres som `lagringSett` i elevens nettleser). Kompetansemålene står under «Om kapitlet» nederst.
 - `kortTittel` (valgfritt) gir kortere overskrift på kapittelsiden, f.eks. «Sikring av last».
 Kapitler uten feltet ser ut som før. Hvis forsøket faller godt ut, kan feltet legges til i alle kapitler (eller bli standard).
+
+## Faste poster i hvert kapittel (`fastePoster`)
+Alle TLL-kapitler skal ha feltet `fastePoster` i `data.js`. Da viser kapittelsiden en kompakt stripe «Alt i kapitlet»
+med de samme ti postene i samme rekkefølge: **Læringsmål, Lysark, Avatarvideo, NDLA-lenker, Nøkkelbegreper,
+Øvelsesbank, TLLpodden, Spill, Kapittelprøve, Exit ticket**.
+
+| Verdi | Visning |
+| --- | --- |
+| lenke (`'/video/#…'`, `'https://…'`, `'#/…'`) | Klar – posten er klikkbar |
+| utelatt eller `'kommer'` | Grå: «Kommer» |
+| `false` | Grå: «Ikke tilgjengelig» (f.eks. `ovelsesbank: false` når kapitlet ikke skal ha øvelsesbank) |
+
+Disse fylles ut automatisk og trenger ikke stå i feltet: `laeringsmal` (egen side `#/laeringsmal` med temaenes læringsmål),
+`ndla` (egen side `#/ndla` med alle NDLA-lenkene), `lysark` (fra `ressurser.presentasjon`), `begreper`
+(ordboka filtrert på kapitlet), `ovelsesbank` (hvis et tema har `ovelsesbank: true`), `podkast` (når en episode finnes i `lyd/`)
+og `prove`. Alle kan overstyres. Sider uten feltet (Norsk, bransjeteknikk) ser ut som før.
