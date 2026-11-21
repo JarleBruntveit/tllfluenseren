@@ -292,6 +292,42 @@
       "url": "/ungdomsbedrift/"
     },
     {
+      "id": "ia-ub-likeverd",
+      "title": "IA – Likeverd og inkludering",
+      "area": "ub",
+      "url": "/ungdomsbedrift/inkluderende-arbeidsliv/#/likeverd"
+    },
+    {
+      "id": "ia-ub-ia",
+      "title": "IA – Hva er IA – inkluderende arbeidsliv?",
+      "area": "ub",
+      "url": "/ungdomsbedrift/inkluderende-arbeidsliv/#/ia"
+    },
+    {
+      "id": "ia-ub-plikter",
+      "title": "IA – Rettigheter og plikter",
+      "area": "ub",
+      "url": "/ungdomsbedrift/inkluderende-arbeidsliv/#/plikter"
+    },
+    {
+      "id": "ia-ub-arbeidsmiljo",
+      "title": "IA – Arbeidsmiljø og psykologisk trygghet",
+      "area": "ub",
+      "url": "/ungdomsbedrift/inkluderende-arbeidsliv/#/arbeidsmiljo"
+    },
+    {
+      "id": "ia-ub-sykefravaer",
+      "title": "IA – Sykefravær og oppfølging",
+      "area": "ub",
+      "url": "/ungdomsbedrift/inkluderende-arbeidsliv/#/sykefravaer"
+    },
+    {
+      "id": "ia-ub-handlingsplan",
+      "title": "IA – IA-handlingsplan for ungdomsbedriften",
+      "area": "ub",
+      "url": "/ungdomsbedrift/inkluderende-arbeidsliv/#/handlingsplan"
+    },
+    {
       "id": "yrke-yrkessjafor",
       "title": "Yrkessjåførfaget",
       "area": "yrkesretninger",
