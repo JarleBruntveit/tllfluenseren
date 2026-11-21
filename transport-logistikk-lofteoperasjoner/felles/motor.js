@@ -827,9 +827,34 @@ function bootKapittel(){
       ${store.lagringSett ? '' : `<div class="note fokus-lagring"><span aria-hidden="true">💾</span><span>Svarene dine lagres bare på denne PC-en. Når du er ferdig, leverer du <a href="#/rapport">fremdriftsrapport</a> i Teams. <a href="#/lagring">Les mer</a></span><button type="button" class="btn ghost" id="lagringOk">Skjønner</button></div>`}
       <div class="section-h"><h2>Alle temaer i kapitlet</h2><span class="muted small">Ta dem i rekkefølge</span></div>
       <ol class="fokus-liste">${vanlige.map(temarad).join('')}</ol>
+      ${fastePoster}
       <div class="section-h"><h2>Når du er ferdig med temaene</h2></div>
       <div class="grid">${proveLever}</div>
 `;
+    /* Faste poster (valgfritt felt K.fastePoster): samme poster i samme rekkefølge i alle kapitler.
+       Verdi i data.js: lenke = klar · false = «Ikke tilgjengelig» · utelatt/'kommer' = «Kommer».
+       Læringsmål, NDLA-lenker, lysark, nøkkelbegreper, øvelsesbank, podkast og kapittelprøve fylles ut automatisk. */
+    const FP = K.fastePoster;
+    const fpVerdi = (v, auto) => v === false ? false : (typeof v === 'string' && v !== 'kommer') ? v : (v === undefined ? auto : null);
+    const fastePoster = !FP ? '' : (() => {
+      const poster = [
+        ['laeringsmal', '🎯', 'Læringsmål', fpVerdi(FP.laeringsmal, '#/laeringsmal')],
+        ['lysark', '🖥️', 'Lysark', fpVerdi(FP.lysark, r.presentasjon || null)],
+        ['avatarvideo', '🎬', 'Avatarvideo', fpVerdi(FP.avatarvideo, null)],
+        ['ndla', '🔗', 'NDLA-lenker', fpVerdi(FP.ndla, '#/ndla')],
+        ['begreper', '📖', 'Nøkkelbegreper', fpVerdi(FP.begreper, /^\d+$/.test(String(K.nr)) ? `../ordbok/?kap=tll:${K.nr}` : null)],
+        ['ovelsesbank', '🏋️', 'Øvelsesbank', fpVerdi(FP.ovelsesbank, banker.length ? `#/${banker[0].id}` : null)],
+        ['podkast', '🎧', 'TLLpodden', fpVerdi(FP.podkast, null)],
+        ['spill', '🎮', 'Spill', fpVerdi(FP.spill, null)],
+        ['prove', '📝', 'Kapittelprøve', fpVerdi(FP.prove, K.prove === false ? false : `../prove/?kap=${K.id}`)],
+        ['exit', '🎟️', 'Exit ticket', fpVerdi(FP.exitTicket, K.exitTicket && K.exitTicket.length ? '#/exit' : null)]
+      ];
+      const post = ([id, ikon, navn, v]) => v
+        ? `<li><a class="fp klar" data-fp="${id}" href="${esc(v)}"${/^https?:/.test(v) ? ' target="_blank" rel="noopener"' : ''}><span class="fp-ikon" aria-hidden="true">${ikon}</span><span class="fp-navn">${navn}</span></a></li>`
+        : `<li><span class="fp ${v === false ? 'na' : 'kommer'}" data-fp="${id}"><span class="fp-ikon" aria-hidden="true">${ikon}</span><span class="fp-navn">${navn}</span><small>${v === false ? 'Ikke tilgjengelig' : 'Kommer'}</small></span></li>`;
+      return `<section class="fposter" aria-labelledby="fp-h"><div class="section-h"><h2 id="fp-h">Alt i kapitlet</h2><span class="muted small">Grå = ikke klar</span></div>
+        <ul class="fp-grid">${poster.map(post).join('')}</ul></section>`;
+    })();
     const omKapitlet = !FOKUS ? '' : `
       <div class="section-h"><h2>Om kapitlet</h2></div>
       <div class="panel fokus-om"><p style="margin-top:0"><b>${/^\d+$/.test(String(K.nr)) ? 'Kapittel ' + K.nr + ': ' : ''}${esc(K.tittel)}</b></p>
@@ -854,6 +879,7 @@ function bootKapittel(){
         </a>
       </div>
 `) + `
+      ${FOKUS ? '' : fastePoster}
       ${K.visKapittelkilder || K.ressursomrade === false ? '' : `<section data-resource-area="${esc(K.ressursomrade || 'tll')}"></section>`}
       ${banker.length ? `<section aria-labelledby="ovelsesbank-heading">
         <div class="section-h"><h2 id="ovelsesbank-heading">Øvelsesbank</h2><span class="muted small">Jobb med disse gjennom hele skoleåret</span></div>
@@ -882,7 +908,48 @@ function bootKapittel(){
       items[i] = `<li><span class="tag">🎧 Ep. ${i+1}</span><a href="#/${t.id}">${esc((t.podkast && t.podkast.tittel) || t.tittel)}</a></li>`;
       ul.innerHTML = Object.keys(items).sort((a,b)=>a-b).map(k => items[k]).join('');
       box.hidden = false;
+      const fpP = app.querySelector('.fp.kommer[data-fp="podkast"]');
+      if (fpP && !(FP && FP.podkast === false)){ const li = fpP.parentNode; li.innerHTML = `<button type="button" class="fp klar" data-fp="podkast"><span class="fp-ikon" aria-hidden="true">🎧</span><span class="fp-navn">TLLpodden</span></button>`;
+        li.firstChild.onclick = () => box.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); }
     }));
+  }
+
+  function pageLaeringsmal(){
+    header(`<a href="#/">${KN}</a> <span>›</span> <span>Læringsmål</span>`, 'Læringsmål for kapitlet', 'Dette skal du kunne når du er ferdig med kapitlet', false);
+    app.innerHTML = `<div class="stage">
+      <section class="panel mal"><h2>Etter kapitlet kan jeg …</h2>
+        ${K.temaer.filter(t => t.mal && t.mal.length).map(t => `<h3 style="font-size:18px;margin-top:16px"><a href="#/${t.id}">${temaNavn(t)}</a></h3><ul>${t.mal.map(m => `<li>${esc(m)}</li>`).join('')}</ul>`).join('')}
+      </section>
+      <section class="panel" style="margin-top:14px"><p class="small muted" style="margin:0 0 4px">Kompetansemål fra læreplanen (ordrett):</p>
+        <ul>${[].concat(K.kompetansemal).map(m => `<li>${esc(m.tekst)} <span class="muted small">(${esc(m.kode)})</span></li>`).join('')}</ul></section>
+      <p><a class="btn ghost" href="#/">← Tilbake til kapitlet</a></p></div>`;
+  }
+  function pageNdla(){
+    header(`<a href="#/">${KN}</a> <span>›</span> <span>NDLA</span>`, 'NDLA-lenker til kapitlet', 'Fagstoff, filmer og oppgaver på NDLA – sortert etter tema', false);
+    const r = K.ressurser;
+    app.innerHTML = `<div class="stage">
+      <div class="panel"><ul class="reslist"><li><span class="tag ndla">${esc(r.ndlaEmneTag || 'NDLA')}</span><a href="${r.ndlaEmne}" target="_blank" rel="noopener">${esc(r.ndlaEmneNavn || 'Emnet på NDLA')}</a></li></ul></div>
+      ${K.temaer.filter(t => t.ndla && t.ndla.length).map(t => `<div class="panel" style="margin-top:14px"><h3 style="font-size:18px">${temaNavn(t)}</h3><ul class="reslist">
+        ${t.ndla.map(([tt,u,ty]) => `<li><span class="tag ndla">${esc(ty)}</span><a href="${/^https?:/.test(u) ? u : NDLA+u}" target="_blank" rel="noopener">${esc(tt)}</a></li>`).join('')}</ul></div>`).join('')}
+      <p style="margin-top:14px"><a class="btn ghost" href="#/">← Tilbake til kapitlet</a></p></div>`;
+  }
+
+  /* Exit ticket (valgfritt felt K.exitTicket: liste med tre korte spørsmål). Svarene lagres ikke – eleven kopierer dem til Teams. */
+  function pageExit(){
+    header(`<a href="#/">${KN}</a> <span>›</span> <span>Exit ticket</span>`, 'Exit ticket', 'Tre korte spørsmål – vis hva du har lært i kapitlet', false);
+    const sp = K.exitTicket;
+    app.innerHTML = `<div class="stage">
+      <div class="note"><span aria-hidden="true">🎟️</span><span>Svar kort, 1–3 setninger på hvert spørsmål. Bruk egne ord. Svarene lagres ikke på PC-en: trykk «Kopier svarene» og lim dem inn i Teams.</span></div>
+      <label class="panel" style="display:block;margin-top:14px"><b>Navn (bare for teksten du kopierer)</b><input id="exNavn" type="text" autocomplete="off" style="display:block;width:100%;margin-top:6px;padding:8px;font:inherit;border-radius:10px;border:1px solid var(--line);background:transparent;color:inherit"></label>
+      ${sp.map((q, i) => `<div class="panel" style="margin-top:14px"><label for="ex${i}"><b>${i + 1}. ${esc(q)}</b></label>
+        <textarea id="ex${i}" rows="4" style="display:block;width:100%;margin-top:8px;padding:10px;font:inherit;border-radius:10px;border:1px solid var(--line);background:transparent;color:inherit"></textarea></div>`).join('')}
+      <div class="row" style="margin-top:14px;gap:10px;flex-wrap:wrap"><button type="button" class="btn yellow" id="exKopi">Kopier svarene</button><a class="btn ghost" href="#/">← Tilbake til kapitlet</a></div>
+      <textarea id="exUt" aria-hidden="true" tabindex="-1" style="position:absolute;left:-9999px"></textarea></div>`;
+    $('#exKopi').onclick = () => {
+      const ut = $('#exUt');
+      ut.value = `Exit ticket – ${K.kortnavn || 'Kap ' + K.nr} ${K.kortTittel || K.tittel}\nNavn: ${$('#exNavn').value}\n\n` + sp.map((q, i) => `${i + 1}. ${q}\nSvar: ${$('#ex' + i).value.trim() || '(ikke svart)'}`).join('\n\n');
+      copyText(ut, $('#exKopi'));
+    };
   }
 
   const erListeBank = t => t.ovelsesbank && t.aktiviteter.length && t.aktiviteter.every(a => a.type === 'bank');
@@ -1051,6 +1118,9 @@ function bootKapittel(){
     if (parts[0] === 'prove' && K.prove !== false) location.replace('../prove/?kap=' + K.id);
     else if (parts[0] === 'lagring') pageLagring();
     else if (parts[0] === 'rapport') pageRapport();
+    else if (parts[0] === 'laeringsmal' && K.fastePoster) pageLaeringsmal();
+    else if (parts[0] === 'ndla' && K.fastePoster) pageNdla();
+    else if (parts[0] === 'exit' && K.exitTicket && K.exitTicket.length) pageExit();
     else if (parts[0] === 'avsluttende-prove' && K.avsluttendeProve) pageAvsluttende();
     else {
       const t = K.temaer.find(x => x.id === parts[0]);

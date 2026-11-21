@@ -22,6 +22,18 @@ TLL.registrer({
   filmLenker: [
     // { type: 'Fagfilm · NDLA', tittel: 'TODO', url: 'https://ndla.no/...' }
   ],
+  /* Faste poster – vises likt i alle kapitler (se felles/README.md).
+     Lenke = klar · false = «Ikke tilgjengelig» · utelatt = «Kommer».
+     Læringsmål, NDLA-lenker, lysark, nøkkelbegreper, øvelsesbank, podkast og kapittelprøve fylles ut automatisk. */
+  fastePoster: {
+    // avatarvideo: '/video/#…',
+    // spill: '/spill/minispill/?s=…',
+    // ovelsesbank: false,   // hvis kapitlet aldri skal ha øvelsesbank
+  },
+  /* Exit ticket: tre korte spørsmål (to faglige + ett om hva eleven har lært / er usikker på). Gir egen side #/exit. */
+  exitTicket: [
+    // 'TODO spørsmål 1', 'TODO spørsmål 2', 'Hva er det viktigste du har lært i dette kapitlet, og hva er du fortsatt usikker på?'
+  ],
   ressurser: {
     presentasjon: '',
     laerebok: 'Læreboka, kapittel {{NR}} (s. TODO)',

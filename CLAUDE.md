@@ -36,6 +36,9 @@ Ikke lag egne sider med eget design inne i et kapittel – alt skal gå gjennom 
 - `kompetansemal` er **ordrett** fra læreplanen (kontroller mot Udir). Læringsmålene er våre egne – hold dem adskilt.
 - **Temaenes etikett (`lok`) er en hylleplass:** bokstaven er «reolen» (en del av kapitlet, i progresjon: A grunnlag →
   B metoder → C/D anvendelse), tallet er plassen i rekkefølgen. Elevene går gjennom temaene én gang, i rekkefølge.
+- **Faste poster** (`fastePoster`, avtalt med Jarle 21.11.2026): alle kapitler skal ha feltet. Ti poster i fast rekkefølge –
+  Læringsmål, Lysark, Avatarvideo, NDLA-lenker, Nøkkelbegreper, Øvelsesbank, TLLpodden, Spill, Kapittelprøve, Exit ticket.
+  Det som mangler, vises som «Kommer» eller «Ikke tilgjengelig». Se `felles/README.md`.
 - **Øvelsesbank** (valgfritt, bare noen kapitler – som kap 5): oppgaver elevene jobber med gjennom hele skoleåret.
   Legges som siste tema med `ovelsesbank: true` og `lok: 'ØB-01'`. Motoren viser den under egen overskrift
   «Øvelsesbank» foran Podkast, ikke i «Velg tema». Alle faser og nivåer kreves ikke i det temaet.

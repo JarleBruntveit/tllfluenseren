@@ -444,3 +444,17 @@ input.sel{font:inherit;padding:8px 10px;border:2px solid var(--line);border-radi
   .fokus-lok{min-width:0}
   .hdr-tema{top:14px;right:12px}
 }
+
+/* Faste poster per kapittel (K.fastePoster) – kompakt stripe, samme rekkefølge i alle kapitler */
+.fposter{margin-top:8px}
+.fp-grid{list-style:none;margin:0 0 8px;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.fp{display:flex;align-items:center;gap:8px;width:100%;min-height:52px;padding:8px 12px;border-radius:12px;border:1px solid var(--line);background:var(--panel);text-decoration:none;text-align:left;font-weight:700;font-size:15px;line-height:1.2}
+.fp .fp-ikon{font-size:20px;flex:none}
+.fp .fp-navn{flex:1;min-width:0;overflow-wrap:anywhere;hyphens:auto}
+a.fp.klar,button.fp.klar{border-left:5px solid var(--yellow);box-shadow:var(--shadow);transition:transform .12s}
+a.fp.klar:hover,button.fp.klar:hover{transform:translateY(-1px);border-color:var(--yellow)}
+a.fp.klar:focus-visible,button.fp.klar:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.fp.kommer,.fp.na{opacity:.75;cursor:default;flex-wrap:wrap;background:transparent;border-style:dashed}
+.fp.kommer .fp-ikon,.fp.na .fp-ikon{filter:grayscale(1)}
+.fp.kommer small,.fp.na small{flex-basis:100%;font-weight:400;color:var(--muted);font-size:12px;margin-left:28px;margin-top:-4px}
+@media (prefers-reduced-motion: reduce){a.fp.klar,button.fp.klar{transition:none}a.fp.klar:hover,button.fp.klar:hover{transform:none}}
