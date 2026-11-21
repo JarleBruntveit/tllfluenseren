@@ -51,10 +51,13 @@ jobs:
           for f in ${{ steps.finn.outputs.filer }}; do
             [ -f "$f" ] && node _podkast/lag-episode.mjs "$f"
           done
+      - name: Oppdater TLL-podden (samleside og podkast-feed)
+        if: steps.finn.outputs.filer != ''
+        run: node _podkast/lag-oversikt.mjs
       - name: Lagre lydfilene på grenen
         if: steps.finn.outputs.filer != ''
         run: |
           git config user.name "TLL-podden (automatisk)"
           git config user.email "actions@users.noreply.github.com"
-          git add -A -- '*.mp3' _podkast
+          git add -A -- '*.mp3' _podkast tllpodden
           git diff --cached --quiet || (git commit -m "Podkast: nye lydfiler fra ElevenLabs" && git push)

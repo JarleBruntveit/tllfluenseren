@@ -11,3 +11,7 @@ Podkastepisodene lages automatisk med ElevenLabs (Text to Dialogue) via GitHub A
 
 Arbeidsflyt: lag gren `podkast/<kapittel>` → legg inn manus → Actions lager lyd → Jarle lytter → PR flettes.
 Manus skrives med egne ord (ikke kopiert fra læreboka). Introen sier at stemmene er KI-generert.
+
+## Samleside og podkast-feed
+`lag-oversikt.mjs` finner alle publiserte episoder og skriver `tllpodden/episoder.json` (siden tllfluenseren.no/tllpodden/)
+og `tllpodden/feed.xml` (RSS for podkastapper). Kjøres automatisk av workflowen etter at lyd er laget.
