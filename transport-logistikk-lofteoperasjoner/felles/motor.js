@@ -1212,14 +1212,15 @@ function bootProve(){
       const pool = provePool(cfg.kap, cfg.niva);
       const qs = shuffle(pool).slice(0, cfg.antall);
       rand = Math.random;
-      const tittel = cfg.navn || (cfg.kap.length === 1 ? `Kapittelprøve kap ${cfg.kap[0].replace('kap','')}` : `Prøve kap ${cfg.kap.map(k => k.replace('kap','')).join(', ')}`);
+      const nrAv = id => { const k = (TLL.KAPITLER || []).find(x => x.id === id); return k ? k.nr : id.replace('kap',''); };
+      const tittel = cfg.navn || (cfg.kap.length === 1 ? `Kapittelprøve kap ${nrAv(cfg.kap[0])}` : `Prøve kap ${cfg.kap.map(nrAv).join(', ')}`);
       header(tittel, `${NIVA[cfg.niva]} · ${qs.length} spørsmål${cfg.seed ? ' · samme spørsmål for hele klassen' : ''}`);
       if (!qs.length){ app.innerHTML = '<div class="stage"><p class="muted">Fant ingen spørsmål for dette valget.</p></div>'; return; }
       app.innerHTML = `<div class="stage" id="stage"></div>`;
       runQuiz($('#stage'), { sp: qs }, (pct, info) => {
         TLL.lagreProve({ dato: new Date().toISOString(), navn: tittel, kap: cfg.kap, niva: cfg.niva, seed: cfg.seed || null, antall: info.antall, riktige: info.riktige, pct: Math.round(pct), perTema: info.perTema });
       }, null, { questions: qs, perTema: true, restart: () => start(cfg),
-        etter: `<p style="margin:6px 0 14px">Resultatet er lagret på denne PC-en. <a href="../${cfg.kap[0]}/#/rapport">Lever fremdrift til læreren →</a></p>` });
+        etter: `<p style="margin:6px 0 14px">Resultatet er lagret på denne PC-en. <a href="../${((TLL.KAPITLER || []).find(x => x.id === cfg.kap[0]) || {}).sti || cfg.kap[0] + '/'}#/rapport">Lever fremdrift til læreren →</a></p>` });
     });
   };
   if (P.get('kap') && (P.get('seed') || P.get('start'))){

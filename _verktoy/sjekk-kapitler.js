@@ -6,6 +6,8 @@
    Kjør fra rotmappen i repoet:
      node _verktoy/sjekk-kapitler.js          (alle kapitler)
      node _verktoy/sjekk-kapitler.js kap6     (bare ett kapittel)
+     node _verktoy/sjekk-kapitler.js --fag bransjelaere   (kapitlene i Bransjelære)
+     (Bransjelære bruker den samme motoren, men har egen kapittelliste i bransjelaere/felles/kapitler.js)
 
    FEIL  = må rettes før publisering (siden kan krasje eller vise feil).
    ADVARSEL = bør ses på, men stopper ikke publisering.
@@ -16,8 +18,12 @@ const fs = require('fs');
 const path = require('path');
 
 const ROT = path.resolve(__dirname, '..');
-const FAG = path.join(ROT, 'transport-logistikk-lofteoperasjoner');
-const FELLES = path.join(FAG, 'felles');
+const argv = process.argv.slice(2);
+const fagIdx = argv.indexOf('--fag');
+const FAGMAPPE = fagIdx >= 0 ? argv.splice(fagIdx, 2)[1] : 'transport-logistikk-lofteoperasjoner';
+const FAG = path.join(ROT, FAGMAPPE);
+const FELLES = path.join(ROT, 'transport-logistikk-lofteoperasjoner', 'felles');   // motoren
+const LISTE = path.join(FAG, 'felles', 'kapitler.js');                             // kapittellista for faget
 
 let feil = 0, adv = 0;
 const F = (k, m) => { feil++; console.log(`  ✗ FEIL      ${k}: ${m}`); };
@@ -37,9 +43,9 @@ const UTEN_NIVA = new Set(['flash', 'voks']);   // disse vises på alle nivåer
 /* ---------- Kapittellista ---------- */
 const sandbox = { window: {} };
 sandbox.window.TLL = {};
-new Function('window', 'TLL', les(path.join(FELLES, 'kapitler.js')))(sandbox.window, sandbox.window.TLL);
+new Function('window', 'TLL', les(LISTE))(sandbox.window, sandbox.window.TLL);
 const KAPITLER = (sandbox.window.TLL.KAPITLER || []).map(k => Object.assign({ publisert: true }, k));
-const bare = process.argv[2];
+const bare = argv[0];
 /* Et kapittel under arbeid (ikke i kapitler.js ennå) kan sjekkes med navnet sitt */
 if (bare && !KAPITLER.some(k => k.id === bare)) {
   const nrUarbeid = parseInt(bare.replace(/\D/g, ''), 10);
@@ -56,7 +62,7 @@ console.log(`Motoren støtter ${TYPER.size} oppgavetyper og ${GEN.size} regnegen
 
 /* ---------- Kapitler som har mappe, men mangler i lista ---------- */
 for (const d of fs.readdirSync(FAG)) {
-  if (/^kap\d+$/.test(d) && !KAPITLER.some(k => k.id === d)) {
+  if (/^kap\d+$/.test(d) && !KAPITLER.some(k => (k.sti || k.id + '/') === d + '/')) {
     A(d, `mappa finnes, men kapitlet står ikke i felles/kapitler.js (vises ikke i prøve/lærerside)`);
   }
 }
@@ -76,13 +82,16 @@ for (const kap of KAPITLER) {
     const dk = (idx.match(/data-kapittel="([^"]+)"/) || [])[1];
     if (dk !== K) F(K, `index.html har data-kapittel="${dk}", skal være "${K}"`);
     if (!idx.includes('data-side="kapittel"')) F(K, 'index.html mangler data-side="kapittel"');
-    for (const fil of ['../felles/kapitler.js', '../felles/fremdrift.js', 'data.js', '../felles/motor.js', '../felles/motor.css']) {
+    for (const fil of ['../felles/kapitler.js', 'data.js']) {
       if (!idx.includes(fil)) F(K, `index.html lenker ikke til ${fil}`);
+    }
+    for (const fil of ['felles/fremdrift.js', 'felles/motor.js', 'felles/motor.css']) {
+      if (!idx.includes('../' + fil) && !idx.includes('/transport-logistikk-lofteoperasjoner/' + fil)) F(K, `index.html lenker ikke til ${fil}`);
     }
     const t = (idx.match(/<title>([^<]*)<\/title>/) || [])[1] || '';
     if (!t.includes(`Kap ${kap.nr}`)) A(K, `tittelen i index.html («${t}») nevner ikke «Kap ${kap.nr}»`);
     const og = (idx.match(/og:url" content="([^"]+)"/) || [])[1] || '';
-    if (!og.endsWith(`/${K}/`)) A(K, `og:url peker til ${og || '(mangler)'}`);
+    if (!og.endsWith(`/${FAGMAPPE}/${(kap.sti || K + '/')}`)) A(K, `og:url peker til ${og || '(mangler)'}`);
   }
 
   /* --- data.js --- */
@@ -178,8 +187,9 @@ for (const kap of KAPITLER) {
 
   /* --- kobling til resten av nettstedet --- */
   if (!kap.publisert) { console.log('  · Ikke publisert ennå: hopper over sjekk av fagside, sitemap og ressursbank.'); continue; }
-  if (!fagside.includes(`href="${K}/"`)) A(K, `fagsiden (transport-logistikk-lofteoperasjoner/index.html) har ikke et klikkbart kort til ${K}/`);
-  if (sitemap && !sitemap.includes(`/transport-logistikk-lofteoperasjoner/${K}/`)) A(K, 'kapitlet mangler i sitemap.xml');
+  const sti = kap.sti || K + '/';
+  if (!fagside.includes(`href="${sti}"`)) A(K, `fagsiden (${FAGMAPPE}/index.html) har ikke et klikkbart kort til ${sti}`);
+  if (sitemap && !sitemap.includes(`/${FAGMAPPE}/${sti}`)) A(K, 'kapitlet mangler i sitemap.xml');
   if (katalog && Array.isArray(katalog.topics)) {
     const iKat = katalog.topics.filter(x => x.id && x.id.startsWith(K + '-'));
     if (!iKat.length) A(K, 'kapitlet har ingen temaer i ressursbank/katalog.json');

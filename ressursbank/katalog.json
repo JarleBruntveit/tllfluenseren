@@ -124,6 +124,48 @@
       "url": "/transport-logistikk-lofteoperasjoner/kap5/#/t8"
     },
     {
+      "id": "bl-kap1-t1",
+      "title": "Forretningsidé og rammer",
+      "area": "bransjelaere",
+      "url": "/bransjelaere/kap1/#/t1"
+    },
+    {
+      "id": "bl-kap1-t2",
+      "title": "Foretaksform, løyve og forretningsplan",
+      "area": "bransjelaere",
+      "url": "/bransjelaere/kap1/#/t2"
+    },
+    {
+      "id": "bl-kap1-t3",
+      "title": "Kapitalbehov og finansiering",
+      "area": "bransjelaere",
+      "url": "/bransjelaere/kap1/#/t3"
+    },
+    {
+      "id": "bl-kap1-t4",
+      "title": "Marked og konkurrenter",
+      "area": "bransjelaere",
+      "url": "/bransjelaere/kap1/#/t4"
+    },
+    {
+      "id": "bl-kap1-t5",
+      "title": "Ledelse, plikter og rettigheter",
+      "area": "bransjelaere",
+      "url": "/bransjelaere/kap1/#/t5"
+    },
+    {
+      "id": "bl-kap1-t6",
+      "title": "Budsjett, regnskap og økonomisk styring",
+      "area": "bransjelaere",
+      "url": "/bransjelaere/kap1/#/t6"
+    },
+    {
+      "id": "bl-kap1-t7",
+      "title": "Kvalitet og kundekrav",
+      "area": "bransjelaere",
+      "url": "/bransjelaere/kap1/#/t7"
+    },
+    {
       "id": "truck",
       "title": "Truckopplæring",
       "area": "bransjeteknikk",
