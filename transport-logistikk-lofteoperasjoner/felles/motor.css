@@ -240,7 +240,7 @@ textarea{width:100%;min-height:150px;font:inherit;padding:10px 12px;border:2px s
 .voks-q{margin:14px 0 6px;font-weight:700}
 .voks-do{border:2px dashed var(--yellow);border-radius:12px;padding:12px 14px;margin-top:14px}
 
-.kapfot{border-top:1px solid var(--line);padding:18px 0 30px;font-size:14px;color:var(--muted)}
+.kapfot{padding:18px 0 30px;font-size:14px;color:var(--muted)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 :focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
 
