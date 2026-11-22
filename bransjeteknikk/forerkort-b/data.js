@@ -359,7 +359,68 @@ TLL.registrer({
     },
     /* ================================================================ FK-06 */
     {
-      id: 'samspill', lok: 'FK-06', tittel: 'Samspill, mørke og uhell',
+      id: 'sikkerhet', lok: 'FK-06', tittel: 'Trafikksikkerhet og menneskelige faktorer',
+      kort: 'Hvorfor skjer ulykker? Kravene fra trafikken mot det sjåføren klarer – og hvordan du holder god margin.',
+      bok: 'NDLA: Trafikksikkerhet (TP-TOL vg2) – menneskelige faktorer ved trafikkuhell',
+      mal: ['forklare forholdet mellom kravene fra trafikken og førerens ytelse','gi eksempler på menneskelige faktorer som ofte bidrar til trafikkulykker','foreslå konkrete tiltak som gir større sikkerhetsmargin i et transportoppdrag'],
+      punkter: [
+        'De fleste trafikkulykker har en <b>menneskelig faktor</b>: noe sjåføren gjorde, ikke gjorde eller ikke klarte å oppfatte i tide.',
+        '<b>Kravene fra trafikken</b> er alt situasjonen krever av deg: vegen, været, føret, mørket, trafikkmengden, kjøretøyet, lasten og tidsfristen.',
+        '<b>Førerens ytelse</b> er det du faktisk klarer akkurat nå: erfaring, ferdigheter, oppmerksomhet og form. Den går ned når du er trøtt, stresset, syk, ruset eller ser på mobilen.',
+        'Så lenge ytelsen er større enn kravene, har du en <b>sikkerhetsmargin</b>. Når kravene blir større enn det du klarer, oppstår nestenulykker og ulykker.',
+        'Du kan øke marginen på to måter: <b>senke kravene</b> (lavere fart, mer avstand, planlegge ruten, utsette turen) eller <b>holde ytelsen oppe</b> (sove nok, ta pauser, legge bort mobilen, si nei til rus).',
+        'I jobb kommer ofte <b>tidspress</b> i tillegg. En god sjåfør og en god arbeidsgiver planlegger slik at ingen må velge mellom å rekke fristen og å kjøre trygt. Målet i Norge er <b>nullvisjonen</b>: ingen drepte eller hardt skadde i trafikken.'
+      ],
+      ndla: [['Trafikksikkerhet – emnet', 'https://ndla.no/e/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/trafikksikkerhet/4201ecd6af', 'NDLA'],['Oppgave: Trafikksikkerhet (menneskelige faktorer)', 'https://ndla.no/r/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/trafikksikkerhet/76610be654', 'NDLA'],['Trafikksikkerhet – hva har du lært? (egentest)', 'https://ndla.no/r/transport-logistikk-og-lofteoperasjonar-tp-tol-vg2---ressurssamling/trafikksikkerhet---hva-har-du-lart/43e120b437', 'NDLA'],['Veiledning klasse B (PDF)', SVV_HEFTE, 'Vegvesen']],
+      arbeidsbok: '',
+      aktiviteter: [
+        { type:'voks', id:'sikkerhet-voks', tittel:'Å kjenne sine egne grenser', tekst:['Alle har dager der de ikke er på topp: lite søvn, mye i hodet eller en krangel rett før man går ut døra. Det er helt vanlig. Det farlige er å late som om alt er som normalt.','En trygg sjåfør – og en god kollega – sier fra når formen ikke strekker til, og justerer etter det. Det er ikke svakhet. Det er profesjonalitet.'], sporsmal:['Hvordan merker du at du ikke er i form til å gjøre en krevende jobb?','Hva kan du si til en kollega eller venn som tydelig er for sliten til å kjøre?'], handling:'Tenk gjennom én ting du gjør for å være i form før en viktig oppgave – og gjør den i morgen.' },
+        { type:'flash', id:'sikkerhet-flash', tittel:'Begrepskort: trafikksikkerhet', kort:[
+          ['Menneskelig faktor','Noe ved sjåføren – valg, oppmerksomhet, form eller erfaring – som bidrar til en ulykke.'],
+          ['Krav fra trafikken','Alt situasjonen krever av sjåføren: veg, vær, føre, mørke, trafikk, kjøretøy, last og tid.'],
+          ['Førerens ytelse','Det sjåføren faktisk klarer akkurat nå. Påvirkes av erfaring, ferdigheter og form.'],
+          ['Sikkerhetsmargin','Avstanden mellom det du klarer og det situasjonen krever.'],
+          ['Nestenulykke','En hendelse som kunne blitt en ulykke, men som gikk bra. Et varsel om at marginen var for liten.'],
+          ['Uoppmerksomhet','Når blikket eller tankene er et annet sted enn på trafikken, f.eks. på mobilen.'],
+          ['Mikrosøvn','Noen sekunders søvn uten at du merker det selv. Kommer når du er svært trøtt.'],
+          ['Nullvisjonen','Målet om at ingen skal bli drept eller hardt skadd i trafikken i Norge.']
+        ]},
+        { type:'quiz', id:'sikkerhet-q1', nivaa:1, tittel:'Hva vet du om ulykker?', sp:[
+          {q:'Hva er oftest med på å forårsake en trafikkulykke?',a:['En menneskelig faktor','Feil på vegen alene','Feil på bilen alene','Uflaks'],r:0,f:'Veg og kjøretøy spiller inn, men i de fleste ulykker er det også en menneskelig faktor.'},
+          {q:'Hva skjer når kravene fra trafikken blir større enn det sjåføren klarer?',a:['Risikoen for nestenulykker og ulykker øker kraftig','Sjåføren blir automatisk mer oppmerksom','Ingenting, så lenge bilen er ny','Bilen bremser selv'],r:0,f:'Da er sikkerhetsmarginen borte.'},
+          {q:'Hvilket av disse senker kravene fra trafikken?',a:['Å kjøre saktere og holde lengre avstand','Å drikke energidrikk','Å kjøre om natta for å unngå kø','Å skru opp musikken'],r:0,f:'Lavere fart og mer avstand gir deg mer tid til å oppdage og reagere.'},
+          {q:'Hva er nullvisjonen?',a:['Målet om ingen drepte eller hardt skadde i trafikken','Et forbud mot å kjøre om natta','Kravet om null promille for alle','En regel om null prikker i prøvetiden'],r:0,f:'Nullvisjonen er grunnlaget for trafikksikkerhetsarbeidet i Norge.'}
+        ]},
+        { type:'sort', id:'sikkerhet-s1', nivaa:2, tittel:'Krav fra trafikken eller førerens ytelse?', instr:'Sorter faktorene. Er det noe ved situasjonen (krav), eller noe ved sjåføren (ytelse)?', kat:['Krav fra trafikken','Førerens ytelse'], items:[
+          ['Glatt, smal veg med snøkanter',0,'Føret og vegen bestemmer hvor mye situasjonen krever.'],
+          ['Sjåføren sov fire timer i natt',1,'Lite søvn senker ytelsen og øker reaksjonstiden.'],
+          ['Mørkt og regn i rushtiden',0,'Dårlig sikt og mye trafikk øker kravene.'],
+          ['Sjåføren har hatt førerkort i tre måneder',1,'Lite erfaring gjør det vanskeligere å se farer tidlig.'],
+          ['Varebil fullastet med tunge esker',0,'Lasten gir lengre bremselengde og endrer hvordan bilen oppfører seg.'],
+          ['Sjåføren leser en melding på mobilen',1,'Blikket er borte fra vegen – ytelsen faller til nesten null.'],
+          ['Leveringsfrist om 20 minutter, 30 km igjen',0,'Tidspresset er en del av situasjonen og frister til høy fart.'],
+          ['Sjåføren er sint etter en krangel',1,'Sterke følelser tar oppmerksomhet og kan gi mer risikovillig kjøring.']
+        ], f:'Ulykker skjer der høye krav møter lav ytelse. Begge sidene kan du gjøre noe med.' },
+        { type:'tf', id:'sikkerhet-tf', nivaa:2, tittel:'Sant eller usant: menneskelige faktorer', ps:[
+          ['En erfaren sjåfør kan trygt lese meldinger på rett veg.',false,'Ved 80 km/t kjører du over 20 meter i sekundet – i blinde.'],
+          ['Trøtthet kan virke på kjøringen på samme måte som alkohol.',true,'Både reaksjonstid og vurderingsevne blir dårligere.'],
+          ['En nestenulykke er et nyttig varsel, selv om ingen ble skadd.',true,'Den viser at marginen var for liten. Lær av den.'],
+          ['Tidspress påvirker ikke hvordan folk kjører.',false,'Tidspress fører ofte til høyere fart, kortere avstand og flere forbikjøringer.'],
+          ['Du kan øke sikkerhetsmarginen ved å planlegge turen før du kjører.',true,'Kjent rute, pauser og nok tid senker kravene underveis.'],
+          ['Passasjerer har ingen betydning for sikkerheten.',false,'Passasjerer kan både distrahere og hjelpe – f.eks. ved å si fra.']
+        ]},
+        { type:'case', id:'sikkerhet-case', nivaa:3, tittel:'Case: Siste levering før helga', intro:'Adrian (19) er lærling i et transportfirma og kjører varebil. Det er fredag i januar kl. 15.30. Han har én levering igjen, 35 km unna, på en smal og svingete veg med snøkanter. Kunden stenger kl. 16.00. Han har jobbet siden kl. 06 og har ikke spist lunsj. Kunden ringer og spør hvor han blir av.', steg:[
+          {q:'Hva er de største kravene fra trafikken her?',valg:[{t:'Smal, svingete vinterveg, mørket som kommer og en kort frist',ok:true,f:'Både vegen, føret og tiden presser på.'},{t:'At bilen er en varebil',ok:false,f:'Kjøretøyet betyr noe, men det er ikke det største kravet her.'},{t:'At kunden ringer',ok:false,f:'Samtalen er en distraksjon – men selve kravet er fristen.'}]},
+          {q:'Hva trekker ned Adrians ytelse?',valg:[{t:'Lang arbeidsdag, ingen mat og stress fra kunden',ok:true,f:'Sult, trøtthet og stress gir dårligere oppmerksomhet og vurderinger.'},{t:'At han er lærling',ok:false,f:'Mindre erfaring spiller inn, men her er formen og stresset viktigst.'},{t:'Ingenting – han er ung og opplagt',ok:false,f:'Han har jobbet i over ni timer uten mat.'}]},
+          {q:'Hva er det beste valget?',valg:[{t:'Ringe kunden (stående stille) eller sjefen, avtale ny tid eller å levere mandag, og kjøre etter forholdene',ok:true,f:'Han senker kravet (fristen) i stedet for å kjøre over evne. Det er sjåføren som har ansvaret bak rattet.'},{t:'Kjøre fort for å rekke det, og svare kunden mens han kjører',ok:false,f:'Da øker han kravene og senker ytelsen samtidig – den farligste kombinasjonen.'},{t:'Kjøre fortere på de rette strekningene',ok:false,f:'Fem minutter spart er ikke verdt risikoen på glatt, smal veg.'}]},
+          {q:'Hva bør firmaet lære av situasjonen?',valg:[{t:'Planlegge rutene slik at sjåførene har tid til pauser og ikke må velge mellom frist og sikkerhet',ok:true,f:'Trafikksikkerhet er også et HMS-ansvar for arbeidsgiveren.'},{t:'At lærlinger ikke skal kjøre',ok:false,f:'Problemet er planleggingen, ikke at han er lærling.'},{t:'Ingenting – det gikk jo bra',ok:false,f:'En situasjon som nesten gikk galt, er nettopp den man skal lære av.'}]}
+        ]},
+        { type:'reflect', id:'sikkerhet-r1', nivaa:3, tittel:'Drøft: menneskelige faktorer i et transportoppdrag', q:'Biltrafikken har høy ulykkesrisiko, og i mange ulykker spiller en menneskelig faktor inn. Drøft hvilke menneskelige faktorer som ofte påvirker en trafikkulykke, og hvordan de kan påvirke sikkerheten i et transportoppdrag (f.eks. en varebil med levering). Bruk begrepene «krav fra trafikken» og «førerens ytelse», og foreslå tiltak både for sjåføren og for arbeidsgiveren. (Oppgaven bygger på NDLA-oppgaven «Trafikksikkerhet».)', punkter:['nevner minst fire menneskelige faktorer (f.eks. fart, rus, trøtthet, distraksjon, uerfarenhet, stress)','forklarer forholdet mellom krav fra trafikken og førerens ytelse','knytter faktorene til et konkret transportoppdrag','foreslår tiltak for sjåføren (pause, mobil bort, fart, si fra)','foreslår tiltak for arbeidsgiveren (ruteplanlegging, realistiske frister, opplæring)','drøfter – viser at flere faktorer ofte virker sammen og veier tiltakene mot hverandre'] }
+      ]
+    },
+    /* ================================================================ FK-07 */
+    {
+      id: 'samspill', lok: 'FK-07', tittel: 'Samspill, mørke og uhell',
       kort: 'Myke trafikanter, rundkjøring, fletting, kjøring i mørket og hva du gjør ved et trafikkuhell.',
       bok: 'Trafikkreglene og vegtrafikkloven § 12 (plikter ved trafikkuhell)',
       mal: ['samhandle trygt med myke trafikanter og andre kjøretøy','bruke riktig lys og tegngiving i ulike situasjoner','forklare pliktene og tiltakene ved et trafikkuhell'],
