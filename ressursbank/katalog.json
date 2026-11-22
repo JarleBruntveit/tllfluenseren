@@ -262,6 +262,12 @@
       "url": "/bransjeteknikk/forerkort-b/#/risiko"
     },
     {
+      "id": "forerkort-b-sikkerhet",
+      "title": "Førerkort B – trafikksikkerhet og menneskelige faktorer",
+      "area": "bransjeteknikk",
+      "url": "/bransjeteknikk/forerkort-b/#/sikkerhet"
+    },
+    {
       "id": "forerkort-b-samspill",
       "title": "Førerkort B – samspill, mørke og uhell",
       "area": "bransjeteknikk",
