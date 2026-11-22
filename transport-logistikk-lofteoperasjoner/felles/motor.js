@@ -64,7 +64,7 @@ const delText = id => { if (mem[ctx.kapId]) delete mem[ctx.kapId][id]; TLL.ls.de
 const clearTexts = () => { TLL.tekstNokler(ctx.kapId).forEach(k => TLL.ls.del(k)); mem[ctx.kapId] = {}; };
 function textNote(){
   return ctx.store.saveText
-    ? `<div class="note warn" id="tnote"><span aria-hidden="true">💾</span><span><b>Lagres automatisk her.</b> Teksten din lagres i nettleseren, og andre som bruker PC-en kan se den. Læreren får teksten når du leverer fremdriftsrapporten med tekstene dine. <button class="linkbtn" id="tdel">Slett teksten</button> · <a href="#/lagring">Endre</a></span></div>`
+    ? `<div class="note" id="tnote"><span aria-hidden="true">💾</span><span><b>Lagres automatisk her.</b> Teksten din lagres i nettleseren til du sletter den selv – også når du lukker PC-en. Læreren får teksten når du leverer fremdriftsrapporten med tekstene dine. <button class="linkbtn" id="tdel">Slett teksten</button> · <a href="#/lagring">Endre</a></span></div>`
     : `<div class="note" id="tnote"><span aria-hidden="true">🔒</span><span><b>Lagres ikke på PC-en.</b> Teksten blir borte når du lukker siden. Vil du levere den, lager du en <a href="#/rapport">fremdriftsrapport</a> med tekstene før du lukker siden. <a href="#/lagring">Endre</a></span></div>`;
 }
 function wireTextNote(id, ta){
@@ -824,7 +824,7 @@ function bootKapittel(){
           <span class="framdrift"><span class="prog"><i style="width:${vanlige.length ? 100*nFerdig/vanlige.length : 0}%"></i></span>${nFerdig} av ${vanlige.length} temaer ferdig</span></span>
         <span class="fokus-knapp">${hero.knapp}</span>
       </a>
-      ${store.lagringSett ? '' : `<div class="note fokus-lagring"><span aria-hidden="true">💾</span><span>Svarene dine lagres bare på denne PC-en. Når du er ferdig, leverer du <a href="#/rapport">fremdriftsrapport</a> i Teams. <a href="#/lagring">Les mer</a></span><button type="button" class="btn ghost" id="lagringOk">Skjønner</button></div>`}
+      ${store.lagringSett ? '' : `<div class="note fokus-lagring"><span aria-hidden="true">💾</span><span>Svarene dine – også det du skriver – lagres bare på denne PC-en, til du sletter dem selv. Når du er ferdig, leverer du <a href="#/rapport">fremdriftsrapport</a> i Teams. <a href="#/lagring">Les mer</a></span><button type="button" class="btn ghost" id="lagringOk">Skjønner</button></div>`}
       <div class="section-h"><h2>Alle temaer i kapitlet</h2><span class="muted small">Ta dem i rekkefølge</span></div>
       <ol class="fokus-liste">${vanlige.map(temarad).join('')}</ol>
       ${fastePoster}
@@ -861,9 +861,9 @@ function bootKapittel(){
         <p class="small muted" style="margin-bottom:4px">Kompetansemål fra læreplanen:</p>
         <ul>${[].concat(K.kompetansemal).map(m => `<li>${esc(m.tekst)} <span class="muted small">(${esc(m.kode)})</span></li>`).join('')}</ul></div>`;
     app.innerHTML = (FOKUS ? toppFokus() : `
-      <div class="note ${store.saveText ? 'warn' : ''}" style="margin-top:4px"><span aria-hidden="true">${store.saveText ? '💾' : '🔒'}</span><span>
+      <div class="note ${store.saveText ? '' : 'warn'}" style="margin-top:4px"><span aria-hidden="true">${store.saveText ? '💾' : '🔒'}</span><span>
         <b>Lagring på denne PC-en:</b> Resultatene dine lagres bare i denne nettleseren. Læreren ser dem når du leverer en <a href="#/rapport">fremdriftsrapport</a> i Teams.
-        ${store.saveText ? 'Det du skriver i skriveoppgavene lagres også her – andre som bruker PC-en kan se det.' : 'Det du skriver i skriveoppgavene lagres ikke.'}
+        ${store.saveText ? 'Det du skriver i skriveoppgavene lagres også her, til du sletter det selv.' : 'Det du skriver i skriveoppgavene lagres ikke (du har valgt «Lånt eller delt PC»).'}
         <a href="#/lagring">Innstillinger og sletting</a></span></div>
       <section class="panel tll-start" aria-labelledby="start-heading"><h2 id="start-heading">Første gang her?</h2><p>Start med «${esc(forsteTema.tittel)}». Les eller lytt til forklaringen, og prøv oppgavene etterpå. Har læreren gitt deg et annet tema, velger du det nedenfor.</p><a class="tll-action" href="#/${forsteTema.id}">Start med ${temaNavn(forsteTema)} →</a></section>
       <div class="section-h"><h2>Velg tema</h2><span class="muted small">${alle.d} av ${alle.n} aktiviteter gjort · ${alle.n - alle.d} gjenstår</span></div>
@@ -1075,7 +1075,8 @@ function bootKapittel(){
         <h3 style="font-size:22px">Dette lagres – og bare her</h3>
         <ul>
           <li><b>Resultater</b> (prosent og antall forsøk på aktivitetene) og nivået du har valgt, lagres i nettleseren på denne PC-en.</li>
-          <li><b>Det du skriver</b> i skriveoppgaver og Voks lagres bare hvis du velger «Min egen PC» nedenfor.</li>
+          <li><b>Det du skriver</b> i skriveoppgaver og Voks lagres også her, så du kan fortsette senere – også etter at du har lukket PC-en.</li>
+          <li><b>Alt blir liggende til du sletter det selv</b> – med knappen «Slett alt» nedenfor, eller ved å slette nettleserdata (historikk, informasjonskapsler og nettstedsdata) i nettleseren.</li>
           <li><b>Ingenting sendes</b> automatisk til læreren, skolen eller andre. Det finnes ingen innlogging.</li>
           <li><b>Læreren</b> ser fremdriften din bare når du selv leverer en <a href="#/rapport">fremdriftsrapport</a> i Teams.</li>
           <li>Bytter du PC eller nettleser, ser du ikke resultatene dine der.</li>
@@ -1085,21 +1086,21 @@ function bootKapittel(){
       <div class="panel" style="margin-top:14px">
         <h3 style="font-size:22px">Hvilken PC bruker du?</h3>
         <div class="choice" role="radiogroup" aria-label="Type PC">
-          <label><input type="radio" name="pc" value="delt" ${store.saveText?'':'checked'}><span><b>Delt skole-PC</b> – det jeg skriver, lagres ikke. Teksten forsvinner når jeg lukker siden.</span></label>
-          <label><input type="radio" name="pc" value="egen" ${store.saveText?'checked':''}><span><b>Min egen PC</b> – lagre det jeg skriver, så jeg kan fortsette senere.</span></label>
+          <label><input type="radio" name="pc" value="egen" ${store.saveText?'checked':''}><span><b>Min egen PC</b> (standard) – lagre det jeg skriver, så jeg kan fortsette senere.</span></label>
+          <label><input type="radio" name="pc" value="delt" ${store.saveText?'':'checked'}><span><b>Lånt eller delt PC</b> – det jeg skriver, lagres ikke. Teksten forsvinner når jeg lukker siden.</span></label>
         </div>
         <div id="pcmsg"></div>
       </div>
       <div class="panel" style="margin-top:14px">
         <h3 style="font-size:22px">Slett alt fra denne PC-en</h3>
-        <p>Sletter alle resultater, nivåvalg, prøveresultater, navnet ditt og alt du har skrevet i dette kapitlet. Gjør dette når du er ferdig på en delt PC – etter at du har levert rapporten.</p>
+        <p>Sletter alle resultater, nivåvalg, prøveresultater, navnet ditt og alt du har skrevet i dette kapitlet. Lever fremdriftsrapporten først. Har du lånt en PC, bør du alltid slette når du er ferdig.</p>
         <div class="row"><button class="btn ghost" id="del1">Slett alt</button><span id="delc"></span></div>
         <div id="delmsg"></div>
       </div>
     </div><p class="stage" style="margin-top:22px"><a href="#/">← Tilbake til kapitlet</a></p>`;
     app.querySelectorAll('input[name=pc]').forEach(r => r.onchange = () => {
       if (r.value === 'egen'){ store.saveText = true; Object.entries(mem[K.id] || {}).forEach(([id,v]) => setText(id, v)); save();
-        $('#pcmsg').innerHTML = '<div class="fb">Det du skriver, lagres nå på denne PC-en. Husk å slette når du er ferdig hvis andre bruker PC-en.</div>'; }
+        $('#pcmsg').innerHTML = '<div class="fb">Det du skriver, lagres nå på denne PC-en til du sletter det selv.</div>'; }
       else { store.saveText = false; save(); TLL.tekstNokler(K.id).forEach(k => TLL.ls.del(k));
         $('#pcmsg').innerHTML = '<div class="fb">Ok. Det du skriver, lagres ikke lenger, og tidligere lagrede tekster er slettet fra PC-en.</div>'; }
     });

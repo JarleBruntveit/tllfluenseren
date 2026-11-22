@@ -19,10 +19,12 @@ const ls = {
 TLL.ls = ls;
 
 /* ---------- lagring per kapittel ---------- */
-const tom = () => ({ lvl: 0, best: {}, log: {}, saveText: false });
+/* saveText: lagre det eleven skriver. Standard er «Min egen PC» (alle elever har egen PC, avtalt med Jarle 22.11.2026).
+   pcValg: 2 = lagret etter at standarden ble endret. Eldre lagring hadde saveText:false som standard, så den flyttes over til egen PC. */
+const tom = () => ({ lvl: 0, best: {}, log: {}, saveText: true, pcValg: 2 });
 TLL.lesLager = id => {
   let s = tom();
-  try { const r = JSON.parse(ls.get(PREFIX + id)); if (r) s = Object.assign(s, r); } catch(e){}
+  try { const r = JSON.parse(ls.get(PREFIX + id)); if (r) { s = Object.assign(s, r); if (r.pcValg !== 2) { s.saveText = true; s.pcValg = 2; } } } catch(e){}
   s.best = s.best || {}; s.log = s.log || {};
   return s;
 };
