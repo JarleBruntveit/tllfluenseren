@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Varemottak på lager – eksempel laget med KI – TLLfluenseren</title>
+<meta name="robots" content="noindex">
+<style>
+  :root{--bg:#f6f4ef;--kort:#fff;--tekst:#1d2630;--dempet:#5b6774;--aksent:#2f6f8f;--rett:#2e8b57;--feil:#c8463f;--linje:#d9dde2}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--tekst);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:22px;line-height:1.5}
+  main{max-width:900px;margin:0 auto;padding:32px 24px 60px}
+  header{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
+  h1{font-size:clamp(34px,5vw,52px);margin:0 0 6px;line-height:1.1}
+  .ingress{color:var(--dempet);margin:0 0 26px;max-width:40ch}
+  .poeng{background:var(--aksent);color:#fff;font-weight:800;border-radius:999px;padding:10px 22px;white-space:nowrap}
+  .kort{background:var(--kort);border:1px solid var(--linje);border-radius:18px;padding:24px;margin-bottom:22px}
+  .kort h2{font-size:26px;margin:0 0 16px}
+  .valg{display:grid;gap:12px}
+  button{font:inherit;cursor:pointer}
+  .valg button{text-align:left;padding:14px 18px;border-radius:12px;border:2px solid var(--linje);background:#fbfbfa;color:var(--tekst)}
+  .valg button:hover:not(:disabled){border-color:var(--aksent)}
+  .valg button:disabled{cursor:default}
+  .valg .rett{border-color:var(--rett);background:#e7f5ec}
+  .valg .feil{border-color:var(--feil);background:#fbe9e7}
+  button:focus-visible,textarea:focus-visible{outline:3px solid var(--aksent);outline-offset:3px}
+  .fb{margin-top:14px;color:var(--dempet)}
+  .fb b{color:var(--tekst)}
+  textarea{width:100%;min-height:110px;font:inherit;padding:12px;border-radius:12px;border:2px solid var(--linje)}
+  .knapp{margin-top:12px;background:var(--aksent);color:#fff;border:0;border-radius:12px;padding:12px 22px;font-weight:700}
+  .forslag{margin-top:14px;padding:14px 18px;border-left:5px solid var(--aksent);background:#eef4f7;border-radius:8px}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div>
+      <h1>Varemottak på lager</h1>
+      <p class="ingress">Et godt varemottak sikrer at lageret har riktige varer, at feil blir oppdaget tidlig og at bedriften ikke betaler for noe den ikke har fått.</p>
+    </div>
+    <div class="poeng" aria-live="polite">Poeng: <span id="poeng">0</span> / 5</div>
+  </header>
+  <div id="sporsmal"></div>
+  <section class="kort">
+    <h2>Praksiscase</h2>
+    <p>Klokka er 07.40. En sjåfør leverer 12 paller, men fraktbrevet sier 14. Sjåføren har dårlig tid og ber deg bare signere, så ordner de resten senere. Hva gjør du, og hvorfor?</p>
+    <label for="svar" style="position:absolute;left:-9999px">Ditt svar</label>
+    <textarea id="svar" placeholder="Skriv svaret ditt her …"></textarea>
+    <button class="knapp" type="button" id="visForslag">Vis forslag til svar</button>
+    <div class="forslag" id="forslag" hidden>Ikke signer for 14 paller. Tell på nytt sammen med sjåføren, og skriv avviket på fraktbrevet før du signerer: «Mottatt 12 av 14 paller». Be sjåføren signere på avviket også, og meld fra til nærmeste leder. Signerer du uten merknad, har bedriften kvittert for varer den ikke har fått, og det blir vanskelig å kreve dem senere.</div>
+  </section>
+</main>
+<script>
+const SP = [
+  {q:'En lastebil kommer med varer. Hva gjør du først?', a:['Teller kolli og sjekker mot fraktbrevet','Setter varene rett på lagerplass','Signerer fraktbrevet så sjåføren kommer seg videre'], r:0,
+   f:'Kontroller antall og tilstand før du kvitterer. Etter signering er det vanskelig å klage.'},
+  {q:'Du ser at en pall er skadet. Hva gjør du?', a:['Tar imot og sier fra neste gang','Noterer skaden på fraktbrevet før du signerer, og tar bilde','Kaster den skadde pallen'], r:1,
+   f:'En merknad på fraktbrevet og et bilde dokumenterer skaden, så bedriften kan kreve erstatning.'},
+  {q:'Hva er en følgeseddel?', a:['En faktura som skal betales','En liste over varene og mengdene i sendingen','Sjåførens kjørerute'], r:1,
+   f:'Følgeseddelen viser hva som er sendt. Du sammenligner den med det som faktisk kom, og med bestillingen.'},
+  {q:'Hvorfor skal varene registreres i lagersystemet med en gang?', a:['Så lagersaldoen stemmer og varene kan plukkes','Fordi sjåføren krever det','Det spiller ingen rolle når det gjøres'], r:0,
+   f:'Står ikke varene i systemet, «finnes» de ikke. Da kan ingen plukke eller selge dem.'},
+  {q:'Hva betyr FIFO?', a:['Først inn, først ut','Fullt inn, fullt ut','Fraktbrev inn, følgeseddel ut'], r:0,
+   f:'De eldste varene sendes ut først. Det er viktig for varer med holdbarhetsdato.'}
+];
+let poeng = 0;
+const boks = document.getElementById('sporsmal');
+SP.forEach((s,i)=>{
+  const k = document.createElement('section'); k.className='kort';
+  k.innerHTML = '<h2>'+(i+1)+'. '+s.q+'</h2><div class="valg"></div><div class="fb" aria-live="polite"></div>';
+  const v = k.querySelector('.valg');
+  s.a.forEach((t,n)=>{
+    const b = document.createElement('button'); b.type='button';
+    b.textContent = String.fromCharCode(65+n)+') '+t;
+    b.onclick = ()=>{
+      v.querySelectorAll('button').forEach((x,j)=>{x.disabled=true; if(j===s.r) x.classList.add('rett'); else if(j===n) x.classList.add('feil');});
+      if(n===s.r){poeng++; document.getElementById('poeng').textContent=poeng;}
+      k.querySelector('.fb').innerHTML = '<b>'+(n===s.r?'Riktig! ':'Ikke helt. ')+'</b>'+s.f;
+    };
+    v.appendChild(b);
+  });
+  boks.appendChild(k);
+});
+document.getElementById('visForslag').onclick = ()=>{document.getElementById('forslag').hidden=false;};
+</script>
+</body>
+</html>
