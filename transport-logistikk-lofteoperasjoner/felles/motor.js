@@ -560,7 +560,7 @@ function runSim(st, a, done){
 
 /* =================== ØVELSESBANK (type 'bank') ===================
    En liste med oppgaver som vises samtidig, slik at eleven ser hele banken og velger selv.
-   a.oppg: [{ k:'mc'|'num'|'open', q, o, r, ans, tol, u, s (side i heftet), h (hint), f (forklaring), tema }]
+   a.oppg: [{ k:'mc'|'num'|'open', q, o, r, ans, tol, u, s (side i heftet), h (hint), f (forklaring), tema, film ({ tittel, url }, valgfri) }]
    Valgfritt: a.kilde (f.eks. 'Boka') erstatter ordet «Heftet» i sidehenvisningene, og a.rundOpp:false fjerner
    påminnelsen om å runde opp antall stropper (den gjelder lastsikring). 
    Status per oppgave lagres i store.bank; resultatet (andel klart) registreres på aktiviteten. */
@@ -581,6 +581,8 @@ function runBank(st, a, done){
   const progHtml = n => `<div class="row"><span class="counter">${n} av ${total} oppgaver klart</span></div><div class="meter"><i style="width:${100*n/total}%"></i></div>`;
   const temaer = [...new Set(a.oppg.map(o => o.tema).filter(Boolean))];
   const KILDE = a.kilde || 'Heftet', kildeLite = KILDE.charAt(0).toLowerCase() + KILDE.slice(1);
+  // Valgfritt o.film = { tittel, url }: knapp som åpner filmen i ny fane (bare https:// eller /-lenker)
+  const filmKnapp = o => (o.film && /^(https:\/\/|\/)/.test(o.film.url || '')) ? `<p class="bank-film"><a class="btn ghost" href="${esc(o.film.url)}" target="_blank" rel="noopener" aria-label="Se filmen: ${esc(o.film.tittel || 'film')} (åpnes i ny fane)">▶ Se filmen: ${esc(o.film.tittel || 'film')} ↗</a></p>` : '';
   const side = o => o.s ? `<span class="tag">${esc(KILDE)} ${/^\d/.test(o.s) ? 's. ' : ': '}${esc(o.s)}</span>` : '';
   const kort = (o, i) => {
     const x = B[key(i)] || {}, klart = x.ok || (o.k === 'open' && x.self === 'ja');
@@ -598,7 +600,7 @@ function runBank(st, a, done){
     return `<article class="panel bank-q${klart ? ' klart' : ''}" data-i="${i}">
       <div class="bank-meta">${o.tema ? `<span class="tag">${esc(o.tema)}</span>` : ''}${side(o)}${klart ? '<span class="tag bank-ok">✓ Klart</span>' : ''}</div>
       <div class="q"><span><b class="bank-nr">${i+1}.</b> ${esc(o.q).replace(/\n/g,'<br>')}</span>${sayBtn(o.q)}</div>
-      ${kropp}<div class="bank-fb"></div></article>`;
+      ${filmKnapp(o)}${kropp}<div class="bank-fb"></div></article>`;
   };
   const tegn = () => {
     const vis = a.oppg.map((o,i) => i).filter(i => {
