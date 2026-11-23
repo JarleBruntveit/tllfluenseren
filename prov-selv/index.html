@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prøv selv – bli TLL-elev i 60 sekunder – TLLfluenseren</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/styles.css">
+<link rel="stylesheet" href="/assets/global-footer.css">
+<script defer src="/assets/global-footer.js?v=logo-forside-1"></script>
+<link rel="stylesheet" href="/assets/elevflyt.css?v=logo-forside-1">
+<meta name="description" content="Tre korte spørsmål om lastsikring og løfteredskap. Prøv deg som TLL-elev på 60 sekunder.">
+<meta property="og:title" content="Prøv selv – bli TLL-elev i 60 sekunder">
+<meta property="og:description" content="Tre korte spørsmål om lastsikring og løfteredskap.">
+<meta property="og:url" content="https://tllfluenseren.no/prov-selv/">
+<meta property="og:type" content="website">
+<style>
+  .ps{max-width:640px;margin:0 auto;padding:28px 18px 60px;min-height:70vh}
+  .ps h1{font-size:clamp(30px,7vw,46px);line-height:1.05;margin:6px 0 10px;letter-spacing:-.03em}
+  .ps .lead{color:var(--muted);font-size:18px;line-height:1.5;margin:0 0 22px}
+  .ps-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;font-weight:800}
+  .ps-score{background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:6px 14px}
+  .ps-bar{height:8px;background:var(--panel2);border-radius:99px;overflow:hidden;margin-bottom:22px}
+  .ps-bar span{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+  .ps-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+  .ps-q{font-size:clamp(21px,5vw,26px);line-height:1.3;margin:0 0 18px}
+  .ps-opts{display:grid;gap:12px}
+  .ps-opt{font:inherit;font-size:19px;text-align:left;width:100%;min-height:58px;padding:14px 16px;border-radius:14px;
+    border:2px solid var(--line);background:var(--panel2);color:var(--text);cursor:pointer}
+  .ps-opt:hover:not(:disabled){border-color:var(--accent)}
+  .ps-opt:focus-visible,.ps-next:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+  .ps-opt:disabled{cursor:default}
+  .ps-opt.rett{border-color:#3fb27f;background:#123526}
+  .ps-opt.feil{border-color:#e0605a;background:#3a1716}
+  .ps-fb{margin:18px 0 0;font-size:17px;line-height:1.5}
+  .ps-fb strong{display:block;font-size:19px;margin-bottom:4px}
+  .ps-next{font:inherit;font-weight:800;font-size:19px;margin-top:18px;width:100%;min-height:56px;border:0;border-radius:14px;
+    background:var(--accent);color:#10161c;cursor:pointer}
+  .ps-end{text-align:center}
+  .ps-end .big{font-size:64px;font-weight:900;color:var(--accent);margin:6px 0}
+  .ps-end p{font-size:18px;line-height:1.55}
+  .ps-end a.ps-next{display:grid;place-items:center;text-decoration:none}
+  @media (prefers-reduced-motion:reduce){.ps-bar span{transition:none}}
+</style>
+</head>
+<body>
+<a class="tll-skip" href="#tll-main">Hopp til innhold</a>
+<main id="tll-main" tabindex="-1" class="ps">
+  <p class="kicker">TLLfluenseren</p>
+  <h1>Bli TLL-elev i 60 sekunder</h1>
+  <p class="lead">Tre spørsmål om lastsikring og løfteredskap. Du får svar med en gang.</p>
+
+  <div class="ps-top"><span id="ps-steg">Spørsmål 1 av 3</span><span class="ps-score" aria-live="polite">Poeng: <span id="ps-poeng">0</span></span></div>
+  <div class="ps-bar" aria-hidden="true"><span id="ps-bar"></span></div>
+
+  <section class="ps-card" id="ps-kort" aria-live="polite"></section>
+</main>
+
+<script>
+(function(){
+  var SP = [
+    {q:'Hvilken retning må last sikres kraftigst ved veitransport?',
+     a:['Framover','Bakover','Sidelengs'], r:0,
+     f:'Ved en kraftig nedbremsing vil lasten fortsette framover. Derfor er kravet størst framover (0,8 g), mot 0,5 g bakover og sidelengs.'},
+    {q:'Hva betyr WLL på en løftestropp?',
+     a:['Den største lasten stroppen er godkjent for','Hvor mye stroppen veier','Hvor lang stroppen er'], r:0,
+     f:'WLL står for Working Load Limit – den høyeste tillatte arbeidslasten.'},
+    {q:'En rundsling er godkjent for 1 tonn. Hvilken farge har den?',
+     a:['Grønn','Fiolett','Rød'], r:1,
+     f:'Fargen viser arbeidslasten. Fiolett er 1 tonn, grønn er 2 tonn og rød er 5 tonn.'}
+  ];
+  var i = 0, poeng = 0;
+  var kort = document.getElementById('ps-kort');
+
+  function el(tag, cls, txt){ var e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e; }
+
+  function vis(){
+    document.getElementById('ps-steg').textContent = 'Spørsmål ' + (i+1) + ' av ' + SP.length;
+    document.getElementById('ps-bar').style.width = (i/SP.length*100) + '%';
+    var s = SP[i];
+    kort.innerHTML = '';
+    kort.appendChild(el('h2','ps-q',s.q));
+    var liste = el('div','ps-opts');
+    s.a.forEach(function(t, n){
+      var b = el('button','ps-opt', String.fromCharCode(65+n) + ') ' + t);
+      b.type = 'button';
+      b.addEventListener('click', function(){ svar(n); });
+      liste.appendChild(b);
+    });
+    kort.appendChild(liste);
+  }
+
+  function svar(n){
+    var s = SP[i], knapper = kort.querySelectorAll('.ps-opt');
+    knapper.forEach(function(b, k){ b.disabled = true; if(k===s.r) b.classList.add('rett'); else if(k===n) b.classList.add('feil'); });
+    var rett = n === s.r;
+    if(rett){ poeng++; document.getElementById('ps-poeng').textContent = poeng; }
+    var fb = el('div','ps-fb');
+    fb.appendChild(el('strong','', rett ? 'Riktig!' : 'Ikke helt.'));
+    fb.appendChild(document.createTextNode(s.f));
+    kort.appendChild(fb);
+    var neste = el('button','ps-next', i < SP.length-1 ? 'Neste spørsmål' : 'Se resultatet');
+    neste.type = 'button';
+    neste.addEventListener('click', function(){ i++; i < SP.length ? vis() : slutt(); });
+    kort.appendChild(neste);
+    neste.focus();
+  }
+
+  function slutt(){
+    document.getElementById('ps-steg').textContent = 'Ferdig!';
+    document.getElementById('ps-bar').style.width = '100%';
+    kort.innerHTML = '';
+    var d = el('div','ps-end');
+    d.appendChild(el('p','', 'Du fikk'));
+    d.appendChild(el('div','big', poeng + ' av ' + SP.length));
+    d.appendChild(el('p','', poeng === 3 ? 'Sterkt! Du er klar for lageret.' : poeng === 2 ? 'Godt jobbet – nesten fullt hus.' : 'Godt forsøk – det er derfor elevene øver.'));
+    d.appendChild(el('p','', 'Denne oppgaven er laget sammen med KI. Elevene mine øver med mange slike oppgaver på TLLfluenseren – på sitt nivå og i sitt tempo.'));
+    var a = el('a','ps-next','Se hele TLLfluenseren'); a.href = '/';
+    d.appendChild(a);
+    kort.appendChild(d);
+    a.focus();
+  }
+
+  vis();
+})();
+</script>
+</body>
+</html>
