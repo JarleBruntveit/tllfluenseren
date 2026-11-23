@@ -377,6 +377,8 @@ input.sel{font:inherit;padding:8px 10px;border:2px solid var(--line);border-radi
 .bank-num input{font:inherit;font-size:20px;width:140px;padding:8px 10px;border:2px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink)}
 .bank-hint{border-left-color:var(--yellow);background:color-mix(in srgb,var(--yellow) 14%,var(--panel))}
 .bank-q textarea{width:100%}
+.bank-film{margin:0 0 12px}
+.bank-film .btn{display:inline-flex;align-items:center;gap:6px;white-space:normal;text-align:left}
 
 /* Forklaringstegninger i temaene (tema.figur) */
 .figurer{display:grid;gap:14px;margin-top:14px}
