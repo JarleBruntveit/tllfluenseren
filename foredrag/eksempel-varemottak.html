@@ -29,6 +29,14 @@
   textarea{width:100%;min-height:110px;font:inherit;padding:12px;border-radius:12px;border:2px solid var(--linje)}
   .knapp{margin-top:12px;background:var(--aksent);color:#fff;border:0;border-radius:12px;padding:12px 22px;font-weight:700}
   .forslag{margin-top:14px;padding:14px 18px;border-left:5px solid var(--aksent);background:#eef4f7;border-radius:8px}
+  .kobling{display:grid;grid-template-columns:1fr 1.6fr;gap:14px}
+  .kobling .kol{display:grid;gap:10px;align-content:start}
+  .kobling button{text-align:left;padding:12px 16px;border-radius:12px;border:2px solid var(--linje);background:#fbfbfa;color:var(--tekst)}
+  .kobling button.valgt{border-color:var(--aksent);background:#e3eef4}
+  .kobling button.rett{border-color:var(--rett);background:#e7f5ec}
+  .kobling button.blink{border-color:var(--feil);background:#fbe9e7}
+  .kobling button:disabled{cursor:default}
+  @media (max-width:700px){.kobling{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -38,9 +46,15 @@
       <h1>Varemottak på lager</h1>
       <p class="ingress">Et godt varemottak sikrer at lageret har riktige varer, at feil blir oppdaget tidlig og at bedriften ikke betaler for noe den ikke har fått.</p>
     </div>
-    <div class="poeng" aria-live="polite">Poeng: <span id="poeng">0</span> / 5</div>
+    <div class="poeng" aria-live="polite">Poeng: <span id="poeng">0</span> / 10</div>
   </header>
   <div id="sporsmal"></div>
+  <section class="kort">
+    <h2>Koble begrep og forklaring</h2>
+    <p style="color:var(--dempet);margin-top:0">Trykk på et begrep, og deretter på forklaringen som passer.</p>
+    <div class="kobling"><div class="kol" id="begreper"></div><div class="kol" id="forklaringer"></div></div>
+    <div class="fb" id="koblingFb" aria-live="polite"></div>
+  </section>
   <section class="kort">
     <h2>Praksiscase</h2>
     <p>Klokka er 07.40. En sjåfør leverer 12 paller, men fraktbrevet sier 14. Sjåføren har dårlig tid og ber deg bare signere, så ordner de resten senere. Hva gjør du, og hvorfor?</p>
@@ -81,6 +95,28 @@ SP.forEach((s,i)=>{
   });
   boks.appendChild(k);
 });
+const PAR = [
+  ['Kolli','Én enhet i en sending, for eksempel en pall eller en pakke'],
+  ['Fraktbrev','Transportdokumentet mottakeren kvitterer på ved levering'],
+  ['Avvik','Forskjell mellom det som skulle komme og det som faktisk kom'],
+  ['Lagersaldo','Antallet av en vare som står registrert på lager'],
+  ['Plukkliste','Liste over varene som skal hentes til en ordre']
+];
+(function(){
+  const vB=document.getElementById('begreper'), vF=document.getElementById('forklaringer'), fb=document.getElementById('koblingFb');
+  let valgt=null, riktige=0;
+  const bland=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(x=>x[1]);
+  PAR.forEach((p,i)=>{const b=document.createElement('button');b.type='button';b.textContent=p[0];b.dataset.i=i;
+    b.onclick=()=>{vB.querySelectorAll('button').forEach(x=>x.classList.remove('valgt'));b.classList.add('valgt');valgt=b;};vB.appendChild(b);});
+  bland(PAR.map((p,i)=>[p[1],i])).forEach(([t,i])=>{const b=document.createElement('button');b.type='button';b.textContent=t;
+    b.onclick=()=>{
+      if(!valgt){fb.textContent='Trykk på et begrep først.';return;}
+      if(+valgt.dataset.i===i){[valgt,b].forEach(x=>{x.classList.remove('valgt');x.classList.add('rett');x.disabled=true;});
+        valgt=null;riktige++;poeng++;document.getElementById('poeng').textContent=poeng;
+        fb.textContent=riktige===PAR.length?'Alle par er riktige!':'Riktig!';}
+      else{b.classList.add('blink');setTimeout(()=>b.classList.remove('blink'),700);fb.textContent='Ikke helt – prøv en annen forklaring.';}
+    };vF.appendChild(b);});
+})();
 document.getElementById('visForslag').onclick = ()=>{document.getElementById('forslag').hidden=false;};
 </script>
 </body>
