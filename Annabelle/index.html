@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="no-referrer">
+<title>Annabelles øvetrapp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: varm, rolig og oppmuntrende – en trener som heier, ikke en prøve
+   IDEA: en trapp med trinn man går opp ett og ett, som et brettspill
+   PICTURE: selve trappa med trinn, stjerner og lås er bildet; oppgavekortet er stort og luftig
+   COLOUR and TYPE: solgul grunn, dyp blå for engelsk, korall for matte; Fredoka til titler, Atkinson Hyperlegible (lettlest) til tekst
+   LAYOUT: tittel + fagvalg øverst, trappa under; oppgaver i én rolig kolonne */
+:root{color-scheme:light dark;--bg:light-dark(#ffe27a,#14182b);--card:light-dark(#fffdf5,#1f2540);--ink:light-dark(#1d1b16,#f4f1e6);--soft:light-dark(#5b5440,#b9b6c9);--en:light-dark(#1f4fa8,#7aa6ff);--no:light-dark(#0e6f6c,#5fd0c8);--ma:light-dark(#d9482b,#ff8a6e);--ok:light-dark(#1d7a46,#5fd394);--bad:light-dark(#b3261e,#ff8a80);--line:light-dark(#e9d9a6,#343b5c);--acc:var(--en)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.55 "Atkinson Hyperlegible",system-ui,sans-serif;overflow-x:clip}
+body.ma{--acc:var(--ma)}body.no{--acc:var(--no)}
+h1,h2,h3,.big{font-family:Fredoka,system-ui,sans-serif;font-weight:600;line-height:1.08;margin:0}
+h1{font-size:clamp(34px,6vw,52px);text-wrap:balance}
+.wrap{max-width:980px;margin:0 auto;padding:clamp(20px,4vw,44px) max(4vw,16px) 40px}
+header{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:end;justify-content:space-between;margin-bottom:22px}
+.lead{margin:8px 0 0;color:var(--soft);max-width:48ch}
+.total{display:flex;white-space:nowrap;flex:none;align-items:center;gap:8px;font:600 22px Fredoka,sans-serif;background:var(--card);border-radius:999px;padding:8px 18px}
+.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:26px}
+.tab{font:600 22px Fredoka,sans-serif;border:3px solid transparent;border-radius:18px;padding:14px;background:var(--card);color:var(--ink);cursor:pointer;min-height:58px}
+.tab[aria-pressed=true]{background:var(--acc);color:#fff}
+button{font:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:4px solid var(--ink);outline-offset:3px}
+.stairs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;align-items:end}
+.step{position:relative;text-align:left;border:0;border-radius:18px;background:var(--card);color:var(--ink);padding:14px 14px 16px;box-shadow:0 6px 0 var(--line);min-height:150px;display:flex;flex-direction:column;justify-content:space-between;transition:transform .15s}
+.step:hover:not(:disabled){transform:translateY(-4px)}
+.step .n{font:600 15px Fredoka,sans-serif;color:var(--acc)}
+.step h3{font-size:20px;margin:4px 0 2px}
+.step p{margin:0;font-size:15px;color:var(--soft)}
+.step:disabled{opacity:.55;cursor:not-allowed}
+.step.next{outline:4px solid var(--acc);outline-offset:2px}
+.stars{display:flex;gap:3px;margin-top:10px}
+.stars svg{width:24px;height:24px}
+.lock{font-size:14px;margin-top:10px;font-weight:700}
+@media(min-width:700px){.stairs .step:nth-child(4n+2){margin-bottom:22px}.stairs .step:nth-child(4n+3){margin-bottom:44px}.stairs .step:nth-child(4n+4){margin-bottom:66px}.stairs .step:nth-child(4n+1){margin-bottom:0}}
+@media(max-width:699px){.stairs{grid-template-columns:minmax(0,1fr)}.step{min-height:0}}
+.note{margin-top:34px;background:var(--card);border-radius:18px;padding:18px 20px;font-size:16px;color:var(--soft)}
+.note b{color:var(--ink)}
+/* øving */
+.top{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.back{border:0;background:var(--card);color:var(--ink);border-radius:999px;padding:10px 18px;min-height:44px;font-weight:700}
+.dots{display:flex;gap:6px;flex-wrap:wrap;flex:1;justify-content:flex-end}
+.dot{width:16px;height:16px;border-radius:50%;background:var(--card);border:2px solid var(--line)}
+.dot.ok{background:var(--ok);border-color:var(--ok)}.dot.bad{background:var(--bad);border-color:var(--bad)}.dot.now{border-color:var(--acc);border-width:4px}
+.qcard{background:var(--card);border-radius:24px;padding:clamp(20px,4vw,36px);box-shadow:0 8px 0 var(--line)}
+.lvl{font:600 16px Fredoka,sans-serif;color:var(--acc);margin-bottom:8px}
+.q{font-size:clamp(22px,3.6vw,30px);font-family:Fredoka,sans-serif;font-weight:500;line-height:1.25;margin:0 0 18px}
+.read{background:light-dark(#fff4c8,#262d4d);border-radius:14px;padding:14px 18px;margin:0 0 16px;font-size:19px}
+.swatch{width:120px;height:120px;border-radius:24px;margin:0 0 18px;border:3px solid var(--line)}
+.say{border:2px solid var(--acc);background:transparent;color:var(--acc);border-radius:999px;padding:6px 16px;font-weight:700;margin:0 0 16px;min-height:44px}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.opt{border:3px solid var(--line);background:transparent;color:var(--ink);border-radius:16px;padding:14px;font-size:21px;font-weight:700;min-height:60px}
+.opt:hover:not(:disabled){border-color:var(--acc)}
+.opt.right{background:var(--ok);border-color:var(--ok);color:#fff}.opt.wrong{background:var(--bad);border-color:var(--bad);color:#fff}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+input.num{font:700 28px Fredoka,sans-serif;width:160px;padding:10px 14px;border-radius:14px;border:3px solid var(--line);background:transparent;color:var(--ink)}
+.btn{border:0;background:var(--acc);color:#fff;border-radius:14px;padding:12px 22px;font-weight:700;min-height:52px;font-size:19px}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.built{min-height:62px;display:flex;gap:6px;flex-wrap:wrap;padding:8px;border:3px dashed var(--line);border-radius:14px;margin-bottom:12px}
+.tile{width:52px;height:52px;border-radius:12px;border:0;background:var(--acc);color:#fff;font:600 26px Fredoka,sans-serif}
+.tile.used{visibility:hidden}
+.built .tile{background:var(--ink);color:var(--card)}
+.hint{margin-top:14px;padding:12px 16px;border-radius:12px;background:light-dark(#eef3ff,#283056);font-size:17px}
+.fb{margin-top:16px;padding:14px 18px;border-radius:14px;font-size:18px;font-weight:700}
+.fb.ok{background:light-dark(#dff5e7,#173d2a);color:var(--ok)}.fb.bad{background:light-dark(#fde4e1,#4a1f1f);color:var(--bad)}
+.fb span{display:block;font-weight:400;color:var(--ink);margin-top:4px}
+.actions{display:flex;justify-content:space-between;gap:12px;margin-top:20px;flex-wrap:wrap}
+.end{text-align:center}
+.end .stars{justify-content:center;margin:16px 0}
+.end .stars svg{width:56px;height:56px}
+.end .stars svg.pop{animation:pop .5s both}
+@keyframes pop{from{transform:scale(0)}70%{transform:scale(1.25)}to{transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media(max-width:480px){.tab{font-size:18px;padding:10px 4px}.opts{grid-template-columns:minmax(0,1fr)}.tile{width:46px;height:46px}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+{
+const $=s=>document.querySelector(s);
+const rand=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const shuf=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=rand(0,i);[a[i],a[j]]=[a[j],a[i]]}return a};
+const pick=a=>a[rand(0,a.length-1)];
+const STAR=on=>`<svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6-4.9-4.6 6.6-.8z" fill="${on?'#f5a300':'none'}" stroke="${on?'#c47f00':'currentColor'}" stroke-width="1.6" opacity="${on?1:.35}"/></svg>`;
+const canSay='speechSynthesis' in window;
+const say=(t,lang)=>{try{const u=new SpeechSynthesisUtterance(t);u.lang=lang||'en-GB';u.rate=.8;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}};
+const NAME='Annabelle';
+const PRAISE=[`Bra jobbet, ${NAME}!`,`Riktig, ${NAME}!`,'Ja! Helt riktig!',`Supert, ${NAME}!`,'Der satt den!',`Du får det til, ${NAME}!`,'Kjempebra!'];
+const COMFORT=['Nesten! Sånn lærer vi.',`Ikke farlig, ${NAME} – nå vet du det.`,'Godt forsøk! Den kommer igjen senere.'];
+
+/* ---------- ENGELSK ---------- */
+const COLORS=[['red','rød','#e53935'],['blue','blå','#1e63d6'],['green','grønn','#2e9e44'],['yellow','gul','#ffd600'],['black','svart','#111'],['white','hvit','#fff'],['brown','brun','#7b4a26'],['pink','rosa','#ff8fc1'],['orange','oransje','#ff8a00'],['purple','lilla','#8a3fc7'],['grey','grå','#8d8d8d']];
+const NUMS=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
+const THINGS=[['dog','hund'],['cat','katt'],['horse','hest'],['cow','ku'],['pig','gris'],['bird','fugl'],['fish','fisk'],['sheep','sau'],['mouse','mus'],['house','hus'],['car','bil'],['school','skole'],['book','bok'],['chair','stol'],['table','bord'],['apple','eple'],['water','vann'],['bread','brød']];
+const FAMBODY=[['mother','mor'],['father','far'],['sister','søster'],['brother','bror'],['friend','venn'],['grandmother','bestemor'],['head','hode'],['hand','hånd'],['foot','fot'],['eye','øye'],['ear','øre'],['nose','nese'],['mouth','munn'],['hair','hår']];
+const BE=[['I ___ happy.','am','Jeg er glad.'],['She ___ my sister.','is','Hun er søsteren min.'],['They ___ at school.','are','De er på skolen.'],['We ___ friends.','are','Vi er venner.'],['He ___ tall.','is','Han er høy.'],['You ___ nice.','are','Du er snill.'],['The dog ___ big.','is','Hunden er stor.'],['It ___ cold today.','is','Det er kaldt i dag.'],['My friends ___ funny.','are','Vennene mine er morsomme.'],['I ___ ten years old.','am','Jeg er ti år.'],['The cats ___ black.','are','Kattene er svarte.'],['Mum ___ at home.','is','Mamma er hjemme.']];
+const VERBS=[['I ___ an apple.','eat','Jeg spiser et eple.'],['We ___ milk.','drink','Vi drikker melk.'],['I ___ a book.','read','Jeg leser en bok.'],['Cats ___ a lot.','sleep','Katter sover mye.'],['Fish ___ in the sea.','swim','Fisker svømmer i havet.'],['I ___ to school.','go','Jeg går til skolen.'],['They ___ football.','play','De spiller fotball.'],['We ___ songs.','sing','Vi synger sanger.'],['I ___ pizza.','like','Jeg liker pizza.'],['Dogs ___ fast.','run','Hunder løper fort.']];
+const VERBALL=['eat','drink','read','sleep','swim','go','play','sing','like','run'];
+const QW=[['___ is your name?','What','Hva heter du?'],['___ do you live?','Where','Hvor bor du?'],['___ is your best friend?','Who','Hvem er bestevennen din?'],['___ is your birthday?','When','Når har du bursdag?'],['___ are you?','How','Hvordan har du det?'],['___ is that?','What','Hva er det?'],['___ is the cat?','Where','Hvor er katten?'],['___ old are you?','How','Hvor gammel er du?'],['___ is your teacher?','Who','Hvem er læreren din?'],['___ do you get up?','When','Når står du opp?']];
+const QWNO={What:'hva',Where:'hvor',Who:'hvem',When:'når',How:'hvordan'};
+const TEXTS=[
+ ['Hi! My name is Emma. I am eleven years old. I have a dog. His name is Max. Max is brown and very happy.',[['How old is Emma?','eleven',['ten','twelve','seven']],['What colour is Max?','brown',['black','white','red']],['What animal is Max?','a dog',['a cat','a horse','a bird']]]],
+ ['Tom lives in a small red house. He has one sister and two brothers. Tom likes pizza and football.',[['What colour is the house?','red',['blue','green','yellow']],['How many brothers does Tom have?','two',['one','three','four']],['What does Tom like?','pizza and football',['apples and swimming','books and music','cats and dogs']]]],
+ ['It is Saturday. Lina and her mum go to the beach. The sun is hot. Lina swims in the sea and eats ice cream.',[['What day is it?','Saturday',['Monday','Sunday','Friday']],['Who goes with Lina?','her mum',['her dad','her friend','her brother']],['What does Lina eat?','ice cream',['pizza','an apple','bread']]]],
+ ['Ali gets up at seven o’clock. He eats bread and drinks milk. Then he goes to school by bike.',[['When does Ali get up?','at seven o’clock',['at six o’clock','at nine o’clock','at ten o’clock']],['What does Ali drink?','milk',['water','juice','tea']],['How does Ali go to school?','by bike',['by car','by bus','on foot']]]]
+];
+const others=(list,ans,n=3)=>shuf(list.filter(x=>x!==ans)).slice(0,n);
+function vocab(list,label){
+  const words=shuf(list).slice(0,10);
+  return words.map(([en,no],i)=>{
+    if(i>=7&&en.length<=7) return {type:'letters',q:`Bygg ordet på engelsk: «${no}»`,a:en,say:en,hint:`Ordet har ${en.length} bokstaver og starter med «${en[0]}».`,ex:`«${no}» heter «${en}» på engelsk.`};
+    if(i%2) return {type:'choice',q:`Hva betyr «${en}» på norsk?`,say:en,a:no,opts:shuf([no,...others(list.map(x=>x[1]),no)]),hint:`Trykk på «Hør ordet» og lytt godt.`,ex:`«${en}» betyr «${no}».`};
+    return {type:'choice',q:`Hva heter «${no}» på engelsk?`,a:en,opts:shuf([en,...others(list.map(x=>x[0]),en)]),hint:`Tenk på ${label}. Ordet starter med «${en[0]}».`,ex:`«${no}» heter «${en}» på engelsk.`,sayAfter:en};
+  });
+}
+function gapItems(list,all,why,nomap){
+  return shuf(list).slice(0,10).map(([s,a,no])=>({type:'choice',q:s.replace('___','<u>&nbsp;?&nbsp;</u>'),a,opts:shuf([a,...others(all,a)]),hint:`På norsk: «${no}»`,ex:`${s.replace('___',a)} – ${why(a)}`,sayAfter:s.replace('___',a)}));
+}
+const EN=[
+ {t:'Farger',d:'Colours',make:()=>shuf(COLORS).slice(0,10).map(([en,no,hex],i)=>i<7?{type:'choice',q:'What colour is this?<br><small>Hvilken farge er dette?</small>',swatch:hex,a:en,opts:shuf([en,...others(COLORS.map(c=>c[0]),en)]),hint:`På norsk heter fargen «${no}».`,ex:`«${no}» heter «${en}».`,sayAfter:en}:(en.length<=6?{type:'letters',q:`Bygg fargen på engelsk: «${no}»`,swatch:hex,a:en,say:en,hint:`Starter med «${en[0]}».`,ex:`«${no}» heter «${en}».`}:{type:'choice',q:`Hva betyr «${en}»?`,say:en,a:no,opts:shuf([no,...others(COLORS.map(c=>c[1]),no)]),hint:'Lytt til ordet.',ex:`«${en}» betyr «${no}».`}))},
+ {t:'Tall 0–20',d:'Numbers',make:()=>Array.from({length:10},(_,i)=>{const n=rand(i<5?0:5,i<5?10:20);const w=NUMS[n];
+   if(i>=8&&n<=10&&w.length<=5) return {type:'letters',q:`Skriv tallet ${n} på engelsk`,a:w,say:w,hint:`Starter med «${w[0]}».`,ex:`${n} heter «${w}».`};
+   if(i%2) return {type:'choice',q:`Hvilket tall er «${w}»?`,say:w,a:String(n),opts:shuf([String(n),...others(Array.from({length:21},(_,k)=>String(k)),String(n))]),hint:'Lytt og tell på fingrene.',ex:`«${w}» er ${n}.`};
+   return {type:'choice',q:`Hva heter ${n} på engelsk?`,a:w,opts:shuf([w,...others(NUMS,w)]),hint:n>12?'Tall fra 13 til 19 slutter på «-teen».':'Si tallene høyt fra «one».',ex:`${n} heter «${w}».`,sayAfter:w}})},
+ {t:'Dyr og ting',d:'Animals & things',make:()=>vocab(THINGS,'dyr og ting rundt deg')},
+ {t:'Familie og kropp',d:'Family & body',make:()=>vocab(FAMBODY,'familie og kroppen')},
+ {t:'am – is – are',d:'Å være',make:()=>gapItems(BE,['am','is','are'],a=>a==='am'?'«am» brukes bare med «I».':a==='is'?'«is» brukes med he, she, it og én ting.':'«are» brukes med you, we, they og flere ting.')},
+ {t:'Hverdagsord',d:'Verbs',make:()=>gapItems(VERBS,VERBALL,a=>`«${a}» betyr det du gjør i setningen.`)},
+ {t:'Spørreord',d:'What, where, who…',make:()=>gapItems(QW,['What','Where','Who','When','How'],a=>`«${a}» betyr «${QWNO[a]}».`)},
+ {t:'Les og forstå',d:'Reading',make:()=>shuf(TEXTS.flatMap(([txt,qs])=>qs.map(([q,a,w])=>({type:'choice',text:txt,q,a,opts:shuf([a,...w]),hint:'Les teksten én gang til. Svaret står der!',ex:`Svaret er «${a}».`,say:txt})))).slice(0,10)}
+];
+
+/* ---------- MATTE ---------- */
+function numOpts(a){const s=new Set([a]);for(const d of shuf([1,-1,2,-2,10,-10,3])){if(s.size>=4)break;if(a+d>=0)s.add(a+d)}return shuf([...s]).map(String)}
+function mItem(q,a,hint,i,story){return {type:i<5?'choice':'num',q,a:String(a),opts:i<5?numOpts(a):null,hint,ex:`Svaret er ${a}.`,story}}
+const times=(tables)=>i=>{const b=pick(tables),a=rand(1,10);return mItem(`${a} · ${b} = ?`,a*b,`${a} · ${b} betyr ${a} grupper med ${b}: ${Array(a).fill(b).join(' + ')}`,i)};
+const MA=[
+ {t:'Pluss til 20',d:'Addisjon',g:i=>{const a=rand(2,i<5?9:12),b=rand(1,i<5?9:8);return mItem(`${a} + ${b} = ?`,a+b,a+b>10?`Fyll opp til 10 først: ${a} + ${10-a} = 10, så legger du til ${b-(10-a)}.`:`Start på ${a} og tell ${b} opp.`,i)}},
+ {t:'Minus til 20',d:'Subtraksjon',g:i=>{const a=rand(i<5?5:11,i<5?10:20),b=rand(1,Math.min(9,a-1));return mItem(`${a} − ${b} = ?`,a-b,`Start på ${a} og tell ${b} ned. Eller: hva må du legge til ${b} for å få ${a}?`,i)}},
+ {t:'Pluss og minus til 100',d:'Tiere og enere',g:i=>{if(Math.random()<.5){const a=rand(11,59),b=rand(10,39);return mItem(`${a} + ${b} = ?`,a+b,`Tierne først: ${a-a%10} + ${b-b%10} = ${a-a%10+b-b%10}. Så enerne: ${a%10} + ${b%10} = ${a%10+b%10}. Legg sammen.`,i)}const a=rand(40,99),b=rand(10,a-10);return mItem(`${a} − ${b} = ?`,a-b,`Trekk fra tierne først: ${a} − ${b-b%10} = ${a-(b-b%10)}. Så enerne: − ${b%10}.`,i)}},
+ {t:'Gangetabellen 2, 5, 10',d:'Multiplikasjon',g:times([2,5,10])},
+ {t:'Gangetabellen 3 og 4',d:'Multiplikasjon',g:times([3,4])},
+ {t:'Gangetabellen 6–9',d:'Multiplikasjon',g:times([6,7,8,9])},
+ {t:'Deling',d:'Divisjon',g:i=>{const b=pick(i<5?[2,5,10]:[3,4,6]),q=rand(1,10);return mItem(`${b*q} : ${b} = ?`,q,`Tenk gangestykket baklengs: ${b} · ? = ${b*q}`,i)}},
+ {t:'Tekstoppgaver',d:'Bland alt',g:i=>{const k=rand(0,4);
+   if(k===0){const a=rand(8,40),b=rand(5,30);return mItem(`Ida har ${a} klistremerker. Hun får ${b} til. Hvor mange har hun nå?`,a+b,`«Får til» betyr pluss: ${a} + ${b}`,i,1)}
+   if(k===1){const a=rand(30,90),b=rand(5,a-5);return mItem(`Ola har ${a} kroner. Han kjøper en is til ${b} kroner. Hvor mye har han igjen?`,a-b,`«Igjen» betyr minus: ${a} − ${b}`,i,1)}
+   if(k===2){const a=rand(2,6),b=rand(3,8);return mItem(`Det er ${a} poser med ${b} epler i hver. Hvor mange epler er det til sammen?`,a*b,`Like mange i hver pose betyr gange: ${a} · ${b}`,i,1)}
+   if(k===3){const a=rand(2,5),q=rand(2,8);return mItem(`${a*q} kaker skal deles likt på ${a} barn. Hvor mange kaker får hvert barn?`,q,`«Deles likt» betyr deling: ${a*q} : ${a}`,i,1)}
+   const a=rand(3,9);return mItem(`En uke har 7 dager. Hvor mange dager er ${a} uker?`,7*a,`${a} uker = ${a} · 7`,i,1)}}
+];
+MA.forEach(l=>l.make=()=>Array.from({length:10},(_,i)=>l.g(i)));
+
+/* ---------- NORSK ---------- */
+const NB='nb-NO';
+const VOK=[['h_s','u','hus'],['b_l','i','bil'],['s_l','o','sol'],['k_tt','a','katt'],['f_sk','i','fisk'],['b_t','å','båt'],['s_ng','e','seng'],['m_lk','e','melk'],['br_d','ø','brød'],['t_g','o','tog'],['sn_','ø','snø'],['b_r','æ','bær'],['s_kkel','y','sykkel'],['l_ve','ø','løve'],['p_ll','u','pult']];
+const DBL=[['katt','kat'],['ball','bal'],['gutt','gut'],['hoppe','hope'],['mamma','mama'],['sukker','suker'],['spille','spile'],['sommer','somer'],['venn','ven'],['sitte','site'],['kake','kakke'],['sol','soll'],['bok','bokk'],['jente','jentte'],['bil','bill']];
+const COMP=[['skole','sekk'],['fot','ball'],['sol','briller'],['is','krem'],['snø','mann'],['bok','hylle'],['tann','børste'],['jule','tre'],['regn','jakke'],['sykkel','hjelm'],['kjøle','skap'],['bursdags','kake']];
+const OK=[['hund','substantiv'],['bil','substantiv'],['skole','substantiv'],['eple','substantiv'],['lærer','substantiv'],['ball','substantiv'],['løpe','verb'],['spise','verb'],['synge','verb'],['lese','verb'],['hoppe','verb'],['sove','verb'],['stor','adjektiv'],['glad','adjektiv'],['rød','adjektiv'],['rask','adjektiv'],['kald','adjektiv'],['snill','adjektiv']];
+const OKHINT='Substantiv: kan du si «en/ei/et» foran? Verb: kan du si «å» foran? Adjektiv: kan du si «den er …»?';
+const PL=[['en','bil','biler'],['en','hund','hunder'],['ei','jente','jenter'],['en','gutt','gutter'],['et','eple','epler'],['en','bok','bøker'],['et','hus','hus'],['en','mann','menn'],['ei','hånd','hender'],['en','fot','føtter'],['et','barn','barn'],['en','sko','sko']];
+const OGAA=[['Jeg liker ___ bade.','å'],['Mamma ___ pappa er hjemme.','og'],['Det er gøy ___ spille fotball.','å'],['Vi kjøpte brød ___ melk.','og'],['Hun prøver ___ hoppe høyt.','å'],['Katten ___ hunden leker.','og'],['Jeg gleder meg til ___ dra på tur.','å'],['Vi spiste pizza ___ is.','og'],['Han lærer ___ svømme.','å'],['Jeg har en søster ___ en bror.','og'],['Husk ___ ta med matpakke.','å'],['Det regner ___ blåser.','og']];
+const CAP=[['Jeg bor i Bergen.','jeg bor i bergen.','Jeg bor i bergen.'],['Emma og Ali går på skolen.','emma og ali går på skolen.','Emma og ali går på skolen.'],['Hva heter du?','Hva heter du.','hva heter du?'],['I juli drar vi til Spania.','I juli drar vi til spania.','I Juli drar vi til Spania.'],['Hunden min heter Bella.','hunden min heter bella.','Hunden min heter bella.'],['Hvor bor du?','Hvor bor du.','hvor bor du'],['Norge er et langt land.','norge er et langt land.','Norge er et langt land'],['På lørdag skal jeg bade.','på lørdag skal jeg bade.','På Lørdag skal jeg bade.'],['Oslo er hovedstaden i Norge.','oslo er hovedstaden i norge.','Oslo er hovedstaden i norge.'],['Kan du hjelpe meg?','Kan du hjelpe meg.','kan du hjelpe meg?'],['Mormor bor i Stavanger.','mormor bor i stavanger.','Mormor bor i stavanger.']];
+const NOTEXT=[
+ ['Sara har en katt som heter Pus. Pus er grå og liker å sove i sola. Om kvelden spiser Pus fisk.',[['Hva heter katten?','Pus',['Sara','Bella','Max']],['Hvilken farge har katten?','grå',['svart','hvit','brun']],['Hva spiser Pus om kvelden?','fisk',['kjøtt','brød','melk']]]],
+ ['Jonas skal på fotballtrening. Han tar med ball, sko og en flaske vann. Treningen begynner klokka fem.',[['Hvor skal Jonas?','på fotballtrening',['på skolen','på kino','til bestemor']],['Hva tar han med å drikke?','vann',['melk','saft','brus']],['Når begynner treningen?','klokka fem',['klokka fire','klokka seks','klokka tre']]]],
+ ['Det snør ute. Mia og broren lager en stor snømann. Snømannen får en gulrot som nese og en rød lue.',[['Hvordan er været?','det snør',['det regner','sola skinner','det blåser']],['Hvem lager snømann med Mia?','broren',['søsteren','mamma','venninna']],['Hva bruker de som nese?','en gulrot',['en stein','en pinne','et eple']]]],
+ ['Klassen til Leo skal på tur til skogen. De griller pølser og ser et ekorn i et tre. Alle synes turen er gøy.',[['Hvor går klassen på tur?','til skogen',['til stranda','til byen','til fjellet']],['Hva griller de?','pølser',['fisk','hamburgere','mais']],['Hvilket dyr ser de?','et ekorn',['en elg','en rev','en hare']]]]
+];
+const NO=[
+ {t:'Vokaler',d:'Hvilken bokstav mangler?',make:()=>shuf(VOK).slice(0,10).map(([w,v,full])=>({type:'choice',q:`Hvilken bokstav mangler? <b>${w.replace('_','<u>&nbsp;?&nbsp;</u>')}</b>`,a:v,opts:shuf([v,...others([...'aeiouyæøå'],v)]),say:full,sayLang:NB,hint:`Ordet er «${full}». Si det sakte og lytt etter lyden i midten.`,ex:`Det skal stå «${full}».`}))},
+ {t:'Dobbel konsonant',d:'katt eller kat?',make:()=>shuf(DBL).slice(0,10).map(([r,w])=>({type:'choice',q:'Hvilket ord er skrevet riktig?',a:r,opts:shuf([r,w]),say:r,sayLang:NB,hint:'Lytt til vokalen. Kort vokal → to like konsonanter etter. Lang vokal → bare én.',ex:`Riktig er «${r}».`}))},
+ {t:'Sammensatte ord',d:'Skriv i ett ord',make:()=>shuf(COMP).slice(0,10).map(([a,b])=>({type:'choice',q:`${a} + ${b} = ?`,a:a+b,opts:shuf([a+b,a+' '+b,a+'-'+b]),hint:'Når to ord blir til ett nytt ord, skriver vi dem sammen uten mellomrom.',ex:`Vi skriver «${a+b}» i ett ord.`}))},
+ {t:'Ordklasser',d:'Substantiv, verb, adjektiv',make:()=>shuf(OK).slice(0,10).map(([w,k])=>({type:'choice',q:`Hvilken ordklasse er «${w}»?`,a:k,opts:['substantiv','verb','adjektiv'],hint:OKHINT,ex:`«${w}» er et ${k}. ${k==='substantiv'?'Det er navn på en ting, et dyr eller en person.':k==='verb'?'Det er noe man gjør.':'Det forteller hvordan noe er.'}`}))},
+ {t:'Én og flere',d:'Flertall',make:()=>shuf(PL).slice(0,10).map(([art,b,pl])=>({type:'choice',q:`Én: «${art} ${b}». Mange: to …?`,a:pl,opts:shuf([pl,...shuf([b+'er',b+'e',b,b+'s'].filter((x,i,a)=>x!==pl&&a.indexOf(x)===i)).slice(0,2)]),hint:'De fleste ord får «-er» i flertall, men noen er spesielle. Si «to …» høyt og hør hva som låter riktig.',ex:`Én ${b} – to ${pl}.`}))},
+ {t:'og eller å',d:'Den vanligste feilen',make:()=>shuf(OGAA).slice(0,10).map(([s,a])=>({type:'choice',q:s.replace('___','<u>&nbsp;?&nbsp;</u>'),a,opts:['og','å'],hint:'Kommer det et gjøreord etter (bade, spille, hoppe)? Da skriver vi «å». Binder vi sammen to ting? Da skriver vi «og».',ex:`${s.replace('___',a)} ${a==='å'?'«å» står foran et verb.':'«og» binder sammen to ting.'}`}))},
+ {t:'Stor bokstav og tegn',d:'. og ? og navn',make:()=>shuf(CAP).slice(0,10).map(c=>({type:'choice',q:'Hvilken setning er skrevet riktig?',a:c[0],opts:shuf(c),hint:'Stor bokstav først i setningen og på navn på personer og steder. Dager og måneder har liten bokstav. Spørsmål slutter med ?',ex:`Riktig: «${c[0]}»`}))},
+ {t:'Les og forstå',d:'Lesing',make:()=>shuf(NOTEXT.flatMap(([txt,qs])=>qs.map(([q,a,w])=>({type:'choice',text:txt,q,a,opts:shuf([a,...w]),hint:'Les teksten én gang til, eller trykk «Hør teksten».',ex:`Svaret er «${a}».`,say:txt,sayLang:NB})))).slice(0,10)}
+];
+
+/* ---------- tilstand ---------- */
+let S={en:Array(8).fill(0),ma:Array(8).fill(0),no:Array(8).fill(0)},subj='en',run=null;
+try{const v=JSON.parse(localStorage.getItem('ovetrappa')||'null');if(v&&v.en&&v.ma)S={...S,...v}}catch(e){}
+const save=()=>{try{localStorage.setItem('ovetrappa',JSON.stringify(S))}catch(e){}};
+const LV=()=>subj==='en'?EN:subj==='no'?NO:MA;
+const stars=n=>n>=10?3:n>=9?2:n>=7?1:0;
+
+function home(){
+  run=null;document.body.className=subj;
+  const st=S[subj],L=LV(),total=[...S.en,...S.ma,...S.no].reduce((a,b)=>a+b,0);
+  const nextI=st.findIndex(x=>x===0);
+  $('#app').innerHTML=`<header><div><h1>${NAME}s øvetrapp</h1><p class="lead">Hei, ${NAME}! Gå ett trinn om gangen. Får du 7 av 10 riktige, låses neste trinn opp.</p></div><div class="total">${STAR(1)} ${total} av 72</div></header>
+  <div class="tabs" role="group" aria-label="Velg fag"><button class="tab" data-s="en" aria-pressed="${subj==='en'}">Engelsk</button><button class="tab" data-s="no" aria-pressed="${subj==='no'}">Norsk</button><button class="tab" data-s="ma" aria-pressed="${subj==='ma'}">Matte</button></div>
+  <div class="stairs">${L.map((l,i)=>{const open=i===0||st[i-1]>0;return `<button class="step ${i===nextI&&open?'next':''}" data-i="${i}" ${open?'':'disabled'}><div><div class="n">Trinn ${i+1}</div><h3>${l.t}</h3><p>${l.d}</p></div>${open?`<div class="stars">${[1,2,3].map(k=>STAR(st[i]>=k)).join('')}</div>`:`<div class="lock">Låst – klar trinn ${i}</div>`}</button>`}).join('')}</div>
+  <div class="note"><b>Slik fungerer det:</b> Hvert trinn har 10 nye oppgaver hver gang. Feil svar kommer tilbake på slutten, så du får prøve igjen. Trykk «Hint» når det er vanskelig – det er lov! 7 riktige gir én stjerne, 9 gir to og 10 gir tre. Du kan alltid øve på et trinn på nytt.${canSay?' I engelsk og norsk kan du trykke «Hør» for å høre ordene og tekstene.':''}</div>`;
+  document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{subj=b.dataset.s;home()});
+  document.querySelectorAll('.step').forEach(b=>b.onclick=()=>start(+b.dataset.i));
+}
+function start(i){run={i,items:LV()[i].make(),pos:0,first:[],retry:[]};show()}
+function cur(){return run.pos<run.items.length?run.items[run.pos]:run.retry[0]}
+function show(){
+  const it=cur();if(!it)return end();
+  const isRetry=run.pos>=run.items.length,L=LV()[run.i];
+  const dots=run.items.map((_,k)=>`<span class="dot ${run.first[k]===true?'ok':run.first[k]===false?'bad':k===run.pos?'now':''}"></span>`).join('');
+  let ans='';
+  if(it.type==='choice')ans=`<div class="opts">${it.opts.map(o=>`<button class="opt" data-v="${o}">${o}</button>`).join('')}</div>`;
+  else if(it.type==='num')ans=`<form class="row" id="nf"><input class="num" id="ni" inputmode="numeric" autocomplete="off" aria-label="Svar"><button class="btn">Sjekk</button></form>`;
+  else{run.tiles=shuf(it.a.split(''));run.built=[];ans=`<div class="built" id="built" aria-live="polite"></div><div class="row" id="tiles">${run.tiles.map((c,k)=>`<button class="tile" data-k="${k}">${c}</button>`).join('')}</div><div class="row" style="margin-top:12px"><button class="btn ghost" id="undo">Angre</button><button class="btn" id="chk">Sjekk</button></div>`}
+  $('#app').innerHTML=`<div class="top"><button class="back" id="bk">← Trappa</button><div class="dots">${dots}</div></div>
+  <div class="qcard"><div class="lvl">Trinn ${run.i+1} · ${L.t}${isRetry?' · Prøv igjen':''}</div>
+  ${it.text?`<div class="read">${it.text}</div>`:''}${it.swatch?`<div class="swatch" style="background:${it.swatch}"></div>`:''}
+  <p class="q">${it.q}</p>${canSay&&it.say?`<button class="say" id="say">Hør ${it.text?'teksten':'ordet'}</button>`:''}
+  ${ans}<div id="hintbox"></div><div id="fb"></div>
+  <div class="actions"><button class="btn ghost" id="hb">Hint</button><button class="btn" id="nx" hidden>Neste →</button></div></div>`;
+  $('#bk').onclick=home;
+  if($('#say'))$('#say').onclick=()=>say(it.say,it.sayLang);
+  $('#hb').onclick=()=>{$('#hintbox').innerHTML=`<div class="hint">${it.hint}</div>`};
+  if(it.type==='choice')document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>check(b.dataset.v,b));
+  if(it.type==='num'){$('#ni').focus();$('#nf').onsubmit=e=>{e.preventDefault();const v=$('#ni').value.trim();if(v)check(v.replace(/\s/g,''))}}
+  if(it.type==='letters'){
+    const draw=()=>{$('#built').innerHTML=run.built.map(k=>`<span class="tile" style="display:grid;place-items:center">${run.tiles[k]}</span>`).join('');document.querySelectorAll('#tiles .tile').forEach(t=>t.classList.toggle('used',run.built.includes(+t.dataset.k)))};
+    document.querySelectorAll('#tiles .tile').forEach(t=>t.onclick=()=>{if(!run.built.includes(+t.dataset.k)){run.built.push(+t.dataset.k);draw()}});
+    $('#undo').onclick=()=>{run.built.pop();draw()};
+    $('#chk').onclick=()=>{if(run.built.length)check(run.built.map(k=>run.tiles[k]).join(''))};
+  }
+}
+function check(v,btn){
+  const it=cur(),ok=v.toLowerCase()===it.a.toLowerCase(),isRetry=run.pos>=run.items.length;
+  document.querySelectorAll('.opt,.tile,#chk,#undo,#nf button,#ni,#hb').forEach(b=>b.disabled=true);
+  if(it.type==='choice')document.querySelectorAll('.opt').forEach(b=>{if(b.dataset.v===it.a)b.classList.add('right');else if(b===btn)b.classList.add('wrong')});
+  $('#fb').innerHTML=ok?`<div class="fb ok">${pick(PRAISE)}${it.type!=='choice'?`<span>${it.ex}</span>`:''}</div>`:`<div class="fb bad">${pick(COMFORT)}<span>${it.ex}</span></div>`;
+  if(canSay&&it.sayAfter&&subj==='en')say(it.sayAfter);
+  if(!isRetry){run.first[run.pos]=ok;if(!ok)run.retry.push(it)}
+  else{run.retry.shift();if(!ok)run.retry.push(it)}
+  const nx=$('#nx');nx.hidden=false;nx.focus();
+  nx.onclick=()=>{if(!isRetry)run.pos++;show()};
+}
+function end(){
+  const score=run.first.filter(Boolean).length,s=stars(score),i=run.i,before=S[subj][i];
+  S[subj][i]=Math.max(before,s);save();
+  const L=LV(),unlocked=s>0&&before===0&&i<7;
+  const msg=s===3?`Alt riktig på første forsøk, ${NAME}! Du mestrer dette trinnet.`:s===2?`Veldig bra jobbet, ${NAME}! Nesten alt riktig.`:s===1?`Bra jobbet, ${NAME}! Du har klart trinnet.`:`Godt jobbet, ${NAME}! Du øvde på alt og rettet opp feilene. Prøv en gang til – det blir lettere for hver gang!`;
+  $('#app').innerHTML=`<div class="qcard end"><div class="lvl">Trinn ${i+1} · ${L[i].t}</div><h2 class="big" style="font-size:clamp(34px,6vw,48px)">${score} av 10 riktige</h2>
+  <div class="stars">${[1,2,3].map(k=>STAR(s>=k).replace('<svg',`<svg class="${s>=k?'pop':''}" style="animation-delay:${k*.2}s"`)).join('')}</div>
+  <p style="font-size:20px;margin:0 auto 6px;max-width:36ch">${msg}</p>${unlocked?`<p style="font-weight:700;color:var(--acc)">Nytt trinn låst opp: ${L[i+1].t}!</p>`:''}
+  <div class="actions" style="justify-content:center"><button class="btn ghost" id="again">Øv igjen</button><button class="btn ghost" id="hm">Til trappa</button>${S[subj][i]>0&&i<7?`<button class="btn" id="nxl">Neste trinn →</button>`:''}</div></div>`;
+  $('#again').onclick=()=>start(i);$('#hm').onclick=home;if($('#nxl'))$('#nxl').onclick=()=>start(i+1);
+}
+home();
+}
+</script>
+</body>
