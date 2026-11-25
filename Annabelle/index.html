@@ -18,13 +18,13 @@
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
 body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.55 "Atkinson Hyperlegible",system-ui,sans-serif;overflow-x:clip}
-body.ma{--acc:var(--ma)}body.no{--acc:var(--no)}
+body.ma{--acc:var(--ma)}body.sp{--acc:var(--en)}body.no{--acc:var(--no)}
 h1,h2,h3,.big{font-family:Fredoka,system-ui,sans-serif;font-weight:600;line-height:1.08;margin:0}
 h1{font-size:clamp(34px,6vw,52px);text-wrap:balance}
 .wrap{max-width:980px;margin:0 auto;padding:clamp(20px,4vw,44px) max(4vw,16px) 40px}
 header{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:end;justify-content:space-between;margin-bottom:22px}
 .lead{margin:8px 0 0;color:var(--soft);max-width:48ch}
-.total{display:flex;white-space:nowrap;flex:none;align-items:center;gap:8px;font:600 22px Fredoka,sans-serif;background:var(--card);border-radius:999px;padding:8px 18px}
+.total svg{width:28px;height:28px}.total{display:flex;white-space:nowrap;flex:none;align-items:center;gap:8px;font:600 22px Fredoka,sans-serif;background:var(--card);border-radius:999px;padding:8px 18px}
 .tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:26px}
 .tab{font:600 22px Fredoka,sans-serif;border:3px solid transparent;border-radius:18px;padding:14px;background:var(--card);color:var(--ink);cursor:pointer;min-height:58px}
 .tab[aria-pressed=true]{background:var(--acc);color:#fff}
@@ -79,6 +79,18 @@ input.num{font:700 28px Fredoka,sans-serif;width:160px;padding:10px 14px;border-
 .end .stars svg{width:56px;height:56px}
 .end .stars svg.pop{animation:pop .5s both}
 @keyframes pop{from{transform:scale(0)}70%{transform:scale(1.25)}to{transform:scale(1)}}
+.talk{margin-top:34px}.talk h2{font-size:clamp(26px,4vw,34px);margin:0 0 6px;display:flex;align-items:center;gap:12px}.talk .lead{margin:0 0 16px}
+.talkgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media(max-width:699px){.talkgrid{grid-template-columns:minmax(0,1fr)}}
+.pip{width:64px;height:64px;flex:none}
+.mic{border:0;background:var(--acc);color:#fff;border-radius:999px;padding:14px 28px;font:600 22px Fredoka,sans-serif;min-height:64px;display:inline-flex;align-items:center;gap:10px}
+.mic.on{background:var(--bad);animation:pulse 1s infinite}.mic:disabled{opacity:.5}
+@keyframes pulse{50%{transform:scale(1.05)}}
+.target{font:600 clamp(30px,5vw,44px) Fredoka,sans-serif;margin:4px 0 6px;line-height:1.15}
+.nor{color:var(--soft);margin:0 0 18px}
+.w-ok{color:var(--ok)}.w-bad{color:var(--bad);text-decoration:underline wavy}
+.pipq{display:flex;gap:14px;align-items:flex-end;margin-bottom:12px}
+.bubble{background:light-dark(#eef3ff,#283056);border-radius:18px 18px 18px 4px;padding:12px 18px;font:500 clamp(22px,3.6vw,28px) Fredoka,sans-serif}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media(max-width:480px){.tab{font-size:18px;padding:10px 4px}.opts{grid-template-columns:minmax(0,1fr)}.tile{width:46px;height:46px}}
 </style>
@@ -188,28 +200,48 @@ const NO=[
  {t:'Les og forstå',d:'Lesing',make:()=>shuf(NOTEXT.flatMap(([txt,qs])=>qs.map(([q,a,w])=>({type:'choice',text:txt,q,a,opts:shuf([a,...w]),hint:'Les teksten én gang til, eller trykk «Hør teksten».',ex:`Svaret er «${a}».`,say:txt,sayLang:NB})))).slice(0,10)}
 ];
 
+/* ---------- SNAKK MED PIP ---------- */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const PIP=`<svg class="pip" viewBox="0 0 64 64" aria-hidden="true"><path d="M20 61c-5-8-3-17 4-23l10 6-6 17z" fill="#1e63d6"/><ellipse cx="32" cy="39" rx="14" ry="18" fill="#e53935"/><path d="M24 34c6 2 10 10 8 20-8-2-12-10-8-20z" fill="#ffd600"/><circle cx="34" cy="18" r="13" fill="#e53935"/><circle cx="38" cy="15" r="5" fill="#fff"/><circle cx="39" cy="15" r="2.4" fill="#111"/><path d="M44 17c8 0 10 6 6 11-2-3-5-4-7-4z" fill="#f5a300"/></svg>`;
+const MIC='<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4M8 21h8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>';
+const NUMRE=new RegExp('\\b('+NUMS.slice(1).join('|')+')\\b');
+const COLRE=new RegExp('\\b('+COLORS.map(c=>c[0]).join('|')+')\\b');
+const norm=s=>s.toLowerCase().replace(/[’]/g,"'").replace(/\d+/g,d=>NUMS[+d]||d).replace(/[^a-z' ]/g,' ').replace(/\bfavorite\b/g,'favourite').replace(/\bcolor\b/g,'colour').replace(/\bgray\b/g,'grey').replace(/\bannabel\b/g,'annabelle').replace(/\s+/g,' ').trim();
+const SP1=[['a big dog','en stor hund'],['a red car','en rød bil'],['my mother','moren min'],['two cats','to katter'],['a green apple','et grønt eple'],['my head','hodet mitt'],['a yellow book','en gul bok'],['three fish','tre fisker'],['a black horse','en svart hest'],['my best friend','min beste venn'],['ten pigs','ti griser'],['a white house','et hvitt hus'],['my father','faren min'],['blue water','blått vann']];
+const SP2=[['I am happy','Jeg er glad'],['She is my sister','Hun er søsteren min'],['We play football','Vi spiller fotball'],['I like pizza','Jeg liker pizza'],['The cat is black','Katten er svart'],['I go to school','Jeg går på skolen'],['My name is Annabelle','Jeg heter Annabelle'],['They are my friends','De er vennene mine'],['I have a dog','Jeg har en hund'],['It is cold today','Det er kaldt i dag'],['I can swim','Jeg kan svømme'],['I eat an apple','Jeg spiser et eple']];
+const SP3=[['What is your name?','Hva heter du?',/\b(name is|name's|i am|i'm)\b/,'My name is Annabelle.'],['How old are you?','Hvor gammel er du?',NUMRE,'I am ten years old.'],['What is your favourite colour?','Hva er yndlingsfargen din?',COLRE,'My favourite colour is blue.'],['Do you have a pet?','Har du et kjæledyr?',/\b(i have|i've got|i do|i don't|i do not|i haven't)\b/,'Yes, I have a cat.'],['What do you like to eat?','Hva liker du å spise?',/\bi (like|love|eat)\b/,'I like pizza.'],['Where do you live?','Hvor bor du?',/\bi live\b/,'I live in Norway.'],['How are you today?','Hvordan har du det i dag?',/\b(i am|i'm|fine|good|great|ok|okay|happy|tired)\b/,'I am fine, thank you.'],['What is the weather like today?','Hvordan er været i dag?',/\b(it is|it's)\b/,'It is cold today.'],['Can you swim?','Kan du svømme?',/\b(i can|i can't|i cannot)\b/,'Yes, I can.'],['Who is your best friend?','Hvem er bestevennen din?',/\b(best friend is|best friend's|is my best friend|name is)\b/,'My best friend is Emma.'],['What do you do after school?','Hva gjør du etter skolen?',/\bi (play|read|watch|go|eat|do|like|ride|swim|sing|draw|walk|meet|run|sleep)\b/,'I play with my friends.'],['How many people are in your family?','Hvor mange er dere i familien?',NUMRE,'There are four people in my family.']];
+const SP=[
+ {t:'Si ordene',d:'Korte ord sammen',make:()=>shuf(SP1).slice(0,10).map(([en,no])=>({type:'speak',target:en,no}))},
+ {t:'Si setningen',d:'Hele setninger',make:()=>shuf(SP2).slice(0,10).map(([en,no])=>({type:'speak',target:en,no}))},
+ {t:'Svar Pip',d:'Samtale på engelsk',make:()=>shuf(SP3).slice(0,10).map(([q,no,re,model])=>({type:'answer',ask:q,no,re,model}))}
+];
+
 /* ---------- tilstand ---------- */
-let S={en:Array(8).fill(0),ma:Array(8).fill(0),no:Array(8).fill(0)},subj='en',run=null;
+let S={en:Array(8).fill(0),ma:Array(8).fill(0),no:Array(8).fill(0),sp:Array(3).fill(0)},subj='en',run=null;
 try{const v=JSON.parse(localStorage.getItem('ovetrappa')||'null');if(v&&v.en&&v.ma)S={...S,...v}}catch(e){}
 const save=()=>{try{localStorage.setItem('ovetrappa',JSON.stringify(S))}catch(e){}};
-const LV=()=>subj==='en'?EN:subj==='no'?NO:MA;
+const LV=()=>subj==='en'?EN:subj==='no'?NO:subj==='sp'?SP:MA;
 const stars=n=>n>=10?3:n>=9?2:n>=7?1:0;
 
 function home(){
-  run=null;document.body.className=subj;
-  const st=S[subj],L=LV(),total=[...S.en,...S.ma,...S.no].reduce((a,b)=>a+b,0);
+  run=null;if(subj==='sp')subj='en';document.body.className=subj;
+  const st=S[subj],L=LV(),total=[...S.en,...S.ma,...S.no,...S.sp].reduce((a,b)=>a+b,0);
   const nextI=st.findIndex(x=>x===0);
-  $('#app').innerHTML=`<header><div><h1>${NAME}s øvetrapp</h1><p class="lead">Hei, ${NAME}! Gå ett trinn om gangen. Får du 7 av 10 riktige, låses neste trinn opp.</p></div><div class="total">${STAR(1)} ${total} av 72</div></header>
+  $('#app').innerHTML=`<header><div><h1>${NAME}s øvetrapp</h1><p class="lead">Hei, ${NAME}! Gå ett trinn om gangen. Får du 7 av 10 riktige, låses neste trinn opp.</p></div><div class="total">${STAR(1)} ${total} av 81</div></header>
   <div class="tabs" role="group" aria-label="Velg fag"><button class="tab" data-s="en" aria-pressed="${subj==='en'}">Engelsk</button><button class="tab" data-s="no" aria-pressed="${subj==='no'}">Norsk</button><button class="tab" data-s="ma" aria-pressed="${subj==='ma'}">Matte</button></div>
   <div class="stairs">${L.map((l,i)=>{const open=i===0||st[i-1]>0;return `<button class="step ${i===nextI&&open?'next':''}" data-i="${i}" ${open?'':'disabled'}><div><div class="n">Trinn ${i+1}</div><h3>${l.t}</h3><p>${l.d}</p></div>${open?`<div class="stars">${[1,2,3].map(k=>STAR(st[i]>=k)).join('')}</div>`:`<div class="lock">Låst – klar trinn ${i}</div>`}</button>`}).join('')}</div>
+  ${subj==='en'?`<section class="talk"><h2>${PIP} Snakk med Pip</h2><p class="lead">Pip er en papegøye som lytter når du snakker engelsk. Trykk på mikrofonen og si det høyt – Pip viser hvilke ord han forsto.${SR?'':' <b>Snakketreningen virker i Chrome, Edge eller Safari.</b>'}</p><div class="talkgrid">${SP.map((l,i)=>{const open=i===0||S.sp[i-1]>0;return `<button class="step" data-sp="${i}" ${open?'':'disabled'}><div><div class="n">Snakk ${i+1}</div><h3>${l.t}</h3><p>${l.d}</p></div>${open?`<div class="stars">${[1,2,3].map(k=>STAR(S.sp[i]>=k)).join('')}</div>`:`<div class="lock">Låst – klar snakk ${i}</div>`}</button>`}).join('')}</div></section>`:''}
   <div class="note"><b>Slik fungerer det:</b> Hvert trinn har 10 nye oppgaver hver gang. Feil svar kommer tilbake på slutten, så du får prøve igjen. Trykk «Hint» når det er vanskelig – det er lov! 7 riktige gir én stjerne, 9 gir to og 10 gir tre. Du kan alltid øve på et trinn på nytt.${canSay?' I engelsk og norsk kan du trykke «Hør» for å høre ordene og tekstene.':''}</div>`;
   document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{subj=b.dataset.s;home()});
-  document.querySelectorAll('.step').forEach(b=>b.onclick=()=>start(+b.dataset.i));
+  document.querySelectorAll('.stairs .step').forEach(b=>b.onclick=()=>start(+b.dataset.i));
+  document.querySelectorAll('[data-sp]').forEach(b=>b.onclick=()=>{subj='sp';start(+b.dataset.sp)});
 }
 function start(i){run={i,items:LV()[i].make(),pos:0,first:[],retry:[]};show()}
 function cur(){return run.pos<run.items.length?run.items[run.pos]:run.retry[0]}
 function show(){
   const it=cur();if(!it)return end();
+  if(it.type==='speak'||it.type==='answer')return speakView(it);
   const isRetry=run.pos>=run.items.length,L=LV()[run.i];
   const dots=run.items.map((_,k)=>`<span class="dot ${run.first[k]===true?'ok':run.first[k]===false?'bad':k===run.pos?'now':''}"></span>`).join('');
   let ans='';
@@ -245,15 +277,54 @@ function check(v,btn){
   const nx=$('#nx');nx.hidden=false;nx.focus();
   nx.onclick=()=>{if(!isRetry)run.pos++;show()};
 }
+function speakView(it){
+  const L=LV()[run.i];run.tries=0;const ans=it.type==='answer';
+  const start=ans?it.model.split(' ').slice(0,3).join(' ').replace(/[.,]$/,''):'';
+  const dots=run.items.map((_,k)=>`<span class="dot ${run.first[k]===true?'ok':run.first[k]===false?'bad':k===run.pos?'now':''}"></span>`).join('');
+  $('#app').innerHTML=`<div class="top"><button class="back" id="bk">← Trappa</button><div class="dots">${dots}</div></div>
+  <div class="qcard"><div class="lvl">Snakk med Pip · ${L.t}</div>
+  ${ans?`<div class="pipq">${PIP}<div class="bubble">${it.ask}</div></div><p class="nor">På norsk: ${it.no} Svar med en hel setning.</p>`:`<div class="pipq">${PIP}<div class="bubble">Say it!</div></div><div class="target" id="tg">${it.target}</div><p class="nor">${it.no}</p>`}
+  <div class="row"><button class="mic" id="mic">${MIC}<span>Trykk og snakk</span></button>${canSay?'<button class="say" id="say" style="margin:0">Hør Pip</button>':''}</div>
+  <div id="heard"></div><div id="hintbox"></div><div id="fb"></div>
+  <div class="actions"><button class="btn ghost" id="hb">Hint</button><button class="btn ghost" id="skip">Hopp over</button><button class="btn" id="nx" hidden>Neste →</button></div></div>`;
+  const model=ans?it.model:it.target;
+  $('#bk').onclick=home;
+  if($('#say'))$('#say').onclick=()=>say(ans?it.ask:it.target);
+  if(ans&&canSay)setTimeout(()=>say(it.ask),300);
+  $('#hb').onclick=()=>{$('#hintbox').innerHTML=`<div class="hint">${ans?`Du kan starte slik: «${start} …». Eksempel: «${it.model}»`:'Trykk «Hør Pip», lytt godt og si det likt. Snakk tydelig og ikke for fort.'}</div>`};
+  const finish=ok=>{run.first[run.pos]=ok;['mic','hb','skip'].forEach(id=>$('#'+id).disabled=true);const nx=$('#nx');nx.hidden=false;nx.focus();nx.onclick=()=>{run.pos++;show()}};
+  $('#skip').onclick=()=>{run.first[run.pos]=false;run.pos++;show()};
+  const fb=(cls,html)=>{$('#fb').innerHTML=`<div class="fb ${cls}">${html}</div>`};
+  const judge=alts=>{
+    run.tries++;const ns=alts.map(norm);let ok;
+    if(!ans){const tw=norm(it.target).split(' ');let miss=null;for(const n of ns){const set=new Set(n.split(' '));const m=tw.filter(w=>!set.has(w)&&w!=='a'&&w!=='an');if(!miss||m.length<miss.length)miss=m}
+      ok=miss.length===0;$('#tg').innerHTML=it.target.split(' ').map(w=>`<span class="${miss.includes(norm(w))?'w-bad':'w-ok'}">${w}</span>`).join(' ')}
+    else ok=ns.some(n=>it.re.test(n));
+    $('#heard').innerHTML=`<p class="nor" style="margin:14px 0 0">Pip hørte: «${esc(alts[0]||'')}»</p>`;
+    if(ok){fb('ok',`${pick(PRAISE)}${ans?`<span>Fin setning! Pip kan også si: «${it.model}»</span>`:''}`);if(canSay)say(ans?'Great answer!':'Well done!');finish(true)}
+    else if(run.tries<3)fb('bad',`${ans?`Pip forsto ikke helt. Prøv å svare med en hel setning, for eksempel «${start} …»`:'Nesten! Ordene med rød strek forsto ikke Pip. Trykk «Hør Pip», lytt og prøv igjen.'}<span>Forsøk ${run.tries} av 3</span>`);
+    else{fb('bad',`Godt forsøk, ${NAME}! Vi går videre – denne kommer igjen en annen gang.<span>Slik kan det sies: «${model}»</span>`);if(canSay)say(model);finish(false)}
+  };
+  $('#mic').onclick=()=>{
+    if(!SR){fb('bad','Snakketreningen virker ikke i denne nettleseren.<span>Åpne siden i Chrome, Edge eller Safari.</span>');return}
+    const b=$('#mic'),lbl=b.querySelector('span');let rec;
+    try{rec=new SR();rec.lang='en-GB';rec.maxAlternatives=5;rec.interimResults=false;rec.continuous=false}catch(e){return}
+    rec.onresult=e=>judge([...e.results[0]].map(a=>a.transcript));
+    rec.onerror=e=>{fb('bad',e.error==='not-allowed'||e.error==='service-not-allowed'?'Siden får ikke bruke mikrofonen.<span>Trykk på låsen ved nettadressen og tillat mikrofon, og prøv igjen.</span>':e.error==='no-speech'?'Pip hørte ingenting.<span>Trykk og snakk litt høyere.</span>':'Noe gikk galt med mikrofonen.<span>Prøv igjen.</span>')};
+    rec.onend=()=>{b.classList.remove('on');lbl.textContent='Trykk og snakk'};
+    try{speechSynthesis.cancel()}catch(e){}
+    try{rec.start();b.classList.add('on');lbl.textContent='Pip lytter …'}catch(e){}
+  };
+}
 function end(){
   const score=run.first.filter(Boolean).length,s=stars(score),i=run.i,before=S[subj][i];
   S[subj][i]=Math.max(before,s);save();
-  const L=LV(),unlocked=s>0&&before===0&&i<7;
+  const L=LV(),unlocked=s>0&&before===0&&i<L.length-1;
   const msg=s===3?`Alt riktig på første forsøk, ${NAME}! Du mestrer dette trinnet.`:s===2?`Veldig bra jobbet, ${NAME}! Nesten alt riktig.`:s===1?`Bra jobbet, ${NAME}! Du har klart trinnet.`:`Godt jobbet, ${NAME}! Du øvde på alt og rettet opp feilene. Prøv en gang til – det blir lettere for hver gang!`;
-  $('#app').innerHTML=`<div class="qcard end"><div class="lvl">Trinn ${i+1} · ${L[i].t}</div><h2 class="big" style="font-size:clamp(34px,6vw,48px)">${score} av 10 riktige</h2>
+  $('#app').innerHTML=`<div class="qcard end"><div class="lvl">${subj==='sp'?'Snakk med Pip':'Trinn '+(i+1)} · ${L[i].t}</div><h2 class="big" style="font-size:clamp(34px,6vw,48px)">${score} av 10 riktige</h2>
   <div class="stars">${[1,2,3].map(k=>STAR(s>=k).replace('<svg',`<svg class="${s>=k?'pop':''}" style="animation-delay:${k*.2}s"`)).join('')}</div>
   <p style="font-size:20px;margin:0 auto 6px;max-width:36ch">${msg}</p>${unlocked?`<p style="font-weight:700;color:var(--acc)">Nytt trinn låst opp: ${L[i+1].t}!</p>`:''}
-  <div class="actions" style="justify-content:center"><button class="btn ghost" id="again">Øv igjen</button><button class="btn ghost" id="hm">Til trappa</button>${S[subj][i]>0&&i<7?`<button class="btn" id="nxl">Neste trinn →</button>`:''}</div></div>`;
+  <div class="actions" style="justify-content:center"><button class="btn ghost" id="again">Øv igjen</button><button class="btn ghost" id="hm">Til trappa</button>${S[subj][i]>0&&i<L.length-1?`<button class="btn" id="nxl">Neste trinn →</button>`:''}</div></div>`;
   $('#again').onclick=()=>start(i);$('#hm').onclick=home;if($('#nxl'))$('#nxl').onclick=()=>start(i+1);
 }
 home();
